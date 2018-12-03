@@ -128,7 +128,6 @@ final class Axowl_settings {
 	 * @param  String $name name of data
 	 */
 	public function input($name) {
-
 		$html = '';
 
 		if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
@@ -147,7 +146,9 @@ final class Axowl_settings {
 	 */
 	private function get($name) {
 		$d = $this->opt;
+
 		if (isset($d[$name])) return esc_attr($d[$name]);
+
 		return;
 	}
 
