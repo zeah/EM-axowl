@@ -25,6 +25,8 @@ final class Axowl_settings {
 	private function hooks() {
 		add_action('admin_menu', [$this, 'add_menu']);
 		add_action('admin_init', [$this, 'register_settings']);
+
+		// TODO delete transient on save
 	}
 
 	public function add_menu() {

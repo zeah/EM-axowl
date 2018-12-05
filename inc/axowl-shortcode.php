@@ -32,54 +32,79 @@ final class Axowl_shortcode {
 	 */
 	public function shortcode($atts, $content = null) {
 
-		add_action('wp_footer', [$this, 'footer']);
+		// TODO get transient
+
+		// add_action('wp_footer', [$this, 'footer']);
+		add_action('wp_head', [$this, 'sands']);
 
 		$data = get_option('em_axowl');
 		$data = $this->sanitize($data);
 
 		$inputs = [
-			'account_number' => ['text' => true, 'type' => 'number'], 
 			'loan_amount' => ['text' => true, 'range' => true, 'max' => 200, 'min' => 50],
-			'co_applicant' => ['checkbox' => true],
+			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1],
+			'email' => ['text' => true],
+
+			
+			'account_number' => ['text' => true, 'type' => 'number', 'page' => '2'], 
+			'mobile_number' => ['text' => true, 'type' => 'number'],
+
+			'co_applicant' => ['checkbox' => true, 'page' => '3'],
 			'co_applicant_email' => ['text' => true, 'type' => 'email']
 
 		];
 
-		$html = '<form>';
+		$html = '<form class="emowl-form">';
 
 		$html .= '<input type="hidden" name="'.$data['name'].'">';
 
+		$html .= '<div class="part-container">';
+
+		$html .= '<div class="part part-1">';
+
 		foreach($inputs as $key => $value) {
-			$html .= sprintf('<div class="em-form-part em-form-%s">', $key);
-			if (isset($value['text'])) $html .= $this->text_input([
+			if ($value['page']) $html .= '</div><div class="part part-'.$value['page'].'">';
+			$html .= $this->element($key, $value, $data);
+		}
+			
+
+		$html .= '</div></div>';
+
+		$html .= '<button class="em-b em-b-back" type="button">Tilbake</button>';
+		$html .= '<button class="em-b em-b-submit" type="button">Neste</button>';
+
+		$html .= '</form>';
+
+		// TODO set transient
+
+		return $html;
+
+	}
+
+	private function element($key, $value, $data) {
+		$html = sprintf('<div class="em-form-part em-form-%s">', $key);
+		if (isset($value['text'])) $html .= $this->text_input([
+												'name' => $key,
+												'text' => $data[$key],
+												'ht' => $data[$key.'_ht'],
+												'value' => $value
+											]);
+
+		if (isset($value['range'])) $html .= $this->range_input([
+												'name' => $key,
+												'value' => $value
+											]);
+
+		if (isset($value['checkbox'])) $html .= $this->checkbox_input([
 													'name' => $key,
 													'text' => $data[$key],
 													'ht' => $data[$key.'_ht'],
 													'value' => $value
 												]);
 
-			if (isset($value['range'])) $html .= $this->range_input([
-													'name' => $key,
-													'value' => $value
-												]);
-
-			if (isset($value['checkbox'])) $html .= $this->checkbox_input([
-														'name' => $key,
-														'text' => $data[$key],
-														'ht' => $data[$key.'_ht'],
-														'value' => $value
-													]);
-
-			$html .= '</div>';
-		}
-			// $html .= $this->text_input($key, $data[$key], $data[$key.'_ht']);
-
-		$html .= '<button class="em-b em-b-submit" type="submit">Send</button>';
-
-		$html .= '</form>';
+		$html .= '</div>';
 
 		return $html;
-
 	}
 
 	/**
@@ -159,9 +184,44 @@ final class Axowl_shortcode {
 		return $d;
 	}
 
+
+	public function sands() {
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 841px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 840px)');
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.0', true);
+	
+	}
+
+
 	public function footer() {
 
 		echo '<script>
+
+				var c = 1;
+
+				// next button
+				var b = document.querySelector(".em-b-submit");
+
+				b.addEventListener("click", function() {
+					var t = document.querySelector(".part-"+c);
+					var n = document.querySelector(".part-"+(c+1));
+					t.style.display = "none";
+					n.style.display = "block";
+					c++;
+				});
+
+				// prev button 
+				var p = document.querySelector(".em-b-back");
+
+				p.addEventListener("click", function() {
+					var t = document.querySelector(".part-"+c);
+					var n = document.querySelector(".part-"+(c-1));
+					t.style.display = "none";
+					n.style.display = "block";
+					c--;
+				});
+
+				// loan amount
 				var r = document.querySelector(".em-r-loan_amount");
 				var a = document.querySelector(".em-i-loan_amount");
 

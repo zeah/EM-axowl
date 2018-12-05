@@ -19,6 +19,8 @@ function init_em_axowl() {
 
 init_em_axowl();
 
+define('EM_AXOWL_PLUGIN_URL', plugin_dir_url(__FILE__));
+
 
 final class EM_axowl {
 	/* singleton */
