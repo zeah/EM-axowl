@@ -41,20 +41,23 @@ final class Axowl_shortcode {
 		$data = $this->sanitize($data);
 
 		$inputs = [
-			'loan_amount' => ['text' => true, 'range' => true, 'max' => 200, 'min' => 50],
+			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 100000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1],
+			'monthly_cost' => ['text' => 'Måndelige kostnader', 'notInput' => true],
+			'mobile_number' => ['text' => true, 'type' => 'number'],
 			'email' => ['text' => true],
 
 			
 			'account_number' => ['text' => true, 'type' => 'number', 'page' => '2'], 
-			'mobile_number' => ['text' => true, 'type' => 'number'],
 
 			'co_applicant' => ['checkbox' => true, 'page' => '3'],
 			'co_applicant_email' => ['text' => true, 'type' => 'email']
 
 		];
 
-		$html = '<form class="emowl-form">';
+		$html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+					(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
+			    );
 
 		$html .= '<input type="hidden" name="'.$data['name'].'">';
 
@@ -70,8 +73,10 @@ final class Axowl_shortcode {
 
 		$html .= '</div></div>';
 
-		$html .= '<button class="em-b em-b-back" type="button">Tilbake</button>';
+		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-submit" type="button">Neste</button>';
+		$html .= '<button class="em-b em-b-back" type="button">Tilbake</button>';
+		$html .= '</div>';
 
 		$html .= '</form>';
 
@@ -82,25 +87,33 @@ final class Axowl_shortcode {
 	}
 
 	private function element($key, $value, $data) {
-		$html = sprintf('<div class="em-form-part em-form-%s">', $key);
-		if (isset($value['text'])) $html .= $this->text_input([
-												'name' => $key,
-												'text' => $data[$key],
-												'ht' => $data[$key.'_ht'],
-												'value' => $value
-											]);
+		$html = sprintf('<div class="em-element-container em-element-%s">', $key);
 
-		if (isset($value['range'])) $html .= $this->range_input([
-												'name' => $key,
-												'value' => $value
-											]);
+		if (isset($value['notInput'])) $html .= $this->text_field([
+													'name' => $key,
+													'text' => $value['text']
+												]);
 
-		if (isset($value['checkbox'])) $html .= $this->checkbox_input([
+		else {
+			if (isset($value['text'])) $html .= $this->text_input([
 													'name' => $key,
 													'text' => $data[$key],
 													'ht' => $data[$key.'_ht'],
 													'value' => $value
 												]);
+
+			if (isset($value['range'])) $html .= $this->range_input([
+													'name' => $key,
+													'value' => $value
+												 ]);
+
+			if (isset($value['checkbox'])) $html .= $this->checkbox_input([
+														'name' => $key,
+														'text' => $data[$key],
+														'ht' => $data[$key.'_ht'],
+														'value' => $value
+													]);
+		}
 
 		$html .= '</div>';
 
@@ -116,22 +129,21 @@ final class Axowl_shortcode {
 		if (!isset($o['name'])) return;
 
 		return sprintf('<div class="em-ic em-ic-%1$s">
-							<label for="%1$s">
+							<label for="%1$s" class="em-label em-label-%1$s">
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
 							</label>
-							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s">
+							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s">
 						</div>',
 
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht%1$s">%1$s</div>', $o['ht']) : ''),
+						($o['ht'] ? sprintf('<div class="em-ht-%1$s">%2$s</div>', $o['name'], $o['ht']) : ''),
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
-						(isset($o['value']['type']) ? $o['value']['type'] : 'text')
+						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
+						(isset($o['value']['default']) ? $o['value']['default'] : '')
 					);
-
-		return $html;
 	}
 
 	/**
@@ -143,12 +155,14 @@ final class Axowl_shortcode {
 		if (!isset($o['name'])) return;
 
 		return sprintf('<div class="em-rc em-rc-%1$s">
-							<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s>
+							<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>
 						</div>',
 
 						$o['name'],
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
-						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : '')
+						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
+						(isset($o['value']['step']) ? ' step='.$o['value']['step'] : ''),
+						(isset($o['value']['default']) ? ' value='.$o['value']['default'] : '')
 				);
 	}
 
@@ -167,6 +181,13 @@ final class Axowl_shortcode {
 						($o['ht'] ? sprintf('<div class="em-ht%1$s">%1$s</div>', $o['ht']) : '')
 
 						);
+	}
+
+	private function text_field($o = []) {
+		return sprintf('<div style="display: flex; justify-content: center;">
+			<div class="">%1$s</div><input type="text" class="em-if em-if-%2$s" disabled value=50></div>', 
+			$o['text'],
+			$o['name']);
 	}
 
 	/**
@@ -193,42 +214,42 @@ final class Axowl_shortcode {
 	}
 
 
-	public function footer() {
+	// public function footer() {
 
-		echo '<script>
+	// 	echo '<script>
 
-				var c = 1;
+	// 			var c = 1;
 
-				// next button
-				var b = document.querySelector(".em-b-submit");
+	// 			// next button
+	// 			var b = document.querySelector(".em-b-submit");
 
-				b.addEventListener("click", function() {
-					var t = document.querySelector(".part-"+c);
-					var n = document.querySelector(".part-"+(c+1));
-					t.style.display = "none";
-					n.style.display = "block";
-					c++;
-				});
+	// 			b.addEventListener("click", function() {
+	// 				var t = document.querySelector(".part-"+c);
+	// 				var n = document.querySelector(".part-"+(c+1));
+	// 				t.style.display = "none";
+	// 				n.style.display = "block";
+	// 				c++;
+	// 			});
 
-				// prev button 
-				var p = document.querySelector(".em-b-back");
+	// 			// prev button 
+	// 			var p = document.querySelector(".em-b-back");
 
-				p.addEventListener("click", function() {
-					var t = document.querySelector(".part-"+c);
-					var n = document.querySelector(".part-"+(c-1));
-					t.style.display = "none";
-					n.style.display = "block";
-					c--;
-				});
+	// 			p.addEventListener("click", function() {
+	// 				var t = document.querySelector(".part-"+c);
+	// 				var n = document.querySelector(".part-"+(c-1));
+	// 				t.style.display = "none";
+	// 				n.style.display = "block";
+	// 				c--;
+	// 			});
 
-				// loan amount
-				var r = document.querySelector(".em-r-loan_amount");
-				var a = document.querySelector(".em-i-loan_amount");
+	// 			// loan amount
+	// 			var r = document.querySelector(".em-r-loan_amount");
+	// 			var a = document.querySelector(".em-i-loan_amount");
 
-				r.addEventListener("input", function(e) { a.value = e.target.value });
-				a.addEventListener("input", function(e) { r.value = e.target.value });
+	// 			r.addEventListener("input", function(e) { a.value = e.target.value });
+	// 			a.addEventListener("input", function(e) { r.value = e.target.value });
 
-			  </script>';
+	// 		  </script>';
 
-	}
+	// }
 }

@@ -2,24 +2,81 @@
  * INDEX
  * 
  * 1.0 .emowl-form
+ * 		1.1 .part-container
+ * 		1.2 .part
+ * 			1.2.1 .part-1
+ * 		 	1.2.2 .part-2
+ * 		 	1.2.3 .part-3
+ * 		  	1.2.4 .part-4
+ * 		
+ * 1.1 elements and parts
  *
- * 
+ * 2.0 loam amounter
+ * 		2.1 loan input container
+ * 			2.1.1 loan label
+ * 				2.1.1.1 loan title
+ * 			 	2.1.1.2 loan help text
+ * 			 	
+ * 			2.1.2 loan input
+ * 			
+ * 		2.2 loan range container
+ *   		2.2.1 loan range input
  */
+
 
 /* 1.0 form element and container */
 .emowl-form {
-	display: inline-block;
+	display: inline-grid;
+	box-sizing: content-box;
 
-	padding: 1rem;
+	grid-template-rows: auto 1fr auto;
 
-	background-color: hsl(20, 90%, 95%);
+	padding: 2rem;
 
-	border-radius: 5px;
+	/*height: 60rem;*/
+	width: 80rem;
+
+	background-color: hsl(20, 0%, 95%);
+
+	border: solid 5px hsl(240, 50%, 80%);
+	border-radius: 25px;
+
 }
 
+.form-title {
+	font-size: 3rem;
+	margin: 0;
+}
+
+.em-b-container {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+
+	align-self: flex-end;
+
+	/*margin-bottom: 2rem;*/
+}
+
+.em-b {
+	padding: 1rem 2rem;
+
+	border-radius: 25px;
+	border: none;
+	outline: none;
+	font-size: 4rem;
+
+	cursor: pointer;
+
+	background-color: hsl(120, 90%, 80%);
+	/*margin-bottom: 2rem;*/
+}
+
+.em-b-back {
+	display: none;
+}
 
 .part-container {
-	display: flex;
 }
 
 .part {
@@ -27,5 +84,183 @@
 }
 
 .part-1 {
-	display: block;
+	display: grid;
+
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+
+	grid-template-areas: 
+	"loan loan"
+	"tenure tenure"
+	"mobile email"
+	"monthly monthly";
+
+	grid-column-gap: 4rem;
+
+	grid-template-columns: 1fr 1fr;
+
+}
+
+/* 1.1 elements and parts */
+.em-element-container {
+	margin-bottom: 4rem;
+	background-color: hsl(270, 50%, 72%);
+	cursor: pointer;
+}
+
+.em-element-container:hover {
+	box-shadow: 0 0 10px hsl(30, 50%, 50%);
+}
+
+.em-it {
+	margin: 0;
+	color: white;
+	text-shadow: 0 0 5px black;
+	font-size: 2.6rem;
+}
+
+.em-i {
+
+	height: 4rem;
+
+	margin-top: 1rem;
+	font-size: 2.4rem;
+	padding: .5rem;
+	text-align: center;
+
+	border: none;
+	outline: none;
+	border-radius: 25px;
+}
+
+.em-r {
+	cursor: grab;
+}
+
+.em-ht {
+	font-size: 1.6rem;
+}
+
+
+.em-label {
+	cursor: pointer;
+}
+
+
+/* 2.0 loan amount element container */
+.em-element-tenure,
+.em-element-loan_amount {
+	position: relative;
+
+	padding: 2rem;
+
+	border-radius: 25px;
+}
+
+.em-element-loan_amount {
+	grid-area: loan;
+}
+
+/* 2.1 loan amount input container */
+.em-ic-loan_amount {
+}
+
+/* 2.1.1 loan amount label */
+.em-label-loan_amount {
+}
+
+/* 2.1.1.1 loan amount title */
+.em-it-loan_amount {
+
+}
+
+/* 2.1.1.2 loan amount help text */
+.em-ht-loan_amount,
+.em-ht-tenure {
+	position: absolute;
+	top: 2rem;
+	bottom: 2rem;
+	right: 2rem;
+
+	width: 30%;
+	background-color: white;
+	border-radius: 25px;
+
+	padding: 1.5rem;
+
+	display: flex;
+	align-items: center;
+
+}
+
+/* 2.1.2 loam amount input */
+.em-i-loan_amount {
+}
+
+/* 2.2 loan amount range container */
+.em-r-loan_amount {
+
+}
+
+
+.em-it-tenure,
+.em-i-tenure,
+.em-r-tenure,
+.em-it-loan_amount,
+.em-i-loan_amount,
+.em-r-loan_amount {
+	width: 60%;
+}
+
+
+
+/* 2.2 loan tenure */
+.em-element-tenure {
+	grid-area: tenure;
+}
+
+/* 2.3 mobile number */
+.em-element-mobile_number {
+	padding: 2rem;
+
+	border-radius: 25px;
+	/*border: solid 2px hsl(0, 0%, 90%);*/
+	grid-area: mobile;
+}
+
+/* 2.4 email */
+.em-element-email {
+	padding: 2rem;
+
+	border-radius: 25px;
+	/*border: solid 2px hsl(0, 0%, 90%);*/
+	grid-area: email;
+}
+
+.em-i-mobile_number,
+.em-i-email {
+	width: 100%;
+}
+
+.em-element-mobile_number,
+.em-element-email {
+	height: 13rem;
+}
+
+
+/**/
+.em-element-monthly_cost {
+	grid-area: monthly;
+	background-color: transparent;
+	font-size: 3.4rem;
+}
+
+.em-if-monthly_cost {
+	border: none;
+	background-color: transparent;
+	color: black;
+	text-align: right;
+	font-size: 3.6rem;
+	width: 80px;
 }

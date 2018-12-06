@@ -36,14 +36,14 @@
 	nextButton.addEventListener("click", function() {
 		currentPart.style.display = "none";
 		
-		getNext().style.display = "block";
+		getNext().style.display = "grid";
 	});
 
 
 	prevButton.addEventListener("click", function() {
 		currentPart.style.display = "none";
 		
-		getPrev().style.display = "block";
+		getPrev().style.display = "grid";
 	});
 
 	// loan amount
@@ -52,4 +52,15 @@
 
 	r.addEventListener("input", function(e) { a.value = e.target.value });
 	a.addEventListener("input", function(e) { r.value = e.target.value });
+
+	// email
+	var e = document.querySelector('.em-i-email');
+
+	e.addEventListener('input', function(e) {
+		// console.log(e.target.value);
+		if (e.target.value.length > 50) e.target.style.fontSize = '14px';
+		else if (e.target.value.length > 40) e.target.style.fontSize = '16px';
+		else if (e.target.value.length > 30) e.target.style.fontSize = '18px';
+		else e.target.style.fontSize = '24px';
+	});
 })();

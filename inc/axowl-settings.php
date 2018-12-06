@@ -160,7 +160,7 @@ final class Axowl_settings {
 	 * @return [type]       [description]
 	 */
 	public static function sanitize($data) {
-		if (!is_array($data)) return sanitize_text_field($data);
+		if (!is_array($data)) return wp_kses_post($data);
 
 		$d = [];
 		foreach($data as $key => $value)
