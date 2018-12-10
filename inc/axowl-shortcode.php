@@ -38,6 +38,7 @@ final class Axowl_shortcode {
 		add_action('wp_head', [$this, 'sands']);
 
 		$data = get_option('em_axowl');
+		if (!is_array($data)) $data = [];
 		$data = $this->sanitize($data);
 
 		$inputs = [
