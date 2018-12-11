@@ -39,7 +39,6 @@
 
 	padding: 2rem;
 
-	/*height: 60rem;*/
 	width: 80rem;
 
 	background-color: hsl(20, 0%, 95%);
@@ -61,7 +60,6 @@
 
 	align-self: flex-end;
 
-	/*margin-bottom: 2rem;*/
 }
 
 .em-b {
@@ -75,7 +73,6 @@
 	cursor: pointer;
 
 	background-color: hsl(120, 90%, 80%);
-	/*margin-bottom: 2rem;*/
 }
 
 .em-b-back {
@@ -112,7 +109,7 @@
 .em-element-container {
 	margin-bottom: 4rem;
 	background-color: hsl(270, 50%, 72%);
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 .em-element-container:hover {
@@ -141,10 +138,18 @@
 	z-index: 20;
 }
 
+.em-rc {
+	margin-top: 1rem;
+}
+
 .em-r {
 	cursor: grab;
 	-webkit-appearance: none;
 	background: none;
+
+	background-color: hsla(0, 0%, 100%, .5);
+
+	height: 4px;
 
 	outline: none;
 }
@@ -153,20 +158,23 @@
   	-webkit-appearance: none;
   	appearance: none;
 
-  	width: 15px;
-  	height: 15px;
-  	/*background: #4CAF50;*/
+  	width: 4rem;
+  	height: 2.5rem;
+  	background: hsl(120, 50%, 40%);
 
-  	/*border: solid 1px black;*/
-  	/*width: 0;*/
-    /*height: 0;*/
-    border: 25px solid transparent;
-    border-bottom-color: hsl(240, 50%, 50%);
-    position: relative;
-    top: -27px;
-    /*z-index: -1;*/
+  	opacity: .8;
+
+  	/*border-left: solid 3px hsl(240, 100%, 0%);*/
+  	/*border-right: solid 3px hsl(240, 100%, 0%);*/
+
+  	border-radius: 150px;
+ }
+
+.em-i[type=number]::-webkit-inner-spin-button, 
+.em-i[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
-
 
 
 .em-ht {
@@ -191,11 +199,11 @@
 
 .em-element-loan_amount {
 	grid-area: loan;
+
 }
 
 /* 2.1 loan amount input container */
 .em-ic-loan_amount {
-	position: relative;
 }
 
 /* 2.1.1 loan amount label */
@@ -210,25 +218,6 @@
 .em-i-loan_amount {
 }
 
-.em-ic-loan_amount:after {
-	/*background: linear-gradient(0deg, #ffffff 16px, transparent 0), linear-gradient(0deg, #ffffff 16px, transparent 0);*/
-	/*background: linear-gradient(0deg, #fffff 16px);*/
-
-	 background-image: linear-gradient(0deg, #ffffff 25%, transparent 25%), linear-gradient(90deg, #ffffff 25%, transparent 25%), linear-gradient(0deg, transparent 75%, #ffffff 75%), linear-gradient(90deg, transparent 75%, #ffffff 75%);
-  	background-size: 20px 20px;
-  	background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-
-    /*background-position: left-bottom;*/
-    background-repeat: repeat-x;
-    /*background-size: 32px 32px;*/
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: -4px;
-    left: 10px;
-    width: 436px;
-    height: 5px;
-}
 
 /* 2.1.1.2 loan amount help text */
 .em-ht-loan_amount,
@@ -254,9 +243,6 @@
 }
 
 /* 2.2 loan amount range container */
-.em-r-loan_amount {
-
-}
 
 
 .em-it-tenure,
@@ -269,6 +255,8 @@
 }
 
 
+.em-r-loan_amount {
+}
 
 /* 2.2 loan tenure */
 .em-element-tenure {
@@ -280,7 +268,6 @@
 	padding: 2rem;
 
 	border-radius: 25px;
-	/*border: solid 2px hsl(0, 0%, 90%);*/
 	grid-area: mobile;
 }
 
@@ -289,7 +276,6 @@
 	padding: 2rem;
 
 	border-radius: 25px;
-	/*border: solid 2px hsl(0, 0%, 90%);*/
 	grid-area: email;
 }
 

@@ -42,10 +42,10 @@ final class Axowl_shortcode {
 		$data = $this->sanitize($data);
 
 		$inputs = [
-			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 100000, 'default' => 150000, 'step' => 10000],
-			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1],
+			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
+			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
 			'monthly_cost' => ['text' => 'Måndelige kostnader', 'notInput' => true],
-			'mobile_number' => ['text' => true, 'type' => 'number'],
+			'mobile_number' => ['text' => true, 'type' => 'text'],
 			'email' => ['text' => true],
 
 			
