@@ -41,6 +41,10 @@ final class Axowl_shortcode {
 		if (!is_array($data)) $data = [];
 		$data = $this->sanitize($data);
 
+		$years = [];
+		for ($i = 2018; $i > 1959; $i--)
+			array_push($years, $i);
+
 		$inputs = [
 			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
@@ -49,7 +53,23 @@ final class Axowl_shortcode {
 			'email' => ['text' => true],
 
 			
-			'account_number' => ['text' => true, 'type' => 'number', 'page' => '2'], 
+			'social_number' => ['text' => true, 'type' => 'number', 'page' => '2'],
+			'employment_type' => ['list' => [
+												'Fast ansatt (privat)',
+												'Fast ansatt (offentlig)',
+												'Midlertidig ansatt/vikar',
+												'Selvst. næringsdrivende',
+												'Pensjonist',
+												'Student',
+												'Uføretrygdet',
+												'Arbeidsavklaring/attføring',
+												'Arbeidsledig',
+												'Langtidssykemeldt'
+											]
+								 ],
+
+			'employment_since' => ['hidden' => true, 'list' => $years],
+			'employer' => ['text' => true, 'hidden' => true],
 
 			'co_applicant' => ['checkbox' => true, 'page' => '3'],
 			'co_applicant_email' => ['text' => true, 'type' => 'email']
@@ -88,11 +108,14 @@ final class Axowl_shortcode {
 	}
 
 	private function element($key, $value, $data) {
-		$html = sprintf('<div class="em-element-container em-element-%s">', $key);
+		$html = sprintf('<div class="em-element-container em-element-%1$s%2$s">', 
+							$key, 
+							(isset($value['hidden']) ? ' em-hidden' : '')
+						);
 
 		if (isset($value['notInput'])) $html .= $this->text_field([
 													'name' => $key,
-													'text' => $value['text']
+													'text' => $data[$key]
 												]);
 
 		else {
@@ -114,6 +137,13 @@ final class Axowl_shortcode {
 														'ht' => $data[$key.'_ht'],
 														'value' => $value
 													]);
+
+			if (isset($value['list'])) $html .= $this->list_input([
+													'name' => $key,
+													'text' => $data[$key],
+													'ht' => $data[$key.'_ht'],
+													'list' => $value['list']
+												]);
 		}
 
 		$html .= '</div>';
@@ -189,6 +219,31 @@ final class Axowl_shortcode {
 			<div class="">%1$s</div><input type="text" class="em-if em-if-%2$s" disabled value=50></div>', 
 			$o['text'],
 			$o['name']);
+	}
+
+
+	/**
+	 * 
+	 */
+	private function list_input($o = []) {
+
+		$html = sprintf('<div class="em-lc em-lc-">', $o['name']);
+
+		$html .= sprintf('<label for="%1$s"><h4>%2$s</h4></label>',
+							$o['name'],
+							$o['text']
+						);
+
+		$html .= sprintf('<select class="em-i em-i-%1$s" id="%1$s" name="%1$s">', $o['name']);
+
+		$html .= '<option></option>';
+
+		if (isset($o['list']))
+			foreach($o['list'] as $value)
+				$html .= sprintf('<option value="%1$s">%1$s</option>', $value);
+
+		$html .= '</select></div>';
+		return $html;
 	}
 
 	/**

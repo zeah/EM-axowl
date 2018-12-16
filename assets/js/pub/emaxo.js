@@ -348,8 +348,22 @@
 
 
 
+	// EMPLOYMENT TYPE
+	var employmentType = document.querySelector('.em-i-employment_type');
+	var employmentSince = document.querySelector('.em-element-employment_since');
+	var employer = document.querySelector('.em-element-employer');
 
+	employmentType.addEventListener('change', function(e) {
 
+		if (e.target.value) {
+			employmentSince.classList.remove('em-hidden');
+			employer.classList.remove('em-hidden');
+		}
+		else {
+			employmentSince.classList.add('em-hidden');
+			employer.classList.add('em-hidden');
+		}
+	});
 
 
 

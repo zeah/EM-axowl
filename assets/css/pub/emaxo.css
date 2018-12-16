@@ -105,6 +105,10 @@
 
 }
 
+.em-hidden {
+	display: none;
+}
+
 /* 1.1 elements and parts */
 .em-element-container {
 	margin-bottom: 4rem;
