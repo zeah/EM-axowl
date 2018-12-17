@@ -46,11 +46,18 @@
 			if (e > 15) return false;
 
 			return true;
-		}
+		},
+
+		social: function(e) {
+			e = e.replace(/[^0-9]/, '');
+
+			if (e.length != 11) return false;
+
+			return true;
+		},
 	}
 
 	var val = function(o = {}) {
-
 		if (typeof validator[o.callback] !== 'function') { 
 			console.error('Validator.'+o.callback+' is not a function.');
 			return false; 
@@ -68,6 +75,8 @@
 
 		return true;
 	}
+
+
 
 	var nextPage = function() {
 		var cPage = document.querySelector('.part-'+counter);
@@ -93,7 +102,7 @@
 		counter--;
 		var page = document.querySelector('.part-'+counter);
 		var prevPage = document.querySelector('.part-'+(counter-1));
-		console.log(prevPage);
+		// console.log(prevPage);
 
 		if (!prevPage) prevButton.style.display = 'none';
 		else prevButton.style.display = 'inline-block';
@@ -106,53 +115,68 @@
 		page.style.display = 'grid';
 	}
 
-	// // showing next page
-	// var getNext = function() {
-	// 	counter++;
-	// 	currentPart = document.querySelector(".part-"+counter)
-	// 	if (counter == 3) nextButton.style.display = "none";
-	// 	else {
-	// 		nextButton.style.display = "inline-block";
-	// 		prevButton.style.display = "inline-block";
-	// 	}
-	// 	return currentPart;
-	// }
-
-
-	// // showing previous page
-	// var getPrev = function() {
-	// 	counter--;
-	// 	currentPart = document.querySelector(".part-"+counter)
-
-	// 	if (counter == 1) prevButton.style.display = "none";
-	// 	else { 
-	// 		nextButton.style.display = "inline-block";
-	// 		prevButton.style.display = "inline-block";
-	// 	}
-	// 	return currentPart;
-	// }
-
 
 	// next page button
-	nextButton.addEventListener("click", function() {
-		nextPage();
-		// currentPart.style.display = "none";
-		
-		// getNext().style.display = "grid";
-	});
+	nextButton.addEventListener("click", function() { nextPage() });
 
 	// previous page button
-	prevButton.addEventListener("click", function() {
-		prevPage();
-		// currentPart.style.display = "none";
-		
-		// getPrev().style.display = "grid";
-	});
+	prevButton.addEventListener("click", function() { prevPage() });
 
 
+	/* events for inputs with numbers only */
+	var numberEvents = function(node, max = 8, error = null) {
+		// when hitting enter
+		node.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
 
+		// typing
+		node.addEventListener('input', function(e) { node.value = e.target.value.replace(/[^0-9]/g, '').substr(0, max) });
 
+		// on focus
+		node.addEventListener('focus', function(e) { e.target.select(); });
 
+		// lost focus (validation time)
+		if (error)
+			node.addEventListener('focusout', function(e) {
+				val({
+					callback: error,
+					value: e.target.value,
+					errorColor: errorColor,
+					feedbackNode: e.target.parentNode.parentNode
+				})
+			});
+	}
+
+	var textEvents = function(node, regex) {
+
+		if (regex) node.addEventListener('input', function(e) { e.target.value = e.target.value.replace(regex, '')	});
+
+		node.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
+		node.addEventListener('focus', function(e) { console.log('heya');e.target.select() });
+	}
+
+	var checkEvents = function(yes, no, hidden) {
+		if (!yes || !no || !hidden) return;
+
+		var click = function(sel, unsel, val) {
+			sel.classList.add('em-cc-green');
+			unsel.classList.remove('em-cc-green');
+
+			hidden.value = val;
+		}
+
+		yes.addEventListener('click', function() { click(yes, no, 1) });
+		no.addEventListener('click', function() { click(no, yes, 0) });
+	}
+
+	var norNr = function(e) {
+		return parseInt(e).toLocaleString(
+							'nb-NO', 
+							{
+								style: 'currency', 
+								currency: 'NOK',
+								minimumFractionDigits: 0
+							});
+	}
 
 
 
@@ -161,13 +185,7 @@
 	var loanText = document.querySelector('.em-i-loan_amount');
 
 	// fixing initial value to locale
-	loanText.value = parseInt(loanText.value).toLocaleString(
-		'nb-NO', 
-		{
-			style: 'currency', 
-			currency: 'NOK',
-			minimumFractionDigits: 0
-		});
+	loanText.value = norNr(loanText.value);
 
 	// hitting enter to exit input
 	loanText.addEventListener('keypress', function(e) { if (e.keyCode == 13) loanText.blur() });
@@ -178,8 +196,7 @@
 		// removes all but numbers
 		var v = e.target.value.replace(/[^0-9]/g, '');
 	
-		if (v == '') v = '';
-
+		if (!v) v = '';
 		else if (v > max) v = max;
 	
 		loanText.value = v; 
@@ -199,13 +216,7 @@
 		if (n < min) n = min;
 		else if (n > max) n = max;
 
-		loanText.value = parseInt(n).toLocaleString(
-			'nb-NO', 
-			{
-				style: 'currency', 
-				currency: 'NOK', 
-				minimumFractionDigits: 0
-			});
+		loanText.value = norNr(n);
 
 		loanRange.value = n;
 	});
@@ -213,15 +224,7 @@
 
 	// LOAN RANGE 
 	// setting the text input while changing the range input
-	loanRange.addEventListener('input', function(e) { 
-		loanText.value = parseInt(e.target.value).toLocaleString(
-			'nb-NO', 
-			{ 
-				style: 'currency', 
-			  	currency: 'NOK', 
-			 	minimumFractionDigits: 0
-			}); 
-	});
+	loanRange.addEventListener('input', function(e) { loanText.value = norNr(e.target.value) });
 
 
 
@@ -284,34 +287,7 @@
 
 	// MOBILE NUMBER
 	var mobileText = document.querySelector('.em-i-mobile_number');
-
-	// pressing enter
-	mobileText.addEventListener('keypress', function(e) { if (e.keyCode == 13) mobileText.blur() });
-
-	// typing
-	mobileText.addEventListener('input', function(e) {
-
-		var temp = e.target.value.replace(/[^0-9]/g, '');
-		mobileText.value = temp;
-
-		if (e.target.value.length > 8) mobileText.value = temp.substr(0, 8);
-	});
-
-	// on focus
-	mobileText.addEventListener('focus', function() { mobileText.select(); });
-
-	// lost focus (validation time)
-	mobileText.addEventListener('focusout', function(e) {
-		val({
-			callback: 'phone',
-			value: e.target.value,
-			errorColor: errorColor,
-			feedbackNode: e.target.parentNode.parentNode
-		})
-	});
-
-
-
+	numberEvents(mobileText, 8, 'phone');
 
 
 
@@ -319,9 +295,9 @@
 
 	// EMAIL
 	var emailText = document.querySelector('.em-i-email');
-
+	textEvents(emailText);
 	// hitting enter will exit the input
-	emailText.addEventListener('keypress', function(e) { if (e.keyCode == 13) emailText.blur() });
+	// emailText.addEventListener('keypress', function(e) { if (e.keyCode == 13) emailText.blur() });
 
 	// typing
 	emailText.addEventListener('input', function(e) {
@@ -334,7 +310,7 @@
 	});
 
 	// on focus
-	emailText.addEventListener('focus', function() { emailText.select() });	
+	// emailText.addEventListener('focus', function() { emailText.select() });	
 
 	// lost focus (validation time)
 	emailText.addEventListener('focusout', function(e) { 
@@ -347,27 +323,98 @@
 	});
 
 
+	// REFINANCING
+	checkEvents(
+			document.querySelector('.em-cc-collect_debt .em-cc-yes'),
+			document.querySelector('.em-cc-collect_debt .em-cc-no'),
+			document.querySelector('.em-cc-collect_debt .em-c')
+		);
+
+
+	// var refinancingYes = document.querySelector('.em-cc-collect_debt .em-cc-yes');
+	// var refinancingNo = document.querySelector('.em-cc-collect_debt .em-cc-no');
+	// var refinancingHidden = document.querySelector('.em-cc-collect_debt .em-c');
+
+	// checkEvents(refinancingYes, refinancingNo, refinancingHidden);
+
+	// refinancingYes.addEventListener('click', function(e) {
+	// 	refinancingYes.classList.add('em-cc-green');
+	// 	refinancingNo.classList.remove('em-cc-green');
+	// 	refinancingHidden.value = '1';
+	// });
+
+	// refinancingNo.addEventListener('click', function(e) {
+	// 	refinancingNo.classList.add('em-cc-green');
+	// 	refinancingYes.classList.remove('em-cc-green');
+	// 	refinancingHidden.value = '0';
+	// });
+
+
+	// PAGE 2
+
+	// SOCIAL NUMBER
+	var socialnumber = document.querySelector('.em-i-social_number');
+	numberEvents(socialnumber, 11, 'social');
 
 	// EMPLOYMENT TYPE
 	var employmentType = document.querySelector('.em-i-employment_type');
-	var employmentSince = document.querySelector('.em-element-employment_since');
-	var employer = document.querySelector('.em-element-employer');
+	var employmentSinceC = document.querySelector('.em-element-employment_since');
+	var employerC = document.querySelector('.em-element-employer');
 
 	employmentType.addEventListener('change', function(e) {
 
-		if (e.target.value) {
-			employmentSince.classList.remove('em-hidden');
-			employer.classList.remove('em-hidden');
+		var show = function() {
+			employmentSinceC.classList.remove('em-hidden');
+			employerC.classList.remove('em-hidden');
 		}
-		else {
-			employmentSince.classList.add('em-hidden');
-			employer.classList.add('em-hidden');
+
+		var hide = function() {
+			employmentSinceC.classList.add('em-hidden');
+			employerC.classList.add('em-hidden');
+		}
+
+		switch (e.target.value) {
+
+			case 'Fast ansatt (privat)':
+			case 'Fast ansatt (offentlig)': 
+			case 'Midlertidig ansatt/vikar': 
+			case 'Selvst. næringsdrivende': 
+			case 'Langtidssykemeldt': show(); break;
+
+			default: hide();
+
 		}
 	});
 
+	// EMPLOYER
+
+	// employer already gotten
+	var employer = document.querySelector('.em-i-employer');
+	textEvents(employer, /[^0-9a-xøæåA-XØÆÅ ]/);
 
 
 
+	// NORWEGIAN
+	var norYes = document.querySelector('.em-element-norwegian .em-cc-yes');
+	var norNo = document.querySelector('.em-element-norwegian .em-cc-no');
 
+	var norYears = document.querySelector('.em-element-years_in_norway');
+	var norOrigin = document.querySelector('.em-element-country_of_origin');
+
+	checkEvents(
+			norYes,
+			norNo,
+			document.querySelector('.em-element-norwegian .em-c')
+		);
+
+	norYes.addEventListener('click', function(e) {
+		norYears.classList.add('em-hidden');
+		norOrigin.classList.add('em-hidden');
+	});
+
+	norNo.addEventListener('click', function(e) {
+		norYears.classList.remove('em-hidden');
+		norOrigin.classList.remove('em-hidden');
+	});
 	
 })();

@@ -2,6 +2,7 @@
 
 defined('ABSPATH') or die('Blank Space');
 
+require_once 'axowl-inputs.php';
 
 final class Axowl_shortcode {
 	/* singleton */
@@ -41,40 +42,9 @@ final class Axowl_shortcode {
 		if (!is_array($data)) $data = [];
 		$data = $this->sanitize($data);
 
-		$years = [];
-		for ($i = 2018; $i > 1959; $i--)
-			array_push($years, $i);
 
-		$inputs = [
-			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
-			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
-			'monthly_cost' => ['text' => 'Måndelige kostnader', 'notInput' => true],
-			'mobile_number' => ['text' => true, 'type' => 'text'],
-			'email' => ['text' => true],
+		$inputs = AXOWL_inputs::$inputs;
 
-			
-			'social_number' => ['text' => true, 'type' => 'number', 'page' => '2'],
-			'employment_type' => ['list' => [
-												'Fast ansatt (privat)',
-												'Fast ansatt (offentlig)',
-												'Midlertidig ansatt/vikar',
-												'Selvst. næringsdrivende',
-												'Pensjonist',
-												'Student',
-												'Uføretrygdet',
-												'Arbeidsavklaring/attføring',
-												'Arbeidsledig',
-												'Langtidssykemeldt'
-											]
-								 ],
-
-			'employment_since' => ['hidden' => true, 'list' => $years],
-			'employer' => ['text' => true, 'hidden' => true],
-
-			'co_applicant' => ['checkbox' => true, 'page' => '3'],
-			'co_applicant_email' => ['text' => true, 'type' => 'email']
-
-		];
 
 		$html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
 					(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
@@ -115,7 +85,7 @@ final class Axowl_shortcode {
 
 		if (isset($value['notInput'])) $html .= $this->text_field([
 													'name' => $key,
-													'text' => $data[$key]
+													'text' => $value['text']
 												]);
 
 		else {
@@ -199,18 +169,22 @@ final class Axowl_shortcode {
 
 	private function checkbox_input($o = []) {
 		if (!isset($o['name'])) return;
-
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		return sprintf('<div class="em-cc em-cc-%1$s">
-							<label for="%1$s">
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
+							<input class="em-c em-c-%1$s" name="%1$s" type="hidden" value="%6$s">
+							<div class="em-cc-selector">
+								<button type="button" class="em-cc-yes%4$s">Ja</button>
+								<button type="button" class="em-cc-no%5$s">Nei</button>
+							</div>
 								%3$s
-							</label>
-							<input class="em-c em-c-%1$s" id="em-c-%1$s" name="%1$s" type="checkbox">
 						</div>',
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht%1$s">%1$s</div>', $o['ht']) : '')
-
+						($o['ht'] ? sprintf('<div class="em-ht%1$s">%1$s</div>', $o['ht']) : ''),
+						$o['value']['yes'] ? ' em-cc-green' : '',
+						$o['value']['no'] ? ' em-cc-green' : '',
+						$o['value']['yes'] ? '1' : '0'
 						);
 	}
 
@@ -229,7 +203,7 @@ final class Axowl_shortcode {
 
 		$html = sprintf('<div class="em-lc em-lc-">', $o['name']);
 
-		$html .= sprintf('<label for="%1$s"><h4>%2$s</h4></label>',
+		$html .= sprintf('<label for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4></label>',
 							$o['name'],
 							$o['text']
 						);
