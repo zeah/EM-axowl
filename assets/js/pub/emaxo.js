@@ -12,13 +12,55 @@
 	var errorColor = 'hsl(0, 100%, 50%)';
 	var validColor = 'hsl(120, 100%, 50%)';
 
+	// TODO: add check if node exists
+	var qs = function(s) { return document.querySelector(s) }
+
 	// next button
-	var nextButton = document.querySelector(".em-b-submit");
+	var nextButton = qs(".em-b-submit");
 	// prev button 
-	var prevButton = document.querySelector(".em-b-back");
+	var prevButton = qs(".em-b-back");
 
-	var currentPart = document.querySelector(".part-"+counter);
+	var currentPart = qs(".part-"+counter);
 
+
+	/**
+	 * [showArr description]
+	 * @param  {[type]} arr [description]
+	 * @return {[type]}     [description]
+	 */
+	var showArr = function(arr) {
+		for (var e in arr) {
+			if (!arr[e]) {
+				console.error('showArr: node is undefined.');
+				continue;
+			}
+
+			arr[e].classList.remove('em-hidden');
+		}
+	}
+
+
+	/**
+	 * [hideArr description]
+	 * @param  {[type]} arr [description]
+	 * @return {[type]}     [description]
+	 */
+	var hideArr = function(arr) {
+		for (var e in arr) {
+			if (!arr[e]) {
+				console.error('showArr: node is undefined.');
+				continue;
+			}
+
+			arr[e].classList.add('em-hidden');
+		}
+	}
+
+
+	/**
+	 * [validator description]
+	 * @type {Object}
+	 */
 	var validator = {
 		email: function(e) { return e.match(/.+?@.+?\..+/) },
 		
@@ -55,8 +97,20 @@
 
 			return true;
 		},
+
+		list: function(e) {
+			if (e == '') return false;
+
+			return true;
+		}
 	}
 
+
+	/**
+	 * [val description]
+	 * @param  {Object} o [description]
+	 * @return {[type]}   [description]
+	 */
 	var val = function(o = {}) {
 		if (typeof validator[o.callback] !== 'function') { 
 			console.error('Validator.'+o.callback+' is not a function.');
@@ -77,13 +131,16 @@
 	}
 
 
-
+	/**
+	 * [nextPage description]
+	 * @return {[type]} [description]
+	 */
 	var nextPage = function() {
-		var cPage = document.querySelector('.part-'+counter);
+		var cPage = qs('.part-'+counter);
 
 		counter++;
-		var page = document.querySelector('.part-'+counter);
-		var nextPage = document.querySelector('.part-'+(counter+1));
+		var page = qs('.part-'+counter);
+		var nextPage = qs('.part-'+(counter+1));
 
 		if (!nextPage) nextButton.style.display = 'none';
 		else nextButton.style.display = 'inline-block';
@@ -96,12 +153,17 @@
 		page.style.display = 'grid';
 	}
 
+
+	/**
+	 * [prevPage description]
+	 * @return {[type]} [description]
+	 */
 	var prevPage = function() {
-		var cPage = document.querySelector('.part-'+counter);
+		var cPage = qs('.part-'+counter);
 
 		counter--;
-		var page = document.querySelector('.part-'+counter);
-		var prevPage = document.querySelector('.part-'+(counter-1));
+		var page = qs('.part-'+counter);
+		var prevPage = qs('.part-'+(counter-1));
 		// console.log(prevPage);
 
 		if (!prevPage) prevButton.style.display = 'none';
@@ -123,29 +185,55 @@
 	prevButton.addEventListener("click", function() { prevPage() });
 
 
-	/* events for inputs with numbers only */
-	var numberEvents = function(node, max = 8, error = null) {
+	/**
+	 * [numberEvents description]
+	 * @param  {Object} o [description]
+	 * @return {[type]}   [description]
+	 */
+	var numberEvents = function(o = {}) {
+		
+		if (!o.node) return;
+
+		if (!o.max) o.max = 8;
+		if (!o.errorColor) o.errorColor = errorColor;
+
 		// when hitting enter
-		node.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
+		o.node.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
 
 		// typing
-		node.addEventListener('input', function(e) { node.value = e.target.value.replace(/[^0-9]/g, '').substr(0, max) });
+		o.node.addEventListener('input', function(e) { o.node.value = e.target.value.replace(/[^0-9]/g, '').substr(0, o.max) });
 
 		// on focus
-		node.addEventListener('focus', function(e) { e.target.select(); });
+		o.node.addEventListener('focus', function(e) { 
+		
+			if (o.currency) e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+			e.target.select(); 
+		});
 
 		// lost focus (validation time)
-		if (error)
-			node.addEventListener('focusout', function(e) {
-				val({
-					callback: error,
-					value: e.target.value,
-					errorColor: errorColor,
-					feedbackNode: e.target.parentNode.parentNode
-				})
+		if (o.error || o.currency)
+			o.node.addEventListener('focusout', function(e) {
+				
+				if (o.error) val({
+									callback: o.error,
+									value: e.target.value,
+									errorColor: o.errorColor,
+									feedbackNode: e.target.parentNode.parentNode
+								});
+
+
+				if (o.currency) o.node.value = norNr(o.node.value);
 			});
+
 	}
 
+	/**
+	 * [textEvents description]
+	 * @param  {[type]} node  [description]
+	 * @param  {[type]} regex [description]
+	 * @return {[type]}       [description]
+	 */
 	var textEvents = function(node, regex) {
 
 		if (regex) node.addEventListener('input', function(e) { e.target.value = e.target.value.replace(regex, '')	});
@@ -154,6 +242,14 @@
 		node.addEventListener('focus', function(e) { console.log('heya');e.target.select() });
 	}
 
+
+	/**
+	 * [checkEvents description]
+	 * @param  {[type]} yes    [description]
+	 * @param  {[type]} no     [description]
+	 * @param  {[type]} hidden [description]
+	 * @return {[type]}        [description]
+	 */
 	var checkEvents = function(yes, no, hidden) {
 		if (!yes || !no || !hidden) return;
 
@@ -168,7 +264,33 @@
 		no.addEventListener('click', function() { click(no, yes, 0) });
 	}
 
+
+	/**
+	 * [listEvents description]
+	 * @param  {[type]} node [description]
+	 * @return {[type]}      [description]
+	 */
+	var listEvents = function(node) {
+		node.addEventListener('change', function(e) {
+		// console.log(node);
+			val({
+				callback: 'list', 
+				value: node.value, 
+				errorColor: errorColor, 
+				feedbackNode: node.parentNode.parentNode
+			});
+		});
+	}
+
+
+	/**
+	 * [norNr description]
+	 * @param  {[type]} e [description]
+	 * @return {[type]}   [description]
+	 */
 	var norNr = function(e) {
+		if (!e) return '';
+
 		return parseInt(e).toLocaleString(
 							'nb-NO', 
 							{
@@ -181,8 +303,8 @@
 
 
 	// LOAN AMOUNT
-	var loanRange = document.querySelector('.em-r-loan_amount');
-	var loanText = document.querySelector('.em-i-loan_amount');
+	var loanRange = qs('.em-r-loan_amount');
+	var loanText = qs('.em-i-loan_amount');
 
 	// fixing initial value to locale
 	loanText.value = norNr(loanText.value);
@@ -234,8 +356,8 @@
 
 
 	// TENURE
-	var tenureText = document.querySelector('.em-i-tenure');
-	var tenureRange = document.querySelector('.em-r-tenure');
+	var tenureText = qs('.em-i-tenure');
+	var tenureRange = qs('.em-r-tenure');
 
 	// fixing initial value
 	tenureText.value += postfix_year;
@@ -286,15 +408,15 @@
 
 
 	// MOBILE NUMBER
-	var mobileText = document.querySelector('.em-i-mobile_number');
-	numberEvents(mobileText, 8, 'phone');
+	var mobileText = qs('.em-i-mobile_number');
+	numberEvents({node: mobileText, max: 8, error: 'phone'});
 
 
 
 
 
 	// EMAIL
-	var emailText = document.querySelector('.em-i-email');
+	var emailText = qs('.em-i-email');
 	textEvents(emailText);
 	// hitting enter will exit the input
 	// emailText.addEventListener('keypress', function(e) { if (e.keyCode == 13) emailText.blur() });
@@ -325,44 +447,29 @@
 
 	// REFINANCING
 	checkEvents(
-			document.querySelector('.em-cc-collect_debt .em-cc-yes'),
-			document.querySelector('.em-cc-collect_debt .em-cc-no'),
-			document.querySelector('.em-cc-collect_debt .em-c')
+			qs('.em-cc-collect_debt .em-cc-yes'),
+			qs('.em-cc-collect_debt .em-cc-no'),
+			qs('.em-cc-collect_debt .em-c')
 		);
 
-
-	// var refinancingYes = document.querySelector('.em-cc-collect_debt .em-cc-yes');
-	// var refinancingNo = document.querySelector('.em-cc-collect_debt .em-cc-no');
-	// var refinancingHidden = document.querySelector('.em-cc-collect_debt .em-c');
-
-	// checkEvents(refinancingYes, refinancingNo, refinancingHidden);
-
-	// refinancingYes.addEventListener('click', function(e) {
-	// 	refinancingYes.classList.add('em-cc-green');
-	// 	refinancingNo.classList.remove('em-cc-green');
-	// 	refinancingHidden.value = '1';
-	// });
-
-	// refinancingNo.addEventListener('click', function(e) {
-	// 	refinancingNo.classList.add('em-cc-green');
-	// 	refinancingYes.classList.remove('em-cc-green');
-	// 	refinancingHidden.value = '0';
-	// });
 
 
 	// PAGE 2
 
 	// SOCIAL NUMBER
-	var socialnumber = document.querySelector('.em-i-social_number');
-	numberEvents(socialnumber, 11, 'social');
+	var socialnumber = qs('.em-i-social_number');
+	numberEvents({node: socialnumber, max: 11, error: 'social'});
+
+
 
 	// EMPLOYMENT TYPE
-	var employmentType = document.querySelector('.em-i-employment_type');
-	var employmentSinceC = document.querySelector('.em-element-employment_since');
-	var employerC = document.querySelector('.em-element-employer');
+	var employmentType = qs('.em-i-employment_type');
+	var employmentSinceC = qs('.em-element-employment_since');
+	var employerC = qs('.em-element-employer');
+
+	listEvents(employmentType);
 
 	employmentType.addEventListener('change', function(e) {
-
 		var show = function() {
 			employmentSinceC.classList.remove('em-hidden');
 			employerC.classList.remove('em-hidden');
@@ -389,22 +496,37 @@
 	// EMPLOYER
 
 	// employer already gotten
-	var employer = document.querySelector('.em-i-employer');
+	var employer = qs('.em-i-employer');
 	textEvents(employer, /[^0-9a-xøæåA-XØÆÅ ]/);
 
 
+	// eduction
+	listEvents(qs('.em-i-education'));
+
+	qs('.em-i-education').addEventListener('input', function(e) {
+
+		switch (e.target.value) {
+			case 'Høysk./universitet 1-3 år':
+			case 'Høysk./universitet 4+år': qs('.em-element-education_loan').classList.remove('em-hidden'); break;
+
+			default: qs('.em-element-education_loan').classList.add('em-hidden');
+		}
+	});
+
+	numberEvents(qs('.em-i-education_loan'));
+
 
 	// NORWEGIAN
-	var norYes = document.querySelector('.em-element-norwegian .em-cc-yes');
-	var norNo = document.querySelector('.em-element-norwegian .em-cc-no');
+	var norYes = qs('.em-element-norwegian .em-cc-yes');
+	var norNo = qs('.em-element-norwegian .em-cc-no');
 
-	var norYears = document.querySelector('.em-element-years_in_norway');
-	var norOrigin = document.querySelector('.em-element-country_of_origin');
+	var norYears = qs('.em-element-years_in_norway');
+	var norOrigin = qs('.em-element-country_of_origin');
 
 	checkEvents(
 			norYes,
 			norNo,
-			document.querySelector('.em-element-norwegian .em-c')
+			qs('.em-element-norwegian .em-c')
 		);
 
 	norYes.addEventListener('click', function(e) {
@@ -416,5 +538,221 @@
 		norYears.classList.remove('em-hidden');
 		norOrigin.classList.remove('em-hidden');
 	});
+
+
+	// years in norway
+	listEvents(qs('.em-i-years_in_norway'));
+
+	// country of origin
+	listEvents(qs('.em-i-country_of_origin'));
+
+	// INCOME 
+	numberEvents({node: qs('.em-i-income'), max: 20, currency: true});
+
+	// CIVILSTATUS
+	listEvents(qs('.em-i-civilstatus'));
+
+	// SPOUSE INCOME
+	numberEvents(qs('.em-i-spouse_income'));
+
+	qs('.em-i-civilstatus').addEventListener('input', function(e) {
+		if (e.target.value == 'Gift/partner') qs('.em-element-spouse_income').classList.remove('em-hidden');
+		else qs('.em-element-spouse_income').classList.add('em-hidden');
+	});
+
+	// LIVING CONDITIONS
+	listEvents(qs('.em-i-living_conditions'));
+
+	qs('.em-i-living_conditions').addEventListener('input', function(e) {
+
+		console.log(e.target.value);
+
+		var rent = qs('.em-element-rent');
+		var rent_income = qs('.em-element-rent_income');
+		var mortage = qs('.em-element-mortgage');
+
+		// hide all
+		var hide = function() {
+			rent.classList.add('em-hidden');
+			rent_income.classList.add('em-hidden');
+			mortage.classList.add('em-hidden');
+		}
+
+		// show all
+		var show = function() {
+			console.log(rent);
+			rent.classList.remove('em-hidden');
+			rent_income.classList.remove('em-hidden');
+			mortage.classList.remove('em-hidden');
+		}
+
+		// partial (show rent, hidden rent income and mortage)
+		var showRent = function() {
+			rent.classList.remove('em-hidden');
+			rent_income.classList.add('em-hidden');
+			mortage.classList.add('em-hidden');
+		}
+
+		var hideRent = function() {
+			rent.classList.add('em-hidden');
+			rent_income.classList.remove('em-hidden');
+			mortage.classList.remove('em-hidden');
+		}
+
+
+		switch (e.target.value) {
+
+			case 'Selveier':
+			case 'Aksje/andel/borettslag': show(); break;
+
+			case 'Leier':
+			case 'Bor hos foreldre': showRent(); break;
+
+			case 'Enebolig': hideRent(); break;
+
+			default: hide(); 
+		}
+
+
+
+	});
+
+
+	// ADDRESS SINCE
+	listEvents(qs('.em-i-address_since'));
+
+	// NUMBER OF CHILDREN
+	listEvents(qs('.em-i-number_of_children'));
+
+
+	// ALLIMONY RECEIVED
+	numberEvents({node: qs('.em-i-allimony_per_month'), max: 8, currency: true});
+
+	qs('.em-i-number_of_children').addEventListener('input', function(e) {
+		if (e.target.value == 0 || !e.target.value) qs('.em-element-allimony_per_month').classList.add('em-hidden');
+		else qs('.em-element-allimony_per_month').classList.remove('em-hidden');
+	});
+
+
+	// RENT
+	numberEvents({node: qs('.em-i-rent'), max: 8, currency: true});
+
+	// car, boat, mc
+	numberEvents({node: qs('.em-i-car_boat_mc_loan'), max: 10, currency: true});
 	
+
+	// CO-APPLICANT
+	var coYes = qs('.em-element-co_applicant .em-cc-yes');
+	var coNo = qs('.em-element-co_applicant .em-cc-no');
+	checkEvents(
+		coYes,
+		coNo,
+		qs('.em-element-co_applicant .em-c')
+	);
+
+
+	 var coArr = [
+	 	qs('.em-element-co_applicant_name'),
+	 	qs('.em-element-co_applicant_social_number'),
+	 	qs('.em-element-co_applicant_mobile_number'),
+	 	qs('.em-element-co_applicant_email'),
+	 	qs('.em-element-co_applicant_employment_type'),
+	 	// qs('.em-element-co_applicant_employment_since'),
+	 	// qs('.em-element-co_applicant_employer'),
+	 	qs('.em-element-co_applicant_education'),
+	 	qs('.em-element-co_applicant_norwegian'),
+	 	// qs('.em-element-co_applicant_years_in_norway'),
+	 	// qs('.em-element-co_applicant_country_of_origin'),
+	 	qs('.em-element-co_applicant_income')
+	 ];
+
+
+	 coYes.addEventListener('click', function() { showArr(coArr) });
+	 coNo.addEventListener('click', function() { hideArr(coArr) });
+
+	 // co applicant name
+	textEvents(qs('.em-i-co_applicant_name'), /[^a-xøæåA-XØÆÅ ]/);
+	 
+	// co applicant social number
+	numberEvents({node: qs('.em-i-co_applicant_social_number'), max: 11});
+
+	// co applicant mobile number 
+	numberEvents({node: qs('.em-i-co_applicant_mobile_number'), max: 8});
+
+	//
+	var coEmail = qs('.em-i-co_applicant_email');
+	textEvents(coEmail);
+
+
+	coEmail.addEventListener('input', function(e) {
+
+		// setting size of font so long email addresses fits better
+		if (e.target.value.length > 50) e.target.style.fontSize = '14px';
+		else if (e.target.value.length > 40) e.target.style.fontSize = '16px';
+		else if (e.target.value.length > 30) e.target.style.fontSize = '18px';
+		else e.target.style.fontSize = '24px';
+	});
+
+	// lost focus (validation time)
+	coEmail.addEventListener('focusout', function(e) { 
+		val({
+			callback: 'email', 
+			value: e.target.value, 
+			errorColor: errorColor, 
+			feedbackNode: e.target.parentNode.parentNode
+		});
+	});
+
+	// co applicant employment type
+	var coEmpType = qs('.em-i-co_applicant_employment_type');
+	var coEmpSince = qs('.em-element-co_applicant_employment_since');
+	var coEmployer = qs('.em-element-co_applicant_employer');
+
+	listEvents(coEmpType);
+
+	coEmpType.addEventListener('input', function(e) {
+
+		var show = function() {
+			coEmpSince.classList.remove('em-hidden');
+			coEmployer.classList.remove('em-hidden');
+		}
+
+		var hide = function() {
+			coEmpSince.classList.add('em-hidden');
+			coEmployer.classList.add('em-hidden');
+		}
+
+		switch (e.target.value) {
+
+			case 'Fast ansatt (privat)':
+			case 'Fast ansatt (offentlig)': 
+			case 'Midlertidig ansatt/vikar': 
+			case 'Selvst. næringsdrivende': 
+			case 'Langtidssykemeldt': show(); break;
+
+			default: hide();
+
+		}
+
+	});
+
+
+	// co applicant since
+	listEvents(coEmpSince);
+
+	// co applicant employer
+	textEvents(coEmployer, /[^0-9a-xøæåA-XØÆÅ]/);
+
+	// co applicant education
+	listEvents(qs('.em-i-co_applicant_education'));
+
+
+	// co applicant norwegian
+  	var coNorYes = qs('.em-cc-co_applicant_norwegian .em-cc-yes');
+	var coNorNo = qs('.em-cc-co_applicant_norwegian .em-cc-no');
+	checkEvents(
+			coNorYes,
+			coNorNo,
+			qs('.em-cc-co_applicant_norwegian .em-c')
+		);
 })();

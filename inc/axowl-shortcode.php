@@ -112,7 +112,8 @@ final class Axowl_shortcode {
 													'name' => $key,
 													'text' => $data[$key],
 													'ht' => $data[$key.'_ht'],
-													'list' => $value['list']
+													'list' => $value['list'],
+													'key_as_value' => $value['key_as_value']
 												]);
 		}
 
@@ -200,7 +201,7 @@ final class Axowl_shortcode {
 	 * 
 	 */
 	private function list_input($o = []) {
-
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		$html = sprintf('<div class="em-lc em-lc-">', $o['name']);
 
 		$html .= sprintf('<label for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4></label>',
@@ -213,8 +214,11 @@ final class Axowl_shortcode {
 		$html .= '<option></option>';
 
 		if (isset($o['list']))
-			foreach($o['list'] as $value)
-				$html .= sprintf('<option value="%1$s">%1$s</option>', $value);
+			foreach($o['list'] as $key => $value)
+				$html .= sprintf('<option value="%1$s">%2$s</option>', 
+									$o['key_as_value'] ? $key : $value,
+									$value
+								);
 
 		$html .= '</select></div>';
 		return $html;
@@ -242,44 +246,4 @@ final class Axowl_shortcode {
         wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.0', true);
 	
 	}
-
-
-	// public function footer() {
-
-	// 	echo '<script>
-
-	// 			var c = 1;
-
-	// 			// next button
-	// 			var b = document.querySelector(".em-b-submit");
-
-	// 			b.addEventListener("click", function() {
-	// 				var t = document.querySelector(".part-"+c);
-	// 				var n = document.querySelector(".part-"+(c+1));
-	// 				t.style.display = "none";
-	// 				n.style.display = "block";
-	// 				c++;
-	// 			});
-
-	// 			// prev button 
-	// 			var p = document.querySelector(".em-b-back");
-
-	// 			p.addEventListener("click", function() {
-	// 				var t = document.querySelector(".part-"+c);
-	// 				var n = document.querySelector(".part-"+(c-1));
-	// 				t.style.display = "none";
-	// 				n.style.display = "block";
-	// 				c--;
-	// 			});
-
-	// 			// loan amount
-	// 			var r = document.querySelector(".em-r-loan_amount");
-	// 			var a = document.querySelector(".em-i-loan_amount");
-
-	// 			r.addEventListener("input", function(e) { a.value = e.target.value });
-	// 			a.addEventListener("input", function(e) { r.value = e.target.value });
-
-	// 		  </script>';
-
-	// }
 }
