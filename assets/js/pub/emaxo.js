@@ -124,7 +124,7 @@
 
 		else if (o.feedbackNode) {
 			if (o.validColor) o.feedbackNode.style.backgroundColor = o.validColor;
-			else if (bgColor) o.feedbackNode.style.backgroundColor = bgColor;
+			else if (o.bgColor) o.feedbackNode.style.backgroundColor = bgColor;
 		}
 
 		return true;
