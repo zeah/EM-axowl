@@ -51,7 +51,6 @@ final class Axowl_settings {
 			'tenure' => 'The repayment period in years.',
 			'co_applicant' => 'Whether a co-applicant is provided.',
 			'collect_debt' => 'Whether existing loans should be refinanced.',
-			'account_number' => 'The bank account the loan will be paid out to, <br>without e.g. spaces and dots. CDV control is recommended',
 			'social_number' => 'Valid Norwegian Soscial Security Number ("fødselsnummer"), 11 digits.',
 			'mobile_number' => 'Norwegian mobile phone number, without spaces or a leading +47.',
 			'email' => 'The customer\'s email address.',
@@ -88,7 +87,8 @@ final class Axowl_settings {
 			'co_applicant_country_of_origin' => 'Select a value from list.',
 			'co_applicant_income' => 'Yearly income before taxes ("bruttolønn")',
 			'unsecured_debt_lender' => 'List of (unsecured) lenders.',
-			'unsecured_debt_balance' => 'The sum of all loans the customer wants to refinance.'
+			'unsecured_debt_balance' => 'The sum of all loans the customer wants to refinance.',
+			'account_number' => 'The bank account the loan will be paid out to, <br>without e.g. spaces and dots. CDV control is recommended'
 		];
 
 		foreach ($input as $key => $value)

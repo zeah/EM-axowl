@@ -672,6 +672,10 @@ final class AXOWL_inputs {
 			'co_applicant_income' => ['hidden' => true, 'text' => true],
 
 
+			'unsecured_debt_balance' => ['text' => true, 'page' => '5'],
+
+			'account_number' => ['text' => true]
+
 			];
 
 

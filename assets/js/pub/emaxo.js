@@ -10,7 +10,8 @@
 
 	var bgColor = 'hsl(270, 50%, 72%)';
 	var errorColor = 'hsl(0, 100%, 50%)';
-	var validColor = 'hsl(120, 100%, 50%)';
+	// var validColor = 'hsl(120, 100%, 50%)';
+	var validColor = false;
 
 	// TODO: add check if node exists
 	var qs = function(s) { return document.querySelector(s) }
@@ -164,7 +165,6 @@
 		counter--;
 		var page = qs('.part-'+counter);
 		var prevPage = qs('.part-'+(counter-1));
-		// console.log(prevPage);
 
 		if (!prevPage) prevButton.style.display = 'none';
 		else prevButton.style.display = 'inline-block';
@@ -192,7 +192,7 @@
 	 */
 	var numberEvents = function(o = {}) {
 		
-		if (!o.node) return;
+		if (!o || !o.node) return;
 
 		if (!o.max) o.max = 8;
 		if (!o.errorColor) o.errorColor = errorColor;
@@ -239,7 +239,7 @@
 		if (regex) node.addEventListener('input', function(e) { e.target.value = e.target.value.replace(regex, '')	});
 
 		node.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
-		node.addEventListener('focus', function(e) { console.log('heya');e.target.select() });
+		node.addEventListener('focus', function(e) { e.target.select() });
 	}
 
 
@@ -272,7 +272,6 @@
 	 */
 	var listEvents = function(node) {
 		node.addEventListener('change', function(e) {
-		// console.log(node);
 			val({
 				callback: 'list', 
 				value: node.value, 
@@ -281,6 +280,13 @@
 			});
 		});
 	}
+
+
+
+
+
+
+
 
 
 	/**
@@ -565,8 +571,6 @@
 
 	qs('.em-i-living_conditions').addEventListener('input', function(e) {
 
-		console.log(e.target.value);
-
 		var rent = qs('.em-element-rent');
 		var rent_income = qs('.em-element-rent_income');
 		var mortage = qs('.em-element-mortgage');
@@ -580,7 +584,6 @@
 
 		// show all
 		var show = function() {
-			console.log(rent);
 			rent.classList.remove('em-hidden');
 			rent_income.classList.remove('em-hidden');
 			mortage.classList.remove('em-hidden');
@@ -755,4 +758,66 @@
 			coNorNo,
 			qs('.em-cc-co_applicant_norwegian .em-c')
 		);
+
+	coNorYes.addEventListener('click', function() { hideArr([
+			qs('.em-element-co_applicant_years_in_norway'),
+			qs('.em-element-co_applicant_country_of_origin')
+			])
+		}
+	);
+
+	coNorNo.addEventListener('click', function() { showArr([
+			qs('.em-element-co_applicant_years_in_norway'),
+			qs('.em-element-co_applicant_country_of_origin')
+			])
+		}
+	);
+
+	listEvents(qs('.em-i-co_applicant_years_in_norway'));
+	listEvents(qs('.em-i-co_applicant_country_of_origin'));
+
+
+	// unsecured_debt_balance
+	numberEvents({node: qs('.em-i-unsecured_debt_balance'), max: 10, currency: true});
+
+	// account_number
+	textEvents(qs('.em-i-account_number'), /[^0-9. ]/);
+
+
+	qs('.em-i-account_number').addEventListener('input', function(e) {
+
+		var v = e.target.value;
+
+		v = v.replace(/[^0-9]/g, '');
+
+
+		if (v.length > 6) v = v.substr(0, 4) + '.' + v.substr(4, 2) + '.' + v.substr(6, 5);
+		else if (v.length > 4) v = v.substr(0, 4) + '.' + v.substr(4, 2);
+
+		e.target.value = v;
+
+		// console.log(v.length);
+		// if (v.length == 12) e.target.value = e.target.value.substring(0, e.target.value.length - 1);
+
+	});
+
+	qs('.em-i-account_number').addEventListener('focusout', function(e) {
+
+		var v = e.target.value;
+
+		v = v.replace(/[^0-9]/g, '');
+
+		if (v.length != 11) {
+			e.target.parentNode.parentNode.style.backgroundColor = errorColor;
+			return;
+		}
+		else e.target.parentNode.parentNode.style.backgroundColor = validColor ? validColor : 'transparent';
+
+
+		v = v.substr(0, 4) + '.' + v.substr(4, 2) + '.' + v.substr(6, 5);
+
+		e.target.value = v;
+
+	});
+
 })();

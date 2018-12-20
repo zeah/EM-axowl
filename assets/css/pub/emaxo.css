@@ -37,7 +37,72 @@
  * 5.0 mobile number
  *
  * 6.0 email
- * 			
+ *
+ * 7.0 monthly cost
+ *
+ * 8.0 social number (personnummer)
+ *
+ * 9.0 employment type
+ *
+ * 10.0 employment since
+ *
+ * 11.0 employer
+ *
+ * 12.0 eduction
+ *
+ * 13.0 education loan
+ *
+ * 14.0 norwegian (citizen)
+ *
+ * 15.0 years in norway
+ *
+ * 16.0 country of origin
+ *
+ * 17.0 income
+ *
+ * 18.0 civil status
+ *
+ * 19.0 living conditions
+ *
+ * 20.0 rent incone
+ *
+ * 21.0 mortgage
+ *
+ * 22.0 rent
+ *
+ * 23.0 address since
+ *
+ * 24.0 car/boat/mc mortgage
+ *
+ * 25.0 number of children
+ *
+ * 26.0 allimony per month
+ *
+ * 26.0 co-applicant yes/no
+ *
+ * 27.0 co-applicant name
+ *
+ * 28.0 co-applicant social number
+ *
+ * 29.0 co-applicant mobile number
+ *
+ * 30.0 co-applicant email
+ *
+ * 31.0 co-applicant employment type
+ *
+ * 32.0 co-applicant employment since
+ *
+ * 33.0 co-applicant employer
+ *
+ * 34.0 co-applicant education
+ *
+ * 35.0 co-applicant norwegian
+ *
+ * 36.0 co-applicant years in norway
+ *
+ * 37.0 co-applicant country of origin
+ *
+ * 38.0 co-applicant salery
  */
 
 
@@ -51,6 +116,10 @@
 .em-i {
 	width: 100%;
 }
+
+.em-cc-selector {
+	width: 100px;
+}
 /* end of dev stuff */
 
 
@@ -59,22 +128,15 @@
 	display: inline-grid;
 	box-sizing: content-box;
 
+	/* form title - form elements - buttons */
 	grid-template-rows: auto 1fr auto;
 
-	/*padding: 2rem;*/
-
-	/*width: 80rem;*/
-
+	/* light gray */
 	background-color: hsl(20, 0%, 95%);
-
-	/*border: solid 5px hsl(240, 50%, 80%);*/
-	/*border-radius: 25px;*/
-
 }
 
 /* 1.1 form title */
 .form-title {
-	/*font-size: 3rem;*/
 	margin: 0;
 }
 
@@ -82,28 +144,29 @@
 /* button container */
 .em-b-container {
 	display: flex;
+
+	/* TODO: prev button on left - next button on right*/
 	flex-direction: row-reverse;
+
 	justify-content: space-between;
-
 	align-self: flex-end;
-
 }
 
 /* 1.2.1 button */
 .em-b {
-	/*padding: 1rem 2rem;*/
-
-	/*border-radius: 25px;*/
 	border: none;
 	outline: none;
-	/*font-size: 4rem;*/
 
 	cursor: pointer;
 
-	/*background-color: hsl(120, 90%, 80%);*/
 }
 
-/* 1.2.2 hidden button */
+/* 1.2.2 next/submit button */
+.em-b-submit {
+
+}
+
+/* 1.2.3 back button */
 .em-b-back {
 	display: none;
 }
@@ -120,9 +183,7 @@
 .part-1 {
 	display: grid;
 
-	justify-content: space-between;
-	align-items: center;
-	height: 100%;
+	grid-template-columns: 1fr 1fr;
 
 	grid-template-areas: 
 	"loan loan"
@@ -130,10 +191,11 @@
 	"mobile email"
 	"monthly monthly";
 
+	justify-content: space-between;
+	align-items: center;
 	grid-column-gap: 4rem;
 
-	grid-template-columns: 1fr 1fr;
-
+	/*height: 100%;*/
 }
 
 
@@ -144,43 +206,22 @@
 
 /* 1.4 generic elements and element-parts */
 .em-element-container {
-	/*height: 15rem;*/
-	/*margin-bottom: 4rem;*/
-	/*background-color: hsl(270, 50%, 72%);*/
-	/*cursor: pointer;*/
-	/*padding: 2rem;*/
-	/*border-radius: 25px;*/
-
 	user-select: none;
-
-
 }	
 
 .em-element-container:hover {
-	/*box-shadow: 0 0 10px hsl(30, 50%, 50%);*/
 }
 
 /* 1.4.1 element title */
 .em-it {
 	margin: 0;
-	/*color: white;*/
-	/*text-shadow: 0 0 5px black;*/
-	/*font-size: 2.6rem;*/
 }
 
 /* 1.4.2 text input */
 .em-i {
-
-	/*height: 4rem;*/
-
-	/*margin-top: 1rem;*/
-	/*font-size: 2.4rem;*/
-	/*padding: .5rem;*/
-	/*text-align: center;*/
-
 	border: none;
 	outline: none;
-	/*border-radius: 25px;*/
+
 	z-index: 20;
 }
 
@@ -189,50 +230,86 @@
 	margin-top: 1rem;
 }
 
+/* 1.4.3.1 range input */
 .em-r {
-	cursor: grab;
+	height: 4px;
+	
+	/* removing default slider apperance */
 	-webkit-appearance: none;
 	background: none;
+	outline: none;
 
 	background-color: hsla(0, 0%, 100%, .5);
 
-	height: 4px;
-
-	outline: none;
+	cursor: grab;
 }
 
+/* 1.4.3.2 range tack */
 .em-r::-webkit-slider-thumb {
   	-webkit-appearance: none;
   	appearance: none;
 
   	width: 4rem;
   	height: 2.5rem;
-  	background: hsl(120, 50%, 40%);
 
   	opacity: .8;
-
-  	/*border-left: solid 3px hsl(240, 100%, 0%);*/
-  	/*border-right: solid 3px hsl(240, 100%, 0%);*/
-
+  	background: hsl(120, 50%, 40%);
   	border-radius: 150px;
  }
 
-/* using js instead of number input */
-/*.em-i[type=number]::-webkit-inner-spin-button, 
-.em-i[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}*/
 
 /* 1.4.4 helper text */
 .em-ht {
-	/*font-size: 1.6rem;*/
 }
 
 /* 1.4.5 label */
 .em-label {
 	cursor: pointer;
 }
+
+/* 1.4.6 checkbox  buttons */
+.em-cc-selector {
+	display: inline-flex;
+
+	user-select: none;
+
+}
+
+/* 1.4.6.1 checkbox buttons */
+.em-cc-yes,
+.em-cc-no {
+	flex: 1;
+	border: solid 1px #000;
+	text-align: center;
+	background-color: hsl(120, 0%, 70%);
+
+	cursor: pointer;
+	outline: none;
+}
+
+/* 1.4.6.2 checkbox yes */
+.em-cc-yes {
+
+	border-top-left-radius: 25px;
+	border-bottom-left-radius: 25px;
+
+
+	border-right: none;
+}
+
+/* 1.4.6.3 checkbox no */
+.em-cc-no {
+
+	border-top-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+
+}
+
+/* 1.4.6.4 checkbox selected */
+.em-cc-green {
+	background-color: hsl(120, 50%, 50%);
+}
+
 
 
 /* 2.0 loan amount element container */
@@ -256,19 +333,6 @@
 
 /* 2.1.1.2 loan amount help text */
 .em-ht-loan_amount {
-	/*position: absolute;*/
-	/*top: 2rem;*/
-	/*bottom: 2rem;*/
-	/*right: 2rem;*/
-
-	/*width: 30%;*/
-	/*background-color: white;*/
-	/*border-radius: 10px;*/
-
-	/*padding: 1.5rem;*/
-
-	display: flex;
-	align-items: center;
 }
 
 /* 2.1.2 loam amount input */
@@ -279,48 +343,32 @@
 .em-r-loan_amount {
 }
 
-/* 2.2 loan tenure */
+/* 3.0 tenure */
 .em-element-tenure {
 	grid-area: tenure;
 }
 
-/* 2.3 mobile number */
-.em-element-mobile_number {
-	/*padding: 2rem;*/
+/* 4.0 refinancing / collect debt */
+.em-element-collect_debt {
+	grid-area: refinancing;
+}
 
-	/*border-radius: 25px;*/
+/* 5.0 mobile number */
+.em-element-mobile_number {
 	grid-area: mobile;
 }
 
-/* 2.4 email */
+/* 6.0 email */
 .em-element-email {
-	/*padding: 2rem;*/
-
-	/*border-radius: 25px;*/
 	grid-area: email;
 }
 
-.em-i-mobile_number,
-.em-i-email {
-	width: 100%;
-}
-
-.em-element-mobile_number,
-.em-element-email {
-	/*height: 13rem;*/
-}
 
 
-/* 2.5 monthly cost */
+/* 7.0 monthly cost */
 .em-element-monthly_cost {
 	grid-area: monthly;
 	background-color: transparent;
-	/*font-size: 3.4rem;*/
-	height: auto;
-}
-
-.em-element-monthly_cost:hover {
-	box-shadow: none;
 }
 
 .em-if-monthly_cost {
@@ -328,57 +376,5 @@
 	background-color: transparent;
 	color: black;
 	text-align: right;
-	/*font-size: 3.6rem;*/
-	/*width: 80px;*/
 }
 
-
-/* 2.6 refinancing / collect debt */
-.em-element-collect_debt {
-	grid-area: refinancing;
-
-}
-
-.em-cc-selector {
-	display: inline-flex;
-
-	/*margin-top: 1rem;*/
-
-	user-select: none;
-}
-
-.em-cc-yes,
-.em-cc-no {
-	border: solid 1px #000;
-	/*padding: 1rem 2rem;*/
-	/*font-size: 3rem;*/
-
-	/*width: 10rem;*/
-	/*height: 4rem;*/
-
-	text-align: center;
-	background-color: hsl(120, 0%, 70%);
-
-	cursor: pointer;
-	outline: none;
-}
-
-.em-cc-yes {
-
-	border-top-left-radius: 25px;
-	border-bottom-left-radius: 25px;
-
-
-	border-right: none;
-}
-
-.em-cc-no {
-
-	border-top-right-radius: 25px;
-	border-bottom-right-radius: 25px;
-
-}
-
-.em-cc-green {
-	background-color: hsl(120, 50%, 50%);
-}
