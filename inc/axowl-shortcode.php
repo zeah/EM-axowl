@@ -65,7 +65,8 @@ final class Axowl_shortcode {
 		$html .= '</div></div>';
 
 		$html .= '<div class="em-b-container">';
-		$html .= '<button class="em-b em-b-submit" type="button">Neste</button>';
+		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
+		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back" type="button">Tilbake</button>';
 		$html .= '</div>';
 

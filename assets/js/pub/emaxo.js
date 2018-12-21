@@ -17,9 +17,12 @@
 	var qs = function(s) { return document.querySelector(s) }
 
 	// next button
-	var nextButton = qs(".em-b-submit");
+	var nextButton = qs(".em-b-next");
 	// prev button 
 	var prevButton = qs(".em-b-back");
+
+	// submitting
+	var submitButton = qs(".em-b-submit");
 
 	var currentPart = qs(".part-"+counter);
 
@@ -103,6 +106,12 @@
 			if (e == '') return false;
 
 			return true;
+		},
+
+		noNumbers: function(e) {
+			if (/\d/.test(e)) return false;
+
+			return true;
 		}
 	}
 
@@ -143,7 +152,10 @@
 		var page = qs('.part-'+counter);
 		var nextPage = qs('.part-'+(counter+1));
 
-		if (!nextPage) nextButton.style.display = 'none';
+		if (!nextPage) { 
+			nextButton.style.display = 'none';
+			submitButton.style.display = 'inline-block';
+		}
 		else nextButton.style.display = 'inline-block';
 
 		if (!page) return false;
@@ -170,8 +182,10 @@
 		else prevButton.style.display = 'inline-block';
 
 		if (!page) return false;
+		
 
 		nextButton.style.display = 'inline-block';
+		submitButton.style.display = 'none';
 
 		cPage.style.display = 'none';
 		page.style.display = 'grid';
@@ -179,11 +193,80 @@
 
 
 	// next page button
-	nextButton.addEventListener("click", function() { nextPage() });
+	nextButton.addEventListener('click', function() { nextPage() });
 
 	// previous page button
-	prevButton.addEventListener("click", function() { prevPage() });
+	prevButton.addEventListener('click', function() { prevPage() });
 
+
+	submitButton.addEventListener('click', function() {
+
+		var get = function(e, v = null) {
+
+			// getting the value
+			var value = qs(e) ? qs(e).value : null;
+
+			// if element not found
+			if (value === null) return null;
+
+			// if value fails validation
+			if (v && !val({value: value, callback: v})) return false;
+
+			// returns value
+			return value;
+		}
+
+		var o = {
+			loan_amount: get('.em-i-loan_amount'),
+			tenure: get('.em-i-tenure'),
+			collect_debt: get('.em-c-collect_debt'),
+			mobile_number: get('.em-i-mobile_number', 'phone'),
+			email: get('.em-i-email'),
+
+			social_number: get('.em-i-social_number'),
+			employment_type: get('.em-i-employment_type'),
+			employment_since: get('.em-i-employment_since'),
+			employer: get('.em-i-employer'),
+			education: get('.em-i-education'),
+			education_loan: get('.em-i-education_loan'),
+			norwegian: get('.em-c-norwegian'),
+			years_in_norway: get('.em-i-years_in_norway'),
+			country_of_origin: get('.em-i-country_of_origin'),
+			income: get('.em-i-income'),
+			civilstatus: get('.em-i-civilstatus'),
+			spouse_income: get('.em-i-spouse_income'),
+			living_conditions: get('.em-i-living_conditions'),
+			rent_income: get('.em-i-rent_income'),
+			mortgage: get('.em-i-mortgage'),
+			rent: get('.em-i-rent'),
+			address: get('.em-i-address'),
+			car_boat_mc_loan: get('.em-i-car_boat_mc_loan'),
+			number_of_children: get('.em-i-number_of_children'),
+			allimony_per_month: get('.em-i-allimony_per_month'),
+
+			co_applicant: get('.em-i-co_applicant'),
+			co_applicant_name: get('.em-i-co_applicant_name', 'noNumbers'),
+			co_applicant_social_number: get('.em-i-co_applicant_social_number'),
+			co_applicant_mobile_number: get('.em-i-co_applicant_mobile_number'),
+			co_applicant_email: get('.em-i-co_applicant_email'),
+			co_applicant_employment_type: get('.em-i-co_applicant_employment_type'),
+			co_applicant_employment_since: get('.em-i-co_applicant_employment_since'),
+			co_applicant_employer: get('.em-i-co_applicant_employer'),
+			co_applicant_education: get('.em-i-co_applicant_education'),
+			co_applicant_norwegian: get('.em-c-co_applicant_norwegian'),
+			co_applicant_years_in_norway: get('.em-i-co_applicant_years_in_norway'),
+			co_applicant_country_of_origin: get('.em-i-co_applicant_country_of_origin'),
+			co_applicant_income: get('.em-i-co_applicant_income'),
+			
+			unsecured_debt_balance: get('.em-i-unsecured_debt_balance'),
+			account_number: get('.em-i-account_number')			
+		}
+
+
+		for (var t in o)
+			console.log(t+': '+o[t]);
+
+	});
 
 	/**
 	 * [numberEvents description]
@@ -214,6 +297,8 @@
 		// lost focus (validation time)
 		if (o.error || o.currency)
 			o.node.addEventListener('focusout', function(e) {
+
+				e.target.parentNode.parentNode.style.backgroundColor = 'transparent';
 				
 				if (o.error) val({
 									callback: o.error,

@@ -1,2 +1,7 @@
 
 tabindex
+
+sende customer ip med ajax
+
+
+test om IE tåler /\d/.test() i validator
