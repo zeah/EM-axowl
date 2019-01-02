@@ -15,9 +15,9 @@ final class AXOWL_inputs {
 	}
 
 	public static $inputs = [
+			'monthly_cost' => ['text' => 'Månedskostnad fra', 'notInput' => true],
 			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
-			'monthly_cost' => ['text' => 'Monthly Cost', 'notInput' => true],
 			'mobile_number' => ['text' => true, 'type' => 'text'],
 			'email' => ['text' => true],
 

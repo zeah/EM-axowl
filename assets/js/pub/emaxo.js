@@ -1,30 +1,55 @@
-!(function() {
-	var counter = 1;
+(function() {
 
-	var min = 10000;
-	var max = 500000;
-
-	var min_year = 1;
-	var max_year = 15;
-	var postfix_year = ' år';
-
-	var bgColor = 'hsl(270, 50%, 72%)';
-	var errorColor = 'hsl(0, 100%, 50%)';
-	// var validColor = 'hsl(120, 100%, 50%)';
-	var validColor = false;
-
-	// TODO: add check if node exists
+	// helper function
 	var qs = function(s) { return document.querySelector(s) }
 
+	// part counter
+	var counter = 1;
+
+	// min loan amount
+	var min = 10000;
+
+	// max loan amount
+	var max = 500000;
+
+	// min tenure
+	var minYear = 1;
+
+	// max tenure
+	var maxYear = 15;
+
+	// tenure postfix
+	var postfixYear = ' år';
+
+	// valid bg color
+	var bgColor = 'hsl(270, 50%, 72%)';
+
+	// invalid bg color (test fail)
+	var errorColor = 'hsl(0, 100%, 50%)';
+
 	// next button
-	var nextButton = qs(".em-b-next");
+	var nextButton = qs('.em-b-next');
+
 	// prev button 
-	var prevButton = qs(".em-b-back");
+	var prevButton = qs('.em-b-back');
 
-	// submitting
-	var submitButton = qs(".em-b-submit");
+	// submit button
+	var submitButton = qs('.em-b-submit');
 
-	var currentPart = qs(".part-"+counter);
+	// current page
+	var currentPart = qs('.part-'+counter);
+
+	var monthlyCost = qs('.em-if-monthly_cost');
+
+
+	// updating monthly cost field
+	var payment = function() {
+		var i = '0.068'/12;
+		var p = qs('.em-i-loan_amount').value.replace(/[^0-9]/g, '');
+		var n = qs('.em-i-tenure').value.replace(/[^0-9]/g, '')*12;
+
+		monthlyCost.value = norNr(Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i)));
+	};
 
 
 	/**
@@ -39,6 +64,7 @@
 				continue;
 			}
 
+			// removing css class with display: hidden
 			arr[e].classList.remove('em-hidden');
 		}
 	}
@@ -56,87 +82,112 @@
 				continue;
 			}
 
+			// adding css class with display: none
 			arr[e].classList.add('em-hidden');
 		}
 	}
 
 
-	/**
-	 * [validator description]
-	 * @type {Object}
-	 */
-	var validator = {
-		email: function(e) { return e.match(/.+?@.+?\..+/) },
-		
-		phone: function(e) { 
-			e = e.replace(/[^0-9]/, '');
-
-			if (e.length != 8) return false;
-
-			return true;
-		},
-	
-		amount: function(e) {
-			e = parseInt(e);
-
-			if (e < 10000) return false;
-			if (e > 500000) return false;
-
-			return true;
-		},
-
-		tenure: function(e) {
-			e = parseInt(e);
-
-			if (e < 1) return false;
-			if (e > 15) return false;
-
-			return true;
-		},
-
-		social: function(e) {
-			e = e.replace(/[^0-9]/, '');
-
-			if (e.length != 11) return false;
-
-			return true;
-		},
-
-		list: function(e) {
-			if (e == '') return false;
-
-			return true;
-		},
-
-		noNumbers: function(e) {
-			if (/\d/.test(e)) return false;
-
-			return true;
-		}
-	}
 
 
 	/**
 	 * [val description]
-	 * @param  {Object} o [description]
-	 * @return {[type]}   [description]
+	 * @param  {Object}  {value, feedbackNode, callback, errorColor}
+	 * @return {boolean} validation
 	 */
 	var val = function(o = {}) {
+
+		if (o.value == null) return false;
+
+		/**
+		 * [validator description]
+		 * @type {Object}
+		 */
+		var validator = {
+			// EMAIL
+			email: function(e) { return e.match(/.+?@.+?\..+/) },
+			
+			// MOBILE NUMBER
+			phone: function(e) { 
+				e = e.replace(/[^0-9]/, '');
+
+				if (e.length != 8) return false;
+
+				return true;
+			},
+		
+			// LOAN AMOUNT
+			amount: function(e) {
+				e = parseInt(e);
+
+				if (e < min) return false;
+				if (e > max) return false;
+
+				return true;
+			},
+
+			// LOAN PERIODE
+			tenure: function(e) {
+				e = parseInt(e);
+
+				if (e < minYear) return false;
+				if (e > maxYear) return false;
+
+				return true;
+			},
+
+			// SOCIAL NUMBER
+			social: function(e) {
+				e = e.replace(/[^0-9]/g, '');
+
+				if (e.length != 11) return false;
+
+				return true;
+			},
+
+			// LIST INPUT
+			list: function(e) {
+				if (e == '') return false;
+
+				return true;
+			},
+
+			// NO NUMBERS (text inputs)
+			noNumbers: function(e) {
+				if (/\d/.test(e)) return false;
+
+				return true;
+			},
+
+			// BANK ACCOUNT NUMBER
+			accountNumber: function(e) {
+				e = e.replace(/[^0-9]/g, '');
+				if (e.length != 11) return false;
+
+				return true;
+			}
+		}
+
+
+		// checks whether function exists
 		if (typeof validator[o.callback] !== 'function') { 
 			console.error('Validator.'+o.callback+' is not a function.');
 			return false; 
 		}
 
+		// if validation fails
 		if (!validator[o.callback](o.value)) {
+			// change visual feature if set
 			if (o.feedbackNode && o.errorColor) o.feedbackNode.style.backgroundColor = o.errorColor;
+
 			return false;
 		}
 
-		else if (o.feedbackNode) {
-			if (o.validColor) o.feedbackNode.style.backgroundColor = o.validColor;
-			else if (o.bgColor) o.feedbackNode.style.backgroundColor = bgColor;
-		}
+		// validation did not fail (resets validation fail visual feature)
+		else if (o.feedbackNode) o.feedbackNode.style.backgroundColor = 'transparent';
 
+
+		// validation OK
 		return true;
 	}
 
@@ -146,22 +197,34 @@
 	 * @return {[type]} [description]
 	 */
 	var nextPage = function() {
+		// current page
 		var cPage = qs('.part-'+counter);
 
 		counter++;
+
+		// page to show
 		var page = qs('.part-'+counter);
+
+		// page to show next click of the button
 		var nextPage = qs('.part-'+(counter+1));
 
+		// if no nextpage, then show submit button
 		if (!nextPage) { 
+
+			// if no next page, then show submit button
 			nextButton.style.display = 'none';
 			submitButton.style.display = 'inline-block';
 		}
+
+		// if next page, then show next button
 		else nextButton.style.display = 'inline-block';
 
 		if (!page) return false;
 
+		// show prev button
 		prevButton.style.display = 'inline-block';
 
+		// show correct page
 		cPage.style.display = 'none';
 		page.style.display = 'grid';
 	}
@@ -172,21 +235,28 @@
 	 * @return {[type]} [description]
 	 */
 	var prevPage = function() {
+		// current page
 		var cPage = qs('.part-'+counter);
 
 		counter--;
+
+		// page to show
 		var page = qs('.part-'+counter);
+
+		// page to show next time previous button is pressed
 		var prevPage = qs('.part-'+(counter-1));
 
+		// to show prev button or not
 		if (!prevPage) prevButton.style.display = 'none';
 		else prevButton.style.display = 'inline-block';
 
 		if (!page) return false;
 		
-
+		// shows next button (hides submit button)
 		nextButton.style.display = 'inline-block';
 		submitButton.style.display = 'none';
 
+		// hides and show current page
 		cPage.style.display = 'none';
 		page.style.display = 'grid';
 	}
@@ -199,67 +269,72 @@
 	prevButton.addEventListener('click', function() { prevPage() });
 
 
+	// clicking the submit button
 	submitButton.addEventListener('click', function() {
 
-		var get = function(e, v = null) {
+		var get = function(o = {}) {
+		// var get = function(e, v = null) {
 
 			// getting the value
-			var value = qs(e) ? qs(e).value : null;
+			var value = qs(o.node) ? qs(o.node).value : null;
 
 			// if element not found
 			if (value === null) return null;
 
 			// if value fails validation
-			if (v && !val({value: value, callback: v})) return false;
+			if (o.callback && !val({value: value, callback: o.callback})) return false;
+
+			// removes all but numbers
+			if (o.number) return value.replace(/[^0-9]/g, '');
 
 			// returns value
 			return value;
 		}
 
 		var o = {
-			loan_amount: get('.em-i-loan_amount'),
-			tenure: get('.em-i-tenure'),
-			collect_debt: get('.em-c-collect_debt'),
-			mobile_number: get('.em-i-mobile_number', 'phone'),
-			email: get('.em-i-email'),
+			loan_amount: get({node: '.em-i-loan_amount', number: true}),
+			tenure: get({ node:'.em-i-tenure', number: true}),
+			collect_debt: get({ node:'.em-c-collect_debt'}),
+			mobile_number: get({ node:'.em-i-mobile_number', callback: 'phone', number: true}),
+			email: get({ node:'.em-i-email'}),
 
-			social_number: get('.em-i-social_number'),
-			employment_type: get('.em-i-employment_type'),
-			employment_since: get('.em-i-employment_since'),
-			employer: get('.em-i-employer'),
-			education: get('.em-i-education'),
-			education_loan: get('.em-i-education_loan'),
-			norwegian: get('.em-c-norwegian'),
-			years_in_norway: get('.em-i-years_in_norway'),
-			country_of_origin: get('.em-i-country_of_origin'),
-			income: get('.em-i-income'),
-			civilstatus: get('.em-i-civilstatus'),
-			spouse_income: get('.em-i-spouse_income'),
-			living_conditions: get('.em-i-living_conditions'),
-			rent_income: get('.em-i-rent_income'),
-			mortgage: get('.em-i-mortgage'),
-			rent: get('.em-i-rent'),
-			address: get('.em-i-address'),
-			car_boat_mc_loan: get('.em-i-car_boat_mc_loan'),
-			number_of_children: get('.em-i-number_of_children'),
-			allimony_per_month: get('.em-i-allimony_per_month'),
+			social_number: get({ node:'.em-i-social_number', number: true, number: true}),
+			employment_type: get({ node:'.em-i-employment_type'}),
+			employment_since: get({ node:'.em-i-employment_since'}),
+			employer: get({ node:'.em-i-employer'}),
+			education: get({ node:'.em-i-education'}),
+			education_loan: get({ node:'.em-i-education_loan', number: true}),
+			norwegian: get({ node:'.em-c-norwegian'}),
+			years_in_norway: get({ node:'.em-i-years_in_norway'}),
+			country_of_origin: get({ node:'.em-i-country_of_origin'}),
+			income: get({ node:'.em-i-income', number: true}),
+			civilstatus: get({ node:'.em-i-civilstatus'}),
+			spouse_income: get({ node:'.em-i-spouse_income', number: true}),
+			living_conditions: get({ node:'.em-i-living_conditions'}),
+			rent_income: get({ node:'.em-i-rent_income', number: true}),
+			mortgage: get({ node:'.em-i-mortgage', number: true}),
+			rent: get({ node:'.em-i-rent', number: true}),
+			address: get({ node:'.em-i-address'}),
+			car_boat_mc_loan: get({ node:'.em-i-car_boat_mc_loan', number: true}),
+			number_of_children: get({ node:'.em-i-number_of_children', number: true}),
+			allimony_per_month: get({ node:'.em-i-allimony_per_month', number: true}),
 
-			co_applicant: get('.em-i-co_applicant'),
-			co_applicant_name: get('.em-i-co_applicant_name', 'noNumbers'),
-			co_applicant_social_number: get('.em-i-co_applicant_social_number'),
-			co_applicant_mobile_number: get('.em-i-co_applicant_mobile_number'),
-			co_applicant_email: get('.em-i-co_applicant_email'),
-			co_applicant_employment_type: get('.em-i-co_applicant_employment_type'),
-			co_applicant_employment_since: get('.em-i-co_applicant_employment_since'),
-			co_applicant_employer: get('.em-i-co_applicant_employer'),
-			co_applicant_education: get('.em-i-co_applicant_education'),
-			co_applicant_norwegian: get('.em-c-co_applicant_norwegian'),
-			co_applicant_years_in_norway: get('.em-i-co_applicant_years_in_norway'),
-			co_applicant_country_of_origin: get('.em-i-co_applicant_country_of_origin'),
-			co_applicant_income: get('.em-i-co_applicant_income'),
+			co_applicant: get({ node:'.em-i-co_applicant'}),
+			co_applicant_name: get({ node:'.em-i-co_applicant_name', callback: 'noNumbers'}),
+			co_applicant_social_number: get({ node:'.em-i-co_applicant_social_number', number: true}),
+			co_applicant_mobile_number: get({ node:'.em-i-co_applicant_mobile_number', number: true}),
+			co_applicant_email: get({ node:'.em-i-co_applicant_email'}),
+			co_applicant_employment_type: get({ node:'.em-i-co_applicant_employment_type'}),
+			co_applicant_employment_since: get({ node:'.em-i-co_applicant_employment_since'}),
+			co_applicant_employer: get({ node:'.em-i-co_applicant_employer'}),
+			co_applicant_education: get({ node:'.em-i-co_applicant_education'}),
+			co_applicant_norwegian: get({ node:'.em-c-co_applicant_norwegian'}),
+			co_applicant_years_in_norway: get({ node:'.em-i-co_applicant_years_in_norway'}),
+			co_applicant_country_of_origin: get({ node:'.em-i-co_applicant_country_of_origin'}),
+			co_applicant_income: get({ node:'.em-i-co_applicant_income', number: true}),
 			
-			unsecured_debt_balance: get('.em-i-unsecured_debt_balance'),
-			account_number: get('.em-i-account_number')			
+			unsecured_debt_balance: get({node: '.em-i-unsecured_debt_balance', number: true}),
+			account_number: get({node: '.em-i-account_number', number: true})			
 		}
 
 
@@ -267,6 +342,7 @@
 			console.log(t+': '+o[t]);
 
 	});
+
 
 	/**
 	 * [numberEvents description]
@@ -298,7 +374,7 @@
 		if (o.error || o.currency)
 			o.node.addEventListener('focusout', function(e) {
 
-				e.target.parentNode.parentNode.style.backgroundColor = 'transparent';
+				// e.target.parentNode.parentNode.style.backgroundColor = 'transparent';
 				
 				if (o.error) val({
 									callback: o.error,
@@ -397,28 +473,30 @@
 	var loanRange = qs('.em-r-loan_amount');
 	var loanText = qs('.em-i-loan_amount');
 
+	numberEvents({node: loanText, currency: true});
+
 	// fixing initial value to locale
 	loanText.value = norNr(loanText.value);
 
 	// hitting enter to exit input
-	loanText.addEventListener('keypress', function(e) { if (e.keyCode == 13) loanText.blur() });
+	// loanText.addEventListener('keypress', function(e) { if (e.keyCode == 13) loanText.blur() });
 
 	// typing
-	loanText.addEventListener('input', function(e) {
+	// loanText.addEventListener('input', function(e) {
 
-		// removes all but numbers
-		var v = e.target.value.replace(/[^0-9]/g, '');
+	// 	// removes all but numbers
+	// 	var v = e.target.value.replace(/[^0-9]/g, '');
 	
-		if (!v) v = '';
-		else if (v > max) v = max;
+	// 	if (!v) v = '';
+	// 	else if (v > max) v = max;
 	
-		loanText.value = v; 
-		loanRange.value = v; 
+	// 	loanText.value = v; 
+	// 	loanRange.value = v; 
 
-	});
+	// });
 
 	// focus
-	loanText.addEventListener('focus', function(e) { loanText.value = loanText.value.replace(/[^0-9]/g, ''); loanText.select(); });
+	// loanText.addEventListener('focus', function(e) { loanText.value = loanText.value.replace(/[^0-9]/g, ''); loanText.select(); });
 
 	// focus out (validation time)
 	loanText.addEventListener('focusout', function(e) {
@@ -434,10 +512,16 @@
 		loanRange.value = n;
 	});
 
+	loanText.addEventListener('input', function(e) { payment() });
+
 
 	// LOAN RANGE 
 	// setting the text input while changing the range input
-	loanRange.addEventListener('input', function(e) { loanText.value = norNr(e.target.value) });
+	loanRange.addEventListener('input', function(e) { 
+		loanText.value = norNr(e.target.value) 
+
+		payment();
+	});
 
 
 
@@ -451,7 +535,7 @@
 	var tenureRange = qs('.em-r-tenure');
 
 	// fixing initial value
-	tenureText.value += postfix_year;
+	tenureText.value += postfixYear;
 
 	// pressing enter
 	tenureText.addEventListener('keypress', function(e) { if (e.keyCode == 13) tenureText.blur() });
@@ -460,14 +544,16 @@
 	tenureText.addEventListener('input', function(e) { 
 		var v = e.target.value.replace(/[^0-9]/g, '');
 	
-		if (v == '') v = '';
+		if (v == '') v = '5';
 
-		else if (v > max_year) v = max_year;
+		else if (v > maxYear) v = maxYear;
 	
-		else if (v < min_year) v = min_year;
+		else if (v < minYear) v = minYear;
 	
 		tenureText.value = v; 
 		tenureRange.value = v; 
+
+		payment();
 	});
 
 	// focus
@@ -481,14 +567,17 @@
 	tenureText.addEventListener('focusout', function(e) { 
 		var n = e.target.value.replace(/[^0-9]/g, '');
 
-		if (n < min_year) n = min_year;
-		else if (n > max_year) n = max_year;
+		if (n < minYear) n = minYear;
+		else if (n > maxYear) n = maxYear;
 
-		tenureText.value = n + postfix_year; 
+		tenureText.value = n + postfixYear; 
 	});
 
 	// TENURE RANGE
-	tenureRange.addEventListener('input', function(e) { tenureText.value = e.target.value + postfix_year});
+	tenureRange.addEventListener('input', function(e) { 
+		tenureText.value = e.target.value + postfixYear;
+		payment();
+	});
 
 
 
@@ -502,7 +591,16 @@
 	var mobileText = qs('.em-i-mobile_number');
 	numberEvents({node: mobileText, max: 8, error: 'phone'});
 
+	mobileText.addEventListener('focusout', function(e) {
 
+		var n = e.target.value;
+
+		// if (n.length > 5)
+		if (n.length == 8) mobileText.value = n.substr(0, 3)+' '+n.substr(3, 2)+' '+n.substr(5, 3); 
+
+		// else if (n.length > 3)
+
+	});
 
 
 
@@ -543,6 +641,7 @@
 			qs('.em-cc-collect_debt .em-c')
 		);
 
+	monthlyCost.value = norNr(monthlyCost.value);
 
 
 	// PAGE 2
@@ -604,7 +703,11 @@
 		}
 	});
 
-	numberEvents(qs('.em-i-education_loan'));
+	numberEvents({node: qs('.em-i-education_loan'), currency: true});
+
+
+
+
 
 
 	// NORWEGIAN
@@ -638,13 +741,13 @@
 	listEvents(qs('.em-i-country_of_origin'));
 
 	// INCOME 
-	numberEvents({node: qs('.em-i-income'), max: 20, currency: true});
+	numberEvents({node: qs('.em-i-income'), currency: true});
 
 	// CIVILSTATUS
 	listEvents(qs('.em-i-civilstatus'));
 
 	// SPOUSE INCOME
-	numberEvents(qs('.em-i-spouse_income'));
+	numberEvents({node: qs('.em-i-spouse_income'), currency: true});
 
 	qs('.em-i-civilstatus').addEventListener('input', function(e) {
 		if (e.target.value == 'Gift/partner') qs('.em-element-spouse_income').classList.remove('em-hidden');
@@ -657,34 +760,35 @@
 	qs('.em-i-living_conditions').addEventListener('input', function(e) {
 
 		var rent = qs('.em-element-rent');
-		var rent_income = qs('.em-element-rent_income');
-		var mortage = qs('.em-element-mortgage');
+		var rentIncome = qs('.em-element-rent_income');
+		var mortgage = qs('.em-element-mortgage');
 
 		// hide all
 		var hide = function() {
 			rent.classList.add('em-hidden');
-			rent_income.classList.add('em-hidden');
-			mortage.classList.add('em-hidden');
+			rentIncome.classList.add('em-hidden');
+			mortgage.classList.add('em-hidden');
 		}
 
 		// show all
 		var show = function() {
 			rent.classList.remove('em-hidden');
-			rent_income.classList.remove('em-hidden');
-			mortage.classList.remove('em-hidden');
+			rentIncome.classList.remove('em-hidden');
+			mortgage.classList.remove('em-hidden');
 		}
 
-		// partial (show rent, hidden rent income and mortage)
+		// partial (show rent, hide rent income and mortgage)
 		var showRent = function() {
 			rent.classList.remove('em-hidden');
-			rent_income.classList.add('em-hidden');
-			mortage.classList.add('em-hidden');
+			rentIncome.classList.add('em-hidden');
+			mortgage.classList.add('em-hidden');
 		}
 
+		// hide rent, show rent income and mortgage
 		var hideRent = function() {
 			rent.classList.add('em-hidden');
-			rent_income.classList.remove('em-hidden');
-			mortage.classList.remove('em-hidden');
+			rentIncome.classList.remove('em-hidden');
+			mortgage.classList.remove('em-hidden');
 		}
 
 
@@ -700,11 +804,13 @@
 
 			default: hide(); 
 		}
-
-
-
 	});
 
+	// RENT INCOME
+	numberEvents({node: qs('.em-i-rent_income'), currency: true});
+
+	// MORTGAGE
+	numberEvents({node: qs('.em-i-mortgage'), currency: true});
 
 	// ADDRESS SINCE
 	listEvents(qs('.em-i-address_since'));
@@ -714,7 +820,7 @@
 
 
 	// ALLIMONY RECEIVED
-	numberEvents({node: qs('.em-i-allimony_per_month'), max: 8, currency: true});
+	numberEvents({node: qs('.em-i-allimony_per_month'), currency: true});
 
 	qs('.em-i-number_of_children').addEventListener('input', function(e) {
 		if (e.target.value == 0 || !e.target.value) qs('.em-element-allimony_per_month').classList.add('em-hidden');
@@ -723,10 +829,10 @@
 
 
 	// RENT
-	numberEvents({node: qs('.em-i-rent'), max: 8, currency: true});
+	numberEvents({node: qs('.em-i-rent'), currency: true});
 
 	// car, boat, mc
-	numberEvents({node: qs('.em-i-car_boat_mc_loan'), max: 10, currency: true});
+	numberEvents({node: qs('.em-i-car_boat_mc_loan'), currency: true});
 	
 
 	// CO-APPLICANT
@@ -738,8 +844,8 @@
 		qs('.em-element-co_applicant .em-c')
 	);
 
-
-	 var coArr = [
+	// elements to show
+	var coArr = [
 	 	qs('.em-element-co_applicant_name'),
 	 	qs('.em-element-co_applicant_social_number'),
 	 	qs('.em-element-co_applicant_mobile_number'),
@@ -752,11 +858,11 @@
 	 	// qs('.em-element-co_applicant_years_in_norway'),
 	 	// qs('.em-element-co_applicant_country_of_origin'),
 	 	qs('.em-element-co_applicant_income')
-	 ];
+	];
 
 
-	 coYes.addEventListener('click', function() { showArr(coArr) });
-	 coNo.addEventListener('click', function() { hideArr(coArr) });
+	coYes.addEventListener('click', function() { showArr(coArr) });
+	coNo.addEventListener('click', function() { hideArr(coArr) });
 
 	 // co applicant name
 	textEvents(qs('.em-i-co_applicant_name'), /[^a-xøæåA-XØÆÅ ]/);
@@ -844,30 +950,36 @@
 			qs('.em-cc-co_applicant_norwegian .em-c')
 		);
 
-	coNorYes.addEventListener('click', function() { hideArr([
-			qs('.em-element-co_applicant_years_in_norway'),
-			qs('.em-element-co_applicant_country_of_origin')
+	coNorYes.addEventListener('click', function() { 
+			hideArr([
+				qs('.em-element-co_applicant_years_in_norway'),
+				qs('.em-element-co_applicant_country_of_origin')
 			])
 		}
 	);
 
-	coNorNo.addEventListener('click', function() { showArr([
-			qs('.em-element-co_applicant_years_in_norway'),
-			qs('.em-element-co_applicant_country_of_origin')
+	coNorNo.addEventListener('click', function() { 
+			showArr([
+				qs('.em-element-co_applicant_years_in_norway'),
+				qs('.em-element-co_applicant_country_of_origin')
 			])
 		}
 	);
 
+	// co applicant years in norway 
 	listEvents(qs('.em-i-co_applicant_years_in_norway'));
+
+	// co applicant country of origin
 	listEvents(qs('.em-i-co_applicant_country_of_origin'));
 
+	// CO APPLICANT INCOME
+	numberEvents({node: qs('.em-i-co_applicant_income'), currency: true});
 
 	// unsecured_debt_balance
-	numberEvents({node: qs('.em-i-unsecured_debt_balance'), max: 10, currency: true});
+	numberEvents({node: qs('.em-i-unsecured_debt_balance'), currency: true});
 
 	// account_number
 	textEvents(qs('.em-i-account_number'), /[^0-9. ]/);
-
 
 	qs('.em-i-account_number').addEventListener('input', function(e) {
 
@@ -875,34 +987,25 @@
 
 		v = v.replace(/[^0-9]/g, '');
 
-
 		if (v.length > 6) v = v.substr(0, 4) + '.' + v.substr(4, 2) + '.' + v.substr(6, 5);
 		else if (v.length > 4) v = v.substr(0, 4) + '.' + v.substr(4, 2);
 
 		e.target.value = v;
 
-		// console.log(v.length);
-		// if (v.length == 12) e.target.value = e.target.value.substring(0, e.target.value.length - 1);
-
 	});
 
 	qs('.em-i-account_number').addEventListener('focusout', function(e) {
 
-		var v = e.target.value;
+		val({
+			callback: 'accountNumber',
+			value: e.target.value,
+			feedbackNode: e.target.parentNode.parentNode,
+			errorColor: errorColor
+		});
 
-		v = v.replace(/[^0-9]/g, '');
-
-		if (v.length != 11) {
-			e.target.parentNode.parentNode.style.backgroundColor = errorColor;
-			return;
-		}
-		else e.target.parentNode.parentNode.style.backgroundColor = validColor ? validColor : 'transparent';
-
-
-		v = v.substr(0, 4) + '.' + v.substr(4, 2) + '.' + v.substr(6, 5);
-
-		e.target.value = v;
 
 	});
 
+
+	payment();
 })();

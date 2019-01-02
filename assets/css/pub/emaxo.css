@@ -108,8 +108,8 @@
 
 /* dev stuff */
 .em-element-container {
-	border: solid 1px black;
-	padding: 1rem;
+	/*border: solid 1px black;*/
+	/*padding: 1rem;*/
 }
 
 .em-r,
@@ -118,9 +118,12 @@
 }
 
 .em-cc-selector {
-	width: 100px;
+	/*width: 100px;*/
 }
 /* end of dev stuff */
+
+
+
 
 
 /* 1.0 form element and container */
@@ -131,8 +134,15 @@
 	/* form title - form elements - buttons */
 	grid-template-rows: auto 1fr auto;
 
+	font-size: 2rem;
+
 	/* light gray */
-	background-color: hsl(20, 0%, 95%);
+	/*background-color: hsl(20, 0%, 95%);*/
+}
+
+.emowl-form input {
+	font-size: 3rem;
+	/*background-color: hsl(10, 90%, 98%);*/
 }
 
 /* 1.1 form title */
@@ -186,13 +196,13 @@
 	grid-template-columns: 1fr 1fr;
 
 	grid-template-areas: 
+	"monthly monthly"
 	"loan loan"
 	"tenure refinancing"
-	"mobile email"
-	"monthly monthly";
+	"mobile email";
 
 	justify-content: space-between;
-	align-items: center;
+	align-items: stretch;
 	grid-column-gap: 4rem;
 
 	/*height: 100%;*/
@@ -207,6 +217,14 @@
 /* 1.4 generic elements and element-parts */
 .em-element-container {
 	user-select: none;
+	margin-bottom: 2rem;
+
+	padding: 0 2rem 2rem 2rem;
+
+	/*border: solid 2px black;*/
+	/*box-shadow: 0 0 5px black;*/
+	/*border-radius: 25px;*/
+	/*background-color: hsl(10, 90%, 98%);*/
 }	
 
 .em-element-container:hover {
@@ -223,6 +241,13 @@
 	outline: none;
 
 	z-index: 20;
+
+	text-align: center;
+
+	height: 5rem;
+
+	border: solid 1px hsl(0, 0%, 50%);
+	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
 }
 
 /* 1.4.3 range input */
@@ -233,13 +258,17 @@
 /* 1.4.3.1 range input */
 .em-r {
 	height: 4px;
+
+	position: relative;
+	bottom: 1.7rem;
+	right: 0.2rem;
 	
 	/* removing default slider apperance */
 	-webkit-appearance: none;
 	background: none;
 	outline: none;
 
-	background-color: hsla(0, 0%, 100%, .5);
+	background-color: hsla(120, 100%, 20%, .2);
 
 	cursor: grab;
 }
@@ -253,13 +282,14 @@
   	height: 2.5rem;
 
   	opacity: .8;
-  	background: hsl(120, 50%, 40%);
-  	border-radius: 150px;
+  	background: hsl(120, 50%, 20%);
+  	/*border-radius: 150px;*/
  }
 
 
 /* 1.4.4 helper text */
 .em-ht {
+	font-size: 1.6rem;
 }
 
 /* 1.4.5 label */
@@ -273,6 +303,8 @@
 
 	user-select: none;
 
+	height: 3.8rem;
+
 }
 
 /* 1.4.6.1 checkbox buttons */
@@ -281,17 +313,21 @@
 	flex: 1;
 	border: solid 1px #000;
 	text-align: center;
-	background-color: hsl(120, 0%, 70%);
+	background-color: hsl(120, 0%, 90%);
 
 	cursor: pointer;
 	outline: none;
+
+	font-size: 2rem;
+
+	width: 10rem;
 }
 
 /* 1.4.6.2 checkbox yes */
 .em-cc-yes {
 
-	border-top-left-radius: 25px;
-	border-bottom-left-radius: 25px;
+	/*border-top-left-radius: 25px;*/
+	/*border-bottom-left-radius: 25px;*/
 
 
 	border-right: none;
@@ -300,14 +336,14 @@
 /* 1.4.6.3 checkbox no */
 .em-cc-no {
 
-	border-top-right-radius: 25px;
-	border-bottom-right-radius: 25px;
+	/*border-top-right-radius: 25px;*/
+	/*border-bottom-right-radius: 25px;*/
 
 }
 
 /* 1.4.6.4 checkbox selected */
 .em-cc-green {
-	background-color: hsl(120, 50%, 50%);
+	background-color: hsl(120, 80%, 60%);
 }
 
 
@@ -375,6 +411,7 @@
 	border: none;
 	background-color: transparent;
 	color: black;
-	text-align: right;
+	text-align: left;
+	padding-left: 5px;
 }
 

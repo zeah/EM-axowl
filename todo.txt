@@ -3,5 +3,11 @@ tabindex
 
 sende customer ip med ajax
 
+når man trykker på next knappen må ting være valid
+
+sjekke at man regner ut månedskostnad riktig
 
 test om IE tåler /\d/.test() i validator
+
+
+if required field is empty, then fail validation

@@ -57,7 +57,7 @@ final class Axowl_shortcode {
 		$html .= '<div class="part part-1">';
 
 		foreach($inputs as $key => $value) {
-			if ($value['page']) $html .= '</div><div class="part part-'.$value['page'].'">';
+			if (isset($value['page'])) $html .= '</div><div class="part part-'.$value['page'].'">';
 			$html .= $this->element($key, $value, $data);
 		}
 			
@@ -141,7 +141,7 @@ final class Axowl_shortcode {
 
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht-%1$s">%2$s</div>', $o['name'], $o['ht']) : ''),
+						($o['ht'] ? sprintf('<div class="em-ht em-ht-%1$s">%2$s</div>', $o['name'], $o['ht']) : ''),
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
@@ -174,16 +174,16 @@ final class Axowl_shortcode {
 		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		return sprintf('<div class="em-cc em-cc-%1$s">
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
+								%3$s
 							<input class="em-c em-c-%1$s" name="%1$s" type="hidden" value="%6$s">
 							<div class="em-cc-selector">
 								<button type="button" class="em-cc-yes%4$s">Ja</button>
 								<button type="button" class="em-cc-no%5$s">Nei</button>
 							</div>
-								%3$s
 						</div>',
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht%1$s">%1$s</div>', $o['ht']) : ''),
+						($o['ht'] ? sprintf('<div class="em-ht em-ht-%2$s">%1$s</div>', $o['ht'], $o['name']) : ''),
 						$o['value']['yes'] ? ' em-cc-green' : '',
 						$o['value']['no'] ? ' em-cc-green' : '',
 						$o['value']['yes'] ? '1' : '0'
