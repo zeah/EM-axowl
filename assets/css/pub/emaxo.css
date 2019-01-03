@@ -129,6 +129,9 @@
 /* 1.0 form element and container */
 .emowl-form {
 	display: inline-grid;
+
+	width: 50%;
+
 	box-sizing: content-box;
 
 	/* form title - form elements - buttons */
@@ -137,7 +140,14 @@
 	font-size: 2rem;
 
 	/* light gray */
-	/*background-color: hsl(20, 0%, 95%);*/
+	background-color: hsl(20, 0%, 98%);
+
+	padding: 2rem;
+
+	border-radius: 25px;
+	border: solid 2px  hsl(20, 0%, 97%);
+
+	user-select: none;
 }
 
 .emowl-form input {
@@ -165,22 +175,34 @@
 /* 1.2.1 button */
 .em-b {
 	border: none;
-	outline: none;
+	/*outline: none;*/
 
 	cursor: pointer;
 
+	font-size: 3rem;
+	padding: .5rem;
+	border-radius: 5px;
+
 }
 
-/* 1.2.2 next/submit button */
-.em-b-submit {
+.em-b:focus {
+	/*border: solid 1px hsl(120, 60%, 60%) !important;*/
+}
 
+/* 1.2.2 submit button */
+.em-b-submit {
+	background-color: hsl(120, 90%, 60%);
 }
 
 /* 1.2.3 back button */
 .em-b-back {
-	display: none;
+	/*display: none;*/
 }
 
+/* 1.2.4 next button */
+.em-b-next {
+	background-color: hsl(30, 90%, 60%);
+}
 
 /* 1.3 part container */
 .part-container {
@@ -211,12 +233,14 @@
 
 
 .em-hidden {
-	display: none;
+	display: none !important;
 }
 
 /* 1.4 generic elements and element-parts */
 .em-element-container {
-	user-select: none;
+	position: relative;
+
+	/*user-select: none;*/
 	margin-bottom: 2rem;
 
 	padding: 0 2rem 2rem 2rem;
@@ -233,12 +257,13 @@
 /* 1.4.1 element title */
 .em-it {
 	margin: 0;
+	/*position: relative;*/
 }
 
 /* 1.4.2 text input */
 .em-i {
 	border: none;
-	outline: none;
+	/*outline: none;*/
 
 	z-index: 20;
 
@@ -246,11 +271,20 @@
 
 	height: 5rem;
 
+	font-size: 3rem;
+
+	border-radius: 3px;
+
 	border: solid 1px hsl(0, 0%, 50%);
 	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
 }
 
-/* 1.4.3 range input */
+/**/
+.em-lc .em-i:focus {
+
+	box-shadow: 0 0 2px hsl(120, 80%, 60%);
+}
+/* 1.4.3 range input container */
 .em-rc {
 	margin-top: 1rem;
 }
@@ -273,6 +307,10 @@
 	cursor: grab;
 }
 
+.em-r:focus {
+	background-color: hsla(120, 100%, 20%, .7);
+}
+
 /* 1.4.3.2 range tack */
 .em-r::-webkit-slider-thumb {
   	-webkit-appearance: none;
@@ -290,6 +328,62 @@
 /* 1.4.4 helper text */
 .em-ht {
 	font-size: 1.6rem;
+	display: flex;
+
+	align-items: center;
+
+	position: absolute;
+	top: 2.6rem;
+	right: -27.9rem;
+
+	background-color: hsl(0, 0%, 95%);
+	padding: 0.5rem;
+	z-index: 99;
+	width: 30rem;
+	height: 5rem;
+
+	border: solid 1px hsl(0, 0%, 50%);
+	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
+
+}
+
+.arrow-right {
+	display: inline-block;
+	position: relative;
+	/*bottom: .6rem;*/
+	right: 0.7rem;
+	width: 0; 
+	height: 0; 
+	border-top: 2.5rem solid transparent;
+	border-bottom: 2.5rem solid transparent;
+	  
+	border-left: 2.5rem solid hsl(0, 0%, 30%);
+}
+
+.em-ht-q {
+	/*content: '?';*/
+	position: absolute;
+	right: 2rem;
+	top: 3px;
+
+	font-weight: 400;
+	font-size: 1.4rem;
+
+	width: 2rem;
+	height: 2rem;
+
+	border-radius: 25px;
+	border: solid 1px gray;
+
+	background-color: transparent;
+
+	text-align: center;
+	line-height: 2rem;
+	cursor: pointer;
+}
+
+.em-ht-q:hover {
+	background-color: hsl(0, 0%, 90%);
 }
 
 /* 1.4.5 label */
@@ -301,9 +395,10 @@
 .em-cc-selector {
 	display: inline-flex;
 
-	user-select: none;
+	/*user-select: none;*/
 
-	height: 3.8rem;
+	height: 5rem;
+	width: 100%;
 
 }
 
@@ -316,11 +411,12 @@
 	background-color: hsl(120, 0%, 90%);
 
 	cursor: pointer;
-	outline: none;
+	/*outline: none;*/
+	/*outline: solid 2px black;*/
 
 	font-size: 2rem;
 
-	width: 10rem;
+	/*width: 50%;*/
 }
 
 /* 1.4.6.2 checkbox yes */
@@ -331,10 +427,14 @@
 
 
 	border-right: none;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 /* 1.4.6.3 checkbox no */
 .em-cc-no {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 
 	/*border-top-right-radius: 25px;*/
 	/*border-bottom-right-radius: 25px;*/
@@ -407,11 +507,20 @@
 	background-color: transparent;
 }
 
+.em-container-monthly_cost {
+	font-size: 3rem;
+	position: relative;
+	bottom: 1px;
+}
+
 .em-if-monthly_cost {
 	border: none;
 	background-color: transparent;
 	color: black;
 	text-align: left;
 	padding-left: 5px;
+	width: 150px;
+
+	font-weight: 700;
 }
 

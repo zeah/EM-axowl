@@ -46,9 +46,12 @@ final class Axowl_shortcode {
 		$inputs = AXOWL_inputs::$inputs;
 
 
-		$html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+		$html = sprintf('<form class="emowl-form"%s>',
 					(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
 			    );
+		// $html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+		// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
+		// 	    );
 
 		$html .= '<input type="hidden" name="'.$data['name'].'">';
 
@@ -67,7 +70,7 @@ final class Axowl_shortcode {
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
 		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
-		$html .= '<button class="em-b em-b-back" type="button">Tilbake</button>';
+		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
 		$html .= '</div>';
 
 		$html .= '</form>';
@@ -141,7 +144,7 @@ final class Axowl_shortcode {
 
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht em-ht-%1$s">%2$s</div>', $o['name'], $o['ht']) : ''),
+						($o['ht'] ? sprintf('<button type="button" class="em-ht-q" tabindex="0">?</button type="button"><div class="em-ht em-hidden em-ht-%1$s"><div class="arrow-right"></div><div>%2$s</div></div>', $o['name'], $o['ht']) : ''),
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
@@ -177,13 +180,13 @@ final class Axowl_shortcode {
 								%3$s
 							<input class="em-c em-c-%1$s" name="%1$s" type="hidden" value="%6$s">
 							<div class="em-cc-selector">
-								<button type="button" class="em-cc-yes%4$s">Ja</button>
-								<button type="button" class="em-cc-no%5$s">Nei</button>
+								<button type="button" class="em-i em-cc-yes%4$s">Ja</button>
+								<button type="button" class="em-i em-cc-no%5$s">Nei</button>
 							</div>
 						</div>',
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<div class="em-ht em-ht-%2$s">%1$s</div>', $o['ht'], $o['name']) : ''),
+						($o['ht'] ? sprintf('<button type="button" class="em-ht-q">?</button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : ''),
 						$o['value']['yes'] ? ' em-cc-green' : '',
 						$o['value']['no'] ? ' em-cc-green' : '',
 						$o['value']['yes'] ? '1' : '0'
@@ -192,7 +195,7 @@ final class Axowl_shortcode {
 
 	private function text_field($o = []) {
 		return sprintf('<div style="display: flex; justify-content: center;">
-			<div class="">%1$s</div><input type="text" class="em-if em-if-%2$s" disabled value=50></div>', 
+			<div class="em-container-%2$s">%1$s</div><input type="text" class="em-if em-if-%2$s" disabled value=50></div>', 
 			$o['text'],
 			$o['name']);
 	}

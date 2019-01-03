@@ -41,6 +41,8 @@
 
 	var monthlyCost = qs('.em-if-monthly_cost');
 
+	var form = qs('.emowl-form');
+
 
 	// updating monthly cost field
 	var payment = function() {
@@ -211,22 +213,31 @@
 		// if no nextpage, then show submit button
 		if (!nextPage) { 
 
+			nextButton.classList.add('em-hidden');
+			submitButton.classList.remove('em-hidden');
+
 			// if no next page, then show submit button
-			nextButton.style.display = 'none';
-			submitButton.style.display = 'inline-block';
+			// nextButton.style.display = 'none';
+			// submitButton.style.display = 'inline-block';
 		}
 
 		// if next page, then show next button
-		else nextButton.style.display = 'inline-block';
+		// else nextButton.style.display = 'inline-block';
+		else nextButton.classList.remove('em-hidden');
 
 		if (!page) return false;
 
 		// show prev button
-		prevButton.style.display = 'inline-block';
+		// prevButton.style.display = 'inline-block';
+		prevButton.classList.remove('em-hidden');
 
 		// show correct page
 		cPage.style.display = 'none';
 		page.style.display = 'grid';
+
+
+		var element = form.querySelector('.part-'+counter+' .em-i');
+		if (element) element.focus();
 	}
 
 
@@ -247,18 +258,25 @@
 		var prevPage = qs('.part-'+(counter-1));
 
 		// to show prev button or not
-		if (!prevPage) prevButton.style.display = 'none';
-		else prevButton.style.display = 'inline-block';
+		// if (!prevPage) prevButton.style.display = 'none';
+		// else prevButton.style.display = 'inline-block';
+		if (!prevPage) prevButton.classList.add('em-hidden');
+		else prevButton.classList.remove('em-hidden');
 
 		if (!page) return false;
 		
 		// shows next button (hides submit button)
-		nextButton.style.display = 'inline-block';
-		submitButton.style.display = 'none';
+		// nextButton.style.display = 'inline-block';
+		// submitButton.style.display = 'none';
+		nextButton.classList.remove('em-hidden');
+		submitButton.classList.add('em-hidden');
 
 		// hides and show current page
 		cPage.style.display = 'none';
 		page.style.display = 'grid';
+
+		var element = form.querySelector('.part-'+counter+' .em-i');
+		if (element) element.focus();
 	}
 
 
@@ -340,6 +358,8 @@
 
 		for (var t in o)
 			console.log(t+': '+o[t]);
+
+
 
 	});
 
@@ -458,6 +478,8 @@
 	var norNr = function(e) {
 		if (!e) return '';
 
+		e = String(e).replace(/[^0-9]/g, '');
+
 		return parseInt(e).toLocaleString(
 							'nb-NO', 
 							{
@@ -535,7 +557,7 @@
 	var tenureRange = qs('.em-r-tenure');
 
 	// fixing initial value
-	tenureText.value += postfixYear;
+	tenureText.value = tenureText.value.replace(/[^0-9]/g, '') + postfixYear;
 
 	// pressing enter
 	tenureText.addEventListener('keypress', function(e) { if (e.keyCode == 13) tenureText.blur() });
@@ -614,9 +636,9 @@
 	emailText.addEventListener('input', function(e) {
 
 		// setting size of font so long email addresses fits better
-		if (e.target.value.length > 50) e.target.style.fontSize = '14px';
-		else if (e.target.value.length > 40) e.target.style.fontSize = '16px';
-		else if (e.target.value.length > 30) e.target.style.fontSize = '18px';
+		if (e.target.value.length > 30) e.target.style.fontSize = '14px';
+		else if (e.target.value.length > 20) e.target.style.fontSize = '16px';
+		else if (e.target.value.length > 15) e.target.style.fontSize = '18px';
 		else e.target.style.fontSize = '24px';
 	});
 
@@ -1008,4 +1030,44 @@
 
 
 	payment();
+
+
+	var questions = document.querySelectorAll('.em-ht-q');
+
+	questions.forEach(function(q) { 
+
+		q.addEventListener('mouseover', function(e) {
+			var ht = e.target.parentNode.querySelector('.em-ht');
+			ht.classList.remove('em-hidden');
+
+		});
+
+		q.addEventListener('mouseout', function(e) {
+			var ht = e.target.parentNode.querySelector('.em-ht');
+			ht.classList.add('em-hidden');
+
+		});
+
+		q.addEventListener('click', function(e) {
+			var ht = e.target.parentNode.querySelector('.em-ht');
+			ht.classList.toggle('em-hidden');
+		});
+
+		// q.addEventListener('click', function(e) {
+		// 	e.preventDefault();
+
+		// 	var ht = e.target.parentNode.querySelector('.em-ht');
+		// 	ht.classList.toggle('em-hidden');
+		// 	// ht.style.display = 'block';
+		// });
+	});
+
+	var hts = document.querySelectorAll('.em-ht');
+
+	hts.forEach(function(h) {
+		h.addEventListener('mouseout', function(e) {
+			e.target.classList.toggle('em-hidden');
+		});
+	});
+
 })();

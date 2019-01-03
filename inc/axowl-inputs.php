@@ -18,12 +18,12 @@ final class AXOWL_inputs {
 			'monthly_cost' => ['text' => 'Månedskostnad fra', 'notInput' => true],
 			'loan_amount' => ['text' => true, 'range' => true, 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
+			'collect_debt' => ['checkbox' => true, 'no' => true],
 			'mobile_number' => ['text' => true, 'type' => 'text'],
 			'email' => ['text' => true],
 
-			'collect_debt' => ['checkbox' => true, 'no' => true],
 			
-			'social_number' => ['text' => true, 'type' => 'number', 'page' => '2'],
+			'social_number' => ['text' => true, 'page' => '2'],
 			'employment_type' => ['list' => [
 												'Fast ansatt (privat)',
 												'Fast ansatt (offentlig)',

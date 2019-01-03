@@ -11,3 +11,6 @@ test om IE tåler /\d/.test() i validator
 
 
 if required field is empty, then fail validation
+
+
+list har ikke ht
