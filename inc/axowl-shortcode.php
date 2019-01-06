@@ -133,13 +133,14 @@ final class Axowl_shortcode {
 	 */
 	private function text_input($o = []) {
 		if (!isset($o['name'])) return;
-
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
+		
 		return sprintf('<div class="em-ic em-ic-%1$s">
 							<label for="%1$s" class="em-label em-label-%1$s">
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
 							</label>
-							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s">
+							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s>
 						</div>',
 
 						$o['name'],
@@ -148,7 +149,8 @@ final class Axowl_shortcode {
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
-						(isset($o['value']['default']) ? $o['value']['default'] : '')
+						(isset($o['value']['default']) ? $o['value']['default'] : ''),
+						(isset($o['value']['validation']) ? ' val="'.$o['value']['validation'].'"' : '')
 					);
 	}
 
@@ -247,7 +249,7 @@ final class Axowl_shortcode {
 	public function sands() {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 841px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 840px)');
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.0', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo-old.js', array(), '1.0.0', true);
 	
 	}
 }

@@ -14,3 +14,5 @@ if required field is empty, then fail validation
 
 
 list har ikke ht
+
+progressbar
