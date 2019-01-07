@@ -140,7 +140,7 @@ final class Axowl_shortcode {
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
 							</label>
-							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s>
+							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s>
 						</div>',
 
 						$o['name'],
@@ -150,7 +150,8 @@ final class Axowl_shortcode {
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
 						(isset($o['value']['default']) ? $o['value']['default'] : ''),
-						(isset($o['value']['validation']) ? ' val="'.$o['value']['validation'].'"' : '')
+						(isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : ''),
+						(isset($o['value']['format']) ? ' data-format="'.$o['value']['format'].'"' : '')
 					);
 	}
 
@@ -162,9 +163,7 @@ final class Axowl_shortcode {
 	private function range_input($o = []) {
 		if (!isset($o['name'])) return;
 
-		return sprintf('<div class="em-rc em-rc-%1$s">
-							<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>
-						</div>',
+		return sprintf('<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>',
 
 						$o['name'],
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
@@ -172,6 +171,17 @@ final class Axowl_shortcode {
 						(isset($o['value']['step']) ? ' step='.$o['value']['step'] : ''),
 						(isset($o['value']['default']) ? ' value='.$o['value']['default'] : '')
 				);
+
+		// return sprintf('<div class="em-rc em-rc-%1$s">
+		// 					<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>
+		// 				</div>',
+
+		// 				$o['name'],
+		// 				(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
+		// 				(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
+		// 				(isset($o['value']['step']) ? ' step='.$o['value']['step'] : ''),
+		// 				(isset($o['value']['default']) ? ' value='.$o['value']['default'] : '')
+		// 		);
 	}
 
 	private function checkbox_input($o = []) {
@@ -249,7 +259,7 @@ final class Axowl_shortcode {
 	public function sands() {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 841px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 840px)');
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo-old.js', array(), '1.0.0', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.0', true);
 	
 	}
 }

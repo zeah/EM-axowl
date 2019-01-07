@@ -16,8 +16,8 @@ final class Axowl_inputs {
 
 	public static $inputs = [
 			'monthly_cost' => ['text' => 'Månedskostnad fra', 'notInput' => true],
-			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'numberOnly', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
-			'tenure' => ['text' => true, 'range' => true, 'max' => 15, 'min' => 1, 'default' => 5],
+			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
+			'tenure' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'collect_debt' => ['checkbox' => true, 'no' => true],
 			'mobile_number' => ['text' => true, 'type' => 'text'],
 			'email' => ['text' => true],
