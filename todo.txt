@@ -1,4 +1,7 @@
 
+FORANDRE FOREACH SIDEN DE IKKE VIRKER I INTERNET EXPLORER
+
+
 tabindex
 
 sende customer ip med ajax

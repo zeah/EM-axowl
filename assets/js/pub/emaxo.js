@@ -1,12 +1,13 @@
 (function() {
 
+
 	/**
 	 * helper function for getting element and adding validation 
 	 * @param  {String} e class, id or name
 	 * @param  {String} v validation function
 	 * @return {HTML element}   html element
 	 */
-	var qs = function(e, v = null) { 
+	var qs = function(e) { 
 	
 		// if val is not set
 		// if (!v) return document.querySelector(e);
@@ -17,16 +18,18 @@
 		// if element not found
 		if (!t) return null;
 
-
+		return t;
 
 		// add validation to element
-		t.validate = function() {
+		// t.validate = function() {
 
-		} 
+		// } 
 	
-		// returns element
-		return t;
+	// 	// returns element
+	// 	return t;
 	}
+
+	var current = qs('.part');
 
 	var kroner = function(n) {
 		if (!n) return '';
@@ -37,12 +40,12 @@
 		if (n == '') return '';
 
 		return parseInt(n).toLocaleString(
-							'sv-SE', 
-							// 'nb-NO', 
+							// 'sv-SE', 
+							'nb-NO', 
 							{
 								style: 'currency', 
-								currency: 'SEK',
-								// currency: 'NOK',
+								// currency: 'SEK',
+								currency: 'NOK',
 								minimumFractionDigits: 0
 							});
 	}
@@ -90,43 +93,49 @@
 
 	var init = function() {
 
+		// [].forEach(function(e) { });
+
 		// TEXT INPUTS
+		// try {
 		document.querySelectorAll('.emowl-form input[type=text]').forEach(function(n) {
 
 			var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
+			var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
+			var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
+			var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
 
 			// hitting enter
 			n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
 
 
 			// if input has a max attribute
-			if (n.getAttribute('max')) n.addEventListener('input', function(e) {
-				if (parseInt(n.getAttribute('max')) < numb(e.target.value))
-					e.target.value = n.getAttribute('max');
+			if (max) n.addEventListener('input', function(e) {
+				if (max < numb(e.target.value))
+					e.target.value = max;
 			});
 
 
 			// if input has a min attribute
-			if (n.getAttribute('min')) n.addEventListener('focusout', function(e) {
-				if (parseInt(n.getAttribute('min')) > numb(e.target.value)) {
+			if (min) n.addEventListener('focusout', function(e) {
+				if (min > numb(e.target.value)) {
 
 					// formating currency or not
-					if (n.getAttribute('data-format') == 'currency') e.target.value = kroner(n.getAttribute('min'));
-					else e.target.value = n.getAttribute('min');
+					if (format == 'currency') e.target.value = kroner(min);
+					else e.target.value = min;
 
 				}
 			});
 
 
 			// formating currency when typing
-			if (n.getAttribute('data-format') == 'currency') {
+			if (format == 'currency') {
 				n.value = kroner(n.value);
 
 				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
 				n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
 			}
 
-			// formatting when prefix
+			// formatting with postfix
 			if (format.indexOf('postfix:') != -1) {
 				var pf = format.replace('postfix:', '');
 
@@ -151,7 +160,7 @@
 
 
 			// validation
-			if (n.getAttribute('data-val')) n.addEventListener('focusout', function(e) {
+			if (valid) n.addEventListener('focusout', function(e) {
 
 				try { 
 
@@ -163,7 +172,7 @@
 						data = e.target.value.replace(temp, '');
 					}
 
-					if (!val[n.getAttribute('data-val')](data)) 
+					if (!val[valid](data)) 
 						 e.target.parentNode.parentNode.style.backgroundColor = 'red'; 
 					else e.target.parentNode.parentNode.style.backgroundColor = 'transparent'; 
 				}
@@ -173,6 +182,7 @@
 			});
 
 		});
+		
 
 		// RANGE INPUTS
 		document.querySelectorAll('.emowl-form input[type=range]').forEach(function(r) {
@@ -197,6 +207,67 @@
 
 
 		// CHECK INPUTS
+		document.querySelectorAll('.em-cc').forEach(function(c) {
+			var yes = c.querySelector('.em-cc-yes');
+			var no = c.querySelector('.em-cc-no');
+
+		});
+		// } catch (e) {}
+		// LIST INPUTS
+
+
+		// NEXT/PREV/SUBMIT BUTTONS
+		try {
+			qs('.em-b-next').addEventListener('click', function(e) {
+				
+				// hiding current part
+				current.style.display = 'none';
+
+				// showing next part
+				current.nextSibling.style.display = 'grid';
+
+				// showing prev button
+				try {
+					qs('.em-b-back').classList.remove('em-hidden');
+				} catch (e) {}
+
+				// replace next button with submit button if no more parts
+				if (!current.nextSibling.nextSibling) {
+
+					e.target.classList.add('em-hidden');
+
+					try {
+						qs('.em-b-submit').classList.remove('em-hidden');
+					} catch (e) {}
+				}
+
+				current = current.nextSibling;
+
+			});
+		} catch (e) {}
+
+		try {
+			qs('.em-b-back').addEventListener('click', function(e) {
+				// var current = e.target.parentNode;
+
+				current.style.display = 'none';
+
+				current.previousSibling.style.display = 'grid';
+
+				if (!current.previousSibling.previousSibling)
+					e.target.classList.add('em-hidden');
+
+				try {
+					qs('.em-b-next').classList.remove('em-hidden');
+					qs('.em-b-submit').classList.add('em-hidden');
+				} catch (e) {}
+
+				current = current.previousSibling;
+			});
+		} catch (e) {}
+
+
+
 
 	}
 
