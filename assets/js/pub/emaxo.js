@@ -1,5 +1,7 @@
+
 (function() {
 
+"use strict";
 
 	/**
 	 * helper function for getting element and adding validation 
@@ -29,7 +31,7 @@
 	// 	return t;
 	}
 
-	var current = qs('.part');
+	var current = qs('.em-part');
 
 	var kroner = function(n) {
 		if (!n) return '';
@@ -72,6 +74,11 @@
 
 		phone: function(d) {
 
+			var n = val.numbersOnly(d);
+
+			if (n.length == 8) return true;
+
+			return false;
 		},
 
 		email: function(d) {
@@ -93,126 +100,190 @@
 
 	var init = function() {
 
-		// [].forEach(function(e) { });
-
 		// TEXT INPUTS
-		// try {
-		document.querySelectorAll('.emowl-form input[type=text]').forEach(function(n) {
+		var textInput = document.querySelectorAll('.emowl-form input[type=text]');
 
-			var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
-			var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
-			var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
-			var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
+		for (var i = 0; i < textInput.length; i++) {
 
-			// hitting enter
-			n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
+			// scoping for events
+			(function() { 
+				var n = textInput[i];
+
+				var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
+				var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
+				var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
+				var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
+
+				// hitting enter
+				n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
+
+				// if input has a max attribute
+				if (max) n.addEventListener('input', function(e) {
+					if (max < numb(e.target.value))
+						e.target.value = max;
+				});
 
 
-			// if input has a max attribute
-			if (max) n.addEventListener('input', function(e) {
-				if (max < numb(e.target.value))
-					e.target.value = max;
-			});
+				// if input has a min attribute
+				if (min) n.addEventListener('focusout', function(e) {
+					if (min > numb(e.target.value)) {
+
+						// formating currency or not
+						if (format == 'currency') e.target.value = kroner(min);
+						else e.target.value = min;
+
+					}
+				});
 
 
-			// if input has a min attribute
-			if (min) n.addEventListener('focusout', function(e) {
-				if (min > numb(e.target.value)) {
+				// formating currency when typing
+				if (format == 'currency') {
+					n.value = kroner(n.value);
 
-					// formating currency or not
-					if (format == 'currency') e.target.value = kroner(min);
-					else e.target.value = min;
-
+					n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
+					n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
 				}
-			});
+
+				// formatting with postfix
+				if (format.indexOf('postfix:') != -1) {
+					var pf = format.replace('postfix:', '');
+
+					n.value = n.value + pf;
+
+					n.addEventListener('focusout', function(e) { e.target.value = numb(e.target.value) + pf });
+
+					n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
+				}
 
 
-			// formating currency when typing
-			if (format == 'currency') {
-				n.value = kroner(n.value);
-
-				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
-				n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
-			}
-
-			// formatting with postfix
-			if (format.indexOf('postfix:') != -1) {
-				var pf = format.replace('postfix:', '');
-
-				n.value = n.value + pf;
-
-				n.addEventListener('focusout', function(e) { e.target.value = numb(e.target.value) + pf });
-
-				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
-			}
+				// selecting all text when focusing input
+				n.addEventListener('focus', function(e) { e.target.select() });
 
 
-			// selecting all text when focusing input
-			n.addEventListener('focus', function(e) { e.target.select() });
+				// if parent has range input
+				var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
+				for (var j = 0; j < innerRange.length; j++) {
+					// scoping for events
+					(function() {
+						var r = innerRange[j];
+						n.addEventListener('input', function(e) {
+							r.value = numb(e.target.value);
+						});
+					})();
+				}
 
 
-			// if parent has range input
-			n.parentNode.parentNode.querySelectorAll('input[type=range]').forEach(function(r) {
-				n.addEventListener('input', function(e) {
-					r.value = numb(e.target.value);
-				})
-			})
+				// validation
+				if (valid) n.addEventListener('focusout', function(e) {
 
+					try { 
 
-			// validation
-			if (valid) n.addEventListener('focusout', function(e) {
+						var data = e.target.value;
 
-				try { 
+						if (format.indexOf('postfix:') -1) {
+							var temp = format.replace('postfix:', '');
 
-					var data = e.target.value;
+							data = e.target.value.replace(temp, '');
+						}
 
-					if (format.indexOf('postfix:') -1) {
-						var temp = format.replace('postfix:', '');
-
-						data = e.target.value.replace(temp, '');
+						if (!val[valid](data)) 
+							 e.target.parentNode.parentNode.style.backgroundColor = 'red'; 
+						else e.target.parentNode.parentNode.style.backgroundColor = 'transparent'; 
 					}
 
-					if (!val[valid](data)) 
-						 e.target.parentNode.parentNode.style.backgroundColor = 'red'; 
-					else e.target.parentNode.parentNode.style.backgroundColor = 'transparent'; 
-				}
+					catch (e) { console.error('Error during validation: '+e) }
 
-				catch (e) { console.error('Error during validation: '+e) }
-
-			});
-
-		});
+				});
+			})();
+		}
 		
 
 		// RANGE INPUTS
-		document.querySelectorAll('.emowl-form input[type=range]').forEach(function(r) {
+		var rangeInput = document.querySelectorAll('.emowl-form input[type=range]');
 
-			r.parentNode.querySelectorAll('input[type=text]').forEach(function(n) {
+		for (var i = 0; i < rangeInput.length; i++) {
 
-				r.addEventListener('input', function(e) {
+			(function() { 
+				var r = rangeInput[i];
 
-					var a = n.getAttribute('data-format');
+				var innerText = r.parentNode.querySelectorAll('input[type=text]');
 
-					if (a == 'currency') n.value = kroner(e.target.value);
+				for (var j = 0; j < innerText.length; j++) {
+					var n = innerText[j];
 
-					else if (a.indexOf('postfix:') != -1) 
-						n.value = e.target.value+a.replace('postfix:', '');
+					r.addEventListener('input', function(e) {
 
-					else n.value = e.target.value;
-				});
+						var a = n.getAttribute('data-format');
 
-			});
+						if (a == 'currency') n.value = kroner(e.target.value);
 
-		});
+						else if (a.indexOf('postfix:') != -1) 
+							n.value = e.target.value+a.replace('postfix:', '');
+
+						else n.value = e.target.value;
+					});
+				}
+			})();
+		}
 
 
 		// CHECK INPUTS
-		document.querySelectorAll('.em-cc').forEach(function(c) {
-			var yes = c.querySelector('.em-cc-yes');
-			var no = c.querySelector('.em-cc-no');
+		var checkInput = document.querySelectorAll('.em-cc');
 
-		});
-		// } catch (e) {}
+		for (var i = 0; i < checkInput.length; i++) {
+			(function() {
+				var c = checkInput[i];
+
+				var yes = c.querySelector('.em-cc-yes');
+				var no = c.querySelector('.em-cc-no');
+				var input = c.querySelector('.em-c');
+
+				var show = input.getAttribute('data-show');
+
+
+				yes.addEventListener('click', function(e) {
+
+					input.value = 1;
+
+					if (show) {
+						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+						var temp = qs('.'+c);
+
+						if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
+						else temp.classList.remove('em-hidden');
+
+					}
+
+					yes.classList.add('em-cc-green');
+					no.classList.remove('em-cc-green');
+
+
+				});
+
+				no.addEventListener('click', function(e) {
+
+					input.value = '';
+
+					if (show) {
+						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+						var temp = qs('.'+c);
+
+						if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
+						else temp.classList.add('em-hidden');
+						
+					}
+
+					yes.classList.remove('em-cc-green');
+					no.classList.add('em-cc-green');
+
+				});
+
+			})();
+		}
+
+
 		// LIST INPUTS
 
 
@@ -248,7 +319,6 @@
 
 		try {
 			qs('.em-b-back').addEventListener('click', function(e) {
-				// var current = e.target.parentNode;
 
 				current.style.display = 'none';
 

@@ -19,7 +19,7 @@ final class Axowl_inputs {
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'collect_debt' => ['checkbox' => true, 'no' => true],
-			'mobile_number' => ['text' => true, 'type' => 'text'],
+			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone'],
 			'email' => ['text' => true],
 
 			
@@ -33,15 +33,15 @@ final class Axowl_inputs {
 
 			'education_loan' => ['hidden' => true, 'text' => true],
 
-			'norwegian' => ['checkbox' => true, 'yes' => true],
+			'norwegian' => ['checkbox' => true, 'yes' => true, 'show' => 'no: em-norwegian'],
+			'div' => ['class' => 'em-norwegian', 'hidden' => true], 
 			'years_in_norway' => [
-								'hidden' => true,
 								'key_as_value' => true,
 								'list' => Axowl_list::years_in_norway 
 								],
 
-			'country_of_origin' => ['hidden' => true, 'key_as_value' => true, 'list' => Axowl_list::country_of_origin ],
-
+			'country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin ],
+			'/div' => '',
 			'income' => ['text' => true],
 
 
@@ -63,24 +63,27 @@ final class Axowl_inputs {
 
 
 
-			'co_applicant' => ['checkbox' => true, 'page' => '4', 'no' => true],
+			'co_applicant' => ['checkbox' => true, 'page' => '4', 'no' => true, 'show' => 'em-co-applicant'],
 
-			'co_applicant_name' => ['hidden' => true, 'text' => true],
-			'co_applicant_social_number' => ['hidden' => true, 'text' => true],
-			'co_applicant_mobile_number' => ['hidden' => true, 'text' => true],
-			'co_applicant_email' => ['hidden' => true, 'text' => true],
+			'div2' => ['class' => 'em-co-applicant', 'hidden' => true], 
+			'co_applicant_name' => ['text' => true],
+			'co_applicant_social_number' => ['text' => true],
+			'co_applicant_mobile_number' => ['text' => true],
+			'co_applicant_email' => ['text' => true],
 
-			'co_applicant_employment_type' => ['hidden' => true, 'list' => Axowl_list::employment_type ],
-			'co_applicant_employment_since' => ['hidden' => true, 'list' => Axowl_list::years ],
-			'co_applicant_employer' => ['hidden' => true, 'text' => true],
+			'co_applicant_employment_type' => ['list' => Axowl_list::employment_type ],
+			'co_applicant_employment_since' => ['list' => Axowl_list::years ],
+			'co_applicant_employer' => ['text' => true],
 
-			'co_applicant_education' => ['hidden' => true, 'list' => Axowl_list::education ],
+			'co_applicant_education' => ['list' => Axowl_list::education ],
 
-			'co_applicant_norwegian' => ['hidden' => true, 'checkbox' => true, 'yes' => true],
-			'co_applicant_years_in_norway' => ['hidden' => true, 'list' => Axowl_list::years_in_norway ],
-			'co_applicant_country_of_origin' => ['key_as_value' => true, 'hidden' => true, 'list' => Axowl_list::country_of_origin ],
-
-			'co_applicant_income' => ['hidden' => true, 'text' => true],
+			'co_applicant_norwegian' => ['checkbox' => true, 'yes' => true, 'show' => 'no:em-co-applicant-norwegian'],
+			'div3' => ['class' => 'em-co-applicant-norwegian', 'hidden' => true],
+			'co_applicant_years_in_norway' => ['list' => Axowl_list::years_in_norway ],
+			'co_applicant_country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin ],
+			'/div3' => '',
+			'co_applicant_income' => ['text' => true],
+			'/div2' => '',
 
 
 			'unsecured_debt_balance' => ['text' => true, 'page' => '5'],

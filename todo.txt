@@ -1,6 +1,6 @@
 
-FORANDRE FOREACH SIDEN DE IKKE VIRKER I INTERNET EXPLORER
-
+hvis input ved listevalg
+validate alle felt
 
 tabindex
 

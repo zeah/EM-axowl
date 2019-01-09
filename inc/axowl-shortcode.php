@@ -55,12 +55,12 @@ final class Axowl_shortcode {
 
 		$html .= '<input type="hidden" name="'.$data['name'].'">';
 
-		$html .= '<div class="part-container">';
+		$html .= '<div class="em-part-container">';
 
-		$html .= '<div class="part part-1">';
+		$html .= '<div class="em-part em-part-1">';
 
 		foreach($inputs as $key => $value) {
-			if (isset($value['page'])) $html .= '</div><div class="part part-'.$value['page'].'">';
+			if (isset($value['page'])) $html .= '</div><div class="em-part em-part-'.$value['page'].'">';
 			$html .= $this->element($key, $value, $data);
 		}
 			
@@ -82,6 +82,23 @@ final class Axowl_shortcode {
 	}
 
 	private function element($key, $value, $data) {
+
+		if (substr($key, 0,3) == 'div') {
+			$html = sprintf('<div class="%s%s">', 
+				$value['class'] ? $value['class'] : '',
+				$value['hidden'] ? ' em-hidden' : ''
+			);
+
+			return $html;
+		}
+
+		if (substr($key, 0,4) == '/div') {
+			$html = '</div>';
+
+			return $html;
+		}
+
+
 		$html = sprintf('<div class="em-element-container em-element-%1$s%2$s">', 
 							$key, 
 							(isset($value['hidden']) ? ' em-hidden' : '')
@@ -190,7 +207,7 @@ final class Axowl_shortcode {
 		return sprintf('<div class="em-cc em-cc-%1$s">
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
-							<input class="em-c em-c-%1$s" name="%1$s" type="hidden" value="%6$s">
+							<input class="em-c em-c-%1$s" name="%1$s" type="hidden" value="%6$s"%7$s>
 							<div class="em-cc-selector">
 								<button type="button" class="em-i em-cc-yes%4$s">Ja</button>
 								<button type="button" class="em-i em-cc-no%5$s">Nei</button>
@@ -201,7 +218,8 @@ final class Axowl_shortcode {
 						($o['ht'] ? sprintf('<button type="button" class="em-ht-q">?</button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : ''),
 						$o['value']['yes'] ? ' em-cc-green' : '',
 						$o['value']['no'] ? ' em-cc-green' : '',
-						$o['value']['yes'] ? '1' : '0'
+						$o['value']['yes'] ? '1' : '0',
+						$o['value']['show'] ? ' data-show="'.$o['value']['show'].'"' : ''
 						);
 	}
 
