@@ -19,76 +19,73 @@ final class Axowl_inputs {
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'tenure' => ['text' => true, 'range' => true, 'validation' => 'numbersOnly', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'collect_debt' => ['checkbox' => true, 'no' => true],
-			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone'],
-			'email' => ['text' => true],
+			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8],
+			'email' => ['text' => true, 'validation' => 'email'],
 
 			
-			'social_number' => ['text' => true, 'page' => '2'],
-			'employment_type' => ['list' => Axowl_list::employment_type ],
+			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],
+			'employment_type' => ['list' => Axowl_list::employment_type, 'validation' => 'list'],
 
-			'employment_since' => ['hidden' => true, 'list' => Axowl_list::years ],
+			'employment_since' => ['hidden' => true, 'list' => Axowl_list::years, 'validation' => 'list'],
 			'employer' => ['text' => true, 'hidden' => true],
 
-			'education' => ['list' => Axowl_list::education ],
+			'education' => ['list' => Axowl_list::education, 'validation' => 'list'],
 
-			'education_loan' => ['hidden' => true, 'text' => true],
+			'education_loan' => ['hidden' => true, 'text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
 
 			'norwegian' => ['checkbox' => true, 'yes' => true, 'show' => 'no: em-norwegian'],
 			'div' => ['class' => 'em-norwegian', 'hidden' => true], 
-			'years_in_norway' => [
-								'key_as_value' => true,
-								'list' => Axowl_list::years_in_norway 
-								],
+			'years_in_norway' => ['key_as_value' => true, 'list' => Axowl_list::years_in_norway, 'validation' => 'list'],
 
-			'country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin ],
+			'country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin, 'validation' => 'list'],
 			'/div' => '',
-			'income' => ['text' => true],
+			'income' => ['text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
 
-
-			'civilstatus' => ['page' => '3', 'list' => Axowl_list::civilstatus ],
-			'spouse_income' => ['hidden' => true, 'text' => true],
-
-			'living_conditions' => ['list' => Axowl_list::living_conditions ],
-			'rent_income' => ['hidden' => true, 'text' => true],
-			'mortgage' => ['hidden' => true, 'text' => true],
-			'rent' => ['hidden' => true, 'text' => true],
-
-			'address_since' => ['list' => Axowl_list::years ],
-			
-			'car_boat_mc_loan' => ['text' => true],
-
-			'number_of_children' => ['key_as_value' => true, 'list' => Axowl_list::number_of_children ],
-			'allimony_per_month' => ['text' => true, 'hidden' => true],
-
-
-
-
-			'co_applicant' => ['checkbox' => true, 'page' => '4', 'no' => true, 'show' => 'em-co-applicant'],
+			'co_applicant' => ['checkbox' => true, 'page' => '3', 'no' => true, 'show' => 'em-co-applicant'],
 
 			'div2' => ['class' => 'em-co-applicant', 'hidden' => true], 
-			'co_applicant_name' => ['text' => true],
-			'co_applicant_social_number' => ['text' => true],
-			'co_applicant_mobile_number' => ['text' => true],
-			'co_applicant_email' => ['text' => true],
+			'co_applicant_name' => ['text' => true, 'validation' => 'textOnly'],
+			'co_applicant_social_number' => ['text' => true, 'validation' => 'numbersOnly', 'digits' => 11],
+			'co_applicant_mobile_number' => ['text' => true, 'validation' => 'numbersOnly', 'digits' => 8],
+			'co_applicant_email' => ['text' => true, 'validation' => 'email'],
 
-			'co_applicant_employment_type' => ['list' => Axowl_list::employment_type ],
-			'co_applicant_employment_since' => ['list' => Axowl_list::years ],
-			'co_applicant_employer' => ['text' => true],
+			'co_applicant_employment_type' => ['list' => Axowl_list::employment_type, 'validation' => 'list'],
+			'co_applicant_employment_since' => ['list' => Axowl_list::years, 'validation' => 'list', 'hidden' => true],
+			'co_applicant_employer' => ['text' => true, 'hidden' => true],
 
-			'co_applicant_education' => ['list' => Axowl_list::education ],
+			'co_applicant_education' => ['list' => Axowl_list::education, 'validation' => 'list'],
 
 			'co_applicant_norwegian' => ['checkbox' => true, 'yes' => true, 'show' => 'no:em-co-applicant-norwegian'],
 			'div3' => ['class' => 'em-co-applicant-norwegian', 'hidden' => true],
-			'co_applicant_years_in_norway' => ['list' => Axowl_list::years_in_norway ],
-			'co_applicant_country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin ],
+			'co_applicant_years_in_norway' => ['list' => Axowl_list::years_in_norway, 'validation' => 'list'],
+			'co_applicant_country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin, 'validation' => 'list'],
 			'/div3' => '',
-			'co_applicant_income' => ['text' => true],
+			'co_applicant_income' => ['text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
 			'/div2' => '',
 
+			'civilstatus' => ['page' => '4', 'list' => Axowl_list::civilstatus, 'validation' => 'list'],
+			'spouse_income' => ['hidden' => true, 'text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
 
-			'unsecured_debt_balance' => ['text' => true, 'page' => '5'],
+			'living_conditions' => ['list' => Axowl_list::living_conditions, 'validation' => 'list'],
+			'rent_income' => ['hidden' => true, 'text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
+			'mortgage' => ['hidden' => true, 'text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
+			'rent' => ['hidden' => true, 'text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
 
-			'account_number' => ['text' => true]
+			'address_since' => ['list' => Axowl_list::years, 'validation' => 'list'],
+			
+			'car_boat_mc_loan' => ['text' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
+
+			'number_of_children' => ['key_as_value' => true, 'list' => Axowl_list::number_of_children, 'validation' => 'list'],
+			'allimony_per_month' => ['text' => true, 'hidden' => true, 'validation' => 'numbersOnly', 'format' => 'currency'],
+
+
+
+
+
+
+			'unsecured_debt_balance' => ['text' => true, 'page' => '5', 'validation' => 'numbersOnly', 'format' => 'currency'],
+
+			'account_number' => ['text' => true, 'validation' => 'numbersOnly']
 
 			];
 

@@ -10,10 +10,6 @@
 	 * @return {HTML element}   html element
 	 */
 	var qs = function(e) { 
-	
-		// if val is not set
-		// if (!v) return document.querySelector(e);
-
 		// get element
 		var t = document.querySelector(e);
 
@@ -21,25 +17,17 @@
 		if (!t) return null;
 
 		return t;
-
-		// add validation to element
-		// t.validate = function() {
-
-		// } 
-	
-	// 	// returns element
-	// 	return t;
 	}
 
 	var current = qs('.em-part');
 
+
 	var kroner = function(n) {
 		if (!n) return '';
 
-
 		n = String(n).replace(/[^0-9]/g, '');
 
-		if (n == '') return '';
+		if (n == '' || !n) return '';
 
 		return parseInt(n).toLocaleString(
 							// 'sv-SE', 
@@ -52,7 +40,21 @@
 							});
 	}
 
-	var numb = function(n) { return parseInt(n.replace(/[^0-9]/g, '')) }
+	var numb = function(n) { return n.replace(/[^0-9]/g, '') }
+
+	var payment = function() {
+		var i = '0.068'/12;
+		try { 
+			var p = numb(qs('.em-i-loan_amount').value);
+			var n = numb(qs('.em-i-tenure').value)*12;
+
+			qs('.em-if-monthly_cost').value = kroner(Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))) 
+		} catch (e) { console.error('Cost calculation: '+e) }
+	};
+
+	payment();
+
+
 
 	var val = {
 
@@ -70,18 +72,45 @@
 
 		textOnly: function(d) {
 
+			return true;
+
+		},
+
+		list: function(d) {
+			if (!d) return false;
+
+			return true;
 		},
 
 		phone: function(d) {
 
 			var n = val.numbersOnly(d);
+			// console.log('hi '+n);
 
-			if (n.length == 8) return true;
+			if (!n) return false;
 
+			if (d.length == 8) return true;
+
+
+			// console.log('true');
 			return false;
 		},
 
+		socialnumber: function(d) {
+
+			var n = val.numbersOnly(d);
+
+			if (!n) return false;
+
+			if (d.length == 11) return true;
+
+			return false;
+
+		},
+
 		email: function(d) {
+
+			return /.+@.+\..+/.test(d);
 
 		},
 
@@ -90,6 +119,27 @@
 		}
 
 
+	}
+
+	var v = function(e, format, valid) {
+		try { 
+
+			var data = e.target.value;
+			var pa = e.target.parentNode.parentNode;
+
+			// removing postfix
+			if (format && format.indexOf('postfix:') -1) {
+				var temp = format.replace('postfix:', '');
+
+				data = e.target.value.replace(temp, '');
+			}
+
+			// validating
+			if (!val[valid](data)) pa.style.backgroundColor = 'red'; 
+			else pa.style.backgroundColor = 'transparent'; 
+		}
+
+		catch (e) { console.error('Error during validation: '+e) }
 	}
 
 
@@ -108,11 +158,11 @@
 			// scoping for events
 			(function() { 
 				var n = textInput[i];
-
 				var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
 				var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
 				var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
 				var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
+				var digits = n.getAttribute('data-digits') ? parseInt(n.getAttribute('data-digits')) : '';
 
 				// hitting enter
 				n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
@@ -123,6 +173,12 @@
 						e.target.value = max;
 				});
 
+
+				if (digits) n.addEventListener('input', function(e) {
+
+					if (e.target.value.length > digits) e.target.value = e.target.value.slice(0, -1)
+
+				});
 
 				// if input has a min attribute
 				if (min) n.addEventListener('focusout', function(e) {
@@ -136,12 +192,19 @@
 				});
 
 
-				// formating currency when typing
+				// formating currency
 				if (format == 'currency') {
 					n.value = kroner(n.value);
 
 					n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
 					n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
+				}
+
+				// numbers only
+				switch (valid) {
+					case 'numbersOnly':
+					case 'phone':
+					case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
 				}
 
 				// formatting with postfix
@@ -174,26 +237,32 @@
 
 
 				// validation
-				if (valid) n.addEventListener('focusout', function(e) {
+				if (valid) n.addEventListener('input', function(e) { v(e, format, valid) });
 
-					try { 
 
-						var data = e.target.value;
+				// SPECIAL RULES
+				switch (n.classList[1]) {
+					case 'em-i-tenure':
+					case 'em-i-loan_amount': 
+						n.addEventListener('input', function(e) { payment() });
+						n.addEventListener('focusout', function(e) { payment() });
+						break;
 
-						if (format.indexOf('postfix:') -1) {
-							var temp = format.replace('postfix:', '');
+					case 'em-i-email':
+						n.addEventListener('input', function(e) {
+							var l = e.target.value.length;
+							var s = function(p) { e.target.style.fontSize = p }
 
-							data = e.target.value.replace(temp, '');
-						}
+							if (l > 10) s('18px');
+							if (l > 20) s('16px');
+							if (l > 30) s('14px');
+							if (l > 40) s('12px');
 
-						if (!val[valid](data)) 
-							 e.target.parentNode.parentNode.style.backgroundColor = 'red'; 
-						else e.target.parentNode.parentNode.style.backgroundColor = 'transparent'; 
-					}
+						});
+						break;
+				}
 
-					catch (e) { console.error('Error during validation: '+e) }
 
-				});
 			})();
 		}
 		
@@ -223,6 +292,14 @@
 						else n.value = e.target.value;
 					});
 				}
+
+				switch (r.classList[1]) {
+					case 'em-r-tenure':
+					case 'em-r-loan_amount': r.addEventListener('input', function(e) {
+						payment();
+					});
+				}
+
 			})();
 		}
 
@@ -285,6 +362,99 @@
 
 
 		// LIST INPUTS
+		var lists = document.querySelectorAll('.emowl-form select');
+
+		for (var i = 0; i < lists.length; i++) {
+
+			(function() {
+
+				var n = lists[i];
+				var val = n.getAttribute('data-val');
+
+				if (val) n.addEventListener('input', function(e) { v(e, null, val)});
+
+
+				var show = function(o) {
+					try {
+						for (var i = 0; i < o.length; i++) 
+							qs(o[i]).classList.remove('em-hidden');
+						
+					} catch (e) {}
+				}
+
+				var hide = function(o) {
+					try {
+						for (var i = 0; i < o.length; i++) 
+							qs(o[i]).classList.add('em-hidden');
+						
+					} catch (e) {}
+				}
+
+				switch (n.classList[1]) {
+
+					case 'em-i-education':
+						n.addEventListener('change', function(e) {
+							switch (e.target.value) {
+								case 'Høysk./universitet 1-3 år':
+								case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
+								default: hide(['.em-element-education_loan']);
+							}
+						})
+						break;
+
+					case 'em-i-employment_type':
+						n.addEventListener('change', function(e) {
+							switch (e.target.value) {
+								case 'Fast ansatt (privat)':
+								case 'Fast ansatt (offentlig)':
+								case 'Midlertidig ansatt/vikar':
+								case 'Selvst. næringsdrivende':
+								case 'Langtidssykemeldt': show(['.em-element-employment_since', '.em-element-employer']); break;
+								default: hide(['.em-element-employment_since', '.em-element-employer']);
+							}
+						});
+						break;
+
+					case 'em-i-civilstatus':
+						n.addEventListener('change', function(e) {
+							switch (e.target.value) {
+								case 'Gift/partner':
+								case 'Samboer':
+									try {
+										if (qs('.em-c-co_applicant').value === '0') show(['.em-element-spouse_income']);
+										else hide(['.em-element-spouse_income']);
+									} catch (e) {}
+									break;
+
+								default: hide(['.em-element-spouse_income']);
+							}
+						});
+
+					case 'em-i-living_conditions':
+						n.addEventListener('change', function(e) {
+							switch (e.target.value) {
+								case 'Leier':
+								case 'Bor hos foreldre': show(['.em-element-rent']); hide(['.em-element-rent_income', '.em-element-mortgage']); break;
+								
+								case 'Aksje/andel/borettslag':
+								case 'Selveier': show(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']); break;
+
+								case 'Enebolig': show(['.em-element-rent_income', '.em-element-mortgage']); hide(['.em-element-rent']); break;
+
+								default: hide(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']);
+							}
+						});
+						break;
+
+
+
+					// TODO co-application employement_type
+				}
+
+			})();
+		}
+
+
 
 
 		// NEXT/PREV/SUBMIT BUTTONS
@@ -338,6 +508,34 @@
 
 
 
+
+	}
+
+
+
+	var hm = document.querySelectorAll('.em-ht-q');
+	for (var i = 0; i < hm.length; i++) {
+
+		(function() { 
+			var q = hm[i];
+			var p = q.parentNode;
+
+			q.addEventListener('mouseover', function(e) {
+				try { p.querySelector('.em-ht').classList.remove('em-hidden');
+				} catch (e) {}
+			});
+
+			q.addEventListener('mouseout', function(e) {
+				try { p.querySelector('.em-ht').classList.add('em-hidden')
+				} catch (e) {}
+			});
+
+			q.addEventListener('click', function(e) {
+				try { p.querySelector('.em-ht').classList.toggle('em-hidden')
+				} catch (e) {}
+
+			});
+		})();
 
 	}
 

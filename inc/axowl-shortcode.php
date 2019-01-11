@@ -134,6 +134,7 @@ final class Axowl_shortcode {
 													'text' => $data[$key],
 													'ht' => $data[$key.'_ht'],
 													'list' => $value['list'],
+													'validation' => $value['validation'],
 													'key_as_value' => $value['key_as_value']
 												]);
 		}
@@ -157,7 +158,7 @@ final class Axowl_shortcode {
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
 							</label>
-							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s>
+							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s>
 						</div>',
 
 						$o['name'],
@@ -168,7 +169,8 @@ final class Axowl_shortcode {
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
 						(isset($o['value']['default']) ? $o['value']['default'] : ''),
 						(isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : ''),
-						(isset($o['value']['format']) ? ' data-format="'.$o['value']['format'].'"' : '')
+						(isset($o['value']['format']) ? ' data-format="'.$o['value']['format'].'"' : ''),
+						(isset($o['value']['digits']) ? ' data-digits="'.$o['value']['digits'].'"' : '')
 					);
 	}
 
@@ -243,7 +245,10 @@ final class Axowl_shortcode {
 							$o['text']
 						);
 
-		$html .= sprintf('<select class="em-i em-i-%1$s" id="%1$s" name="%1$s">', $o['name']);
+		$html .= sprintf('<select class="em-i em-i-%1$s" id="%1$s" name="%1$s"%2$s>', 
+					$o['name'],
+					$o['validation'] ? ' data-val="'.$o['validation'].'"' : ''
+				);
 
 		$html .= '<option></option>';
 
