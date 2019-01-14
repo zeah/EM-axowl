@@ -164,6 +164,20 @@
 	}
 
 
+	var blur = function(e) {
+		var l = current.querySelectorAll('.em-element-container');
+
+		for (var i = 0; i < l.length; i++) 
+			if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.1';
+	}
+
+	var unblur = function() {
+		var l = current.querySelectorAll('.em-element-container');
+
+		for (var i = 0; i < l.length; i++)
+			l[i].style.opacity = 1;
+	}
+
 	// container for parts and inputs
 	// var P = {
 
@@ -242,8 +256,12 @@
 
 
 				// selecting all text when focusing input
-				n.addEventListener('focus', function(e) { e.target.select() });
+				n.addEventListener('focus', function(e) { 
+					e.target.select(); 
+					blur(e);
+				});
 
+				n.addEventListener('focusout', function(e) { unblur(); });
 
 				// if parent has range input
 				var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
@@ -395,7 +413,10 @@
 				var n = lists[i];
 				var val = n.getAttribute('data-val');
 
-				if (val) n.addEventListener('input', function(e) { v(e.target, null, val)});
+				if (val) n.addEventListener('input', function(e) { unblur(); v(e.target, null, val)});
+
+				n.addEventListener('focus', function(e) { blur(e) });
+				// n.addEventListener('focusout', function(e) { unblur() });
 
 
 				var show = function(o) {
