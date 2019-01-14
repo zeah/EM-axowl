@@ -69,6 +69,7 @@ final class Axowl_shortcode {
 
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
+		$html .= '<progress title="framdriftsbar" class="em-progress" value="100" max="100"></progress>';
 		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
 		$html .= '</div>';

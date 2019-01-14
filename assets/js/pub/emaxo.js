@@ -178,10 +178,11 @@
 			l[i].style.opacity = 1;
 	}
 
-	// container for parts and inputs
-	// var P = {
 
-	// }
+	var progress = function() {
+
+	}
+
 
 	var init = function() {
 
@@ -240,6 +241,7 @@
 					case 'currency':
 					case 'numbersOnly':
 					case 'phone':
+					case 'ar':
 					case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
 				}
 
@@ -582,6 +584,7 @@
 			});
 		} catch (e) {}
 
+		// back button
 		try {
 			qs('.em-b-back').addEventListener('click', function(e) {
 
@@ -601,38 +604,47 @@
 			});
 		} catch (e) {}
 
+		// console.log('hi');
 
+		// helper text
+		var hm = document.querySelectorAll('.em-ht-q');
+		for (var i = 0; i < hm.length; i++) 
+			(function() { 
+				var q = hm[i];
+				var p = q.parentNode;
 
+				q.addEventListener('mouseover', function(e) {
+					try { p.querySelector('.em-ht').classList.remove('em-hidden');
+					} catch (e) {}
+				});
 
-	}
+				q.addEventListener('mouseout', function(e) {
+					try { p.querySelector('.em-ht').classList.add('em-hidden')
+					} catch (e) {}
+				});
 
+				q.addEventListener('click', function(e) {
+					try { p.querySelector('.em-ht').classList.toggle('em-hidden')
+					} catch (e) {}
 
+				});
+			})();
+		
+		// console.log('hi');
 
-	var hm = document.querySelectorAll('.em-ht-q');
-	for (var i = 0; i < hm.length; i++) {
+		// progress bar
+		var il = document.querySelectorAll('.em-i');
+		for (var i = 0; i < il.length; i++) (function() {
+			switch (il[i].tagName) {
+				case 'INPUT':
+				case 'SELECT': break;
+				default: return;
+			}
 
-		(function() { 
-			var q = hm[i];
-			var p = q.parentNode;
-
-			q.addEventListener('mouseover', function(e) {
-				try { p.querySelector('.em-ht').classList.remove('em-hidden');
-				} catch (e) {}
-			});
-
-			q.addEventListener('mouseout', function(e) {
-				try { p.querySelector('.em-ht').classList.add('em-hidden')
-				} catch (e) {}
-			});
-
-			q.addEventListener('click', function(e) {
-				try { p.querySelector('.em-ht').classList.toggle('em-hidden')
-				} catch (e) {}
-
-			});
+			il[i].addEventListener('focusout', function(e) { progress() });
 		})();
 
-	}
+	} // end of init
 
 
 	init();
