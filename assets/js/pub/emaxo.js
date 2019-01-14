@@ -59,15 +59,10 @@
 	var val = {
 
 		numbersOnly: function(d) {
-			// testing number input
-			if (/^[0-9\s]+$/.test(d)) return true;
 
-			// testing NOK currency input
-			if (/^kr\s\d+\s\d+$/.test(d)) return true;
-			
-			// testing SEK currency input
-			if (/^\d+\s\d+\skr$/.test(d)) return true;
+			if (/^\d+$/.test(d)) return true;
 
+			return false
 		},
 
 		textOnly: function(d) {
@@ -116,27 +111,53 @@
 
 		name: function(d) {
 			
-		}
+		},
 
+		currency: function(d) {
+
+			d = d.replace(/\s/g, '');
+			d = d.replace(/kr/, '');
+
+			return val.numbersOnly(d);
+		},
+
+		ar: function(d) {
+			d = d.replace(/\s/g, '');
+			d = d.replace(/år/, '');
+
+			return val.numbersOnly(d);
+		},
+
+		notEmpty: function(d) {
+			if (d.length > 0) return true;
+			return false;
+		}
 
 	}
 
 	var v = function(e, format, valid) {
 		try { 
 
-			var data = e.target.value;
-			var pa = e.target.parentNode.parentNode;
+			var data = e.value;
+			var pa = e.parentNode.parentNode;
 
 			// removing postfix
 			if (format && format.indexOf('postfix:') -1) {
 				var temp = format.replace('postfix:', '');
 
-				data = e.target.value.replace(temp, '');
+				data = e.value.replace(temp, '');
 			}
 
 			// validating
-			if (!val[valid](data)) pa.style.backgroundColor = 'red'; 
-			else pa.style.backgroundColor = 'transparent'; 
+			if (!val[valid](data)) {
+				pa.style.backgroundColor = 'red';
+				return false;
+			} 
+			
+			else { 
+				pa.style.backgroundColor = 'transparent'; 
+				return true;
+			}
 		}
 
 		catch (e) { console.error('Error during validation: '+e) }
@@ -202,6 +223,7 @@
 
 				// numbers only
 				switch (valid) {
+					case 'currency':
 					case 'numbersOnly':
 					case 'phone':
 					case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
@@ -211,7 +233,7 @@
 				if (format.indexOf('postfix:') != -1) {
 					var pf = format.replace('postfix:', '');
 
-					n.value = n.value + pf;
+					n.value = n.value.replace(/[^0-9]/g, '') + pf;
 
 					n.addEventListener('focusout', function(e) { e.target.value = numb(e.target.value) + pf });
 
@@ -237,8 +259,10 @@
 
 
 				// validation
-				if (valid) n.addEventListener('input', function(e) { v(e, format, valid) });
-
+				if (valid) {
+					n.addEventListener('input', function(e) { v(e.target, format, valid) });
+					n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
+				}
 
 				// SPECIAL RULES
 				switch (n.classList[1]) {
@@ -371,7 +395,7 @@
 				var n = lists[i];
 				var val = n.getAttribute('data-val');
 
-				if (val) n.addEventListener('input', function(e) { v(e, null, val)});
+				if (val) n.addEventListener('input', function(e) { v(e.target, null, val)});
 
 
 				var show = function(o) {
@@ -429,6 +453,7 @@
 								default: hide(['.em-element-spouse_income']);
 							}
 						});
+						break;
 
 					case 'em-i-living_conditions':
 						n.addEventListener('change', function(e) {
@@ -446,9 +471,19 @@
 						});
 						break;
 
+					case 'em-i-co_applicant_employment_type':
+						n.addEventListener('change', function(e) {
+							switch (e.target.value) {
+								case 'Fast ansatt (privat)':
+								case 'Fast ansatt (offentlig)':
+								case 'Midlertidig ansatt/vikar':
+								case 'Selvst. næringsdrivende':
+								case 'Langtidssykemeldt': show(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']); break;
+								default: hide(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']);
+							}
+						});
+						break;
 
-
-					// TODO co-application employement_type
 				}
 
 			})();
@@ -460,6 +495,45 @@
 		// NEXT/PREV/SUBMIT BUTTONS
 		try {
 			qs('.em-b-next').addEventListener('click', function(e) {
+
+
+				var test = current.querySelectorAll('.em-i');
+
+				var success = true;
+
+				for (var i = 0; i < test.length; i++) {
+
+					(function() {
+
+						var n = test[i];
+
+
+						if (n.parentNode.parentNode.classList.contains('em-hidden'))
+							return;
+
+						if (n.parentNode.parentNode.parentNode.classList.contains('em-hidden'))
+							return;
+
+
+						if (n.getAttribute('data-val')) {
+
+							var val = n.getAttribute('data-val');
+
+							var f = n.getAttribute('format');
+
+							var ver = v(n, null, val);
+
+							if (!ver) success = false;
+						}
+
+					})();
+
+				}
+
+				if (!success) {
+					success = true;
+					return;
+				}
 				
 				// hiding current part
 				current.style.display = 'none';
