@@ -88,7 +88,7 @@ final class Axowl_inputs {
 
 			'unsecured_debt_balance' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency'],
 
-			'account_number' => ['text' => true, 'validation' => 'numbersOnly']
+			'account_number' => ['text' => true, 'validation' => 'numbersOnly', 'digits' => '13']
 
 		];
 
