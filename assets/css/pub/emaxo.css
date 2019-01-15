@@ -261,6 +261,10 @@
 }
 
 .em-part-1 {
+	display: block;
+}
+
+.em-part-1-grid {
 	display: grid;
 
 	grid-template-columns: 1fr 1fr;
@@ -269,7 +273,8 @@
 	"monthly monthly"
 	"loan loan"
 	"tenure refinancing"
-	"mobile email";
+	"mobile email"
+	"axoaccept axoaccept";
 
 	justify-content: space-between;
 	align-items: stretch;
@@ -376,20 +381,20 @@
 
 /* 1.4.4 helper text */
 .em-ht {
-	/*font-size: 1.6rem;*/
+	font-size: 1.2rem;
 	display: flex;
 
 	align-items: center;
 
 	position: absolute;
-	top: 2.6rem;
-	right: -27.9rem;
+	top: 2.8rem;
+	right: -17.9rem;
 
 	background-color: hsl(0, 0%, 95%);
-	padding: 0.5rem;
+	padding: 0 0.5rem;
 	z-index: 99;
-	width: 30rem;
-	/*height: 5rem;*/
+	width: 20rem;
+	height: 3.3rem;
 
 	border: solid 1px hsl(0, 0%, 50%);
 	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
@@ -397,16 +402,16 @@
 }
 
 .arrow-right {
-	display: inline-block;
+	/*display: inline-block;
 	position: relative;
-	/*bottom: .6rem;*/
+	bottom: .6rem;
 	right: 0.7rem;
 	width: 0; 
 	height: 0; 
 	border-top: 2.5rem solid transparent;
 	border-bottom: 2.5rem solid transparent;
 	  
-	border-left: 2.5rem solid hsl(0, 0%, 30%);
+	border-left: 2.5rem solid hsl(0, 0%, 30%);*/
 }
 
 .em-ht-q {
@@ -433,6 +438,14 @@
 
 .em-ht-q:hover {
 	background-color: hsl(0, 0%, 90%);
+}
+
+.em-ht-q > span {
+	position: relative;
+	bottom: .2rem;
+	right: .1rem;
+
+	font-size: 1.6rem;
 }
 
 /* 1.4.5 label */
@@ -577,3 +590,16 @@
 	font-weight: 700;
 }
 
+/* 8.0 axo accept */
+.em-element-axo_accept {
+	grid-area: axoaccept;
+	justify-self: center;
+	/*align-self: center;*/
+	font-size: 1.2rem;
+}
+
+.em-check-axo_accept {
+	position: relative;
+	top: .3rem;
+	width: auto;
+}

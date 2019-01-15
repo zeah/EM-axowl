@@ -88,7 +88,8 @@ final class Axowl_settings {
 			'co_applicant_income' => 'Yearly income before taxes ("bruttolønn")',
 			'unsecured_debt_lender' => 'List of (unsecured) lenders.',
 			'unsecured_debt_balance' => 'The sum of all loans the customer wants to refinance.',
-			'account_number' => 'The bank account the loan will be paid out to, <br>without e.g. spaces and dots. CDV control is recommended'
+			'account_number' => 'The bank account the loan will be paid out to, <br>without e.g. spaces and dots. CDV control is recommended',
+			'axo_accept' => 'Checkbox for accepting data usage by axo.'
 		];
 
 		foreach ($input as $key => $value)

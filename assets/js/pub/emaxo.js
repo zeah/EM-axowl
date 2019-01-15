@@ -19,6 +19,14 @@
 		return t;
 	}
 
+	var qsa = function(e) {
+		var t = document.querySelectorAll(e);
+
+		if (!t) return [];
+
+		return t;
+	}
+
 	var current = qs('.em-part');
 
 
@@ -131,6 +139,10 @@
 		notEmpty: function(d) {
 			if (d.length > 0) return true;
 			return false;
+		},
+
+		check: function(d) {
+			return d;
 		}
 
 	}
@@ -147,6 +159,9 @@
 
 				data = e.value.replace(temp, '');
 			}
+
+			if (e.getAttribute('type') == 'checkbox')
+				data = e.checked;
 
 			// validating
 			if (!val[valid](data)) {
@@ -168,7 +183,7 @@
 		var l = current.querySelectorAll('.em-element-container');
 
 		for (var i = 0; i < l.length; i++) 
-			if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.1';
+			if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.4';
 	}
 
 	var unblur = function() {
@@ -180,6 +195,37 @@
 
 
 	var progress = function() {
+		var li = document.querySelectorAll('.em-i:not(button)');
+
+		var t = 0;
+		var c = 0;
+
+		for (var i = 0; i < li.length; i++) {
+			var n = li[i];
+			if (n.parentNode.parentNode.classList.contains('em-hidden')) continue;
+			if (n.parentNode.parentNode.parentNode.classList.contains('em-hidden')) continue;
+
+			var a = n.getAttribute('data-val');
+
+
+			if (!a) continue;
+
+			t++;
+			try {
+
+				var value = n.value;
+
+				if (n.getAttribute('type') == 'checkbox') value = n.checked;
+				
+				if (val[a](value)) c++;
+			} catch (e) { console.error(e) }	
+		}
+
+		var p = document.querySelector('.em-progress');
+
+		p.value = (c/t) * 100 ;
+
+		// console.log(c);
 
 	}
 
@@ -348,12 +394,12 @@
 		}
 
 
-		// CHECK INPUTS
-		var checkInput = document.querySelectorAll('.em-cc');
+		// CHECKBOX INPUTS
+		var checkboxInput = document.querySelectorAll('.em-cc');
 
-		for (var i = 0; i < checkInput.length; i++) {
+		for (var i = 0; i < checkboxInput.length; i++) {
 			(function() {
-				var c = checkInput[i];
+				var c = checkboxInput[i];
 
 				var yes = c.querySelector('.em-cc-yes');
 				var no = c.querySelector('.em-cc-no');
@@ -404,6 +450,18 @@
 			})();
 		}
 
+
+		// CHECK INPUTS
+		var checkInput = qsa('.em-check');
+		for (var i = 0; i < checkInput.length; i++) (function() {
+			var n = checkInput[i];
+
+			if (!n.getAttribute('data-val')) return;
+			n.addEventListener('change', function(e) {
+				v(e.target, null, e.target.getAttribute('data-val'));
+			});
+
+		})();
 
 		// LIST INPUTS
 		var lists = document.querySelectorAll('.emowl-form select');
@@ -604,7 +662,6 @@
 			});
 		} catch (e) {}
 
-		// console.log('hi');
 
 		// helper text
 		var hm = document.querySelectorAll('.em-ht-q');
@@ -630,23 +687,38 @@
 				});
 			})();
 		
-		// console.log('hi');
 
-		// progress bar
-		var il = document.querySelectorAll('.em-i');
-		for (var i = 0; i < il.length; i++) (function() {
-			switch (il[i].tagName) {
-				case 'INPUT':
-				case 'SELECT': break;
-				default: return;
-			}
+		var inputs = qsa('input.em-i:not(.em-check)');
+		// var checks = qsa('input.em-check');
+		var selects = qsa('select.em-i, input.em-check');
 
-			il[i].addEventListener('focusout', function(e) { progress() });
+		for (var i = 0; i < inputs.length; i++) (function() {
+			inputs[i].addEventListener('focusout', function() { progress() });
 		})();
+
+		for (var i = 0; i < selects.length; i++) (function() {
+			selects[i].addEventListener('change', function() { progress() });
+		})();
+
+		// for (var i = 0; i < checks.length; i++) (function() {
+		// 	checks[i].addEventListener('change', function() { progress() });
+		// })();
+
+
+		var submitClick = function(e) {
+			console.log('heya');
+			submit.removeEventListener('click', submitClick);
+		}
+
+		var submit = document.querySelector('.em-b-submit');
+		submit.addEventListener('click', submitClick);
 
 	} // end of init
 
 
+	// console.log(qsa('input.em-i'));
+
 	init();
+	progress();
 
 })();

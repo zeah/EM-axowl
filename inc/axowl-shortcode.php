@@ -69,7 +69,7 @@ final class Axowl_shortcode {
 
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
-		$html .= '<progress title="framdriftsbar" class="em-progress" value="100" max="100"></progress>';
+		$html .= '<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>';
 		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
 		$html .= '</div>';
@@ -130,6 +130,13 @@ final class Axowl_shortcode {
 														'value' => $value
 													]);
 
+			if (isset($value['check'])) $html .= $this->check_input([
+														'name' => $key,
+														'text' => $data[$key],
+														'ht' => $data[$key.'_ht'],
+														'value' => $value
+													]);
+
 			if (isset($value['list'])) $html .= $this->list_input([
 													'name' => $key,
 													'text' => $data[$key],
@@ -164,7 +171,7 @@ final class Axowl_shortcode {
 
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<button type="button" class="em-ht-q" tabindex="0">?</button type="button"><div class="em-ht em-hidden em-ht-%1$s"><div class="arrow-right"></div><div>%2$s</div></div>', $o['name'], $o['ht']) : ''),
+						($o['ht'] ? sprintf('<button type="button" class="em-ht-q" tabindex="0"><span>?</span></button type="button"><div class="em-ht em-hidden em-ht-%1$s"><div class="arrow-right"></div><div>%2$s</div></div>', $o['name'], $o['ht']) : ''),
 						(isset($o['value']['max']) ? ' max='.$o['value']['max'] : ''),
 						(isset($o['value']['min']) ? ' min='.$o['value']['min'] : ''),
 						(isset($o['value']['type']) ? $o['value']['type'] : 'text'),
@@ -218,12 +225,26 @@ final class Axowl_shortcode {
 						</div>',
 						$o['name'],
 						$o['text'],
-						($o['ht'] ? sprintf('<button type="button" class="em-ht-q">?</button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : ''),
+						($o['ht'] ? sprintf('<button type="button" class="em-ht-q"><span>?</span></button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : ''),
 						$o['value']['yes'] ? ' em-cc-green' : '',
 						$o['value']['no'] ? ' em-cc-green' : '',
 						$o['value']['yes'] ? '1' : '0',
 						$o['value']['show'] ? ' data-show="'.$o['value']['show'].'"' : ''
 						);
+	}
+
+	private function check_input($o = []) {
+
+		return sprintf('<div class="em-element em-element-check em-element-check-%1$s">
+							<input type="checkbox" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s>
+							<label for="em-check-%1$s">%2$s</label>
+						</div>',
+						$o['name'],
+						$o['text'],
+						(isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : '')
+
+					);
+
 	}
 
 	private function text_field($o = []) {
@@ -241,9 +262,10 @@ final class Axowl_shortcode {
 		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		$html = sprintf('<div class="em-lc em-lc-">', $o['name']);
 
-		$html .= sprintf('<label for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4></label>',
+		$html .= sprintf('<label for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4>%3$s</label>',
 							$o['name'],
-							$o['text']
+							$o['text'],
+							($o['ht'] ? sprintf('<button type="button" class="em-ht-q"><span>?</span></button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : '')
 						);
 
 		$html .= sprintf('<select class="em-i em-i-%1$s" id="%1$s" name="%1$s"%2$s>', 
@@ -281,9 +303,9 @@ final class Axowl_shortcode {
 
 
 	public function sands() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 841px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.1', '(min-width: 841px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 840px)');
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.0', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.1', true);
 	
 	}
 }
