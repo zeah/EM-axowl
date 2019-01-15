@@ -23,6 +23,7 @@ final class Axowl_inputs {
 			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8],
 			'email' => ['text' => true, 'validation' => 'email'],
 			'axo_accept' => ['check' => true, 'validation' => 'check'],
+			'contact_accept' => ['check' => true],
 			'/div0' => '',
 			
 			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],

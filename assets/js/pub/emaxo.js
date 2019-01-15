@@ -179,19 +179,19 @@
 	}
 
 
-	var blur = function(e) {
-		var l = current.querySelectorAll('.em-element-container');
+	// var blur = function(e) {
+	// 	var l = current.querySelectorAll('.em-element-container');
 
-		for (var i = 0; i < l.length; i++) 
-			if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.4';
-	}
+	// 	for (var i = 0; i < l.length; i++) 
+	// 		if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.5';
+	// }
 
-	var unblur = function() {
-		var l = current.querySelectorAll('.em-element-container');
+	// var unblur = function() {
+	// 	var l = current.querySelectorAll('.em-element-container');
 
-		for (var i = 0; i < l.length; i++)
-			l[i].style.opacity = 1;
-	}
+	// 	for (var i = 0; i < l.length; i++)
+	// 		l[i].style.opacity = 1;
+	// }
 
 
 	var progress = function() {
@@ -306,10 +306,10 @@
 				// selecting all text when focusing input
 				n.addEventListener('focus', function(e) { 
 					e.target.select(); 
-					blur(e);
+					// blur(e);
 				});
 
-				n.addEventListener('focusout', function(e) { unblur(); });
+				// n.addEventListener('focusout', function(e) { unblur(); });
 
 				// if parent has range input
 				var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
@@ -473,9 +473,11 @@
 				var n = lists[i];
 				var val = n.getAttribute('data-val');
 
-				if (val) n.addEventListener('input', function(e) { unblur(); v(e.target, null, val)});
+				if (val) n.addEventListener('input', function(e) { 
+					// unblur(); 
+					v(e.target, null, val)});
 
-				n.addEventListener('focus', function(e) { blur(e) });
+				// n.addEventListener('focus', function(e) { blur(e) });
 				// n.addEventListener('focusout', function(e) { unblur() });
 
 
@@ -578,39 +580,29 @@
 			qs('.em-b-next').addEventListener('click', function(e) {
 
 
+				// VALIDATION OF CURRENT PART
 				var test = current.querySelectorAll('.em-i');
-
 				var success = true;
 
-				for (var i = 0; i < test.length; i++) {
+				for (var i = 0; i < test.length; i++) (function() {
+					var n = test[i];
 
-					(function() {
+					var p = n.parentNode.parentNode;
 
-						var n = test[i];
+					if (p.classList.contains('em-hidden')) return;
 
+					if (p.parentNode.classList.contains('em-hidden')) return;
 
-						if (n.parentNode.parentNode.classList.contains('em-hidden'))
-							return;
+					if (n.getAttribute('data-val')) {
+						var val = n.getAttribute('data-val');
+						var f = n.getAttribute('format');
+						var ver = v(n, null, val);
 
-						if (n.parentNode.parentNode.parentNode.classList.contains('em-hidden'))
-							return;
+						if (!ver) success = false;
+					}
+				})();
 
-
-						if (n.getAttribute('data-val')) {
-
-							var val = n.getAttribute('data-val');
-
-							var f = n.getAttribute('format');
-
-							var ver = v(n, null, val);
-
-							if (!ver) success = false;
-						}
-
-					})();
-
-				}
-
+				// exit ramp
 				if (!success) {
 					success = true;
 					return;
@@ -619,25 +611,24 @@
 				// hiding current part
 				current.style.display = 'none';
 
-				// showing next part
-				current.nextSibling.style.display = 'grid';
-
-				// showing prev button
 				try {
+					// showing next part
+					current.nextSibling.style.display = 'block';
+		
+					// showing prev button
 					qs('.em-b-back').classList.remove('em-hidden');
-				} catch (e) {}
 
-				// replace next button with submit button if no more parts
-				if (!current.nextSibling.nextSibling) {
-
-					e.target.classList.add('em-hidden');
-
-					try {
+					// replace next button with submit button if no more parts
+					if (!current.nextSibling.nextSibling) {
+						e.target.classList.add('em-hidden');
 						qs('.em-b-submit').classList.remove('em-hidden');
-					} catch (e) {}
-				}
+					}
 
-				current = current.nextSibling;
+					current = current.nextSibling;
+
+					current.querySelector('.em-i').focus();
+
+				} catch (e) { console.error(e) }
 
 			});
 		} catch (e) {}
@@ -645,20 +636,20 @@
 		// back button
 		try {
 			qs('.em-b-back').addEventListener('click', function(e) {
-
-				current.style.display = 'none';
-
-				current.previousSibling.style.display = 'grid';
-
-				if (!current.previousSibling.previousSibling)
-					e.target.classList.add('em-hidden');
-
 				try {
+					current.style.display = 'none';
+
+					var p = current.previousSibling;
+
+					p.style.display = 'block';
+
+					if (!p.previousSibling) e.target.classList.add('em-hidden');
+
 					qs('.em-b-next').classList.remove('em-hidden');
 					qs('.em-b-submit').classList.add('em-hidden');
-				} catch (e) {}
 
-				current = current.previousSibling;
+					current = p;
+				} catch (e) {}
 			});
 		} catch (e) {}
 

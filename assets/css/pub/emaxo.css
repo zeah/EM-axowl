@@ -141,12 +141,12 @@
 	/*font-size: 2rem;*/
 
 	/* light gray */
-	background-color: hsl(20, 0%, 98%);
+	/*background-color: hsl(20, 0%, 98%);*/
 
 	/*padding: 2rem;*/
 
-	border-radius: 25px;
-	border: solid 2px  hsl(20, 0%, 97%);
+	/*border-radius: 25px;*/
+	/*border: solid 2px  hsl(20, 0%, 97%);*/
 
 	user-select: none;
 
@@ -274,7 +274,8 @@
 	"loan loan"
 	"tenure refinancing"
 	"mobile email"
-	"axoaccept axoaccept";
+	"axoaccept axoaccept"
+	"contactaccept contactaccept";
 
 	justify-content: space-between;
 	align-items: stretch;
@@ -381,23 +382,25 @@
 
 /* 1.4.4 helper text */
 .em-ht {
-	font-size: 1.2rem;
+	font-size: 1.4rem;
 	display: flex;
 
 	align-items: center;
 
 	position: absolute;
 	top: 2.8rem;
-	right: -17.9rem;
+	right: -18.9rem;
 
-	background-color: hsl(0, 0%, 95%);
-	padding: 0 0.5rem;
+	/*background-color: hsl(0, 0%, 95%);*/
+	background-color: hsl(120, 100%, 99%);
+	padding: .5rem;
 	z-index: 99;
 	width: 20rem;
-	height: 3.3rem;
-
-	border: solid 1px hsl(0, 0%, 50%);
-	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
+	/*height: 3.3rem;*/
+	line-height: 1;
+	border: solid 1px hsl(0, 0%, 70%);
+	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
+	/*box-shadow: 0 0 3px hsl(0, 0%, 30%);*/
 
 }
 
@@ -585,20 +588,31 @@
 	color: black;
 	text-align: left;
 	padding-left: 5px;
-	width: 150px;
+	width: 10rem;
 
 	font-weight: 700;
 }
 
 /* 8.0 axo accept */
-.em-element-axo_accept {
-	grid-area: axoaccept;
-	justify-self: center;
-	/*align-self: center;*/
+.em-element-check {
 	font-size: 1.2rem;
+	margin-left: 20%;
 }
 
-.em-check-axo_accept {
+.em-element-axo_accept {
+	grid-area: axoaccept;
+	padding-bottom: 0;
+	margin-bottom: 0;
+	/*justify-self: center;*/
+	/*align-self: center;*/
+}
+
+.em-element-contact_accept {
+	grid-area: contactaccept;
+	/*justify-self: center;*/
+}
+
+.em-check {
 	position: relative;
 	top: .3rem;
 	width: auto;
