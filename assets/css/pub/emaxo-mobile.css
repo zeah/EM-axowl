@@ -1,0 +1,190 @@
+/**
+ *
+ *	1.0 elements
+ *		1.1 form
+ *		1.2 misc
+ *			1.2.1 hidden elements
+ *			1.2.2 font size
+ *			
+ *		1.3 generic
+ *			1.3.1 element container
+ *			1.3.2 label
+ *				1.3.2.1 input title
+ *				1.3.2.2 helper text marker
+ *			1.3.3 input container
+ *			1.3.4 range
+ *			1.3.5 checkbox (2 buttons, 1 hidden input)
+ *				1.3.5.2 yes button
+ *				1.3.5.3 no button
+ *				1.3.5.4 selected button
+ *			1.3.6 list
+ *			1.3.7 check (single checkbox)
+ *			
+ *  	1.4 bottom container
+ *   		1.4.1 back/next buttons (hidden)
+ *   	 	1.4.2 submit button
+ *   	 	1.4.3 progress bar (fixed position)
+ */
+
+
+/* 1.0 elements */
+
+/* 1.1 form */
+.emowl-form {
+
+}
+
+
+/* 1.2 misc */
+
+/* 1.2.1 hidden */
+.em-hidden {
+	display: none;
+}
+
+/* 1.2.2 font size */
+.emowl-form,
+.em-if,
+.em-i {
+	font-size: 1.6rem;
+}
+
+/* 1.3 generic */
+
+/* 1.3.0.1 parts */
+.em-part {
+	display: block !important;
+}
+
+/* 1.3.1 element */
+.em-element-container {
+	margin-bottom: 3rem;
+}
+
+/* 1.3.2 label */
+.em-label {
+	display: flex;
+}
+
+/* 1.3.2.1 input title */
+.em-it {
+	margin: 0;
+	margin-right: auto;
+}
+
+/* 1.3.2.2 helper text marker */
+.em-ht-q {
+	align-self: center;
+}
+
+/* 1.3.3 input container */
+.em-i {
+	width: 100%;
+
+	padding: .5rem 0;
+	text-align: center;	
+	border: solid 1px hsl(0, 0%, 70%);
+	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
+}
+
+/* 1.3.4 range input */
+.em-r {
+	width: 100%;
+}
+
+/* 1.3.5 checkbox */
+
+/* 1.3.5.1 */
+.em-cc-selector {
+	display: flex;
+}
+
+.em-cc-yes,
+.em-cc-no {
+	border: none;
+	/*border: solid 1px hsl(0, 0%, 70%);*/
+	/*text-align: center;*/
+	background-color: hsl(0, 10%, 90%);
+
+	cursor: pointer;
+	padding: .5rem 0;
+}
+
+/* 1.3.5.2 yes button */
+.em-cc-yes {
+/*	border-right: none;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;*/
+}
+
+/* 1.3.5.3 no button */
+.em-cc-no {
+	/*border-top-left-radius: 0;*/
+	/*border-bottom-left-radius: 0;*/
+}
+
+
+/* 1.3.5.4 selected button */
+.em-cc-green {
+	background-color: hsl(120, 60%, 60%);
+}
+
+
+/* 1.3.6 list */
+
+/* 1.3.7 check */
+
+.em-element-check {
+	display: flex;
+
+	font-size: 1.4rem;
+}
+
+.em-check {
+	position: relative;
+	top: .2rem;
+	margin-right: 1rem;
+	margin-left: 1rem;
+	width: auto;
+
+}
+
+
+/* 1.4 bottom container */
+.em-b-container {
+
+}
+
+/* 1.4.1 next/back button */
+.em-b-back,
+.em-b-next {
+	display: none;
+}
+
+/* 1.4.2 submit button */
+.em-b-submit {
+	display: block;
+}
+
+/* 1.4.3 progress bar */
+.em-progress {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+
+.em-if-monthly_cost {
+	margin-left: 1rem;
+	width: 7rem;
+
+	background-color: transparent;
+	border: none;
+	color: #000;
+	font-weight: 700;
+}
+
+.em-element-axo_accept {
+	margin-bottom: 1rem;
+}

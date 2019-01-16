@@ -554,6 +554,13 @@
 						});
 						break;
 
+					case 'em-i-number_of_children':
+						n.addEventListener('change', function(e) {
+							if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
+							else hide(['.em-element-allimony_per_month']);
+						});
+						break;
+
 					case 'em-i-co_applicant_employment_type':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -649,6 +656,9 @@
 					qs('.em-b-submit').classList.add('em-hidden');
 
 					current = p;
+
+					current.querySelector('.em-i').focus();
+					
 				} catch (e) {}
 			});
 		} catch (e) {}
@@ -707,7 +717,6 @@
 	} // end of init
 
 
-	// console.log(qsa('input.em-i'));
 
 	init();
 	progress();

@@ -260,9 +260,9 @@ final class Axowl_shortcode {
 	 */
 	private function list_input($o = []) {
 		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
-		$html = sprintf('<div class="em-lc em-lc-">', $o['name']);
+		$html = sprintf('<div class="em-lc em-lc-%1$s">', $o['name']);
 
-		$html .= sprintf('<label for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4>%3$s</label>',
+		$html .= sprintf('<label class="em-label" for="%1$s"><h4 class="em-it em-it-%1$s">%2$s</h4>%3$s</label>',
 							$o['name'],
 							$o['text'],
 							($o['ht'] ? sprintf('<button type="button" class="em-ht-q"><span>?</span></button><div class="em-ht em-hidden em-ht-%2$s"><div class="arrow-right"></div><div>%1$s</div></div>', $o['ht'], $o['name']) : '')
@@ -303,8 +303,8 @@ final class Axowl_shortcode {
 
 
 	public function sands() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.2', '(min-width: 841px)');
-        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 840px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.2', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 815px)');
         wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.2', true);
 	
 	}
