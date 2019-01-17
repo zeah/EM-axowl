@@ -612,7 +612,7 @@
 				// exit ramp
 				if (!success) {
 					success = true;
-					return;
+					// return;
 				}
 				
 				// hiding current part
@@ -663,6 +663,57 @@
 			});
 		} catch (e) {}
 
+		// submit button
+		try {
+
+			var post = function() { 
+				qs('.em-b-submit').removeEventListener('click', post);
+
+				var xhttp = new XMLHttpRequest();
+
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						// var t = this.responseText;
+						// for (var i = 0; i < t.length; i++)
+							// console.log(t[i]);
+						console.log(this.responseText);
+					}
+				}
+
+				var data = '';
+
+
+				var inputs = qsa('input.em-i:not(.em-check), .em-c');
+
+				// console.log(qsa('.em-c'));
+
+				// var temp = [];
+				for (var i = 0; i < inputs.length; i++) {
+					var n = inputs[i];
+					data += '&data['+n.name+']='+n.value;
+					// temp[n.name] = n.value;
+				}
+
+				// console.log(temp);
+				// var inputs = qsa('input.em-i');
+
+				// console.dir(inputs)
+
+				// temp['action'] = 'axowl';
+
+				xhttp.open('POST', emurl.ajax_url, true);
+				// xhttp.setRequestHeader("Content-Type", "text/json");
+				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				// xhttp.send('action=axowl', temp);
+				xhttp.send('action=axowl'+data);
+
+			}
+
+			qs('.em-b-submit').addEventListener('click', post);
+
+
+		} catch (e) { console.error(e) }
+
 
 		// helper text
 		var hm = document.querySelectorAll('.em-ht-q');
@@ -706,19 +757,33 @@
 		// })();
 
 
-		var submitClick = function(e) {
-			console.log('heya');
-			submit.removeEventListener('click', submitClick);
-		}
+		// var submitClick = function(e) {
+		// 	console.log('heya');
+		// 	submit.removeEventListener('click', submitClick);
+		// }
 
-		var submit = document.querySelector('.em-b-submit');
-		submit.addEventListener('click', submitClick);
+		// var submit = document.querySelector('.em-b-submit');
+		// submit.addEventListener('click', submitClick);
 
 	} // end of init
 
-
+	// console.log(emurl);
 
 	init();
 	progress();
+
+
+	// var inputs = qsa('input.em-i:not(.em-check), .em-c');
+
+	// // console.log(qsa('.em-c'));
+
+	// var temp = [];
+	// for (var i = 0; i < inputs.length; i++) {
+	// 	var n = inputs[i];
+	// 	temp[n.name] = n.value;
+	// }
+
+	// console.log(temp);
+
 
 })();

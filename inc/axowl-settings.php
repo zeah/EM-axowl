@@ -39,12 +39,13 @@ final class Axowl_settings {
 		add_settings_section('em-axowl-data', 'Form data', [$this, 'data_section'], 'em-axowl-page');
 		add_settings_field('em-axowl-url', 'Form Url', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
 		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['name', 'Name of the partner, as agreed with Axo.']);
+		add_settings_field('em-axowl-gdoc', 'Google Doc', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['gdoc', 'Url to the google doc.']);
 
 
 		add_settings_section('em-axowl-input', 'Text for form inputs', [$this, 'input_section'], 'em-axowl-page');
 
 
-		$inputs = ['loan_amount', 'tenure', 'co_applicant', 'collect_debt'];
+		// $inputs = ['loan_amount', 'tenure', 'co_applicant', 'collect_debt'];
 
 		$input = [
 			'loan_amount' => 'Loan amount.',

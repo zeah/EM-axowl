@@ -11,6 +11,7 @@ defined('ABSPATH') or die('Blank Space');
 
 require_once 'inc/axowl-settings.php';
 require_once 'inc/axowl-shortcode.php';
+require_once 'inc/axowl-data.php';
 
 
 function init_em_axowl() {
@@ -35,6 +36,7 @@ final class EM_axowl {
 	private function __construct() {
 		Axowl_settings::get_instance();
 		Axowl_shortcode::get_instance();
+		Axowl_data::get_instance();
 	}
 
 }
