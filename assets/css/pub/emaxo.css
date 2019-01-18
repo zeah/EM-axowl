@@ -128,7 +128,8 @@
 
 /* 1.0 form element and container */
 .emowl-form {
-	display: inline-grid;
+	display: inline-block;
+	/*display: inline-grid;*/
 
 	/*width: 50%;*/
 	width: 44.6rem;
@@ -136,7 +137,7 @@
 	/*box-sizing: content-box;*/
 
 	/* form title - form elements - buttons */
-	grid-template-rows: auto 1fr auto;
+	/*grid-template-rows: auto 1fr auto;*/
 
 	/*font-size: 2rem;*/
 
@@ -352,7 +353,6 @@
 	bottom: 1.7rem;
 	right: 0.2rem;
 	
-	/* removing default slider apperance */
 	-webkit-appearance: none;
 	background: none;
 	outline: none;
@@ -363,7 +363,7 @@
 }
 
 .em-r:focus {
-	background-color: hsla(120, 100%, 20%, .7);
+	/*background-color: hsla(120, 100%, 20%, .7);*/
 }
 
 /* 1.4.3.2 range tack */
@@ -376,7 +376,7 @@
 
   	opacity: .8;
   	background: hsl(120, 50%, 20%);
-  	/*border-radius: 150px;*/
+  	border-radius: 150px;
  }
 
 
@@ -421,7 +421,8 @@
 	/*content: '?';*/
 	position: absolute;
 	right: 2rem;
-	top: 3px;
+	top: 0;
+	/*top: 13px;*/
 
 	font-weight: 400;
 	/*font-size: 1.4rem;*/
@@ -616,4 +617,97 @@
 	position: relative;
 	top: .3rem;
 	width: auto;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	.em-part-1-grid {
+		display: -ms-inline-grid;
+
+		-ms-grid-columns: 1fr 1fr;
+		-ms-grid-rows: auto auto auto auto auto auto;
+	}
+
+	.em-element-monthly_cost {
+		-ms-grid-row: 1;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-loan_amount {
+		-ms-grid-row: 2;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-tenure {
+		-ms-grid-row: 3;
+		-ms-grid-column: 1;
+	}
+
+	.em-element-collect_debt {
+		-ms-grid-row: 3;
+		-ms-grid-column: 2;
+	}
+
+	.em-element-mobile_number {
+		-ms-grid-row: 4;
+		-ms-grid-column: 1;
+	}
+
+	.em-element-email {
+		-ms-grid-row: 4;
+		-ms-grid-column: 2;
+	}
+
+	.em-element-axo_accept {
+		-ms-grid-row: 5;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-contact_accept {
+		-ms-grid-row: 6;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+
+	.em-b-container {
+		display: -ms-grid;
+		-ms-grid-columns: 1fr 1fr 1fr;
+	}
+
+	.em-b-back {
+		-ms-grid-column: 1;
+
+	}
+
+	.em-progress {
+		-ms-grid-column: 2;
+		height: 2.1rem;
+		margin: 0 10%;
+	}
+
+
+	.em-b-submit,
+	.em-b-next {
+		-ms-grid-column: 3;
+
+	}
+
+	.em-r {
+		height: auto;
+		background-color: transparent;
+	}
+
+	.em-ht-q > span {
+	position: relative;
+	bottom: .1rem;
+	right: .3rem;
+
+	font-size: 1.6rem;
+}
+
+
+
 }

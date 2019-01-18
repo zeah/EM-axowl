@@ -34,17 +34,33 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 
-		// echo $_SERVER['REMOTE_ADDR'];
-
-		// echo http_build_query($send);
-
-
 		// send to google docs
+		$gdoc = 'https://script.google.com/macros/s/AKfycbzK3khU3GnwJXCNrVc_1UQUd-ocjt-TOaglEAT_hLxnl1I9GnSR/exec';
+		$q = sprintf('?email=%1$s&phone=%2$s',
+						$send['email'],
+						$send['mobile_number']
+					);
+
+		// wp_remote_get($gdoc.$q, ['blocking' => false]);
+
 
 		// send to google cloud functions -> google datastore
 
-		// send to axo
 
+
+		// send to axo
+		$send['source'] = 'eff.mark';
+		// $send['content'] = '';
+		// $send['medium'] = '';
+		$send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
+
+
+
+
+
+		// echo print_r($_SERVER);
+		// echo http_build_query($data);
+		// echo http_build_query($send);
 		wp_die();
 	}
 }

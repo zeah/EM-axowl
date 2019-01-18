@@ -29,6 +29,7 @@
 
 	var current = qs('.em-part');
 
+	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
 
 	var kroner = function(n) {
 		if (!n) return '';
@@ -367,11 +368,10 @@
 
 				var innerText = r.parentNode.querySelectorAll('input[type=text]');
 
-				for (var j = 0; j < innerText.length; j++) {
+				for (var j = 0; j < innerText.length; j++) (function() {
 					var n = innerText[j];
 
-					r.addEventListener('input', function(e) {
-
+					var fun = function(e) {
 						var a = n.getAttribute('data-format');
 
 						if (a == 'currency') n.value = kroner(e.target.value);
@@ -380,14 +380,22 @@
 							n.value = e.target.value+a.replace('postfix:', '');
 
 						else n.value = e.target.value;
-					});
-				}
+					}
+
+					if (isIE) r.addEventListener('change', fun);
+					else r.addEventListener('input', fun);
+				})();
+				
+
+				var fun = function(e) { payment(); }
 
 				switch (r.classList[1]) {
 					case 'em-r-tenure':
-					case 'em-r-loan_amount': r.addEventListener('input', function(e) {
-						payment();
-					});
+					case 'em-r-loan_amount': 
+						if (isIE) r.addEventListener('change', fun);
+						else r.addEventListener('input', fun);
+
+					break;
 				}
 
 			})();
@@ -612,7 +620,7 @@
 				// exit ramp
 				if (!success) {
 					success = true;
-					// return;
+					return;
 				}
 				
 				// hiding current part
@@ -685,26 +693,24 @@
 
 				var inputs = qsa('input.em-i:not(.em-check), .em-c');
 
-				// console.log(qsa('.em-c'));
 
-				// var temp = [];
 				for (var i = 0; i < inputs.length; i++) {
 					var n = inputs[i];
-					data += '&data['+n.name+']='+n.value;
-					// temp[n.name] = n.value;
+					var v = n.value;
+
+					switch (n.getAttribute('data-val')) {
+						case 'numbersOnly':
+						case 'phone':
+						case 'currency':
+						case 'ar': v = numb(n.value); break;
+					}
+
+					data += '&data['+n.name+']='+v;
 				}
 
-				// console.log(temp);
-				// var inputs = qsa('input.em-i');
-
-				// console.dir(inputs)
-
-				// temp['action'] = 'axowl';
 
 				xhttp.open('POST', emurl.ajax_url, true);
-				// xhttp.setRequestHeader("Content-Type", "text/json");
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				// xhttp.send('action=axowl', temp);
 				xhttp.send('action=axowl'+data);
 
 			}
@@ -772,6 +778,7 @@
 	init();
 	progress();
 
+	console.log(navigator);
 
 	// var inputs = qsa('input.em-i:not(.em-check), .em-c');
 
