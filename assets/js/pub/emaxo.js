@@ -89,14 +89,12 @@
 		phone: function(d) {
 
 			var n = val.numbersOnly(d);
-			// console.log('hi '+n);
 
 			if (!n) return false;
 
 			if (d.length == 8) return true;
 
 
-			// console.log('true');
 			return false;
 		},
 
@@ -180,21 +178,6 @@
 	}
 
 
-	// var blur = function(e) {
-	// 	var l = current.querySelectorAll('.em-element-container');
-
-	// 	for (var i = 0; i < l.length; i++) 
-	// 		if (l[i] != e.target.parentNode.parentNode) l[i].style.opacity = '.5';
-	// }
-
-	// var unblur = function() {
-	// 	var l = current.querySelectorAll('.em-element-container');
-
-	// 	for (var i = 0; i < l.length; i++)
-	// 		l[i].style.opacity = 1;
-	// }
-
-
 	var progress = function() {
 		var li = document.querySelectorAll('.em-i:not(button)');
 
@@ -225,9 +208,6 @@
 		var p = document.querySelector('.em-progress');
 
 		p.value = (c/t) * 100 ;
-
-		// console.log(c);
-
 	}
 
 
@@ -305,12 +285,8 @@
 
 
 				// selecting all text when focusing input
-				n.addEventListener('focus', function(e) { 
-					e.target.select(); 
-					// blur(e);
-				});
+				n.addEventListener('focus', function(e) { e.target.select() });
 
-				// n.addEventListener('focusout', function(e) { unblur(); });
 
 				// if parent has range input
 				var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
@@ -481,14 +457,9 @@
 				var n = lists[i];
 				var val = n.getAttribute('data-val');
 
-				if (val) n.addEventListener('input', function(e) { 
-					// unblur(); 
-					v(e.target, null, val)});
+				if (val) n.addEventListener('input', function(e) { v(e.target, null, val) });
 
-				// n.addEventListener('focus', function(e) { blur(e) });
-				// n.addEventListener('focusout', function(e) { unblur() });
-
-
+				// showing html element
 				var show = function(o) {
 					try {
 						for (var i = 0; i < o.length; i++) 
@@ -497,6 +468,7 @@
 					} catch (e) {}
 				}
 
+				// hiding html element
 				var hide = function(o) {
 					try {
 						for (var i = 0; i < o.length; i++) 
@@ -505,8 +477,10 @@
 					} catch (e) {}
 				}
 
+				// SPECIAL RULES
 				switch (n.classList[1]) {
 
+					// EDUCATION
 					case 'em-i-education':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -517,6 +491,7 @@
 						})
 						break;
 
+					// EMPLOYMENT TYPE
 					case 'em-i-employment_type':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -530,6 +505,7 @@
 						});
 						break;
 
+					// CIVIL STATUS
 					case 'em-i-civilstatus':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -546,6 +522,7 @@
 						});
 						break;
 
+					// LIVING CONDITIONS
 					case 'em-i-living_conditions':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -562,6 +539,7 @@
 						});
 						break;
 
+					// NUMBER OF CHILDREN
 					case 'em-i-number_of_children':
 						n.addEventListener('change', function(e) {
 							if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
@@ -569,6 +547,7 @@
 						});
 						break;
 
+					// CO APPLICANT: EMPLOYMENT TYPE
 					case 'em-i-co_applicant_employment_type':
 						n.addEventListener('change', function(e) {
 							switch (e.target.value) {
@@ -582,7 +561,7 @@
 						});
 						break;
 
-				}
+				} // end of switch
 
 			})();
 		}
@@ -681,9 +660,6 @@
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						// var t = this.responseText;
-						// for (var i = 0; i < t.length; i++)
-							// console.log(t[i]);
 						console.log(this.responseText);
 					}
 				}
@@ -747,7 +723,6 @@
 		
 
 		var inputs = qsa('input.em-i:not(.em-check)');
-		// var checks = qsa('input.em-check');
 		var selects = qsa('select.em-i, input.em-check');
 
 		for (var i = 0; i < inputs.length; i++) (function() {
@@ -758,39 +733,14 @@
 			selects[i].addEventListener('change', function() { progress() });
 		})();
 
-		// for (var i = 0; i < checks.length; i++) (function() {
-		// 	checks[i].addEventListener('change', function() { progress() });
-		// })();
-
-
-		// var submitClick = function(e) {
-		// 	console.log('heya');
-		// 	submit.removeEventListener('click', submitClick);
-		// }
-
-		// var submit = document.querySelector('.em-b-submit');
-		// submit.addEventListener('click', submitClick);
 
 	} // end of init
 
-	// console.log(emurl);
 
 	init();
 	progress();
 
-	console.log(navigator);
 
-	// var inputs = qsa('input.em-i:not(.em-check), .em-c');
-
-	// // console.log(qsa('.em-c'));
-
-	// var temp = [];
-	// for (var i = 0; i < inputs.length; i++) {
-	// 	var n = inputs[i];
-	// 	temp[n.name] = n.value;
-	// }
-
-	// console.log(temp);
 
 
 })();
