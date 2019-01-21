@@ -34,17 +34,8 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 
-		// send to google docs
-		$gdoc = 'https://script.google.com/macros/s/AKfycbzK3khU3GnwJXCNrVc_1UQUd-ocjt-TOaglEAT_hLxnl1I9GnSR/exec';
-		$q = sprintf('?email=%1$s&phone=%2$s',
-						$send['email'],
-						$send['mobile_number']
-					);
-
-		// wp_remote_get($gdoc.$q, ['blocking' => false]);
-
-
-		// send to google cloud functions -> google datastore
+		// using callback
+		$this->send($send);
 
 
 
@@ -62,5 +53,28 @@ final class Axowl_data {
 		// echo http_build_query($data);
 		// echo http_build_query($send);
 		wp_die();
+	}
+
+
+	private function send($send) {
+
+		$url = get_option('em_axowl');
+
+		if (!isset($url['callback']) || $url['callback' == '']) return;
+
+		$url = str_replace('&amp;', '&', $url['callback']);
+
+		$url = explode(';', $url);
+
+		// echo print_r($url, true);
+
+		foreach ($url as $v) {
+			$m = ['{email}', '{mobile_number}'];
+			$r = [$send['email'], $send['mobile_number']];
+
+			$v = str_replace($m, $r, $v);
+
+			wp_remote_get($v, ['blocking' => false]);
+		}
 	}
 }

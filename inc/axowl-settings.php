@@ -18,7 +18,6 @@ final class Axowl_settings {
 		$this->opt = get_option('em_axowl');
 		if (!is_array($this->opt)) $this->opt = [];
 
-
 		$this->hooks();
 	}
 
@@ -37,9 +36,9 @@ final class Axowl_settings {
 		register_setting('em-axowl-settings', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 
 		add_settings_section('em-axowl-data', 'Form data', [$this, 'data_section'], 'em-axowl-page');
-		add_settings_field('em-axowl-url', 'Form Url', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
-		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['name', 'Name of the partner, as agreed with Axo.']);
-		add_settings_field('em-axowl-gdoc', 'Google Doc', [$this, 'input'], 'em-axowl-page', 'em-axowl-data', ['gdoc', 'Url to the google doc.']);
+		add_settings_field('em-axowl-url', 'Form Url', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
+		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['name', 'Name of the partner, as agreed with Axo.']);
+		add_settings_field('em-axowl-callback', 'Callback URL', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['callback', 'Callback URLs']);
 
 
 		add_settings_section('em-axowl-input', 'Text for form inputs', [$this, 'input_section'], 'em-axowl-page');
@@ -139,6 +138,20 @@ final class Axowl_settings {
 
 		$html .= '<div><div style="width: 100px; display: inline-block;">Title Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
 		if (isset($name[2])) $html .= '<div><div style="width: 100px; display: inline-block;">Helper Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].'_ht]" value="'.$this->get($name[0].'_ht').'"></div>';
+	
+		echo $html;
+	}
+
+	/**
+	 * echoing input field
+	 * @param  String $name name of data
+	 */
+	public function input_setting($name) {
+		$html = '';
+
+		if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
+
+		$html .= '<div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
 	
 		echo $html;
 	}

@@ -1,3 +1,23 @@
+/**
+ * INDEX
+ * qs(s) helper function: document.querySelector
+ * qsa(s) helper function: document.querySelectorAll
+ *
+ * var current: current part of form showing
+ * var isIE: whether browser is internet explorer or not
+ *
+ * kroner(v) : converts value to currency
+ * numb(v) : converts value to number
+ * payment() : updates monthly cost field
+ * val{v} : validator
+ * v(v) : validator with visual feedback
+ * progress() : updates progressbar when fields with validation is filled
+ *
+ * init() initializes all event listeners
+ * 
+ */
+
+
 
 (function() {
 
@@ -216,166 +236,155 @@
 		// TEXT INPUTS
 		var textInput = document.querySelectorAll('.emowl-form input[type=text]');
 
-		for (var i = 0; i < textInput.length; i++) {
+		for (var i = 0; i < textInput.length; i++) (function() { // scoping for events
 
-			// scoping for events
-			(function() { 
-				var n = textInput[i];
-				var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
-				var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
-				var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
-				var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
-				var digits = n.getAttribute('data-digits') ? parseInt(n.getAttribute('data-digits')) : '';
+			var n = textInput[i];
+			var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
+			var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
+			var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
+			var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
+			var digits = n.getAttribute('data-digits') ? parseInt(n.getAttribute('data-digits')) : '';
 
-				// hitting enter
-				n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
+			// hitting enter
+			n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
 
-				// if input has a max attribute
-				if (max) n.addEventListener('input', function(e) {
-					if (max < numb(e.target.value))
-						e.target.value = max;
-				});
+			// if input has a max attribute
+			if (max) n.addEventListener('input', function(e) {
+				if (max < numb(e.target.value)) e.target.value = max;
+			});
 
+			// if input has max digits 
+			if (digits) n.addEventListener('input', function(e) {
+				if (e.target.value.length > digits) e.target.value = e.target.value.slice(0, -1)
+			});
 
-				if (digits) n.addEventListener('input', function(e) {
-
-					if (e.target.value.length > digits) e.target.value = e.target.value.slice(0, -1)
-
-				});
-
-				// if input has a min attribute
-				if (min) n.addEventListener('focusout', function(e) {
-					if (min > numb(e.target.value)) {
-
-						// formating currency or not
-						if (format == 'currency') e.target.value = kroner(min);
-						else e.target.value = min;
-
-					}
-				});
-
-
-				// formating currency
-				if (format == 'currency') {
-					n.value = kroner(n.value);
-
-					n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
-					n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
+			// if input has a min attribute
+			if (min) n.addEventListener('focusout', function(e) {
+				if (min > numb(e.target.value)) {
+					// formating currency or not
+					if (format == 'currency') 	e.target.value = kroner(min);
+					else 						e.target.value = min;
 				}
-
-				// numbers only
-				switch (valid) {
-					case 'currency':
-					case 'numbersOnly':
-					case 'phone':
-					case 'ar':
-					case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
-				}
-
-				// formatting with postfix
-				if (format.indexOf('postfix:') != -1) {
-					var pf = format.replace('postfix:', '');
-
-					n.value = n.value.replace(/[^0-9]/g, '') + pf;
-
-					n.addEventListener('focusout', function(e) { e.target.value = numb(e.target.value) + pf });
-
-					n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
-				}
+			});
 
 
-				// selecting all text when focusing input
-				n.addEventListener('focus', function(e) { e.target.select() });
+			// formating currency
+			if (format == 'currency') {
+				// initial load
+				n.value = kroner(n.value);
+
+				// on focus - remove all but numbers
+				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value) });
+
+				// on focus out - convert number to currency
+				n.addEventListener('focusout', function(e) { e.target.value = kroner(e.target.value) });
+			}
+
+			// inputs that is limited to numbers typed in
+			switch (valid) {
+				case 'currency':
+				case 'numbersOnly':
+				case 'phone':
+				case 'ar':
+				case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
+			}
+
+			// formatting with postfix
+			if (format.indexOf('postfix:') != -1) {
+				// getting actual postfix value
+				var pf = format.replace('postfix:', '');
+
+				// initial load
+				n.value = n.value.replace(/[^0-9]/g, '') + pf;
+
+				// on focus - remove all but numbers
+				n.addEventListener('focusout', function(e) { e.target.value = numb(e.target.value) + pf });
+
+				// on focus out - convert number to value with postfix
+				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
+			}
 
 
-				// if parent has range input
-				var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
-				for (var j = 0; j < innerRange.length; j++) {
-					// scoping for events
-					(function() {
-						var r = innerRange[j];
-						n.addEventListener('input', function(e) {
-							r.value = numb(e.target.value);
-						});
-					})();
-				}
+			// selecting all text when focusing input
+			n.addEventListener('focus', function(e) { e.target.select() });
 
 
-				// validation
-				if (valid) {
-					n.addEventListener('input', function(e) { v(e.target, format, valid) });
-					n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
-				}
-
-				// SPECIAL RULES
-				switch (n.classList[1]) {
-					case 'em-i-tenure':
-					case 'em-i-loan_amount': 
-						n.addEventListener('input', function(e) { payment() });
-						n.addEventListener('focusout', function(e) { payment() });
-						break;
-
-					case 'em-i-email':
-						n.addEventListener('input', function(e) {
-							var l = e.target.value.length;
-							var s = function(p) { e.target.style.fontSize = p }
-
-							if (l > 10) s('18px');
-							if (l > 20) s('16px');
-							if (l > 30) s('14px');
-							if (l > 40) s('12px');
-
-						});
-						break;
-				}
-
-
+			// if parent has range input
+			var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
+			for (var j = 0; j < innerRange.length; j++) (function() {
+				var r = innerRange[j];
+				n.addEventListener('input', function(e) { r.value = numb(e.target.value) });
 			})();
-		}
+
+			// VALIDATION
+			if (valid) {
+				n.addEventListener('input', function(e) { v(e.target, format, valid) });
+				n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
+			}
+
+			// SPECIAL RULES
+			switch (n.classList[1]) {
+				case 'em-i-tenure':
+				case 'em-i-loan_amount': 
+					n.addEventListener('input', function(e) { payment() });
+					n.addEventListener('focusout', function(e) { payment() });
+					break;
+
+				case 'em-i-email':
+					n.addEventListener('input', function(e) {
+						var l = e.target.value.length;
+						var s = function(p) { e.target.style.fontSize = p }
+
+						if (l > 10) s('18px');
+						if (l > 20) s('16px');
+						if (l > 30) s('14px');
+						if (l > 40) s('12px');
+
+					});
+					break;
+			}
+
+
+		})();
+		
 		
 
 		// RANGE INPUTS
 		var rangeInput = document.querySelectorAll('.emowl-form input[type=range]');
+		for (var i = 0; i < rangeInput.length; i++) (function() { 
+			var r = rangeInput[i];
 
-		for (var i = 0; i < rangeInput.length; i++) {
+			// if range belongs to a text input
+			var innerText = r.parentNode.querySelectorAll('input[type=text]');
 
-			(function() { 
-				var r = rangeInput[i];
+			for (var j = 0; j < innerText.length; j++) (function() {
+				var n = innerText[j];
 
-				var innerText = r.parentNode.querySelectorAll('input[type=text]');
+				// fun for function -- changing text input value based on range input
+				var fun = function(e) {
+					var a = n.getAttribute('data-format');
 
-				for (var j = 0; j < innerText.length; j++) (function() {
-					var n = innerText[j];
-
-					var fun = function(e) {
-						var a = n.getAttribute('data-format');
-
-						if (a == 'currency') n.value = kroner(e.target.value);
-
-						else if (a.indexOf('postfix:') != -1) 
-							n.value = e.target.value+a.replace('postfix:', '');
-
-						else n.value = e.target.value;
-					}
-
-					if (isIE) r.addEventListener('change', fun);
-					else r.addEventListener('input', fun);
-				})();
-				
-
-				var fun = function(e) { payment(); }
-
-				switch (r.classList[1]) {
-					case 'em-r-tenure':
-					case 'em-r-loan_amount': 
-						if (isIE) r.addEventListener('change', fun);
-						else r.addEventListener('input', fun);
-
-					break;
+					if (a == 'currency') 					n.value = kroner(e.target.value);
+					else if (a.indexOf('postfix:') != -1) 	n.value = e.target.value+a.replace('postfix:', '');
+					else 									n.value = e.target.value;
 				}
 
+				if (isIE) r.addEventListener('change', fun);
+				else r.addEventListener('input', fun);
 			})();
-		}
+			
+			var fun = function(e) { payment(); }
+
+			switch (r.classList[1]) {
+				case 'em-r-tenure':
+				case 'em-r-loan_amount': 
+					if (isIE) r.addEventListener('change', fun);
+					else r.addEventListener('input', fun);
+
+				break;
+			}
+		})();
+		
 
 
 		// CHECKBOX INPUTS
@@ -599,7 +608,7 @@
 				// exit ramp
 				if (!success) {
 					success = true;
-					return;
+					// return;
 				}
 				
 				// hiding current part
