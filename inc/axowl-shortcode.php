@@ -70,11 +70,19 @@ final class Axowl_shortcode {
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
 		$html .= '<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>';
-		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
+		$html .= '<button class="em-b em-b-submit" type="button">Send inn</button>';
+		// $html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
 		$html .= '</div>';
 
 		$html .= '</form>';
+
+		$html .= '<div class="em-popup">
+					<h2 class="em-popup-title">Din søknad er sendt til Axo.</h2>
+					<button type="button" class="em-popup-x"></button>
+					<div class="em-popup-content"></div>
+					<button type="button" class="em-popup-button">Ok</button>
+				  </div>';
 
 		// TODO set transient
 

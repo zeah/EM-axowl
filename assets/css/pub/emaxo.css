@@ -103,6 +103,8 @@
  * 37.0 co-applicant country of origin
  *
  * 38.0 co-applicant salery
+ *
+ * 39.0 popup window (on submit)
  */
 
 
@@ -619,6 +621,99 @@
 	width: auto;
 }
 
+/* 39.0 popup window */
+.em-popup {
+	/*display: none;*/
+	display: grid;
+	/*opacity: 0;*/
+
+	grid-template-columns: 1fr auto;
+	grid-template-rows: auto 1fr auto;
+
+	grid-template-areas: 
+		"title x"
+		"content content"
+		"button button";
+
+	position: fixed;
+	width: 70rem;
+	max-width: 90%;
+	height: 20rem;
+
+	top: 20%;
+	left: 0;
+	right: 0;
+	margin: auto;
+
+	border: double 4px hsl(0, 0%, 50%);
+
+	background-color: hsl(120, 80%, 95%);
+	z-index: 999;
+}
+
+.em-popup-show {
+	display: grid;
+	/*opacity: 0;*/
+
+	animation-name: popup;
+	animation-duration: .5s;
+}
+
+@keyframes popup {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+/* 39.1 */
+.em-popup-title {
+	grid-area: title;
+}
+
+
+/* 39.2 */
+.em-popup-x {
+	grid-area: x;
+
+	background-color: transparent;
+
+	align-self: flex-start;
+
+	margin: 1rem 1rem 0 0;
+
+	border: none;
+	cursor: pointer;
+}
+
+.em-popup-x::after {
+	content: 'X';
+	font-size: 2rem;
+}
+
+.em-popup-x:hover {
+	font-weight: 700;
+	/*border: solid 1px hsl(0, 0%, 50%);*/
+}
+
+/* 39.3 */
+.em-popup-content {
+	grid-area: content;
+
+}
+
+/* 39.4 */
+.em-popup-button {
+	grid-area: button;
+
+	justify-self: center;
+
+	background-color: transparent;
+	border: none;
+	font-size: 3rem;
+	cursor: pointer;
+}
+
+
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	.em-part-1-grid {
 		display: -ms-inline-grid;
@@ -701,12 +796,12 @@
 	}
 
 	.em-ht-q > span {
-	position: relative;
-	bottom: .1rem;
-	right: .3rem;
+		position: relative;
+		bottom: .1rem;
+		right: .3rem;
 
-	font-size: 1.6rem;
-}
+		font-size: 1.6rem;
+	}
 
 
 

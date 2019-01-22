@@ -35,7 +35,7 @@ final class Axowl_data {
 
 
 		// using callback
-		$this->send($send);
+		// $this->send($send);
 
 
 

@@ -659,30 +659,45 @@
 			});
 		} catch (e) {}
 
-		// submit button
+		// SUBMIT BUTTON
 		try {
-
-			var post = function() { 
+			var post = function() {
 				qs('.em-b-submit').removeEventListener('click', post);
+
+				var close = function(e) { e.target.parentNode.style.display = 'none' }
+
+				qs('.em-popup-button').addEventListener('click', close);
+				qs('.em-popup-x').addEventListener('click', close);
+
+				qs('.em-b-submit').innerHTML = 'Sendes...';
 
 				var xhttp = new XMLHttpRequest();
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						console.log(this.responseText);
+
+						try {
+
+							qs('.em-b-submit').style.display = 'none';
+
+							qs('.em-popup').classList.add('em-popup-show');
+
+						} catch (e) {}
+
+						// console.log(this.responseText);
 					}
 				}
 
+
 				var data = '';
 
-
 				var inputs = qsa('input.em-i:not(.em-check), .em-c');
-
 
 				for (var i = 0; i < inputs.length; i++) {
 					var n = inputs[i];
 					var v = n.value;
 
+					// turning numeric values into numbers
 					switch (n.getAttribute('data-val')) {
 						case 'numbersOnly':
 						case 'phone':
@@ -690,10 +705,11 @@
 						case 'ar': v = numb(n.value); break;
 					}
 
+					// adding to query string
 					data += '&data['+n.name+']='+v;
 				}
 
-
+				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhttp.send('action=axowl'+data);
@@ -701,7 +717,6 @@
 			}
 
 			qs('.em-b-submit').addEventListener('click', post);
-
 
 		} catch (e) { console.error(e) }
 
@@ -719,12 +734,12 @@
 				});
 
 				q.addEventListener('mouseout', function(e) {
-					try { p.querySelector('.em-ht').classList.add('em-hidden')
+					try { p.querySelector('.em-ht').classList.add('em-hidden');
 					} catch (e) {}
 				});
 
 				q.addEventListener('click', function(e) {
-					try { p.querySelector('.em-ht').classList.toggle('em-hidden')
+					try { p.querySelector('.em-ht').classList.toggle('em-hidden');
 					} catch (e) {}
 
 				});
@@ -748,7 +763,6 @@
 
 	init();
 	progress();
-
 
 
 
