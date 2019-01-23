@@ -89,33 +89,67 @@ final class Axowl_data {
 
 	private function send_axo($send) {
 
-		// $url = get_option('em_axowl');
-		$send['source'] = 'eff.mark';
-		$send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
+		$setting = get_option('em_axowl');
 
-		// if (!isset($url['axo']) || !$url['axo']) return;
+		// if (!isset($settings['url']) || !isset($settings['name'])) return;
 
-		// $url = $url['axo'];
+		// axo url
+		$url = 'http://plu-dev.axofinans.as/søk/forbrukslån/partner?';
+		// $url = $settings['url'].'?';
+		
+		// name of partner as agreed with axo 
+		$send['source'] = 'test';
+		// $send['source'] = $settings['name'];
 
-		// $send = http_build_query($send);
+		$send = $this->sanitize($send);
 
-		// $response = wp_remote_get($url.'?'.$send);
+		// customer ip addr
+		// $send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
-		// if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-		    // $headers = $response['headers']; // array of http header lines
-		    // $body    = $response['body']; // use the content
+		// building query string
+		foreach($send as $key => $value)
+			$url .= $key.'='.$value.'&';
+
+		$url = rtrim($url, '&');
+
+		echo '{"url": "'.$url.'"}';
+		return;
+
+		// sending to axo
+		$response = wp_remote_get($url);
+
+
+
+		if (is_wp_error($response)) {
+			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+			return;
+		}
 
 		$body = '{"status": "Accepted", "transactionID": "13454564", "errors": []}';
 
 		$data = json_decode($body, true);
 
-		if ($data['status'] == 'Accepted') echo '{"status": "Accepted", "transactionID": "13454564", "errors": []}';
-		else echo 'rejected';
-		// echo print_r($data, true);
-		// 
-		    // $body = wp_remote_retrieve_body($response);
-		// }
+		echo $data;
 
 
+		// do $this->send here if rejected?
+		// store anonymized data either way?
 	}
+
+	/**
+	 * helper function which sanitizes arrays and strings
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	public static function sanitize($data) {
+		if (!is_array($data)) return preg_replace('/[^0-9a-åA-Å @:\.]/', '', $data);
+
+		$d = [];
+		foreach($data as $key => $value)
+			$d[$key] = Axowl_data::sanitize($value);
+
+		return $d;
+	}
+
+
 }
