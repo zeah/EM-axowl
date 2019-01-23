@@ -623,8 +623,8 @@
 
 /* 39.0 popup window */
 .em-popup {
-	/*display: none;*/
-	display: grid;
+	display: none;
+	/*display: grid;*/
 	/*opacity: 0;*/
 
 	grid-template-columns: 1fr auto;

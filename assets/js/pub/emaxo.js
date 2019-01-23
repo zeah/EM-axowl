@@ -684,7 +684,7 @@
 
 						} catch (e) {}
 
-						// console.log(this.responseText);
+						console.log(JSON.parse(this.responseText));
 					}
 				}
 
@@ -708,7 +708,7 @@
 					// adding to query string
 					data += '&data['+n.name+']='+v;
 				}
-
+				// console.log(data);
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

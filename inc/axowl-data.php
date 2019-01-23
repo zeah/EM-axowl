@@ -38,16 +38,24 @@ final class Axowl_data {
 		// $this->send($send);
 
 
+		// sending to axo
+		$this->send_axo($send);
 
+		// echo print_r($send, true);
+		// echo $send['email'];
 		// send to axo
-		$send['source'] = 'eff.mark';
+		// $send['source'] = 'eff.mark';
 		// $send['content'] = '';
 		// $send['medium'] = '';
-		$send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
+		// $send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
 
+		// $resp = wp_remote_get('https://privatlånlistan.se/');
 
+		// echo wp_remote_retrieve_body($resp);
 
+		// if (is_wp_error($resp)) echo 'hello';
+		// echo print_r($resp, true);
 
 		// echo print_r($_SERVER);
 		// echo http_build_query($data);
@@ -76,5 +84,38 @@ final class Axowl_data {
 
 			wp_remote_get($v, ['blocking' => false]);
 		}
+	}
+
+
+	private function send_axo($send) {
+
+		// $url = get_option('em_axowl');
+		$send['source'] = 'eff.mark';
+		$send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
+
+		// if (!isset($url['axo']) || !$url['axo']) return;
+
+		// $url = $url['axo'];
+
+		// $send = http_build_query($send);
+
+		// $response = wp_remote_get($url.'?'.$send);
+
+		// if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+		    // $headers = $response['headers']; // array of http header lines
+		    // $body    = $response['body']; // use the content
+
+		$body = '{"status": "Accepted", "transactionID": "13454564", "errors": []}';
+
+		$data = json_decode($body, true);
+
+		if ($data['status'] == 'Accepted') echo '{"status": "Accepted", "transactionID": "13454564", "errors": []}';
+		else echo 'rejected';
+		// echo print_r($data, true);
+		// 
+		    // $body = wp_remote_retrieve_body($response);
+		// }
+
+
 	}
 }
