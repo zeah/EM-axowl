@@ -86,9 +86,9 @@ final class Axowl_inputs {
 
 
 
-			'unsecured_debt_balance' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency'],
-
-			'account_number' => ['text' => true, 'validation' => 'numbersOnly', 'digits' => '13']
+			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'total_unsecured_debt_balance'],
+			'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			'account_number' => ['text' => true, 'validation' => 'bankAccount', 'digits' => '11']
 
 		];
 

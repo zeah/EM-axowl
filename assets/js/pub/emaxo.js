@@ -47,6 +47,21 @@
 		return t;
 	}
 
+	var isHidden = function(n) {
+		try {
+
+			var p = n.parentNode.parentNode;
+
+			if (p.classList.contains('em-hidden')) return true;
+
+			if (p.parentNode.classList.contains('em-hidden')) return true;
+
+		} catch (e) { console.error(e); return false; }
+
+
+		return false;
+	}
+
 	var current = qs('.em-part');
 
 	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
@@ -124,7 +139,22 @@
 
 			if (!n) return false;
 
-			if (d.length == 11) return true;
+			if (d.length == 11) {
+				
+				var day = parseInt(d.substring(0, 2));
+				var month = parseInt(d.substring(2, 4));
+				var year = parseInt(d.substring(4, 6));
+
+
+				if (day < 1 || day > 31) return false
+				if (month < 1 || month > 12) return false;
+
+				// console.log(new Date(1900+parseInt(year), parseInt(month)-1, parseInt(day)));
+
+				// console.log(day+' '+month+' '+year);
+
+				return true;
+			}
 
 			return false;
 
@@ -162,6 +192,38 @@
 
 		check: function(d) {
 			return d;
+		},
+
+		bankAccount: function(d) {
+			var n = val.numbersOnly(d);
+			if (!n) return false;
+
+			if (d.length == 11) {
+
+				var cn = [2,3,4,5,6,7];
+				var cnp = -1;
+				var ccn = function() {
+					cnp++;
+					if (cnp == cn.length) cnp = 0;
+					return cn[cnp];
+				}
+
+				var control = d.toString().split('').pop();
+
+				var c = d.substring(0, d.length-1);
+
+				var sum = 0;
+				for (var i = c.length-1; i >= 0; i--)
+					sum += c[i] * ccn();
+
+
+				sum = sum % 11;
+				sum = 11 - sum;
+
+				if (sum == control) return true;
+			}
+
+			return false;
 		}
 
 	}
@@ -231,6 +293,9 @@
 	}
 
 
+
+
+
 	var init = function() {
 
 		// TEXT INPUTS
@@ -244,6 +309,7 @@
 			var max = n.getAttribute('max') ? parseInt(n.getAttribute('max')) : '';
 			var valid = n.getAttribute('data-val') ? n.getAttribute('data-val') : '';
 			var digits = n.getAttribute('data-digits') ? parseInt(n.getAttribute('data-digits')) : '';
+			var show = n.getAttribute('data-show') ? n.getAttribute('data-show') : '';
 
 			// hitting enter
 			n.addEventListener('keypress', function(e) { if (e.keyCode == 13) e.target.blur() });
@@ -286,6 +352,7 @@
 				case 'numbersOnly':
 				case 'phone':
 				case 'ar':
+				case 'bankAccount':
 				case 'socialnumber': n.addEventListener('input', function(e) { e.target.value = numb(e.target.value) });
 			}
 
@@ -320,6 +387,17 @@
 			if (valid) {
 				n.addEventListener('input', function(e) { v(e.target, format, valid) });
 				n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
+			}
+
+			if (show) {
+				n.addEventListener('input', function(e) {
+
+					try {
+						if (!e.target.value || e.target.value == 0) qs('.em-element-'+show).classList.add('em-hidden');
+						else qs('.em-element-'+show).classList.remove('em-hidden'); 	
+
+					} catch (e) { console.error(e) }
+				});
 			}
 
 			// SPECIAL RULES
@@ -677,24 +755,32 @@
 					if (this.readyState == 4 && this.status == 200) {
 
 						try {
-
 							qs('.em-b-submit').style.display = 'none';
 
 							qs('.em-popup').classList.add('em-popup-show');
-
 						} catch (e) {}
 
-						console.log(JSON.parse(this.responseText));
+						// console.log(JSON.parse(this.responseText));
+						console.log(this.responseText);
 					}
 				}
 
 
 				var data = '';
 
-				var inputs = qsa('input.em-i:not(.em-check), .em-c');
+				var inputs = qsa('input.em-i:not(.em-check), .em-c, select.em-i');
 
 				for (var i = 0; i < inputs.length; i++) {
 					var n = inputs[i];
+
+					if (isHidden(n)) continue;
+
+					// console.log(n.getAttribute('name')+' ### '+n.value);
+					
+					// console.log(n.value + ' ## '+n.value.replace(/\s+/g, '+'));
+					// var v = n.value.replace(/\s+/g, '+');
+					// console.log(v);
+
 					var v = n.value;
 
 					// turning numeric values into numbers
@@ -708,6 +794,15 @@
 					// adding to query string
 					data += '&data['+n.name+']='+v;
 				}
+
+				// var select = qsa('select.em-i');
+
+				// for (var i = 0; i < select.length; i++) {
+				// 	// console.log(select[i]);
+				// 	// console.log(select[i].value);
+				// }
+
+
 				// console.log(data);
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
@@ -763,7 +858,5 @@
 
 	init();
 	progress();
-
-
 
 })();

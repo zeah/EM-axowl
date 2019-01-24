@@ -33,7 +33,6 @@ final class Axowl_data {
 			if (in_array($k, $input_keys))
 				$send[$k] = $data[$k];
 
-
 		// using callback
 		// $this->send($send);
 
@@ -41,25 +40,6 @@ final class Axowl_data {
 		// sending to axo
 		$this->send_axo($send);
 
-		// echo print_r($send, true);
-		// echo $send['email'];
-		// send to axo
-		// $send['source'] = 'eff.mark';
-		// $send['content'] = '';
-		// $send['medium'] = '';
-		// $send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
-
-
-		// $resp = wp_remote_get('https://privatlånlistan.se/');
-
-		// echo wp_remote_retrieve_body($resp);
-
-		// if (is_wp_error($resp)) echo 'hello';
-		// echo print_r($resp, true);
-
-		// echo print_r($_SERVER);
-		// echo http_build_query($data);
-		// echo http_build_query($send);
 		wp_die();
 	}
 
@@ -88,68 +68,31 @@ final class Axowl_data {
 
 
 	private function send_axo($send) {
-
-		$setting = get_option('em_axowl');
-
-		// if (!isset($settings['url']) || !isset($settings['name'])) return;
+		$settings = get_option('em_axowl');
+		if (!isset($settings['url']) || !isset($settings['name'])) return;
 
 		// axo url
-		$url = 'http://plu-dev.axofinans.as/søk/forbrukslån/partner?';
-		// $url = $settings['url'].'?';
+		$url = $settings['url'].'?';
 		
 		// name of partner as agreed with axo 
-		$send['source'] = 'test';
-		// $send['source'] = $settings['name'];
+		$send['source'] = $settings['name'];
 
-		$send = $this->sanitize($send);
-
-		// customer ip addr
-		// $send['customer_ip'] = $_SERVER['REMOTE_ADDR'];
-
-		// building query string
-		foreach($send as $key => $value)
-			$url .= $key.'='.$value.'&';
-
-		$url = rtrim($url, '&');
-
-		echo '{"url": "'.$url.'"}';
-		return;
+		$url .= http_build_query($send);
 
 		// sending to axo
 		$response = wp_remote_get($url);
-
-
 
 		if (is_wp_error($response)) {
 			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
 			return;
 		}
 
-		$body = '{"status": "Accepted", "transactionID": "13454564", "errors": []}';
-
-		$data = json_decode($body, true);
-
-		echo $data;
-
+		echo wp_remote_retrieve_body($response);
 
 		// do $this->send here if rejected?
 		// store anonymized data either way?
 	}
 
-	/**
-	 * helper function which sanitizes arrays and strings
-	 * @param  [type] $data [description]
-	 * @return [type]       [description]
-	 */
-	public static function sanitize($data) {
-		if (!is_array($data)) return preg_replace('/[^0-9a-åA-Å @:\.]/', '', $data);
-
-		$d = [];
-		foreach($data as $key => $value)
-			$d[$key] = Axowl_data::sanitize($value);
-
-		return $d;
-	}
 
 
 }

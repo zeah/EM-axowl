@@ -70,8 +70,8 @@ final class Axowl_shortcode {
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
 		$html .= '<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>';
-		$html .= '<button class="em-b em-b-submit" type="button">Send inn</button>';
-		// $html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
+		// $html .= '<button class="em-b em-b-submit" type="button">Send inn</button>';
+		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
 		$html .= '</div>';
 
@@ -174,7 +174,7 @@ final class Axowl_shortcode {
 								<h4 class="em-it em-it-%1$s">%2$s</h4>
 								%3$s
 							</label>
-							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s>
+							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s%11$s>
 						</div>',
 
 						$o['name'],
@@ -186,7 +186,8 @@ final class Axowl_shortcode {
 						(isset($o['value']['default']) ? $o['value']['default'] : ''),
 						(isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : ''),
 						(isset($o['value']['format']) ? ' data-format="'.$o['value']['format'].'"' : ''),
-						(isset($o['value']['digits']) ? ' data-digits="'.$o['value']['digits'].'"' : '')
+						(isset($o['value']['digits']) ? ' data-digits="'.$o['value']['digits'].'"' : ''),
+						(isset($o['value']['show']) ? ' data-show="'.$o['value']['show'].'"' : '')
 					);
 	}
 
