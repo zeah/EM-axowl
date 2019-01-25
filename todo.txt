@@ -7,9 +7,18 @@ subscribe accept
 send inn popup
 
 
+velg hva data som skal sendes til datastore
+avhengig om de blir accepted eller rejected
+
+
+part title above form - with css sideways sliding animation
+
+text bubble på progress bar når alle feltene er fylt ut i hver part
+
+
 backend validation
 
-data validation submit button
+data validation submit button!!!!
 
 SWEDEN
 
