@@ -34,7 +34,7 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 		// using callback
-		// $this->send($send);
+		$this->send($send);
 
 
 		// sending to axo
@@ -78,6 +78,8 @@ final class Axowl_data {
 		$send['source'] = $settings['name'];
 
 		$url .= http_build_query($send);
+
+		echo $url;
 
 		// sending to axo
 		$response = wp_remote_get($url);
