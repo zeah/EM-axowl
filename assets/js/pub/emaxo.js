@@ -141,19 +141,29 @@
 
 			if (d.length == 11) {
 				
-				var day = parseInt(d.substring(0, 2));
-				var month = parseInt(d.substring(2, 4));
-				var year = parseInt(d.substring(4, 6));
+				// special rule
+				if (d == '00000000000') return false;
 
+				var f = d.split('');
+			    
+			    // first control number
+			    var k1 = (11 - (((3 * f[0]) + (7 * f[1]) + (6 * f[2])
+			            + (1 * f[3]) + (8 * f[4]) + (9 * f[5]) + (4 * f[6])
+			            + (5 * f[7]) + (2 * f[8])) % 11)) % 11;
+			    
+			    // second control number
+			    var k2 = (11 - (((5 * f[0]) + (4 * f[1]) + (3 * f[2])
+			            + (2 * f[3]) + (7 * f[4]) + (6 * f[5]) + (5 * f[6])
+			            + (4 * f[7]) + (3 * f[8]) + (2 * k1)) % 11)) % 11;
+			    
+			    if (k1 == 11) k1 = 0;
 
-				if (day < 1 || day > 31) return false
-				if (month < 1 || month > 12) return false;
+			    // failed validation
+			    if (k1 != f[9] || k2 != f[10]) return false;
+			    
+			    // success
+			    return true;
 
-				// console.log(new Date(1900+parseInt(year), parseInt(month)-1, parseInt(day)));
-
-				// console.log(day+' '+month+' '+year);
-
-				return true;
 			}
 
 			return false;
@@ -162,7 +172,7 @@
 
 		email: function(d) {
 
-			return /.+@.+\..+/.test(d);
+			return /.+@.+\..{2,}/.test(d);
 
 		},
 
@@ -234,6 +244,7 @@
 			var data = e.value;
 			var pa = e.parentNode.parentNode;
 
+			var mark = pa.querySelector('.em-val-marker');
 			// removing postfix
 			if (format && format.indexOf('postfix:') -1) {
 				var temp = format.replace('postfix:', '');
@@ -246,12 +257,23 @@
 
 			// validating
 			if (!val[valid](data)) {
-				pa.style.backgroundColor = 'red';
+				console.log(e.type);
+				if (e.type == 'checkbox') pa.style.backgroundColor = 'hsl(0, 80%, 70%)';
+
+				if (mark) {
+					mark.classList.remove('em-val-marker-yes');
+					mark.classList.add('em-val-marker-no');
+				}
 				return false;
 			} 
 			
 			else { 
-				pa.style.backgroundColor = 'transparent'; 
+				if (e.type == 'checkbox') pa.style.backgroundColor = 'transparent';
+				// pa.style.backgroundColor = 'transparent';
+				if (mark) {
+					mark.classList.remove('em-val-marker-no');
+					mark.classList.add('em-val-marker-yes');
+				}
 				return true;
 			}
 		}
@@ -290,6 +312,10 @@
 		var p = document.querySelector('.em-progress');
 
 		p.value = (c/t) * 100 ;
+
+		try {
+			qs('.em-progress-text').innerHTML = parseInt(p.value) + '%';
+		} catch (e) { }
 	}
 
 
@@ -373,7 +399,15 @@
 
 
 			// selecting all text when focusing input
-			n.addEventListener('focus', function(e) { e.target.select() });
+			n.addEventListener('focus', function(e) { 
+			
+				var mark = e.target.parentNode.querySelector('.em-val-marker');
+				// console.log(e.target.parentNode);
+				mark.classList.remove('em-val-marker-yes');
+				mark.classList.remove('em-val-marker-no');
+
+				e.target.select();
+			});
 
 
 			// if parent has range input
@@ -660,7 +694,6 @@
 		try {
 			qs('.em-b-next').addEventListener('click', function(e) {
 
-
 				// VALIDATION OF CURRENT PART
 				var test = current.querySelectorAll('.em-i');
 				var success = true;
@@ -685,7 +718,7 @@
 
 				// exit ramp
 				if (!success) {
-					success = true;
+					// success = true;
 					// return;
 				}
 				
@@ -708,6 +741,8 @@
 					current = current.nextSibling;
 
 					current.querySelector('.em-i').focus();
+
+					// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
 
 				} catch (e) { console.error(e) }
 
@@ -740,6 +775,42 @@
 		// SUBMIT BUTTON
 		try {
 			var post = function() {
+
+				var data = '';
+
+				var valid = true;
+
+				// var inputs = qsa('input.em-i:not(.em-check), .em-c, select.em-i');
+				var inputs = qsa('input.em-i, .em-c, select.em-i');
+
+				for (var i = 0; i < inputs.length; i++) {
+					var n = inputs[i];
+
+					if (isHidden(n)) continue;
+
+					if (n.getAttribute('data-val')) {
+						var val = n.getAttribute('data-val');
+						var f = n.getAttribute('format');
+						var ver = v(n, null, val);
+
+						if (!ver) valid = false;
+					}
+
+					var value = n.value;
+					// turning numeric values into numbers
+					switch (n.getAttribute('data-val')) {
+						case 'numbersOnly':
+						case 'phone':
+						case 'currency':
+						case 'ar': value = numb(n.value); break;
+					}
+
+					// adding to query string
+					data += '&data['+n.name+']='+value;
+				}
+
+				if (!valid) return;				
+
 				qs('.em-b-submit').removeEventListener('click', post);
 
 				var close = function(e) { e.target.parentNode.style.display = 'none' }
@@ -760,50 +831,10 @@
 							qs('.em-popup').classList.add('em-popup-show');
 						} catch (e) {}
 
-						// console.log(JSON.parse(this.responseText));
 						console.log(this.responseText);
 					}
 				}
 
-
-				var data = '';
-
-				var inputs = qsa('input.em-i:not(.em-check), .em-c, select.em-i');
-
-				for (var i = 0; i < inputs.length; i++) {
-					var n = inputs[i];
-
-					if (isHidden(n)) continue;
-
-					// console.log(n.getAttribute('name')+' ### '+n.value);
-					
-					// console.log(n.value + ' ## '+n.value.replace(/\s+/g, '+'));
-					// var v = n.value.replace(/\s+/g, '+');
-					// console.log(v);
-
-					var v = n.value;
-
-					// turning numeric values into numbers
-					switch (n.getAttribute('data-val')) {
-						case 'numbersOnly':
-						case 'phone':
-						case 'currency':
-						case 'ar': v = numb(n.value); break;
-					}
-
-					// adding to query string
-					data += '&data['+n.name+']='+v;
-				}
-
-				// var select = qsa('select.em-i');
-
-				// for (var i = 0; i < select.length; i++) {
-				// 	// console.log(select[i]);
-				// 	// console.log(select[i].value);
-				// }
-
-
-				// console.log(data);
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

@@ -35,6 +35,7 @@ final class EM_axowl {
 	}
 
 	private function __construct() {
+
 		Axowl_settings::get_instance();
 		Axowl_shortcode::get_instance();
 		Axowl_data::get_instance();

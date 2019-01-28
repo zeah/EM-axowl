@@ -1,4 +1,8 @@
-conversion tracking
+#conversion tracking
+#	accepted sender axo/gclid til gdocs/em-live
+
+
+
 
 unsubscribe from email list
 subscribe accept
@@ -7,13 +11,22 @@ subscribe accept
 send inn popup
 
 
+(velg hva data som skal sendes til datastore
+avhengig om de blir accepted eller rejected)
+
+
+
+
 backend validation
 
-data validation submit button
 
 SWEDEN
 
-add 'flex' to axowl-inputs and use that instead of grid on part-1
+
+internet explorer
+safari
+ipad
+mobile
 
 
 "category title"  .. over skjema -- scroll effect når man klikker på next
