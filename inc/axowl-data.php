@@ -34,11 +34,12 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 		// using callback
-		$this->send($send);
+		// $this->send($send);
 
+		echo print_r($send, true);
 
 		// sending to axo
-		$this->send_axo($send);
+		// $this->send_axo($send);
 
 		wp_die();
 	}
@@ -89,7 +90,66 @@ final class Axowl_data {
 			return;
 		}
 
-		echo wp_remote_retrieve_body($response);
+		$res = json_decode(wp_remote_retrieve_body($response), true);
+
+		if (!is_array($res) || !isset($res['status'])) return;
+
+		/**
+		 * loan amount
+		 * tenure
+		 * email
+		 * phone
+		 * employment_type
+		 * employment_since
+		 * education
+		 * norwegian
+		 * country_of_origin
+		 * years_in_norway
+		 * income
+		 *
+		 *
+		 * medsøker info?
+		 *
+		 * civilstatus
+		 * spouse_income?
+		 * living_condition
+		 * address_since
+		 * number_of_children
+		 * 
+		 * total_unsecured_debt
+		 * total_unsecured_debt_balance
+		 */
+
+
+		if ($res['status'] == 'Accepted') {
+
+			// send anonymized info to datastore
+
+			// send to kredittkort.rocks em-live
+
+		}
+
+		elseif ($res['status'] == 'Rejected') {
+
+			// send email and phone to gdcos
+
+			// send email, phone, other info to datastore
+
+		}
+
+		elseif ($res['status'] == 'ValidationError') {
+
+			// should never happen - ask user to please check their form or fill it in again
+
+		}
+
+		elseif ($res['status'] == 'TechnicalError') {
+
+			// warn of technical error and ask user to try again
+
+		}
+
+
 
 		// do $this->send here if rejected?
 		// store anonymized data either way?

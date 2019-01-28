@@ -57,10 +57,10 @@ final class Axowl_shortcode {
 
 		$html .= '<div class="em-part-container">';
 
-		$html .= '<div class="em-part em-part-1">';
+		$html .= '<div class="em-part em-part-1"><div class="em-part-title-container"><h2 class="em-part-title"></h2></div>';
 
 		foreach($inputs as $key => $value) {
-			if (isset($value['page'])) $html .= '</div><div class="em-part em-part-'.$value['page'].'">';
+			if (isset($value['page'])) $html .= '</div><div class="em-part em-part-'.$value['page'].'"><div class="em-part-title-container"><h2 class="em-part-title em-part-title-slide"></h2></div>';
 			$html .= $this->element($key, $value, $data);
 		}
 			
@@ -69,7 +69,7 @@ final class Axowl_shortcode {
 
 		$html .= '<div class="em-b-container">';
 		$html .= '<button class="em-b em-b-next" type="button">Neste</button>';
-		$html .= '<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>';
+		$html .= '<div class="em-progress-container"><progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress><div class="em-progress-text">0%</div></div>';
 		// $html .= '<button class="em-b em-b-submit" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>';
 		$html .= '<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>';
@@ -175,6 +175,7 @@ final class Axowl_shortcode {
 								%3$s
 							</label>
 							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s%11$s>
+							<div class="em-val-marker"></div>
 						</div>',
 
 						$o['name'],
@@ -291,7 +292,7 @@ final class Axowl_shortcode {
 									$value
 								);
 
-		$html .= '</select></div>';
+		$html .= '</select><div class="em-val-marker"></div></div>';
 		return $html;
 	}
 

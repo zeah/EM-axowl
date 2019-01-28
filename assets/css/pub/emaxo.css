@@ -20,7 +20,8 @@
  *      	1.4.3 range input
  *      	1.4.4 helper text
  *      	1.4.5 label
- * 		
+ *      	1.4.6 checkbox
+ * 		    1.4.7 val marker
  *
  * 2.0 loam amount
  * 		2.1 loan input container
@@ -117,6 +118,7 @@
 .em-r,
 .em-i {
 	width: 100%;
+	/*position: relative;*/
 }
 
 .em-cc-selector {
@@ -132,10 +134,13 @@
 .emowl-form {
 	display: inline-block;
 	/*display: inline-grid;*/
-
+	/*position: relative;*/
 	/*width: 50%;*/
-	width: 44.6rem;
 
+	width: 39.6rem;
+	/*width: 44.6rem;*/
+
+	/*min-height: 45rem;*/
 	/*box-sizing: content-box;*/
 
 	/* form title - form elements - buttons */
@@ -175,8 +180,15 @@
 /* 1.2 next / prev buttons */
 /* button container */
 .em-b-container {
+	/*position: absolute;*/
+	/*bottom: 0;*/
+
+	/*left: 0;*/
+	/*right: 0;*/
 	display: grid;
 	/*display: flex;*/
+
+	margin: 1rem 2rem 0;
 
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-areas: "back progress next";
@@ -222,16 +234,27 @@
 	background-color: hsl(30, 90%, 60%);
 	grid-area: next;
 }
-
-.em-progress {
+.em-progress-container {
+	position: relative;
 	grid-area: progress;
-	width: 80%;
 	align-self: center;
 	justify-self: center;
+	width: 80%;
+}
+
+
+.em-progress {
+	width: 100%;
 	appearance: none;
 	border: none;
 	background-color: white;
+}
 
+.em-progress-text {
+	position: absolute;
+
+	right: 0;
+	top: .1rem;
 }
 
 .em-progress::-webkit-progress-bar {
@@ -261,6 +284,7 @@
 
 .em-part {
 	display: none;
+	/*overflow: hidden;*/
 }
 
 .em-part-1 {
@@ -282,11 +306,56 @@
 
 	justify-content: space-between;
 	align-items: stretch;
-	grid-column-gap: 4rem;
+	grid-column-gap: 1rem;
 
 	/*height: 100%;*/
 }
 
+.em-part-title-container {
+	overflow: hidden;
+}
+
+.em-part-title {
+	text-align: center;
+	margin: 0;
+	margin-bottom: 1rem;
+/*	position: relative;
+	left: -400px;*/
+	/*z-index: -1;*/
+	/*overflow: hidden;*/
+}
+
+.em-part-1 .em-part-title::after {
+	content: 'Sjekk dine muligheter';
+}
+
+.em-part-2 .em-part-title::after {
+	content: 'Om deg';
+}
+
+.em-part-3 .em-part-title::after {
+	content: 'Søke sammen?';
+}
+
+.em-part-4 .em-part-title::after {
+	content: 'Ditt boforhold';
+}
+
+.em-part-5 .em-part-title::after {
+	content: 'Siste skanse';
+}
+
+.em-part-title-slide {
+	position: relative;
+	/*left: -400px;*/
+	animation-name: slideleft;
+	animation-duration: 2s;
+}
+
+@keyframes slideleft {
+	from { left: -250px; }
+	to { left: 0; }
+}
 
 .em-hidden {
 	display: none !important;
@@ -299,7 +368,9 @@
 	/*user-select: none;*/
 	margin-bottom: 1rem;
 
-	padding: 0 2rem 1rem 2rem;
+	margin: 0 2rem;
+
+	padding: .5rem 0;
 
 	/*border: solid 2px black;*/
 	/*box-shadow: 0 0 5px black;*/
@@ -325,8 +396,8 @@
 
 	z-index: 20;
 
-	text-align: center;
-
+	/*text-align: center;*/
+	padding-left: 1rem;
 	/*height: 5rem;*/
 
 	/*font-size: 3rem;*/
@@ -338,10 +409,18 @@
 }
 
 /**/
-.em-lc .em-i:focus {
+/*.em-lc .em-i:focus {*/
 
-	box-shadow: 0 0 2px hsl(120, 80%, 60%);
+.em-lc .em-i {
+	appearance: none;
+	-webkit-appearance: none;
+	padding-left: 1rem;
 }
+.em-i:focus {
+	/*border: solid 2px hsl(280, 80%, 60%);*/
+	box-shadow: 1px 1px 5px hsl(280, 80%, 60%);
+}
+
 /* 1.4.3 range input container */
 .em-rc {
 	margin-top: 1rem;
@@ -391,6 +470,7 @@
 
 	position: absolute;
 	top: 2.8rem;
+	/*right: 0;*/
 	right: -18.9rem;
 
 	/*background-color: hsl(0, 0%, 95%);*/
@@ -422,8 +502,8 @@
 .em-ht-q {
 	/*content: '?';*/
 	position: absolute;
-	right: 2rem;
-	top: 0;
+	right: 0;
+	top: .5rem;
 	/*top: 13px;*/
 
 	font-weight: 400;
@@ -515,6 +595,32 @@
 }
 
 
+/* 1.4.7 val marker */
+/*.em-i::after {*/
+.em-val-marker::after {
+	content: '';
+	color: green;
+	position: absolute;
+	/*font-size: 2.4rem;*/
+	right: .2rem;
+	top: 3.1rem;
+	z-index: 100;
+	/*border: solid 1px green;*/
+
+	height: 2.8rem;
+	width: 2.8rem;
+
+	opacity: .5;
+}
+
+.em-val-marker-no::after {
+	background-image: url('/wp/wp-content/plugins/em-axowl/assets/img/redtick.png');
+}
+
+.em-val-marker-yes::after {
+	background-image: url('/wp/wp-content/plugins/em-axowl/assets/img/greentick.png');
+}
+
 
 /* 2.0 loan amount element container */
 .em-element-loan_amount {
@@ -524,6 +630,10 @@
 
 /* 2.1 loan amount input container */
 .em-ic-loan_amount {
+}
+
+.em-ic-loan_amount > .em-val-marker {
+	display: none;
 }
 
 /* 2.1.1 loan amount label */
@@ -554,6 +664,9 @@
 	grid-area: tenure;
 }
 
+.em-ic-tenure > .em-val-marker {
+	display: none;
+}
 
 /* 4.0 refinancing / collect debt */
 .em-element-collect_debt {
@@ -577,6 +690,8 @@
 .em-element-monthly_cost {
 	grid-area: monthly;
 	background-color: transparent;
+	border-bottom: dashed 1px hsl(0, 0%, 50%);
+	margin-bottom: 1rem;
 }
 
 .em-container-monthly_cost {
@@ -594,6 +709,7 @@
 	width: 10rem;
 
 	font-weight: 700;
+
 }
 
 /* 8.0 axo accept */
@@ -777,7 +893,7 @@
 
 	}
 
-	.em-progress {
+	.em-progress-container {
 		-ms-grid-column: 2;
 		height: 2.1rem;
 		margin: 0 10%;

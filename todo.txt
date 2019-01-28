@@ -1,4 +1,8 @@
-conversion tracking
+#conversion tracking
+#	accepted sender axo/gclid til gdocs/em-live
+
+
+
 
 unsubscribe from email list
 subscribe accept
@@ -7,20 +11,20 @@ subscribe accept
 send inn popup
 
 
-velg hva data som skal sendes til datastore
-avhengig om de blir accepted eller rejected
+(velg hva data som skal sendes til datastore
+avhengig om de blir accepted eller rejected)
 
 
-part title above form - with css sideways sliding animation
-
-text bubble på progress bar når alle feltene er fylt ut i hver part
 
 
 backend validation
 
-data validation submit button!!!!
 
 SWEDEN
 
-add 'flex' to axowl-inputs and use that instead of grid on part-1
+
+internet explorer
+safari
+ipad
+mobile
 
