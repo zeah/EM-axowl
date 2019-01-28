@@ -35,10 +35,34 @@ final class Axowl_settings {
 	public function register_settings() {
 		register_setting('em-axowl-settings', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 
-		add_settings_section('em-axowl-data', 'Form data', [$this, 'data_section'], 'em-axowl-page');
-		add_settings_field('em-axowl-url', 'Form Url', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
-		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['name', 'Name of the partner, as agreed with Axo.']);
-		add_settings_field('em-axowl-callback', 'Callback URL', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['callback', 'Callback URLs']);
+		add_settings_section('em-axowl-name', '', [$this, 'name_section'], 'em-axowl-page');
+
+		add_settings_section('em-axowl-data', 'URLs', [$this, 'data_section'], 'em-axowl-page');
+
+
+		$settings = [
+			'form_url' => 'Axo\'s URL',
+			// 'name' => 'Partner name (you)',
+			'gdocs_email' => 'Google Docs for storing email/phone',
+			'google_functions' => 'Google Functions postback URL (for datastore)',
+			'gdocs_ads' => 'Google Docs for Google Ads upload',
+			'slack' => 'Slack webhook',
+			'commision' => 'Commision earned per lead (used for uploading to google ads and slack)',
+			'currency' => 'NOK or SEK (used for uploading to google ads)'
+		];
+
+		foreach ($settings as $key => $value)
+			add_settings_field(
+				'em-axowl-'.$key, 
+				ucwords(str_replace('_', ' ', $key)), 
+				[$this, 'input_setting'], 
+				'em-axowl-page', 
+				'em-axowl-data', 
+				[$key, $value]
+			);
+		// add_settings_field('em-axowl-url', 'Form Url', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
+		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-name', ['name', 'Name of the partner, as agreed with Axo.']);
+		// add_settings_field('em-axowl-callback', 'Callback URL', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['callback', 'Callback URLs']);
 
 
 		add_settings_section('em-axowl-input', 'Text for form inputs', [$this, 'input_section'], 'em-axowl-page');
@@ -120,11 +144,14 @@ final class Axowl_settings {
 	}
 
 	public function data_section() {
+		echo 'All the data used. Only Form Url is required.';
+	}
+
+	public function name_section() {
 
 	}
 
 	public function input_section() {
-		echo '<span style="font-size: 16px">Customize helper <b>text</b> for each input field.</span>';
 	}
 
 

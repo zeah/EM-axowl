@@ -126,6 +126,9 @@
 }
 /* end of dev stuff */
 
+button.em-i {
+	padding: .5rem 1rem;
+}
 
 
 
@@ -326,7 +329,7 @@
 }
 
 .em-part-1 .em-part-title::after {
-	content: 'Sjekk dine muligheter';
+	content: 'Sjekk dine lånetilbud';
 }
 
 .em-part-2 .em-part-title::after {
@@ -342,7 +345,7 @@
 }
 
 .em-part-5 .em-part-title::after {
-	content: 'Siste skanse';
+	content: 'Siste etappe';
 }
 
 .em-part-title-slide {
@@ -483,6 +486,7 @@
 	border: solid 1px hsl(0, 0%, 70%);
 	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
 	/*box-shadow: 0 0 3px hsl(0, 0%, 30%);*/
+	z-index: 99;
 
 }
 
@@ -503,7 +507,7 @@
 	/*content: '?';*/
 	position: absolute;
 	right: 0;
-	top: .5rem;
+	top: 1rem;
 	/*top: 13px;*/
 
 	font-weight: 400;
@@ -603,8 +607,8 @@
 	position: absolute;
 	/*font-size: 2.4rem;*/
 	right: .2rem;
-	top: 3.1rem;
-	z-index: 100;
+	top: 3.8rem;
+	z-index: 50;
 	/*border: solid 1px green;*/
 
 	height: 2.8rem;
@@ -651,6 +655,7 @@
 
 /* 2.1.2 loan amount input */
 .em-i-loan_amount {
+	text-align: center;
 	width: 100% !important;
 }
 
@@ -666,6 +671,10 @@
 
 .em-ic-tenure > .em-val-marker {
 	display: none;
+}
+
+.em-i-tenure {
+	text-align: center;
 }
 
 /* 4.0 refinancing / collect debt */
@@ -697,25 +706,26 @@
 .em-container-monthly_cost {
 	/*font-size: 3rem;*/
 	position: relative;
-	bottom: 1px;
+	top: 1px;
 }
 
 .em-if-monthly_cost {
 	border: none;
 	background-color: transparent;
 	color: black;
-	text-align: left;
+	text-align: right;
 	padding-left: 5px;
-	width: 10rem;
+	width: 9.8rem;
 
 	font-weight: 700;
+	font-size: 2.2rem !important;
 
 }
 
 /* 8.0 axo accept */
 .em-element-check {
 	font-size: 1.2rem;
-	margin-left: 20%;
+	padding-left: 20%;
 }
 
 .em-element-axo_accept {

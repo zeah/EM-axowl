@@ -33,7 +33,7 @@ final class Axowl_data {
 			if (in_array($k, $input_keys))
 				$send[$k] = $data[$k];
 
-		// using callback
+		// move to send_axo
 		// $this->send($send);
 
 		echo print_r($send, true);
@@ -45,27 +45,53 @@ final class Axowl_data {
 	}
 
 
-	private function send($send) {
+	// private function send($send) {
 
-		$url = get_option('em_axowl');
+	// 	$url = get_option('em_axowl');
 
-		if (!isset($url['callback']) || $url['callback' == '']) return;
+	// 	if (!isset($url['callback']) || $url['callback' == '']) return;
 
-		$url = str_replace('&amp;', '&', $url['callback']);
+	// 	$url = str_replace('&amp;', '&', $url['callback']);
 
-		$url = explode(';', $url);
+	// 	$url = explode(';', $url);
 
-		// echo print_r($url, true);
+	// 	*
+	// 	 * loan amount
+	// 	 * tenure
+	// 	 * email
+	// 	 * phone
+	// 	 * employment_type
+	// 	 * employment_since
+	// 	 * education
+	// 	 * norwegian
+	// 	 * country_of_origin
+	// 	 * years_in_norway
+	// 	 * income
+	// 	 *
+	// 	 *
+	// 	 * medsøker info?
+	// 	 *
+	// 	 * civilstatus
+	// 	 * spouse_income?
+	// 	 * living_condition
+	// 	 * address_since
+	// 	 * number_of_children
+	// 	 * 
+	// 	 * total_unsecured_debt
+	// 	 * total_u
+		 
 
-		foreach ($url as $v) {
-			$m = ['{email}', '{mobile_number}'];
-			$r = [$send['email'], $send['mobile_number']];
+	// 	// echo print_r($url, true);
 
-			$v = str_replace($m, $r, $v);
+	// 	foreach ($url as $v) {
+	// 		$m = ['{email}', '{mobile_number}'];
+	// 		$r = [$send['email'], $send['mobile_number']];
 
-			wp_remote_get($v, ['blocking' => false]);
-		}
-	}
+	// 		$v = str_replace($m, $r, $v);
+
+	// 		wp_remote_get($v, ['blocking' => false]);
+	// 	}
+	// }
 
 
 	private function send_axo($send) {
@@ -94,67 +120,63 @@ final class Axowl_data {
 
 		if (!is_array($res) || !isset($res['status'])) return;
 
-		/**
-		 * loan amount
-		 * tenure
-		 * email
-		 * phone
-		 * employment_type
-		 * employment_since
-		 * education
-		 * norwegian
-		 * country_of_origin
-		 * years_in_norway
-		 * income
-		 *
-		 *
-		 * medsøker info?
-		 *
-		 * civilstatus
-		 * spouse_income?
-		 * living_condition
-		 * address_since
-		 * number_of_children
-		 * 
-		 * total_unsecured_debt
-		 * total_unsecured_debt_balance
-		 */
+
+		switch ($res['status']) {
+			case 'Accepted': $this->accepted($res, $send); break;
+			case 'Rejected': $this->rejected($res, $send); break;
+			case 'ValidationError': $this->validation_error($res, $send); break;
+			case 'TechnicalError': $this->technical_error($res, $send); break;
+		}
+	}
 
 
-		if ($res['status'] == 'Accepted') {
+	private function accepted($res, $send) {
 
 			// send anonymized info to datastore
 
 			// send to kredittkort.rocks em-live
 
-		}
-
-		elseif ($res['status'] == 'Rejected') {
-
-			// send email and phone to gdcos
-
-			// send email, phone, other info to datastore
-
-		}
-
-		elseif ($res['status'] == 'ValidationError') {
-
-			// should never happen - ask user to please check their form or fill it in again
-
-		}
-
-		elseif ($res['status'] == 'TechnicalError') {
-
-			// warn of technical error and ask user to try again
-
-		}
-
-
-
-		// do $this->send here if rejected?
-		// store anonymized data either way?
 	}
 
+	private function rejected($res, $send) {
+				// send email and phone to gdcos
+
+			// send email
+	}
+
+	private function validation_error($res, $send) {
+			// should never happen - ask user to please check their form or fill it in again
+
+	}
+
+	private function technical_error($res, $send) {
+			// warn of technical error and ask user to try again
+
+	}
+
+	private function slack() {
+		// send to kredittkort.rocks for slack stats
+	}
+
+	private function gdocs_data() {
+		// make a new gdoc for email and phone
+	}
+
+	private function gdocs_ads() {
+		// send to kredittkort.rocks
+	}
+
+	private function datastore() {
+		// send to google function
+	}
+
+	private function query($data) {
+		// do query template 
+		$m = [];
+		$r = [];
+
+		return preg_replace($m, $r, $data);
+	}
 
 
 }

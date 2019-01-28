@@ -242,7 +242,8 @@
 		try { 
 
 			var data = e.value;
-			var pa = e.parentNode.parentNode;
+			var pa = e.parentNode;
+			// var pa = e.parentNode.parentNode;
 
 			var mark = pa.querySelector('.em-val-marker');
 			// removing postfix
