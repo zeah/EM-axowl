@@ -15,3 +15,6 @@ SWEDEN
 
 add 'flex' to axowl-inputs and use that instead of grid on part-1
 
+
+"category title"  .. over skjema -- scroll effect når man klikker på next
+
