@@ -747,7 +747,7 @@
 				// exit ramp
 				if (!success) {
 					// success = true;
-					// return;
+					return;
 				}
 				
 				// hiding current part
@@ -911,6 +911,7 @@
 			selects[i].addEventListener('change', function() { progress() });
 		})();
 
+		qs('.em-i-loan_amount').focus();
 
 	} // end of init
 
