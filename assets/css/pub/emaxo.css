@@ -601,13 +601,13 @@ button.em-i {
 
 /* 1.4.7 val marker */
 /*.em-i::after {*/
-.em-val-marker::after {
-	content: '';
+.em-marker-val {
+	/*content: '';*/
 	color: green;
 	position: absolute;
 	/*font-size: 2.4rem;*/
 	right: .2rem;
-	top: 3.8rem;
+	top: 3.6rem;
 	z-index: 50;
 	/*border: solid 1px green;*/
 

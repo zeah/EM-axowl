@@ -175,7 +175,7 @@ final class Axowl_shortcode {
 								%3$s
 							</label>
 							<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s%11$s>
-							<div class="em-val-marker"></div>
+							%12$s%13$s
 						</div>',
 
 						$o['name'],
@@ -188,7 +188,9 @@ final class Axowl_shortcode {
 						(isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : ''),
 						(isset($o['value']['format']) ? ' data-format="'.$o['value']['format'].'"' : ''),
 						(isset($o['value']['digits']) ? ' data-digits="'.$o['value']['digits'].'"' : ''),
-						(isset($o['value']['show']) ? ' data-show="'.$o['value']['show'].'"' : '')
+						(isset($o['value']['show']) ? ' data-show="'.$o['value']['show'].'"' : ''),
+						'<img class="em-marker-valid em-marker-val em-hidden" src="'.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/greentick.png').'">',
+						'<img class="em-marker-invalid em-marker-val em-hidden" src="'.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png').'">'
 					);
 	}
 
@@ -292,7 +294,9 @@ final class Axowl_shortcode {
 									$value
 								);
 
-		$html .= '</select><div class="em-val-marker"></div></div>';
+		$html .= '</select><img class="em-marker-valid em-marker-val em-hidden" src="'.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/greentick.png').'">
+						<img class="em-marker-invalid em-marker-val em-hidden" src="'.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png').'"></div>';
+						
 		return $html;
 	}
 

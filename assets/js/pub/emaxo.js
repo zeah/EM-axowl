@@ -245,7 +245,7 @@
 			var pa = e.parentNode;
 			// var pa = e.parentNode.parentNode;
 
-			var mark = pa.querySelector('.em-val-marker');
+			// var mark = pa.querySelector('.em-val-marker');
 			// removing postfix
 			if (format && format.indexOf('postfix:') -1) {
 				var temp = format.replace('postfix:', '');
@@ -258,23 +258,36 @@
 
 			// validating
 			if (!val[valid](data)) {
-				console.log(e.type);
+				// console.log(e.type);
 				if (e.type == 'checkbox') pa.style.backgroundColor = 'hsl(0, 80%, 70%)';
-
-				if (mark) {
-					mark.classList.remove('em-val-marker-yes');
-					mark.classList.add('em-val-marker-no');
+				// console.log(e.type);
+				// switch (e.type) {
+				else {
+					pa.querySelector('.em-marker-valid').classList.add('em-hidden');
+					pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
 				}
+				// qs('.em-marker-valid').classList.add('em-hidden');
+				// qs('.em-marker-invalid').classList.remove('em-hidden');
+				// if (mark) {
+					// mark.classList.remove('em-val-marker-yes');
+					// mark.classList.add('em-val-marker-no');
+				// }
 				return false;
 			} 
 			
 			else { 
 				if (e.type == 'checkbox') pa.style.backgroundColor = 'transparent';
-				// pa.style.backgroundColor = 'transparent';
-				if (mark) {
-					mark.classList.remove('em-val-marker-no');
-					mark.classList.add('em-val-marker-yes');
+				else {
+					pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
+					pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
 				}
+				// qs('.em-marker-valid').classList.remove('em-hidden');
+				// qs('.em-marker-invalid').classList.add('em-hidden');
+				// pa.style.backgroundColor = 'transparent';
+				// if (mark) {
+					// mark.classList.remove('em-val-marker-no');
+					// mark.classList.add('em-val-marker-yes');
+				// }
 				return true;
 			}
 		}
@@ -402,10 +415,10 @@
 			// selecting all text when focusing input
 			n.addEventListener('focus', function(e) { 
 			
-				var mark = e.target.parentNode.querySelector('.em-val-marker');
+				// var mark = e.target.parentNode.querySelector('.em-val-marker');
 				// console.log(e.target.parentNode);
-				mark.classList.remove('em-val-marker-yes');
-				mark.classList.remove('em-val-marker-no');
+				// mark.classList.remove('em-val-marker-yes');
+				// mark.classList.remove('em-val-marker-no');
 
 				e.target.select();
 			});
@@ -532,6 +545,7 @@
 					no.classList.remove('em-cc-green');
 
 
+
 				});
 
 				no.addEventListener('click', function(e) {
@@ -550,6 +564,19 @@
 
 					yes.classList.remove('em-cc-green');
 					no.classList.add('em-cc-green');
+
+					// special rule
+					try {
+						var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
+						if (co) {
+							var hInput = qs('.em-c-co_applicant_norwegian'); 
+							hInput.value = '1';
+							hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
+							hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+
+							qs('.em-co-applicant-norwegian').classList.add('em-hidden');
+						}
+					} catch (e) { console.error(e) }
 
 				});
 
