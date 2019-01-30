@@ -27,25 +27,25 @@ final class Axowl_data {
 		$data_keys = array_keys($data);
 		$input_keys = array_keys(Axowl_inputs::$inputs);
 
-		$send = [];
+		$data = [];
 
 		foreach ($data_keys as $k)
 			if (in_array($k, $input_keys))
-				$send[$k] = $data[$k];
+				$data[$k] = $data[$k];
 
 		// move to send_axo
-		// $this->send($send);
+		// $this->send($data);
 
-		echo print_r($send, true);
+		echo print_r($data, true);
 
 		// sending to axo
-		// $this->send_axo($send);
+		// $this->send_axo($data);
 
 		wp_die();
 	}
 
 
-	// private function send($send) {
+	// private function send($data) {
 
 	// 	$url = get_option('em_axowl');
 
@@ -85,7 +85,7 @@ final class Axowl_data {
 
 	// 	foreach ($url as $v) {
 	// 		$m = ['{email}', '{mobile_number}'];
-	// 		$r = [$send['email'], $send['mobile_number']];
+	// 		$r = [$data['email'], $data['mobile_number']];
 
 	// 		$v = str_replace($m, $r, $v);
 
@@ -94,7 +94,7 @@ final class Axowl_data {
 	// }
 
 
-	private function send_axo($send) {
+	private function send_axo($data) {
 		$settings = get_option('em_axowl');
 		if (!isset($settings['url']) || !isset($settings['name'])) return;
 
@@ -102,9 +102,9 @@ final class Axowl_data {
 		$url = $settings['url'].'?';
 		
 		// name of partner as agreed with axo 
-		$send['source'] = $settings['name'];
+		$data['source'] = $settings['name'];
 
-		$url .= http_build_query($send);
+		$url .= http_build_query($data);
 
 		echo $url;
 
@@ -122,60 +122,104 @@ final class Axowl_data {
 
 
 		switch ($res['status']) {
-			case 'Accepted': $this->accepted($res, $send); break;
-			case 'Rejected': $this->rejected($res, $send); break;
-			case 'ValidationError': $this->validation_error($res, $send); break;
-			case 'TechnicalError': $this->technical_error($res, $send); break;
+			case 'Accepted': $this->accepted($res, $data); break;
+			case 'Rejected': $this->rejected($res, $data); break;
+			case 'ValidationError': $this->validation_error($res, $data); break;
+			case 'TechnicalError': $this->technical_error($res, $data); break;
 		}
 	}
 
 
-	private function accepted($res, $send) {
+	private function accepted($res, $data) {
 
-			// send anonymized info to datastore
+		// send anonymized gfunc datastore
 
-			// send to kredittkort.rocks em-live
+		// send to gfunc slack 
+
+		// send to gdocs ads
+
+		// send event or/and ecommerce data to GA
+		// google ads import from GA?
+	}
+
+	private function rejected($res, $data) {
+		
+		// send email and phone to gdcos
+
+		// send gfunc datastore
 
 	}
 
-	private function rejected($res, $send) {
-				// send email and phone to gdcos
-
-			// send email
+	private function validation_error($res, $data) {
+		// should never happen - ask user to please check their form or fill it in again
 	}
 
-	private function validation_error($res, $send) {
-			// should never happen - ask user to please check their form or fill it in again
+	private function technical_error($res, $data) {
+		// warn of technical error and ask user to try again
+	}
+
+	// private function slack($data) {
+	// 	// send to kredittkort.rocks for slack stats
+	// 	// make gfunc/datastore
+	// }
+
+	// gdocs with email and phone
+	private function send($data, $name) {
+
+		$url = $this->get_url($name);
+
+		if (!$url) return;
+
+		echo $name.': '.$this->query($url, $data);
+		// wp_remote_get($this->query($url, $data), ['blocking' => false]);
+	}
+
+	// private function gdocs_ads($data) {
+	// 	// send to kredittkort.rocks
+	
+	// 	$url = $this->get_url('gdocs_ads');
+
+	// 	if (!$url) return;
+
+	// 	echo 'gdocs: '.$this->query($url, $data);
+	// 	// wp_remote_get($this->query($url, $data), ['blocking' => false]);
+	// }
+
+	// private function datastore($data) {
+	// 	// send to google function
+	// }
+
+	private function query($url, $data) {
+
+		// gclid
+		// _ga
+		// 
+		$url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
+
+		foreach ($data as $key => $value)
+			$url = str_replace('{'.$key.'}', $value, $url);
+
+		$url = preg_replace('/{.*}/g', '', $url);
+
+		return $url;
 
 	}
 
-	private function technical_error($res, $send) {
-			// warn of technical error and ask user to try again
+	private function get_url($value) {
+		$url = get_option('em_axowl');
 
+		if (isset($url[$value])) return $url[$value];
+
+		return false;
 	}
 
-	private function slack() {
-		// send to kredittkort.rocks for slack stats
-	}
+	private function anon($data) {
 
-	private function gdocs_data() {
-		// make a new gdoc for email and phone
-	}
+		unset($data['email']);
+		unset($data['mobile_number']);
 
-	private function gdocs_ads() {
-		// send to kredittkort.rocks
-	}
+		return $data;
 
-	private function datastore() {
-		// send to google function
-	}
-
-	private function query($data) {
-		// do query template 
-		$m = [];
-		$r = [];
-
-		return preg_replace($m, $r, $data);
 	}
 
 

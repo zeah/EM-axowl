@@ -29,8 +29,5 @@ ipad
 mobile
 
 
-"category title"  .. over skjema -- scroll effect når man klikker på next
 
-TEST om norsk statborger er hidden i validation hvis medsøker er valgt av igjen (feiler sikkert)
-
-gjøre om em-val-marker-yes bilde fra css til php
+legg til progress update on checkboxes yes/no
