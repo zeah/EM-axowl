@@ -747,7 +747,7 @@
 				// exit ramp
 				if (!success) {
 					// success = true;
-					return;
+					// return;
 				}
 				
 				// hiding current part
@@ -837,7 +837,7 @@
 					data += '&data['+n.name+']='+value;
 				}
 
-				if (!valid) return;				
+				// if (!valid) return;				
 
 				qs('.em-b-submit').removeEventListener('click', post);
 
@@ -867,6 +867,7 @@
 				xhttp.open('POST', emurl.ajax_url, true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhttp.send('action=axowl'+data);
+				// console.log(data);
 
 			}
 

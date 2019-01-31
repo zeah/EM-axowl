@@ -27,19 +27,14 @@ final class Axowl_data {
 		$data_keys = array_keys($data);
 		$input_keys = array_keys(Axowl_inputs::$inputs);
 
-		$data = [];
+		$send = [];
 
 		foreach ($data_keys as $k)
 			if (in_array($k, $input_keys))
-				$data[$k] = $data[$k];
-
-		// move to send_axo
-		// $this->send($data);
-
-		echo print_r($data, true);
+				$send[$k] = $data[$k];
 
 		// sending to axo
-		// $this->send_axo($data);
+		$this->send_axo($send);
 
 		wp_die();
 	}
@@ -96,29 +91,31 @@ final class Axowl_data {
 
 	private function send_axo($data) {
 		$settings = get_option('em_axowl');
-		if (!isset($settings['url']) || !isset($settings['name'])) return;
+		// if (!isset($settings['form_url']) || !isset($settings['name'])) return;
 
 		// axo url
-		$url = $settings['url'].'?';
+		$url = $settings['form_url'].'?';
 		
 		// name of partner as agreed with axo 
 		$data['source'] = $settings['name'];
 
 		$url .= http_build_query($data);
 
-		echo $url;
+		// echo $url;
 
 		// sending to axo
-		$response = wp_remote_get($url);
+		// $response = wp_remote_get($url);
 
-		if (is_wp_error($response)) {
-			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-			return;
-		}
+		// if (is_wp_error($response)) {
+		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+		// 	return;
+		// }
 
-		$res = json_decode(wp_remote_retrieve_body($response), true);
+		// $res = json_decode(wp_remote_retrieve_body($response), true);
 
-		if (!is_array($res) || !isset($res['status'])) return;
+		// if (!is_array($res) || !isset($res['status'])) return;
+
+		$res = ['status' => 'Accepted'];
 
 
 		switch ($res['status']) {
@@ -132,14 +129,22 @@ final class Axowl_data {
 
 	private function accepted($res, $data) {
 
+		$data['transactionId'] = $res['transactionId'];
+
 		// send anonymized gfunc datastore
+		$this->send($this->anon($data), 'google_functions');
+		// $this->send($data, 'google_functions');
 
 		// send to gfunc slack 
+		$this->slack($data, 'slack');
 
 		// send to gdocs ads
+		$this->send($data, 'gdocs_email');
+		// $this->send(['email' => $data['email'], 'mobile_number' => $data['mobile_number'], 'gdocs_email']);
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
+		$this->send($data, 'google_functions');
 	}
 
 	private function rejected($res, $data) {
@@ -158,10 +163,6 @@ final class Axowl_data {
 		// warn of technical error and ask user to try again
 	}
 
-	// private function slack($data) {
-	// 	// send to kredittkort.rocks for slack stats
-	// 	// make gfunc/datastore
-	// }
 
 	// gdocs with email and phone
 	private function send($data, $name) {
@@ -170,36 +171,29 @@ final class Axowl_data {
 
 		if (!$url) return;
 
-		echo $name.': '.$this->query($url, $data);
-		// wp_remote_get($this->query($url, $data), ['blocking' => false]);
+		// echo $name.' 2: '.$url;
+		echo $name.': '.$this->query($url, $data)."\n";
+		wp_remote_get($this->query($url, $data), ['blocking' => false]);
 	}
 
-	// private function gdocs_ads($data) {
-	// 	// send to kredittkort.rocks
-	
-	// 	$url = $this->get_url('gdocs_ads');
-
-	// 	if (!$url) return;
-
-	// 	echo 'gdocs: '.$this->query($url, $data);
-	// 	// wp_remote_get($this->query($url, $data), ['blocking' => false]);
-	// }
-
-	// private function datastore($data) {
-	// 	// send to google function
-	// }
 
 	private function query($url, $data) {
 
 		// gclid
 		// _ga
 		// 
-		$url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
+		// $url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
 
 		foreach ($data as $key => $value)
 			$url = str_replace('{'.$key.'}', $value, $url);
 
-		$url = preg_replace('/{.*}/g', '', $url);
+		$url = preg_replace('/{.*?}/', '', $url);
+
+		$url = str_replace('&amp;', '&', $url);
+
+		// echo print_r($data, true);
+
+		// echo 'query: '.$url;
 
 		return $url;
 
@@ -215,12 +209,16 @@ final class Axowl_data {
 
 	private function anon($data) {
 
-		unset($data['email']);
-		unset($data['mobile_number']);
+		$unset = ['email', 'mobile_number'];
+
+		foreach ($unset as $value)
+			if (isset($data[$value])) unset($data[$value]);
 
 		return $data;
-
 	}
 
+	private function slack($data, $name) {
+
+	}
 
 }

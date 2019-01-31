@@ -31,3 +31,11 @@ mobile
 
 
 legg til progress update on checkboxes yes/no
+
+
+AB testing
+*send GA events/ecommerce med page name
+*axo wl settings -> 2 felt -> page name -> 50% chance if is_homepage() til å vise en av de
+*ab testing av selve skjema: kopier hele axo wl plugin og gjør den om til versjon B 
+	- les delvis fra samme settings
+	- eget: text felt, css, js
