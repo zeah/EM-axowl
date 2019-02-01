@@ -47,8 +47,9 @@ final class Axowl_settings {
 			'google_functions' => 'Google Functions postback URL (for datastore)',
 			'gdocs_ads' => 'Google Docs for Google Ads upload',
 			'slack' => 'Slack webhook',
-			'commision' => 'Commision earned per lead (used for uploading to google ads and slack)',
-			'currency' => 'NOK or SEK (used for uploading to google ads)'
+			'payout' => 'Commision earned per lead (used for uploading to google ads and slack)',
+			'currency' => 'NOK or SEK (used for uploading to google ads)',
+			'ga_code' => 'Google Analytics'
 		];
 
 		foreach ($settings as $key => $value)

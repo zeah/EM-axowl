@@ -15,7 +15,8 @@ send inn popup
 avhengig om de blir accepted eller rejected)
 
 
-
+cookie
+legge til clid til query
 
 backend validation
 
@@ -34,8 +35,17 @@ legg til progress update on checkboxes yes/no
 
 
 AB testing
-*send GA events/ecommerce med page name
+*send GA events/ecommerce med page name (action er pagename)
 *axo wl settings -> 2 felt -> page name -> 50% chance if is_homepage() til å vise en av de
 *ab testing av selve skjema: kopier hele axo wl plugin og gjør den om til versjon B 
 	- les delvis fra samme settings
 	- eget: text felt, css, js
+
+
+GA:
+dr (document referer) - fra cookie
+
+
+send event med label "incomplete" når epost har blitt fylt ut
+	- one time event on email input to send ajax to server som sender til ga
+	- cookie som lagrer at det er gjort
