@@ -106,19 +106,19 @@ final class Axowl_data {
 		// echo $url;
 
 		// sending to axo
-		$response = wp_remote_get($url);
+		// $response = wp_remote_get($url);
 
-		if (is_wp_error($response)) {
-			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-			return;
-		}
+		// if (is_wp_error($response)) {
+		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+		// 	return;
+		// }
 
-		$res = json_decode(wp_remote_retrieve_body($response), true);
+		// $res = json_decode(wp_remote_retrieve_body($response), true);
 
-		echo print_r($res, true);
+		// echo print_r($res, true);
 		// if (!is_array($res) || !isset($res['status'])) return;
 
-		// $res = ['status' => 'Accepted'];
+		$res = ['status' => 'Accepted'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = $res['transactionId'];
@@ -147,7 +147,7 @@ final class Axowl_data {
 
 		// google analytics
 		$value = isset($data['payout']) ? $data['payout'] : 2200;
-		$this->ga('accepted', $value);
+		// $this->ga('accepted', $value);
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
