@@ -42,11 +42,11 @@ final class Axowl_settings {
 
 		$settings = [
 			'form_url' => 'Axo\'s URL',
-			// 'name' => 'Partner name (you)',
-			'gdocs_email' => 'Google Docs for storing email/phone',
 			'google_functions' => 'Google Functions postback URL (for datastore)',
+			'sql' => 'Database for conversion info',
+			'gdocs_email' => 'Google Docs for storing email/phone',
 			'gdocs_ads' => 'Google Docs for Google Ads upload',
-			'slack' => 'Slack webhook',
+			// 'slack' => 'Slack webhook',
 			'payout' => 'Commision earned per lead (used for uploading to google ads and slack)',
 			'currency' => 'NOK or SEK (used for uploading to google ads)',
 			'ga_code' => 'Google Analytics'

@@ -1,7 +1,42 @@
 <?php 
+
+
+
+
 defined('ABSPATH') or die('Blank Space');
 
 final class Axowl_data {
+
+	/**
+	 * from_form() recieves ajax from front end
+	 *
+	 * send_axo() sends data to axo and waits for response
+	 *
+	 * accepted() if response from axo is accepted
+	 * 		-> anonymized info to datastore
+	 * 		-> slack for conversion upate
+	 * 		-> sql for conversion storage
+	 * 		-> google docs for google ads import
+	 *   	-> GA for event hit (accepted) (or ecommerce)
+	 * 
+	 * rejected() if response from axo is rejected
+	 * 		-> all info to datastore (without confidential info)
+	 * 		-> google docs with email and phone number (or just get from datastore?)
+	 * 		-> GA for event hit (rejected)
+	 *
+	 * ga() sends post data to google analytics
+	 * 
+	 * helper functions:
+	 * send() get method with query and name of url
+	 * sql() fixes data for database
+	 * gdocs_ads() fixed data for gdocs for gads.
+	 * get_url() gets url from WP options
+	 * remove_confidential()
+	 * anon()
+	 * get_clid() gets the google or bing click id - either from cookie or query string
+	 * 
+	 */
+
 	/* singleton */
 	private static $instance = null;
 
@@ -20,6 +55,13 @@ final class Axowl_data {
 		add_action( 'wp_ajax_axowl', [$this, 'from_form']);
 	}
 
+
+
+
+	/**
+	 * [from_form description]
+	 * @return [type] [description]
+	 */
 	public function from_form() {
 		$data = $_POST['data'];
 
@@ -40,55 +82,13 @@ final class Axowl_data {
 	}
 
 
-	// private function send($data) {
-
-	// 	$url = get_option('em_axowl');
-
-	// 	if (!isset($url['callback']) || $url['callback' == '']) return;
-
-	// 	$url = str_replace('&amp;', '&', $url['callback']);
-
-	// 	$url = explode(';', $url);
-
-	// 	*
-	// 	 * loan amount
-	// 	 * tenure
-	// 	 * email
-	// 	 * phone
-	// 	 * employment_type
-	// 	 * employment_since
-	// 	 * education
-	// 	 * norwegian
-	// 	 * country_of_origin
-	// 	 * years_in_norway
-	// 	 * income
-	// 	 *
-	// 	 *
-	// 	 * medsøker info?
-	// 	 *
-	// 	 * civilstatus
-	// 	 * spouse_income?
-	// 	 * living_condition
-	// 	 * address_since
-	// 	 * number_of_children
-	// 	 * 
-	// 	 * total_unsecured_debt
-	// 	 * total_u
-		 
-
-	// 	// echo print_r($url, true);
-
-	// 	foreach ($url as $v) {
-	// 		$m = ['{email}', '{mobile_number}'];
-	// 		$r = [$data['email'], $data['mobile_number']];
-
-	// 		$v = str_replace($m, $r, $v);
-
-	// 		wp_remote_get($v, ['blocking' => false]);
-	// 	}
-	// }
 
 
+	/**
+	 * [send_axo description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	private function send_axo($data) {
 		$settings = get_option('em_axowl');
 		if (!isset($settings['form_url']) || !isset($settings['name'])) return;
@@ -103,7 +103,7 @@ final class Axowl_data {
 
 		$url .= http_build_query($data);
 
-		// echo $url;
+		echo 'axo url: '.$url."\n\n";
 
 		// sending to axo
 		// $response = wp_remote_get($url);
@@ -132,97 +132,183 @@ final class Axowl_data {
 	}
 
 
+
+
+	/**
+	 * [accepted description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	private function accepted($data) {
 
 		$data['status'] = 'accepted';
 
-		// send anonymized gfunc datastore
-		$this->send($this->anon($data), 'google_functions');
+		// send all anonymized gfunc datastore
+		$this->send(http_build_query($this->anon($data)), 'google_functions');
 
-		// send to gfunc slack 
-		$this->slack($data, 'slack');
+		// sending conversion details to sql
+		$this->sql($data);
 
-		// send to gdocs ads
-		$this->send($data, 'gdocs_ads');
+		// sending to gdocs for google ads
+		$this->gdocs_ads(http_build_query($data));
+		
 
 		// google analytics
-		$value = isset($data['payout']) ? $data['payout'] : 2200;
-		// $this->ga('accepted', $value);
+		$this->ga('accepted', $value);
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
 	}
 
+
+
+
+	/**
+	 * [rejected description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	private function rejected($data) {
 		$data['status'] = 'rejected';
 		
 		// send email and phone to gdcos
-		$this->send($data, 'gdocs_email');
+		$this->send(http_build_query($data), 'gdocs_email');
 
 		// send data to datastore
-		$this->send($data, 'google_functions');
+		$this->send(http_build_query($data), 'google_functions');
 
 		// google analytics
-		$this->ga('rejected', 0);
+		// $this->ga('rejected', 0);
 
 	}
 
-	private function validation_error($data) {
-		// echo print_r($res);
-		// should never happen - ask user to please check their form or fill it in again
-	}
-
-	private function technical_error($data) {
-		// echo print_r($res);
-		// warn of technical error and ask user to try again
-	}
 
 
-	// gdocs with email and phone
-	private function send($data, $name) {
+
+	/**
+	 * [send description]
+	 * @param  [type] $query [description]
+	 * @param  [type] $name  [description]
+	 * @return [type]        [description]
+	 */
+	private function send($query, $name) {
 
 		$url = $this->get_url($name);
 
 		if (!$url) return;
 
-		echo $name.': '.$this->query($url, $data)."\n";
-		// wp_remote_get($this->query($url, $data), ['blocking' => false]);
+		if (strpos($url, '?') === false) $url .= '?';
+
+
+		echo $name.': '.$url.$query."\n\n";
+		// wp_remote_get($url.$query, ['blocking' => false]);
 	}
 
 
-	private function query($url, $data) {
 
-		$v = get_option('em_axowl');
 
-		// gclid
-		// _ga
-		// 
-		// $url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
+	/**
+	 * [sql description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	private function sql($data) {
 
-		foreach ($data as $key => $value)
-			$url = str_replace('{'.$key.'}', $value, $url);
+		// TODO -- if no clid then add referer from cookie
 
-		$url = preg_replace('/{.*?}/', '', $url);
+		$opt = get_option('em_axowl');
+		$d = [
+			'campaign' => 'axo',
+			'media' => $_SERVER['SERVER_NAME'],
+			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
+			'tracking' => $this->get_clid(),
+			'status' => 'accepted',
+			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
+			// last parameter is timestamp which sql fills out all by itself.
+		];
 
-		$url = str_replace('&amp;', '&', $url);
-
-		$url .= '&gclid=';
-
-		$url .= '&msclkid=';
-
-		$url .= '&referer=';
-
-		if (isset($v['currency'])) $url .= '&currency='.$v['currency'];
-
-		if (isset($v['payout'])) $url .= '&payout='.$v['payout'];
-		// echo print_r($data, true);
-
-		// echo 'query: '.$url;
-
-		return $url;
-
+		$this->send(http_build_query($d), 'sql');
 	}
 
+
+
+
+	/**
+	 * [gdocs_ads description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
+	private function gdocs_ads($data) {
+		// Google Click ID, Conversion Name, Conversion Time, Conversion Value, Conversion Currency
+
+		$opt = get_option('em_axowl');
+
+		if (!isset($opt['payout']) || !isset($opt['currency'])) return;
+
+		$clid = isset($_COOKIE['gclid']) ? $_COOKIE['gclid'] : false; 
+
+		preg_match('/^.*(?:gclid=)(.*?)(?:&|$)/', $_SERVER['QUERY_STRING'], $match);
+
+		if (isset($match[1])) $clid = $match[1];
+
+		if (!$clid) return;
+
+		$d = [
+			'Google Click ID' => $clid,
+			'Conversion Name' => 'AXO',
+			'Conversion Time' => date('M d, Y h:i:s A'),
+			'Conversion Value' => $opt['payout'],
+			'Conversion Currency' => $opt['currency']
+		];
+
+		$this->send(http_build_query($d), 'gdocs_ads');
+	}
+	// /**
+	//  * [query description]
+	//  * @param  [type] $url  [description]
+	//  * @param  [type] $data [description]
+	//  * @return [type]       [description]
+	//  */
+	// private function query($url, $data) {
+
+	// 	$v = get_option('em_axowl');
+
+	// 	// gclid
+	// 	// _ga
+	// 	// 
+	// 	// $url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
+
+	// 	foreach ($data as $key => $value)
+	// 		$url = str_replace('{'.$key.'}', $value, $url);
+
+	// 	$url = preg_replace('/{.*?}/', '', $url);
+
+	// 	$url = str_replace('&amp;', '&', $url);
+
+	// 	$url .= '&gclid=';
+
+	// 	$url .= '&msclkid=';
+
+	// 	$url .= '&referer=';
+
+	// 	if (isset($v['currency'])) $url .= '&currency='.$v['currency'];
+
+	// 	if (isset($v['payout'])) $url .= '&payout='.$v['payout'];
+	// 	// echo print_r($data, true);
+
+	// 	// echo 'query: '.$url;
+
+	// 	return $url;
+
+	// }
+
+
+
+	/**
+	 * [get_url description]
+	 * @param  [type] $value [description]
+	 * @return [type]        [description]
+	 */
 	private function get_url($value) {
 		$url = get_option('em_axowl');
 
@@ -231,6 +317,14 @@ final class Axowl_data {
 		return false;
 	}
 
+
+
+
+	/**
+	 * [remove_confidential description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	private function remove_confidential($data) {
 		if (isset($data['account_number'])) unset($data['account_number']);
 		if (isset($data['social_number'])) unset($data['social_number']);
@@ -239,6 +333,14 @@ final class Axowl_data {
 		return $data;
 	}
 
+
+
+
+	/**
+	 * [anon description]
+	 * @param  [type] $data [description]
+	 * @return [type]       [description]
+	 */
 	private function anon($data) {
 
 		$unset = ['email', 'mobile_number'];
@@ -249,65 +351,72 @@ final class Axowl_data {
 		return $data;
 	}
 
-	private function slack($data, $name) {
 
-		$hook = get_option('em_axowl');
 
-		if (!isset($hook['slack'])) return;
 
-		$hook = $hook['slack'];
+	// /**
+	//  * [slack description]
+	//  * @param  [type] $data [description]
+	//  * @param  [type] $name [description]
+	//  * @return [type]       [description]
+	//  */
+	// private function slack($data, $name) {
 
-		$send = 'Axo | Norskfinans :flag-no: | '.$data['payout'];
+	// 	$hook = get_option('em_axowl');
 
-		$posting_to_slack = wp_remote_post($hook, array(
-			'method' => 'POST',
-			'timeout' => 30,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => false,
-			'headers' => array(),
-			'body' => ['payload' => json_encode(['text' => $this->message($send)])],
-			'cookies' => array()
-			)
-		);
-	}
+	// 	if (!isset($hook['slack'])) return;
+
+	// 	$hook = $hook['slack'];
+
+	// 	$send = 'Axo | Norskfinans :flag-no: | '.$data['payout'];
+
+	// 	$posting_to_slack = wp_remote_post($hook, array(
+	// 		'method' => 'POST',
+	// 		'timeout' => 30,
+	// 		'redirection' => 5,
+	// 		'httpversion' => '1.0',
+	// 		'blocking' => false,
+	// 		'headers' => array(),
+	// 		'body' => ['payload' => json_encode(['text' => $this->message($send)])],
+	// 		'cookies' => array()
+	// 		)
+	// 	);
+	// }
 
 	private function ga($status, $value) {
 		// status: accepted, rejected, incomplete
 		// value: event value (2200)
+		if (is_user_logged_in()) return;
 
-		$tag = get_option('theme_google_scripts');
+		$tag = get_option('em_axowl');
+
+		if (!isset($tag['ga_code'])) return;
+
+		$tag = $tag['ga_code'];
+
+		// $tag = get_option('theme_google_scripts');
 
 		global $post;
 
 		$post_name = $post->post_name ? $post->post_name : 'na postname';
 
-		$tag = $tag['adwords'];
-		if (!isset($tag['adwords'])) {
-			$tag = get_opton('em_axowl');
+		// if (!isset($tag['adwords'])) {
+		// 	$tag = get_opton('em_axowl');
 
-			if (!isset($tag['ga_code'])) return;
+		// 	if (!isset($tag['ga_code'])) return;
 
-			$tag = $tag['ga_code'];
-		}
-
-		if (is_user_logged_in()) return;
+		// 	$tag = $tag['ga_code'];
+		// }
+		// else $tag = $tag['adwords'];
 
 
+		// getting site url without query string
 		global $wp;
 		$dl = home_url($wp->request);
 		$dl = preg_replace('/\?.*$/', '', $dl);
 
-		// $dl = $_SERVER['HTTP_REFERER'];
-		$ip = $_SERVER['REMOTE_ADDR'];
-		$ua = $_SERVER['HTTP_USER_AGENT'];
-		$t = 'event';
-		$ec = 'Axo Form';
-		$ea = $post_name;
-		$el = $status;
-		$cookie = isset($_COOKIE['_ga']) ? $_COOKIE['_ga'] : rand(1000000,5000000);
-
-		$content = wp_remote_post('https://www.google-analytics.com/collect', [
+		// sending to google analytics
+		wp_remote_post('https://www.google-analytics.com/collect', [
 			'method' => 'POST',
 			'timeout' => 30,
 			'redirection' => 5,
@@ -317,19 +426,40 @@ final class Axowl_data {
 			'body' => [
 				'v' => '1', 
 				'tid' => $tag, 
-				'cid' => $cookie,
-				'uip' => $ip,
-				'ua' => $ua,
-				't' => $t, 
-				'ec' => $ec, 
-				'ea' => $ea, 
-				'el' => $el, 
-				'dl' => $dl,
-				'ev' => $value
+				'cid' => isset($_COOKIE['_ga']) ? $_COOKIE['_ga'] : rand(1000000,5000000),
+				'uip' => $_SERVER['REMOTE_ADDR'],
+				'ua' => $_SERVER['HTTP_USER_AGENT'],
+				't' => 'event', 
+				'ec' => 'axo form', 
+				'ea' => $post_name, // for ab-testing
+				'el' => $el, // accepted or rejected
+				'dl' => $status, // url without query
+				'ev' => $value // value of conversion
 				],
 			'cookies' => []
 			]
 		);
 	}
+
+
+	private function get_clid() {
+
+		if (isset($_COOKIE['clid'])) return $_COOKIE['clid'];
+
+		$query = $_SERVER['QUERY_STRING'];
+
+		$check = ['gclid', 'msclkid'];
+
+		foreach ($check as $c) {
+			$pattern = '/^.*(?:'.$c.'=)(.*?)(?:&|$)/';
+
+			preg_match($pattern, $query, $match);
+
+			if (isset($match[1])) return $match[1];
+		}
+
+		return 'NULL';
+	}
+
 
 }

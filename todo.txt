@@ -10,13 +10,7 @@ subscribe accept
 
 send inn popup
 
-
-(velg hva data som skal sendes til datastore
-avhengig om de blir accepted eller rejected)
-
-
-cookie
-legge til clid til query
+cookie clid og initial outside referer for å sendes til sql (og GA?)
 
 backend validation
 
@@ -43,9 +37,10 @@ AB testing
 
 
 GA:
-dr (document referer) - fra cookie
+dr (document referer) - fra cookie eller $_SERVER->referer
 
 
 send event med label "incomplete" når epost har blitt fylt ut
 	- one time event on email input to send ajax to server som sender til ga
 	- cookie som lagrer at det er gjort
+	sendes inn kortid?
