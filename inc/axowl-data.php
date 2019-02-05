@@ -118,7 +118,7 @@ final class Axowl_data {
 		// echo print_r($res, true);
 		// if (!is_array($res) || !isset($res['status'])) return;
 
-		$res = ['status' => 'Accepted'];
+		$res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = $res['transactionId'];
@@ -222,7 +222,7 @@ final class Axowl_data {
 			'media' => $_SERVER['SERVER_NAME'],
 			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
 			'tracking' => $this->get_clid(),
-			'status' => 'accepted',
+			'status' => 'approved',
 			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
 			// last parameter is timestamp which sql fills out all by itself.
 		];
