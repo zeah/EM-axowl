@@ -103,6 +103,12 @@ final class Axowl_data {
 
 		$url .= http_build_query($data);
 
+		$ga = false;
+		if (isset($data['ga'])) {
+			$ga = $data['ga'];
+			unset($data['ga']);
+		}
+
 		echo 'axo url: '.$url."\n\n";
 
 		// sending to axo
@@ -121,11 +127,11 @@ final class Axowl_data {
 		$res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
-		$data['transactionId'] = $res['transactionId'];
+		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
 
 		switch ($res['status']) {
-			case 'Accepted': $this->accepted($data); break;
-			case 'Rejected': $this->rejected($data); break;
+			case 'Accepted': $this->accepted($data, $ga); break;
+			case 'Rejected': $this->rejected($data, $ga); break;
 			// case 'ValidationError': $this->validation_error($data); break;
 			// case 'TechnicalError': $this->technical_error($data); break;
 		}
@@ -139,22 +145,22 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function accepted($data) {
-
+	private function accepted($data, $ga) {
 		$data['status'] = 'accepted';
+
 
 		// send all anonymized gfunc datastore
 		$this->send(http_build_query($this->anon($data)), 'google_functions');
 
 		// sending conversion details to sql
-		$this->sql($data);
+		// $this->sql($data);
 
 		// sending to gdocs for google ads
-		$this->gdocs_ads(http_build_query($data));
-		
+		// $this->gdocs_ads(http_build_query($data));
+		$this->gdocs_ads($data);
 
 		// google analytics
-		$this->ga('accepted', $value);
+		// $this->ga('accepted', $value, $ga);
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
@@ -168,17 +174,18 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function rejected($data) {
+	private function rejected($data, $ga) {
 		$data['status'] = 'rejected';
 		
 		// send email and phone to gdcos
-		$this->send(http_build_query($data), 'gdocs_email');
+		// $this->send(http_build_query($data), 'gdocs_email');
+		// echo print_r($data, true);
 
 		// send data to datastore
 		$this->send(http_build_query($data), 'google_functions');
 
 		// google analytics
-		// $this->ga('rejected', 0);
+		// $this->ga('rejected', 0, $ga);
 
 	}
 
@@ -201,7 +208,7 @@ final class Axowl_data {
 
 
 		echo $name.': '.$url.$query."\n\n";
-		// wp_remote_get($url.$query, ['blocking' => false]);
+		wp_remote_get($url.$query, ['blocking' => false]);
 	}
 
 
@@ -243,7 +250,9 @@ final class Axowl_data {
 
 		$opt = get_option('em_axowl');
 
-		if (!isset($opt['payout']) || !isset($opt['currency'])) return;
+		if (!isset($opt['gdocs_ads']) || !isset($opt['payout']) || !isset($opt['currency'])) return;
+
+		$data = http_build_query($data);
 
 		$clid = isset($_COOKIE['gclid']) ? $_COOKIE['gclid'] : false; 
 
@@ -327,7 +336,15 @@ final class Axowl_data {
 	 */
 	private function remove_confidential($data) {
 		if (isset($data['account_number'])) unset($data['account_number']);
-		if (isset($data['social_number'])) unset($data['social_number']);
+		if (isset($data['social_number'])) {
+			$d = $data['social_number'];
+			$data['age'] = sprintf('%s-%s-%s', 
+							(intval(substr($d, 4, 2)) < 20) ? '20'.substr($d, 4, 2) : '19'.substr($d, 4, 2), 
+							substr($d, 2, 2), 
+							substr($d, 0, 2));
+
+			unset($data['social_number']);
+		}
 		if (isset($data['co_applicant_social_number'])) unset($data['co_applicant_social_number']);
 
 		return $data;
@@ -343,7 +360,7 @@ final class Axowl_data {
 	 */
 	private function anon($data) {
 
-		$unset = ['email', 'mobile_number'];
+		$unset = ['email', 'mobile_number', 'co_applicant_name', 'co_applicant_social_number'];
 
 		foreach ($unset as $value)
 			if (isset($data[$value])) unset($data[$value]);
@@ -383,7 +400,7 @@ final class Axowl_data {
 	// 	);
 	// }
 
-	private function ga($status, $value) {
+	private function ga($status, $value, $ga) {
 		// status: accepted, rejected, incomplete
 		// value: event value (2200)
 		if (is_user_logged_in()) return;
@@ -400,6 +417,9 @@ final class Axowl_data {
 
 		$post_name = $post->post_name ? $post->post_name : 'na postname';
 
+		if (!$ga) $ga = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
+
+		// getting ga code from emtheme
 		// if (!isset($tag['adwords'])) {
 		// 	$tag = get_opton('em_axowl');
 
@@ -426,7 +446,7 @@ final class Axowl_data {
 			'body' => [
 				'v' => '1', 
 				'tid' => $tag, 
-				'cid' => isset($_COOKIE['_ga']) ? $_COOKIE['_ga'] : rand(1000000,5000000),
+				'cid' => $ga,
 				'uip' => $_SERVER['REMOTE_ADDR'],
 				'ua' => $_SERVER['HTTP_USER_AGENT'],
 				't' => 'event', 

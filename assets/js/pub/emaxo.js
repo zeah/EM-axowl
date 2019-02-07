@@ -837,6 +837,15 @@
 					data += '&data['+n.name+']='+value;
 				}
 
+				var cookie = document.cookie.split('; ');
+				for (var i in cookie) {
+					if (cookie[i].indexOf('=') == -1) continue;
+
+					var temp = cookie[i].split('=');
+					if (temp[0] == '_ga') data += '&data[ga]='+temp[1];
+				}
+
+
 				// if (!valid) return;				
 
 				qs('.em-b-submit').removeEventListener('click', post);
@@ -915,6 +924,10 @@
 		qs('.em-i-loan_amount').focus();
 
 	} // end of init
+
+
+
+
 
 
 	init();

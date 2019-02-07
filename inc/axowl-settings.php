@@ -42,9 +42,9 @@ final class Axowl_settings {
 
 		$settings = [
 			'form_url' => 'Axo\'s URL',
-			'google_functions' => 'Google Functions postback URL (for datastore)',
-			'sql' => 'Database for conversion info',
-			'gdocs_email' => 'Google Docs for storing email/phone',
+			'google_functions' => 'Callback for form data',
+			'sql' => 'Callback for conversion details',
+			// 'gdocs_email' => 'Google Docs for storing email/phone',
 			'gdocs_ads' => 'Google Docs for Google Ads upload',
 			// 'slack' => 'Slack webhook',
 			'payout' => 'Commision earned per lead (used for uploading to google ads and slack)',

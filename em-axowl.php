@@ -36,6 +36,15 @@ final class EM_axowl {
 
 	private function __construct() {
 
+
+		// $temp = '260410';
+
+		// wp_die('<xmp>'.print_r('hi'.sprintf('%s-%s-%s', 
+		// 	(intval(substr($temp, 4, 2)) < 20) ? '20'.substr($temp, 4, 2) : '19'.substr($temp, 4, 2), 
+		// 	substr($temp, 2, 2), 
+		// 	substr($temp, 0, 2)), true).'</xmp>');
+
+
 		Axowl_settings::get_instance();
 		Axowl_shortcode::get_instance();
 		Axowl_data::get_instance();
