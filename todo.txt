@@ -8,9 +8,15 @@ unsubscribe from email list
 subscribe accept
 
 
-send inn popup
+send inn popup - les fra post?
+egen side for de under 25?
+de med barn? (eks. gode rabatter med kredittkort)
 
-cookie clid og initial outside referer for å sendes til sql (og GA?)
+
+fikse litt på age validation .. 20--
+
+
+initial outside referer for å sendes til sql (og GA?) cookie.php
 
 backend validation
 

@@ -846,6 +846,7 @@
 				}
 
 
+				// console.log(data);
 				// if (!valid) return;				
 
 				qs('.em-b-submit').removeEventListener('click', post);
