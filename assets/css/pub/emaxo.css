@@ -300,8 +300,8 @@ button.em-i {
 	grid-template-columns: 1fr 1fr;
 
 	grid-template-areas: 
-	"monthly monthly"
 	"loan loan"
+	"monthly monthly"
 	"tenure refinancing"
 	"mobile email"
 	"axoaccept axoaccept"
@@ -699,8 +699,8 @@ button.em-i {
 .em-element-monthly_cost {
 	grid-area: monthly;
 	background-color: transparent;
-	border-bottom: dashed 1px hsl(0, 0%, 50%);
-	margin-bottom: 1rem;
+	/*border-bottom: dashed 1px hsl(0, 0%, 50%);*/
+	/*margin-bottom: 1rem;*/
 }
 
 .em-container-monthly_cost {

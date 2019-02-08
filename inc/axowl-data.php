@@ -110,21 +110,24 @@ final class Axowl_data {
 		}
 
 		echo 'axo url: '.$url."\n\n";
+		echo 'data to be sent: '.print_r($data, true)."\n\n";
 
 		// sending to axo
-		// $response = wp_remote_get($url);
+		$response = wp_remote_get($url);
 
-		// if (is_wp_error($response)) {
-		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-		// 	return;
-		// }
+		if (is_wp_error($response)) {
+			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+			return;
+		}
 
-		// $res = json_decode(wp_remote_retrieve_body($response), true);
+		$res = json_decode(wp_remote_retrieve_body($response), true);
 
 		// echo print_r($res, true);
-		// if (!is_array($res) || !isset($res['status'])) return;
+		if (!is_array($res) || !isset($res['status'])) return;
 
-		$res = ['status' => 'Rejected'];
+		echo print_r($res, true);
+
+		// $res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -149,18 +152,20 @@ final class Axowl_data {
 		$data['status'] = 'accepted';
 
 
-		// send all anonymized gfunc datastore
+		// send all anonymized gfunc sql
 		$this->send(http_build_query($this->anon($data)), 'google_functions');
 
 		// sending conversion details to sql
-		// $this->sql($data);
+		$this->sql($data);
 
 		// sending to gdocs for google ads
 		// $this->gdocs_ads(http_build_query($data));
-		$this->gdocs_ads($data);
+		// $this->gdocs_ads($data);
 
 		// google analytics
-		// $this->ga('accepted', $value, $ga);
+		$value = get_option('em_axowl');
+		$value = isset($value['payout']) ? $value['payout'] : 0;
+		$this->ga('accepted', $value, $ga);
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
@@ -181,11 +186,11 @@ final class Axowl_data {
 		// $this->send(http_build_query($data), 'gdocs_email');
 		// echo print_r($data, true);
 
-		// send data to datastore
+		// send data to sql
 		$this->send(http_build_query($data), 'google_functions');
 
 		// google analytics
-		// $this->ga('rejected', 0, $ga);
+		$this->ga('rejected', 0, $ga);
 
 	}
 
@@ -207,7 +212,7 @@ final class Axowl_data {
 		if (strpos($url, '?') === false) $url .= '?';
 
 
-		echo $name.': '.$url.$query."\n\n";
+		// echo $name.': '.$url.$query."\n\n";
 		wp_remote_get($url.$query, ['blocking' => false]);
 	}
 
