@@ -248,7 +248,7 @@ final class Axowl_shortcode {
 	private function check_input($o = []) {
 
 		return sprintf('<div class="em-element em-element-check em-element-check-%1$s">
-							<input type="checkbox" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s>
+							<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s>
 							<label for="em-check-%1$s">%2$s</label>
 						</div>',
 						$o['name'],
