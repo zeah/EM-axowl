@@ -1,11 +1,16 @@
 #conversion tracking
 #	accepted sender axo/gclid til gdocs/em-live
 
+incomplete email 
+	commented out in gfunc
+	add js and php to send email/sms to gfunc
 
 
 
-unsubscribe from email list
-subscribe accept
+
+#unsubscribe from email list
+	egen side hvor man kan skrive inn eposten
+	subscribe accept
 
 
 send inn popup - les fra post?
@@ -13,7 +18,9 @@ egen side for de under 25?
 de med barn? (eks. gode rabatter med kredittkort)
 
 
-fikse litt på age validation .. 20--
+###fikse litt på age validation .. 20--
+
+accept checkbox har ingen effect .. hvis unchecked så ikke lagre data
 
 
 initial outside referer for å sendes til sql (og GA?) cookie.php

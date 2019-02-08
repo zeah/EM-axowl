@@ -233,6 +233,7 @@ final class Axowl_data {
 			'campaign' => 'axo',
 			'media' => $_SERVER['SERVER_NAME'],
 			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
+			'affiliate' => 'axo wl',
 			'tracking' => $this->get_clid(),
 			'status' => 'approved',
 			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
@@ -341,7 +342,7 @@ final class Axowl_data {
 	 */
 	private function remove_confidential($data) {
 		if (isset($data['account_number'])) unset($data['account_number']);
-		if (isset($data['social_number'])) {
+		if (isset($data['social_number']) && $data['social_number']) {
 			$d = $data['social_number'];
 			$data['age'] = sprintf('%s-%s-%s', 
 							(intval(substr($d, 4, 2)) < 20) ? '20'.substr($d, 4, 2) : '19'.substr($d, 4, 2), 
