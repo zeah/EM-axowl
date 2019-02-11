@@ -16,7 +16,22 @@ final class Axowl_cookie {
 	}
 
 	private function wp_hooks() {
+		// add_action('init', [$this, 'referer']);
+		$this->referer();
+	}
 
+	public function referer() {
+		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
+		
+		// if no referer data
+		if (!isset($_SERVER['REFERER']) || !$_SERVER['REFERER']) return;
+
+		$r = $_SERVER['HTTP_REFERER'];
+
+		if (strpos($r, $_SERVER['SERVER_NAME']) !== false) return;
+
+		// sets cookie for a year
+		setcookie('referer', $r, time()+(3600*24*365));
 	}
 
 	// referer cookie

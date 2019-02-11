@@ -21,7 +21,7 @@
 
 (function() {
 
-"use strict";
+	"use strict";
 
 	/**
 	 * helper function for getting element and adding validation 
@@ -333,7 +333,36 @@
 	}
 
 
+	var incomplete = function(e) {
 
+		e.target.removeEventListener('click', incomplete);
+
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200)
+				console.log(this.responseText);
+		}
+
+		var query = '';
+
+		try {
+			var email = qs('.em-i-email').value;
+			var mobileNumber = qs('.em-i-mobile_number').value;
+
+		 	if (!email && !mobileNumber) return;
+
+		 	if (email) query += '&email='+email;
+		 	if (mobileNumber) query += '&mobile_number='+mobileNumber;
+
+		} catch (e) {}
+
+
+		// sending to server
+		xhttp.open('POST', emurl.ajax_url, true);
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhttp.send('action=wlinc'+query);
+	}
 
 
 	var init = function() {
@@ -544,7 +573,7 @@
 					yes.classList.add('em-cc-green');
 					no.classList.remove('em-cc-green');
 
-
+					progress();
 
 				});
 
@@ -577,6 +606,7 @@
 							qs('.em-co-applicant-norwegian').classList.add('em-hidden');
 						}
 					} catch (e) { console.error(e) }
+					progress();
 
 				});
 
@@ -775,6 +805,9 @@
 				} catch (e) { console.error(e) }
 
 			});
+
+			qs('.em-b-next').addEventListener('click', incomplete);
+
 		} catch (e) {}
 
 		// back button
@@ -933,5 +966,19 @@
 
 	init();
 	progress();
+
+	// var ajatest = new XMLHttpRequest();
+
+	// ajatest.onreadystatechange = function() {
+	// 	if (this.readyState == 4 && this.status == 200) {
+	// 		console.log(this.responseText);
+	// 	}
+	// }
+
+	// // sending to server
+	// ajatest.open('POST', emurl.ajax_url, true);
+	// ajatest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	// ajatest.send('action=wlinc');
+
 
 })();

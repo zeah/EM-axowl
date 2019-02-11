@@ -3,7 +3,7 @@
 /*
 Plugin Name: EM Axo WL
 Description: Axo White Label
-Version: 0.0.11
+Version: 0.0.12
 GitHub Plugin URI: zeah/EM-axowl
 */
 
@@ -13,6 +13,7 @@ require_once 'inc/axowl-settings.php';
 require_once 'inc/axowl-shortcode.php';
 require_once 'inc/axowl-data.php';
 require_once 'inc/axowl-ads.php';
+require_once 'inc/axowl-cookie.php';
 
 
 function init_em_axowl() {
@@ -49,6 +50,7 @@ final class EM_axowl {
 		Axowl_shortcode::get_instance();
 		Axowl_data::get_instance();
 		Axowl_ads::get_instance();
+		Axowl_cookie::get_instance();
 	}
 
 }

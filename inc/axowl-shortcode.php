@@ -113,46 +113,52 @@ final class Axowl_shortcode {
 							(isset($value['hidden']) ? ' em-hidden' : '')
 						);
 
-		if (isset($value['notInput'])) $html .= $this->text_field([
-													'name' => $key,
-													'text' => $value['text']
-												]);
+		if (isset($value['notInput'])) 
+			$html .= $this->text_field([
+						'name' => $key,
+						'text' => $value['text']
+					]);
 
 		else {
-			if (isset($value['text'])) $html .= $this->text_input([
-													'name' => $key,
-													'text' => $data[$key],
-													'ht' => $data[$key.'_ht'],
-													'value' => $value
-												]);
+			if (isset($value['text'])) 
+				$html .= $this->text_input([
+							'name' => $key,
+							'text' => $data[$key],
+							'ht' => $data[$key.'_ht'],
+							'value' => $value
+						]);
 
-			if (isset($value['range'])) $html .= $this->range_input([
-													'name' => $key,
-													'value' => $value
-												 ]);
+			if (isset($value['range'])) 
+				$html .= $this->range_input([
+							'name' => $key,
+							'value' => $value
+						 ]);
 
-			if (isset($value['checkbox'])) $html .= $this->checkbox_input([
-														'name' => $key,
-														'text' => $data[$key],
-														'ht' => $data[$key.'_ht'],
-														'value' => $value
-													]);
+			if (isset($value['checkbox'])) 
+				$html .= $this->checkbox_input([
+							'name' => $key,
+							'text' => $data[$key],
+							'ht' => $data[$key.'_ht'],
+							'value' => $value
+						]);
 
-			if (isset($value['check'])) $html .= $this->check_input([
-														'name' => $key,
-														'text' => $data[$key],
-														'ht' => $data[$key.'_ht'],
-														'value' => $value
-													]);
+			if (isset($value['check'])) 
+				$html .= $this->check_input([
+							'name' => $key,
+							'text' => $data[$key],
+							'ht' => $data[$key.'_ht'],
+							'value' => $value
+						]);
 
-			if (isset($value['list'])) $html .= $this->list_input([
-													'name' => $key,
-													'text' => $data[$key],
-													'ht' => $data[$key.'_ht'],
-													'list' => $value['list'],
-													'validation' => $value['validation'],
-													'key_as_value' => $value['key_as_value']
-												]);
+			if (isset($value['list'])) 
+				$html .= $this->list_input([
+							'name' => $key,
+							'text' => $data[$key],
+							'ht' => $data[$key.'_ht'],
+							'list' => $value['list'],
+							'validation' => $value['validation'],
+							'key_as_value' => $value['key_as_value']
+						]);
 		}
 
 		$html .= '</div>';
@@ -248,7 +254,7 @@ final class Axowl_shortcode {
 	private function check_input($o = []) {
 
 		return sprintf('<div class="em-element em-element-check em-element-check-%1$s">
-							<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s>
+							<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s checked>
 							<label for="em-check-%1$s">%2$s</label>
 						</div>',
 						$o['name'],

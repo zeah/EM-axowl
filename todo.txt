@@ -1,11 +1,7 @@
-#conversion tracking
-#	accepted sender axo/gclid til gdocs/em-live
 
 incomplete email 
 	commented out in gfunc
 	add js and php to send email/sms to gfunc
-
-
 
 
 #unsubscribe from email list
@@ -18,24 +14,18 @@ egen side for de under 25?
 de med barn? (eks. gode rabatter med kredittkort)
 
 
-###fikse litt på age validation .. 20--
-
 accept checkbox har ingen effect .. hvis unchecked så ikke lagre data
-
 
 initial outside referer for å sendes til sql (og GA?) cookie.php
 
 backend validation
 
-
 SWEDEN
-
 
 internet explorer
 safari
 ipad
 mobile
-
 
 
 legg til progress update on checkboxes yes/no
@@ -57,3 +47,6 @@ send event med label "incomplete" når epost har blitt fylt ut
 	- one time event on email input to send ajax to server som sender til ga
 	- cookie som lagrer at det er gjort
 	sendes inn kortid?
+
+
+teste om riktig referrer blir send til GA

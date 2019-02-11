@@ -53,6 +53,9 @@ final class Axowl_data {
 	private function wp_hooks() {
 		add_action( 'wp_ajax_nopriv_axowl', [$this, 'from_form']);
 		add_action( 'wp_ajax_axowl', [$this, 'from_form']);
+
+		add_action( 'wp_ajax_nopriv_wlinc', [$this, 'incomplete']);
+		add_action( 'wp_ajax_wlinc', [$this, 'incomplete']);
 	}
 
 
@@ -82,6 +85,18 @@ final class Axowl_data {
 	}
 
 
+	public function incomplete() {
+
+
+		$data = ['status' => 'incomplete'];
+
+		if (isset($_POST['email'])) $data['email'] = $_POST['email'];
+		if (isset($_POST['mobile_number'])) $data['mobile_number'] = $_POST['mobile_number'];
+
+		$this->send(http_build_query($data), 'google_functions');
+
+		wp_die();
+	}
 
 
 	/**
@@ -125,9 +140,9 @@ final class Axowl_data {
 		// echo print_r($res, true);
 		if (!is_array($res) || !isset($res['status'])) return;
 
-		echo print_r($res, true);
+		// echo print_r($res, true);
 
-		// $res = ['status' => 'Rejected'];
+		$res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -190,7 +205,7 @@ final class Axowl_data {
 		$this->send(http_build_query($data), 'google_functions');
 
 		// google analytics
-		$this->ga('rejected', 0, $ga);
+		// $this->ga('rejected', 0, $ga);
 
 	}
 
@@ -212,7 +227,7 @@ final class Axowl_data {
 		if (strpos($url, '?') === false) $url .= '?';
 
 
-		// echo $name.': '.$url.$query."\n\n";
+		echo $name.': '.$url.$query."\n\n";
 		wp_remote_get($url.$query, ['blocking' => false]);
 	}
 
@@ -460,7 +475,8 @@ final class Axowl_data {
 				'ea' => $post_name, // for ab-testing
 				'el' => $el, // accepted or rejected
 				'dl' => $status, // url without query
-				'ev' => $value // value of conversion
+				'ev' => $value, // value of conversion
+				'dr' => $this->get_referer() // document referer
 				],
 			'cookies' => []
 			]
@@ -485,6 +501,20 @@ final class Axowl_data {
 		}
 
 		return 'NULL';
+	}
+
+
+	private function get_referer() {
+		if (isset($_SERVER['REFERER']) && $_SERVER['REFERER']) {
+
+			$r = $_SERVER['HTTP_REFERER'];
+
+			if (strpos($r, $_SERVER['SERVER_NAME']) === false) return $r;
+		}
+
+		elseif (isset($_COOKIE['referer'])) return $_COOKIE['referer'];
+
+		return '';
 	}
 
 
