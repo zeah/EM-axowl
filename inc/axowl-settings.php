@@ -8,6 +8,7 @@ final class Axowl_settings {
 
 	private $opt;
 
+
 	public static function get_instance() {
 		if (self::$instance === null) self::$instance = new self();
 
@@ -16,7 +17,14 @@ final class Axowl_settings {
 
 	private function __construct() {
 		$this->opt = get_option('em_axowl');
-		if (!is_array($this->opt)) $this->opt = [];
+
+		// $this->name = get_option('axowl_name');
+		// $this->input = get_option('axowl_input');
+		// $this->data = get_option('axowl_data');
+		// wp_die('<xmp>'.print_r($this->input, true).'</xmp>');
+		
+
+		// if (!is_array($this->opt)) $this->opt = [];
 
 		$this->hooks();
 	}
@@ -24,8 +32,18 @@ final class Axowl_settings {
 	private function hooks() {
 		add_action('admin_menu', [$this, 'add_menu']);
 		add_action('admin_init', [$this, 'register_settings']);
+		add_action('admin_enqueue_scripts', [$this, 'add_sands']);
 
 		// TODO delete transient on save
+	}
+
+	public function add_sands($hook) {
+
+		if ($hook != 'settings_page_em-axowl-page') return;
+
+        wp_enqueue_style('emaxowl-admin', EM_AXOWL_PLUGIN_URL.'assets/css/admin/emaxo.css', array(), '1.0.0');
+        wp_enqueue_script('emaxowl-admin', EM_AXOWL_PLUGIN_URL.'/assets/js/admin/emaxo.js', array(), '1.0.0', true);
+
 	}
 
 	public function add_menu() {
@@ -33,11 +51,12 @@ final class Axowl_settings {
 	}
 
 	public function register_settings() {
-		register_setting('em-axowl-settings', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
+		register_setting('em-axowl-settings-name', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
+		register_setting('em-axowl-settings-data', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
+		register_setting('em-axowl-settings-input', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 
-		add_settings_section('em-axowl-name', '', [$this, 'name_section'], 'em-axowl-page');
-
-		add_settings_section('em-axowl-data', 'URLs', [$this, 'data_section'], 'em-axowl-page');
+		add_settings_section('em-axowl-name', '', [$this, 'name_section'], 'em-axowl-page-name');
+		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['name', 'Name of the partner, as agreed with Axo.']);
 
 
 		$settings = [
@@ -52,24 +71,17 @@ final class Axowl_settings {
 			'ga_code' => 'Google Analytics'
 		];
 
+		add_settings_section('em-axowl-data', 'URLs', [$this, 'data_section'], 'em-axowl-page-data');
 		foreach ($settings as $key => $value)
 			add_settings_field(
 				'em-axowl-'.$key, 
 				ucwords(str_replace('_', ' ', $key)), 
 				[$this, 'input_setting'], 
-				'em-axowl-page', 
+				'em-axowl-page-data', 
 				'em-axowl-data', 
 				[$key, $value]
 			);
-		// add_settings_field('em-axowl-url', 'Form Url', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['url', 'Url of which to send the form to.']);
-		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-name', ['name', 'Name of the partner, as agreed with Axo.']);
-		// add_settings_field('em-axowl-callback', 'Callback URL', [$this, 'input_setting'], 'em-axowl-page', 'em-axowl-data', ['callback', 'Callback URLs']);
 
-
-		add_settings_section('em-axowl-input', 'Text for form inputs', [$this, 'input_section'], 'em-axowl-page');
-
-
-		// $inputs = ['loan_amount', 'tenure', 'co_applicant', 'collect_debt'];
 
 		$input = [
 			'loan_amount' => 'Loan amount.',
@@ -119,12 +131,13 @@ final class Axowl_settings {
 			'contact_accept' => 'Checkbox for accepting data usage by axo.'
 		];
 
+		add_settings_section('em-axowl-input', 'Text for form inputs', [$this, 'input_section'], 'em-axowl-page-input');
 		foreach ($input as $key => $value)
 			add_settings_field(
 				'em-axowl-'.$key, 
 				ucwords(str_replace('_', ' ', $key)), 
 				[$this, 'input'], 
-				'em-axowl-page', 
+				'em-axowl-page-input', 
 				'em-axowl-input', 
 				[$key, $value, true]
 			);
@@ -136,12 +149,48 @@ final class Axowl_settings {
 	 * echoing page
 	 */
 	public function page_callback() {
+
+		// title
 		echo '<h1>Effektiv Markedsføring Axo White Label</h1>';
-		echo '<form action="options.php" method="POST">';
-		settings_fields('em-axowl-settings');
-		do_settings_sections('em-axowl-page');
+		// container
+		echo '<div class="em-settings-container">';
+
+		// nav
+		echo '<div class="em-settings-nav">
+			<button type="button" class="em-settings-anchor em-settings-anchor-name em-settings-anchor-active">General</button>
+			<button type="button" class="em-settings-anchor em-settings-anchor-data">Callbacks</button>
+			<button type="button" class="em-settings-anchor em-settings-anchor-input">Input text</button>
+		</div>';
+
+		// form
+		echo '<div class="em-settings-form-container">';
+		echo '<form class="em-settings-form" action="options.php" method="POST">';
+
+		// first tab
+		echo '<div class="em-settings em-settings-name">';
+		settings_fields('em-axowl-settings-name');
+		do_settings_sections('em-axowl-page-name');
+		echo '</div>';
+
+		// second tab
+		echo '<div class="em-settings em-settings-data em-hidden">';
+		settings_fields('em-axowl-settings-data');
+		do_settings_sections('em-axowl-page-data');
+		echo '</div>';
+
+		// third tab
+		echo '<div class="em-settings em-settings-input em-hidden">';
+		settings_fields('em-axowl-settings-input');
+		do_settings_sections('em-axowl-page-input');
+		echo '</div>';
+
+
 		submit_button('save');
 		echo '</form>';
+		echo '</div>';
+
+		// end of container
+		echo '</div>';
 	}
 
 	public function data_section() {
@@ -149,40 +198,77 @@ final class Axowl_settings {
 	}
 
 	public function name_section() {
-
 	}
 
 	public function input_section() {
 	}
 
 
-	/**
-	 * echoing input field
-	 * @param  String $name name of data
-	 */
 	public function input($name) {
-		$html = '';
+		echo sprintf('<h4 class="em-settings-h4">%1$s</h4>
+					<input class="em-settings-i" placeholder="Input title" type="text" name="em_axowl[%2$s]" value="%3$s">
+					<input class="em-settings-i" placeholder="Helper text" type="text" name="em_axowl[%2$s_ht]" value="%4$s">',
+					$name[1],
+					$name[0],
+					$this->option($name[0]),
+					$this->option($name[0].'_ht')
+				);	
 
-		if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
-
-		$html .= '<div><div style="width: 100px; display: inline-block;">Title Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
-		if (isset($name[2])) $html .= '<div><div style="width: 100px; display: inline-block;">Helper Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].'_ht]" value="'.$this->get($name[0].'_ht').'"></div>';
-	
-		echo $html;
 	}
 
 	/**
 	 * echoing input field
 	 * @param  String $name name of data
 	 */
-	public function input_setting($name) {
-		$html = '';
+	// public function input2($name) {
+	// 	$html = '';
 
-		if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
+	// 	if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
 
-		$html .= '<div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
+	// 	$html .= '<div><div style="width: 100px; display: inline-block;">Title Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
+	// 	if (isset($name[2])) $html .= '<div><div style="width: 100px; display: inline-block;">Helper Text:</div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].'_ht]" value="'.$this->get($name[0].'_ht').'"></div>';
 	
-		echo $html;
+	// 	echo $html;
+	// }
+
+	/**
+	 * echoing input field
+	 * @param  String $name name of data
+	 */
+	public function input_setting($name) {
+
+		echo sprintf('<h4 class="em-settings-h4">%1$s</h4>
+					  <input type="text" class="em-settings-i" name="em_axowl[%2$s]" value="%3$s">',
+					  $name[1],
+					  $name[0],
+					  $this->option($name[0])
+					);
+
+		// $html = '';
+
+		// if (isset($name[1])) $html .= '<h4 style="margin: 0; margin-top: 4px;">'.$name[1].'</h4>';
+
+		// $html .= '<div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
+	
+		// echo $html;
+	}
+
+	private function option($name) {
+
+		// return $option.' '.$name;
+		// $opt = $this->data;
+
+		// switch ($option) {
+			// case 'name': $opt = get_option('axowl_name'); break;
+			// case 'data': $opt = get_option('axowl_data'); break;
+			// case 'input': $opt = get_option('axowl_input');
+		// }
+
+		$opt = get_option('em_axowl');
+
+		if (isset($opt[$name])) return esc_attr($opt[$name]);
+
+		return '';
 	}
 
 

@@ -1,5 +1,8 @@
 
-
+skikkelig admin side
+	tabs
+	email 
+	email settings
 
 
 #unsubscribe from email list
