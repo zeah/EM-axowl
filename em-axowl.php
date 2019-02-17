@@ -14,6 +14,7 @@ require_once 'inc/axowl-shortcode.php';
 require_once 'inc/axowl-data.php';
 require_once 'inc/axowl-ads.php';
 require_once 'inc/axowl-cookie.php';
+require_once 'inc/axowl-unsub.php';
 
 
 function init_em_axowl() {
@@ -51,6 +52,7 @@ final class EM_axowl {
 		Axowl_data::get_instance();
 		Axowl_ads::get_instance();
 		Axowl_cookie::get_instance();
+		Axowl_unsub::get_instance();
 	}
 
 }

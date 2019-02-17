@@ -1,8 +1,6 @@
 <?php 
 defined('ABSPATH') or die('Blank Space');
 
-
-
 final class Axowl_list {
 
 	const employment_type = [

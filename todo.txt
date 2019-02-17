@@ -8,7 +8,9 @@ skikkelig admin side
 #unsubscribe from email list
 	egen side hvor man kan skrive inn eposten
 	subscribe accept
+	slack når noen unsubscriber
 
+SQL: add column last_contacted
 
 send inn popup - les fra post?
 egen side for de under 25?
@@ -16,6 +18,7 @@ de med barn? (eks. gode rabatter med kredittkort)
 
 
 accept checkbox har ingen effect .. hvis unchecked så ikke lagre data
+ikke lagre noe data eller bare lagre anonymized data?
 
 #initial outside referer for å sendes til sql (og GA?) cookie.php
 	testes

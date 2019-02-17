@@ -63,6 +63,7 @@ final class Axowl_settings {
 			'form_url' => 'Axo\'s URL',
 			'google_functions' => 'Callback for form data',
 			'sql' => 'Callback for conversion details',
+			'unsub' => 'Callback for unsubbing',
 			// 'gdocs_email' => 'Google Docs for storing email/phone',
 			'gdocs_ads' => 'Google Docs for Google Ads upload',
 			// 'slack' => 'Slack webhook',
