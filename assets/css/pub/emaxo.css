@@ -272,16 +272,16 @@ button.em-i {
 	/*background-color: orange;*/
 	border-right: solid 1px black;
 	background-image:
-	-webkit-linear-gradient( 135deg,
-													 transparent,
-													 transparent 33%,
-													 rgba(0,0,0,.1) 33%,
-													 rgba(0,0,0,.1) 66%,
-													 transparent 66%),
-    -webkit-linear-gradient( top,
-														rgba(255, 255, 255, .25),
-														rgba(0,0,0,.2)),
-     -webkit-linear-gradient( left, #09c, #4f4);
+		-webkit-linear-gradient( 135deg,
+								 transparent,
+								 transparent 33%,
+								 rgba(0,0,0,.1) 33%,
+								 rgba(0,0,0,.1) 66%,
+								 transparent 66%),
+    	-webkit-linear-gradient( top,
+								 rgba(255, 255, 255, .25),
+								 rgba(0,0,0,.2)),
+    	-webkit-linear-gradient( left, #09c, #4f4);
 }
 
 /* 1.3 part container */
@@ -620,13 +620,13 @@ button.em-i {
 	opacity: .5;
 }
 
-.em-val-marker-no::after {
+/*.em-val-marker-no::after {
 	background-image: url('/wp/wp-content/plugins/em-axowl/assets/img/redtick.png');
 }
 
 .em-val-marker-yes::after {
 	background-image: url('/wp/wp-content/plugins/em-axowl/assets/img/greentick.png');
-}
+}*/
 
 
 /* 2.0 loan amount element container */

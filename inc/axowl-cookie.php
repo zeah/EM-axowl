@@ -16,8 +16,8 @@ final class Axowl_cookie {
 	}
 
 	private function wp_hooks() {
-		// add_action('init', [$this, 'referer']);
-		$this->referer();
+		add_action('init', [$this, 'referer']);
+		// $this->referer();
 	}
 
 	public function referer() {

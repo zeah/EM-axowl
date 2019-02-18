@@ -17,14 +17,7 @@ final class Axowl_settings {
 
 	private function __construct() {
 		$this->opt = get_option('em_axowl');
-
-		// $this->name = get_option('axowl_name');
-		// $this->input = get_option('axowl_input');
-		// $this->data = get_option('axowl_data');
-		// wp_die('<xmp>'.print_r($this->input, true).'</xmp>');
-		
-
-		// if (!is_array($this->opt)) $this->opt = [];
+		if (!is_array($this->opt)) $this->opt = [];
 
 		$this->hooks();
 	}
@@ -61,8 +54,8 @@ final class Axowl_settings {
 
 		$settings = [
 			'form_url' => 'Axo\'s URL',
-			'google_functions' => 'Callback for form data',
-			'sql' => 'Callback for conversion details',
+			'sql_info' => 'Callback for form data',
+			'sql_conversions' => 'Callback for conversion details',
 			'unsub' => 'Callback for unsubbing',
 			// 'gdocs_email' => 'Google Docs for storing email/phone',
 			'gdocs_ads' => 'Google Docs for Google Ads upload',

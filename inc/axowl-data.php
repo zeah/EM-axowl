@@ -28,7 +28,7 @@ final class Axowl_data {
 	 * 
 	 * helper functions:
 	 * send() get method with query and name of url
-	 * sql() fixes data for database
+	 * sql_conversions() fixes data for database
 	 * gdocs_ads() fixed data for gdocs for gads.
 	 * get_url() gets url from WP options
 	 * remove_confidential()
@@ -39,6 +39,8 @@ final class Axowl_data {
 
 	/* singleton */
 	private static $instance = null;
+
+	private $contact_accept = true;
 
 	public static function get_instance() {
 		if (self::$instance === null) self::$instance = new self();
@@ -62,11 +64,16 @@ final class Axowl_data {
 
 
 	/**
-	 * [from_form description]
-	 * @return [type] [description]
+	 * checking POST that only allowed keys are processed
 	 */
 	public function from_form() {
 		$data = $_POST['data'];
+
+		$this->contact_accept = $data['contact_accept'] ? true : false;
+
+		// testing
+		echo 'Referrer: '.$this->get_referer();
+
 
 		// match from inputs.php
 		$data_keys = array_keys($data);
@@ -81,21 +88,29 @@ final class Axowl_data {
 		// sending to axo
 		$this->send_axo($send);
 
-		wp_die();
+		exit;
+		// wp_die();
 	}
 
 
+
+	/**
+	 * When first next button is clicked on the form, then 
+	 * an incomplete is sent.
+	 * 
+	 */
 	public function incomplete() {
 
+		if (!isset($_POST['contact_accept'])) exit;
 
 		$data = ['status' => 'incomplete'];
 
 		if (isset($_POST['email'])) $data['email'] = $_POST['email'];
-		if (isset($_POST['mobile_number'])) $data['mobile_number'] = $_POST['mobile_number'];
+		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
-		$this->send(http_build_query($data), 'google_functions');
+		$this->send(http_build_query($data), 'sql_info');
 
-		wp_die();
+		exit;
 	}
 
 
@@ -124,7 +139,7 @@ final class Axowl_data {
 			unset($data['ga']);
 		}
 
-		echo 'axo url: '.$url."\n\n";
+		// echo 'axo url: '.$url."\n\n";
 		echo 'data to be sent: '.print_r($data, true)."\n\n";
 
 		// sending to axo
@@ -137,15 +152,15 @@ final class Axowl_data {
 
 		$res = json_decode(wp_remote_retrieve_body($response), true);
 
-		// echo print_r($res, true);
 		if (!is_array($res) || !isset($res['status'])) return;
 
-		// echo print_r($res, true);
 
-		$res = ['status' => 'Rejected'];
+		// $res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
+
+		if (!$this->contact_accept) $data = $this->anon($data);
 
 		switch ($res['status']) {
 			case 'Accepted': $this->accepted($data, $ga); break;
@@ -168,14 +183,14 @@ final class Axowl_data {
 
 
 		// send all anonymized gfunc sql
-		$this->send(http_build_query($this->anon($data)), 'google_functions');
+		$this->send(http_build_query($this->anon($data)), 'sql_info');
 
 		// sending conversion details to sql
-		$this->sql($data);
+		$this->sql_conversions($data);
 
 		// sending to gdocs for google ads
 		// $this->gdocs_ads(http_build_query($data));
-		// $this->gdocs_ads($data);
+		$this->gdocs_ads($data);
 
 		// google analytics
 		$value = get_option('em_axowl');
@@ -197,15 +212,11 @@ final class Axowl_data {
 	private function rejected($data, $ga) {
 		$data['status'] = 'rejected';
 		
-		// send email and phone to gdcos
-		// $this->send(http_build_query($data), 'gdocs_email');
-		// echo print_r($data, true);
-
 		// send data to sql
-		$this->send(http_build_query($data), 'google_functions');
+		$this->send(http_build_query($data), 'sql_info');
 
 		// google analytics
-		// $this->ga('rejected', 0, $ga);
+		$this->ga('rejected', 0, $ga);
 
 	}
 
@@ -227,8 +238,11 @@ final class Axowl_data {
 		if (strpos($url, '?') === false) $url .= '?';
 
 
+		// for testing
 		echo $name.': '.$url.$query."\n\n";
-		wp_remote_get($url.$query, ['blocking' => false]);
+
+
+		wp_remote_get(trim($url).$query, ['blocking' => false]);
 	}
 
 
@@ -239,7 +253,7 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function sql($data) {
+	private function sql_conversions($data) {
 
 		// TODO -- if no clid then add referer from cookie
 
@@ -255,7 +269,7 @@ final class Axowl_data {
 			// last parameter is timestamp which sql fills out all by itself.
 		];
 
-		$this->send(http_build_query($d), 'sql');
+		$this->send(http_build_query($d), 'sql_conversions');
 	}
 
 
@@ -271,16 +285,21 @@ final class Axowl_data {
 
 		$opt = get_option('em_axowl');
 
+		// if not set in settings
 		if (!isset($opt['gdocs_ads']) || !isset($opt['payout']) || !isset($opt['currency'])) return;
 
-		$data = http_build_query($data);
+		// $data = http_build_query($data);
 
-		$clid = isset($_COOKIE['gclid']) ? $_COOKIE['gclid'] : false; 
+		// $clid = isset($_COOKIE['gclid']) ? $_COOKIE['gclid'] : false; 
 
-		preg_match('/^.*(?:gclid=)(.*?)(?:&|$)/', $_SERVER['QUERY_STRING'], $match);
+		// preg_match('/^.*(?:gclid=)(.*?)(?:&|$)/', $_SERVER['QUERY_STRING'], $match);
 
-		if (isset($match[1])) $clid = $match[1];
+		// if (isset($match[1])) $clid = $match[1];
 
+		// if (!$clid) return;
+
+		// if no click id (either google click id, or bing click id)
+		$clid = $this->get_clid();
 		if (!$clid) return;
 
 		$d = [
@@ -357,6 +376,8 @@ final class Axowl_data {
 	 */
 	private function remove_confidential($data) {
 		if (isset($data['account_number'])) unset($data['account_number']);
+
+		// adding age from social number
 		if (isset($data['social_number']) && $data['social_number']) {
 			$d = $data['social_number'];
 			$data['age'] = sprintf('%s-%s-%s', 
@@ -366,6 +387,7 @@ final class Axowl_data {
 
 			unset($data['social_number']);
 		}
+
 		if (isset($data['co_applicant_social_number'])) unset($data['co_applicant_social_number']);
 
 		return $data;
@@ -432,23 +454,11 @@ final class Axowl_data {
 
 		$tag = $tag['ga_code'];
 
-		// $tag = get_option('theme_google_scripts');
-
 		global $post;
 
-		$post_name = $post->post_name ? $post->post_name : 'na postname';
+		$post_name = $post->post_name ? $post->post_name : 'no postname';
 
 		if (!$ga) $ga = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
-
-		// getting ga code from emtheme
-		// if (!isset($tag['adwords'])) {
-		// 	$tag = get_opton('em_axowl');
-
-		// 	if (!isset($tag['ga_code'])) return;
-
-		// 	$tag = $tag['ga_code'];
-		// }
-		// else $tag = $tag['adwords'];
 
 
 		// getting site url without query string
@@ -473,8 +483,8 @@ final class Axowl_data {
 				't' => 'event', 
 				'ec' => 'axo form', 
 				'ea' => $post_name, // for ab-testing
-				'el' => $el, // accepted or rejected
-				'dl' => $status, // url without query
+				'el' => $status, // accepted or rejected
+				'dl' => $dl, // url without query
 				'ev' => $value, // value of conversion
 				'dr' => $this->get_referer() // document referer
 				],
@@ -500,7 +510,7 @@ final class Axowl_data {
 			if (isset($match[1])) return $match[1];
 		}
 
-		return 'NULL';
+		return false;
 	}
 
 

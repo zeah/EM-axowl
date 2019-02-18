@@ -17,13 +17,13 @@ final class Axowl_inputs {
 	public static $inputs = [
 			'div0' => ['class' => 'em-part-1-grid'],
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
+			'monthly_cost' => ['text' => 'Månedskostnad fra', 'notInput' => true],
 			'tenure' => ['text' => true, 'range' => true, 'validation' => 'ar', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'collect_debt' => ['checkbox' => true, 'no' => true],
 			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8],
 			'email' => ['text' => true, 'validation' => 'email'],
 			'axo_accept' => ['check' => true, 'validation' => 'check'],
 			'contact_accept' => ['check' => true],
-			'monthly_cost' => ['text' => 'Månedskostnad fra', 'notInput' => true],
 			'/div0' => '',
 			
 			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],

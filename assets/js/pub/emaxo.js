@@ -349,11 +349,13 @@
 		try {
 			var email = qs('.em-i-email').value;
 			var mobileNumber = qs('.em-i-mobile_number').value;
-
+			var contactAccept = qs('.em-check-contact_accept').checked;
+			
 		 	if (!email && !mobileNumber) return;
 
 		 	if (email) query += '&email='+email;
 		 	if (mobileNumber) query += '&mobile_number='+mobileNumber;
+		 	if (contactAccept) query += '&contact_accept='+contactAccept;
 
 		} catch (e) {}
 
@@ -956,6 +958,8 @@
 		})();
 
 		qs('.em-i-loan_amount').focus();
+
+
 
 	} // end of init
 
