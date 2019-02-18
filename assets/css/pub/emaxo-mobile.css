@@ -49,6 +49,26 @@
 	font-size: 1.6rem;
 }
 
+.em-part-1 .em-part-title::after {
+	content: 'Sjekk dine lånetilbud';
+}
+
+.em-part-2 .em-part-title::after {
+	content: 'Om deg';
+}
+
+.em-part-3 .em-part-title::after {
+	content: 'Søke sammen?';
+}
+
+.em-part-4 .em-part-title::after {
+	content: 'Ditt boforhold';
+}
+
+.em-part-5 .em-part-title::after {
+	content: 'Siste etappe';
+}
+
 /* 1.3 generic */
 
 /* 1.3.0.1 parts */
@@ -188,6 +208,9 @@
 
 
 /* 1.3.6 list */
+select.em-i {
+	background-color: white;
+}
 
 /* 1.3.7 check */
 
