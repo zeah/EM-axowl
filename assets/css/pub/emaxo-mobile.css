@@ -209,7 +209,8 @@
 
 /* 1.4 bottom container */
 .em-b-container {
-
+	display: flex;
+	flex-direction: row-reverse;
 }
 
 /* 1.4.1 next/back button */
@@ -221,9 +222,13 @@
 /* 1.4.2 submit button */
 .em-b-submit {
 	display: block;
-
 	padding: 1rem 2rem;
 
+	background-color: hsl(120, 70%, 80%);
+
+	font-size: 2rem;
+	border: none;
+	border-radius: 3px;
 }
 
 /* 1.4.3 progress bar */
