@@ -101,6 +101,7 @@ final class Axowl_data {
 	 */
 	public function incomplete() {
 
+		// checkbox
 		if (!isset($_POST['contact_accept'])) exit;
 
 		$data = ['status' => 'incomplete'];
