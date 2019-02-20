@@ -21,12 +21,12 @@ final class Axowl_cookie {
 	}
 
 	public function referer() {
-		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
 		
 		// if no referer data
-		if (!isset($_SERVER['REFERER']) || !$_SERVER['REFERER']) return;
+		//if (!isset($_SERVER['REFERER']) || !$_SERVER['REFERER']) return;
 
 		$r = $_SERVER['HTTP_REFERER'];
+		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
 
 		if (strpos($r, $_SERVER['SERVER_NAME']) !== false) return;
 

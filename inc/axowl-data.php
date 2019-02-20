@@ -69,6 +69,9 @@ final class Axowl_data {
 	public function from_form() {
 		$data = $_POST['data'];
 
+		// TODO testes
+		if (isset($data['fax'])) return;
+
 		$this->contact_accept = $data['contact_accept'] ? true : false;
 
 		// testing
@@ -106,10 +109,13 @@ final class Axowl_data {
 
 		$data = ['status' => 'incomplete'];
 
+		$ga = isset($_POST['ga']) ? $_POST['ga'] : false;
+
 		if (isset($_POST['email'])) $data['email'] = $_POST['email'];
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
 		$this->send(http_build_query($data), 'sql_info');
+		$this->ga('incomplete', 0, $ga);
 
 		exit;
 	}
@@ -130,7 +136,9 @@ final class Axowl_data {
 		// name of partner as agreed with axo 
 		$data['source'] = $settings['name'];
 
-		$data['customer_ip'] = '';
+		if (isset($data['content'])) $data['content'] = $settings['content'];
+
+		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
 		$url .= http_build_query($data);
 
@@ -140,6 +148,7 @@ final class Axowl_data {
 			unset($data['ga']);
 		}
 
+		// testing - to be deleted
 		// echo 'axo url: '.$url."\n\n";
 		echo 'data to be sent: '.print_r($data, true)."\n\n";
 
@@ -240,7 +249,7 @@ final class Axowl_data {
 
 
 		// for testing
-		echo $name.': '.$url.$query."\n\n";
+		// echo $name.': '.$url.$query."\n\n";
 
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
@@ -444,7 +453,7 @@ final class Axowl_data {
 	// 	);
 	// }
 
-	private function ga($status, $value, $ga) {
+	private function ga($status, $value, $ga = false) {
 		// status: accepted, rejected, incomplete
 		// value: event value (2200)
 		if (is_user_logged_in()) return;
@@ -460,7 +469,6 @@ final class Axowl_data {
 		$post_name = $post->post_name ? $post->post_name : 'no postname';
 
 		if (!$ga) $ga = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
-
 
 		// getting site url without query string
 		global $wp;

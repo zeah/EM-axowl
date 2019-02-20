@@ -10,18 +10,12 @@ skikkelig admin side
 	subscribe accept
 	slack når noen unsubscriber
 
-SQL: add column last_contacted
 
 send inn popup - les fra post?
-egen side for de under 25?
-de med barn? (eks. gode rabatter med kredittkort)
+	egen side for de under 25?
+	de med barn? (eks. gode rabatter med kredittkort)
 
-
-accept checkbox har ingen effect .. hvis unchecked så ikke lagre data
-ikke lagre noe data eller bare lagre anonymized data?
-
-#initial outside referer for å sendes til sql (og GA?) cookie.php
-	testes
+error tekst
 
 backend validation?
 
@@ -33,8 +27,6 @@ ipad
 mobile
 
 
-#legg til progress update on checkboxes yes/no
-
 
 AB testing
 *send GA events/ecommerce med page name (action er pagename)
@@ -42,10 +34,6 @@ AB testing
 *ab testing av selve skjema: kopier hele axo wl plugin og gjør den om til versjon B 
 	- les delvis fra samme settings
 	- eget: text felt, css, js
-
-
-GA:
-dr (document referer) - fra cookie eller $_SERVER->referer
 
 
 #send event med label "incomplete" når epost har blitt fylt ut

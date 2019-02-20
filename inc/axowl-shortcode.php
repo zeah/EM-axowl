@@ -23,6 +23,8 @@ final class Axowl_shortcode {
 	 */
 	private function hooks() {
 		add_shortcode('axowl', [$this, 'shortcode']);
+
+		add_shortcode('axowlicon', [$this, 'icon']);
 	}
 
 	/**
@@ -53,7 +55,7 @@ final class Axowl_shortcode {
 		// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
 		// 	    );
 
-		$html .= '<input type="hidden" name="'.$data['name'].'">';
+		$html .= '<input type="hidden" name="fax">';
 
 		$html .= '<div class="em-part-container">';
 
@@ -305,6 +307,37 @@ final class Axowl_shortcode {
 
 		return $html;
 	}
+
+
+	public function icon($atts, $content = null) {
+		add_action('wp_head', [$this, 'sands']);
+		
+		// return '<div class="em-sprite" style="background-image: url(\''.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/banklogoer.png').'\')"></div>';
+		// return '<img src="'.esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/banklogoer.png').'">';
+		// return '<div class="em-sprite"></div>';
+
+		return '<div class="em-sprites"><div class="em-sprite-container em-sprite-container-animation" onclick="this.classList.toggle(\'em-sprite-container-animation-paused\');">
+				<div class="em-sprite sprite-bank-norwegian"></div>
+				<div class="em-sprite sprite-bluestep"></div>
+				<div class="em-sprite sprite-dnb"></div>
+				<div class="em-sprite sprite-easybank"></div>
+				<div class="em-sprite sprite-komplett-bank"></div>
+				<div class="em-sprite sprite-nordax"></div>
+				<div class="em-sprite sprite-resurs-bank"></div>
+				<div class="em-sprite sprite-santander-consumer-bank"></div>
+				<div class="em-sprite sprite-ya-bank"></div>
+				<div class="em-sprite sprite-expressbank"></div>
+				<div class="em-sprite sprite-bnbank"></div>
+				<div class="em-sprite sprite-remember"></div>
+				<div class="em-sprite sprite-nystart-bank"></div>
+				<div class="em-sprite sprite-monobank"></div>
+				<div class="em-sprite sprite-thorn"></div>
+				<div class="em-sprite sprite-optinbank"></div>
+			</div></div>';
+
+
+	}
+
 
 	/**
 	 * [sanitize description]

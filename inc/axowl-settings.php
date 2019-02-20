@@ -50,6 +50,7 @@ final class Axowl_settings {
 
 		add_settings_section('em-axowl-name', '', [$this, 'name_section'], 'em-axowl-page-name');
 		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['name', 'Name of the partner, as agreed with Axo.']);
+		add_settings_field('em-axowl-content', 'Content', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['content', 'Can be used to distinguish between different publishers']);
 
 
 		$settings = [
@@ -201,11 +202,13 @@ final class Axowl_settings {
 	public function input($name) {
 		echo sprintf('<h4 class="em-settings-h4">%1$s</h4>
 					<input class="em-settings-i" placeholder="Input title" type="text" name="em_axowl[%2$s]" value="%3$s">
-					<input class="em-settings-i" placeholder="Helper text" type="text" name="em_axowl[%2$s_ht]" value="%4$s">',
+					<input class="em-settings-i" placeholder="Helper text" type="text" name="em_axowl[%2$s_ht]" value="%4$s">
+					<input class="em-settings-i" placeholder="Error text" type="text" name="em_axowl[%2$s_error]" value="%5$s">',
 					$name[1],
 					$name[0],
 					$this->option($name[0]),
-					$this->option($name[0].'_ht')
+					$this->option($name[0].'_ht'),
+					$this->option($name[0].'_error')
 				);	
 
 	}

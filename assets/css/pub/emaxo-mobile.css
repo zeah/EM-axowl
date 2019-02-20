@@ -367,3 +367,147 @@ select.em-i {
 .em-popup {
 	display: none;
 }
+
+
+/* 40.0 sprites */
+.em-sprites {
+	overflow: hidden;
+}
+
+.em-sprite-container {
+	display: flex;
+	position: relative;
+	/*animation-fill-mode: forwards;*/
+}
+
+.em-sprite-container-animation {
+	/*overflow: hidden;*/
+	/*flex-wrap: wrap*/
+	animation-name: spriteslide;
+	animation-duration: 30s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+
+	cursor: pointer;
+}
+
+.em-sprite-container-animation-paused {
+  animation-play-state: paused;
+}
+
+@keyframes spriteslide {
+	from { left: 0; }
+	to { left: -1220px; }
+}
+
+.em-sprite {
+    background-repeat: no-repeat;
+    /*display: block;*/
+    /*border: solid 1px black;*/
+    background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/banklogoer.png');
+    flex: 0 0 auto;
+    margin-right: 3rem;
+}
+
+
+.sprite-bank-norwegian {
+    background-position: -263px 0;
+    width: 184px;
+    height: 60px
+}
+
+.sprite-bluestep {
+    background-position: 10px 0;
+    width: 148px;
+    height: 60px
+}
+
+.sprite-dnb {
+    background-position: -140px 0;
+    width: 118px;
+    height: 60px
+}
+
+.sprite-easybank {
+    background-position: -2px -120px;
+    width: 210px;
+    height: 60px
+}
+
+.sprite-komplett-bank {
+    background-position: -289px -120px;
+    width: 228px;
+    height: 57px
+}
+
+.sprite-nordax {
+    background-position: 0 -60px;
+    width: 246px;
+    height: 59px
+}
+
+.sprite-resurs-bank {
+    background-position: -260px -60px;
+    width: 114px;
+    height: 60px
+}
+
+.sprite-santander-consumer-bank {
+    background-position: -374px -60px;
+    width: 175px;
+    height: 60px
+}
+
+.sprite-ya-bank {
+    background-position: -222px -120px;
+    width: 63px;
+    height: 60px
+}
+
+.sprite-gjensidige {
+    background-position: 0 -179px;
+    width: 184px;
+    height: 60px
+}
+
+.sprite-expressbank {
+    background-position: -209px -179px;
+    width: 138px;
+    height: 60px
+}
+
+.sprite-bnbank {
+    background-position: -376px -179px;
+    width: 91px;
+    height: 60px
+}
+
+.sprite-remember {
+    background-position: 0 -238px;
+    width: 154px;
+    height: 60px
+}
+
+.sprite-nystart-bank {
+    background-position: -190px -280px;
+    width: 100px;
+    height: 50px
+}
+
+.sprite-monobank {
+    background-position: -14px -292px;
+    width: 125px;
+    height: 58px
+}
+
+.sprite-thorn {
+    background-position: -187px -231px;
+    width: 136px;
+    height: 57px
+}
+
+.sprite-optinbank {
+    background-position: -330px -240px;
+    width: 154px;
+    height: 60px
+}

@@ -87,7 +87,7 @@
 	var numb = function(n) { return n.replace(/[^0-9]/g, '') }
 
 	var payment = function() {
-		var i = '0.068'/12;
+		var i = 0.0681/12;
 		try { 
 			var p = numb(qs('.em-i-loan_amount').value);
 			var n = numb(qs('.em-i-tenure').value)*12;
@@ -356,6 +356,14 @@
 		 	if (email) query += '&email='+email;
 		 	if (mobileNumber) query += '&mobile_number='+mobileNumber;
 		 	if (contactAccept) query += '&contact_accept='+contactAccept;
+
+		 	var cookie = document.cookie.split('; ');
+			for (var i in cookie) {
+				if (cookie[i].indexOf('=') == -1) continue;
+
+				var temp = cookie[i].split('=');
+				if (temp[0] == '_ga') query += '&ga='+temp[1];
+			}
 
 		} catch (e) {}
 
@@ -779,7 +787,7 @@
 				// exit ramp
 				if (!success) {
 					// success = true;
-					return;
+					// return;
 				}
 				
 				// hiding current part
