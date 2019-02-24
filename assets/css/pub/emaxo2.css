@@ -163,7 +163,7 @@ button.em-i {
 	/*border: solid 2px  hsl(20, 0%, 97%);*/
 
 	user-select: none;
-
+	/*background-color: red;*/
 	/*font-size: 3rem;*/
 }
 
@@ -204,6 +204,7 @@ button.em-i {
 
 	justify-content: space-between;
 	align-self: flex-end;
+	display: none;
 }
 
 /* 1.2.1 button */
@@ -672,6 +673,7 @@ button.em-i {
 /* 3.0 tenure */
 .em-element-tenure {
 	grid-area: tenure;
+	display: none;
 }
 
 .em-ic-tenure > .em-val-marker {
@@ -685,17 +687,20 @@ button.em-i {
 /* 4.0 refinancing / collect debt */
 .em-element-collect_debt {
 	grid-area: refinancing;
+	display: none;
 }
 
 /* 5.0 mobile number */
 .em-element-mobile_number {
 	grid-area: mobile;
+	display: none;
 }
 
 /* 6.0 email */
 .em-element-email {
 	grid-area: email;
 	/*opacity: .2;*/
+	display: none;
 }
 
 
@@ -739,11 +744,13 @@ button.em-i {
 	margin-bottom: 0;
 	/*justify-self: center;*/
 	/*align-self: center;*/
+	display: none;
 }
 
 .em-element-contact_accept {
 	grid-area: contactaccept;
 	/*justify-self: center;*/
+	display: none;
 }
 
 .em-check {

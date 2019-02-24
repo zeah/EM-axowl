@@ -36,6 +36,12 @@
 			e.target.classList.add('em-settings-anchor-active');
 		});
 
+		qs('.em-settings-anchor-ab').addEventListener('click', function(e) {
+			hideAll();
+			qs('.em-settings-ab').classList.remove('em-hidden');
+			e.target.classList.add('em-settings-anchor-active');
+		});
+
 		// var n = qsa('.em-settings');
 
 		// for (var i = 0; i < n.length; i++)

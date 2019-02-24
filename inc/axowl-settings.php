@@ -47,10 +47,15 @@ final class Axowl_settings {
 		register_setting('em-axowl-settings-name', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 		register_setting('em-axowl-settings-data', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 		register_setting('em-axowl-settings-input', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
+		register_setting('em-axowl-settings-ab', 'em_axowl', ['sanitize_callback' => array($this, 'sanitize')]);
 
 		add_settings_section('em-axowl-name', '', [$this, 'name_section'], 'em-axowl-page-name');
 		add_settings_field('em-axowl-name', 'Partner Name', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['name', 'Name of the partner, as agreed with Axo.']);
 		add_settings_field('em-axowl-content', 'Content', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['content', 'Can be used to distinguish between different publishers']);
+
+
+		add_settings_section('em-axowl-ab', '', [$this, 'ab_section'], 'em-axowl-page-ab');
+		add_settings_field('em-axowl-ab', 'Testing settings', [$this, 'ab_setting'], 'em-axowl-page-ab', 'em-axowl-ab', ['ab', 'ab testing']);
 
 
 		$settings = [
@@ -155,6 +160,7 @@ final class Axowl_settings {
 			<button type="button" class="em-settings-anchor em-settings-anchor-name em-settings-anchor-active">General</button>
 			<button type="button" class="em-settings-anchor em-settings-anchor-data">Callbacks</button>
 			<button type="button" class="em-settings-anchor em-settings-anchor-input">Input text</button>
+			<button type="button" class="em-settings-anchor em-settings-anchor-ab">A/B</button>
 		</div>';
 
 		// form
@@ -177,6 +183,12 @@ final class Axowl_settings {
 		echo '<div class="em-settings em-settings-input em-hidden">';
 		settings_fields('em-axowl-settings-input');
 		do_settings_sections('em-axowl-page-input');
+		echo '</div>';
+
+		// fourth tab
+		echo '<div class="em-settings em-settings-ab em-hidden">';
+		settings_fields('em-axowl-settings-ab');
+		do_settings_sections('em-axowl-page-ab');
 		echo '</div>';
 
 
@@ -248,6 +260,69 @@ final class Axowl_settings {
 		// $html .= '<div><input type="text" style="width: 600px; max-width: 90%;" name="em_axowl['.$name[0].']" value="'.$this->get($name[0]).'"></div>';
 	
 		// echo $html;
+	}
+
+	public function ab_section() {
+		// echo 'title';
+	}
+
+	public function ab_setting() {
+		$data = get_option('em_axowl');
+
+		// echo print_r($data, true);
+
+		$opt1 = isset($data['ab_id1']) ? $data['ab_id1'] : '';
+		$name1 = isset($data['ab_name1']) ? $data['ab_name1'] : '';
+
+		$opt2 = isset($data['ab_id2']) ? $data['ab_id2'] : '';
+		$name2 = isset($data['ab_name2']) ? $data['ab_name2'] : '';
+
+		$opt3 = isset($data['ab_id3']) ? $data['ab_id3'] : '';
+		$name3 = isset($data['ab_name3']) ? $data['ab_name3'] : '';
+
+		$opt4 = isset($data['ab_id4']) ? $data['ab_id4'] : '';
+		$name4 = isset($data['ab_name4']) ? $data['ab_name4'] : '';
+
+		$posts = get_posts(['numberposts' => -1, 'post_type' => ['post', 'page'], 'orderby' => 'name', 'order' => 'asc']);
+		
+		$option1 = '<option>Inactive</option>';
+		$option2 = '<option>Inactive</option>';
+		$option3 = '<option>Inactive</option>';
+		$option4 = '<option>Inactive</option>';
+
+		foreach ($posts as $p) {
+
+			// $checked = false;
+			if ($p->ID == $opt1) $sel1 = true;
+			else $sel1 = false; 
+			$option1 .= sprintf('<option value="%s"%s>%s</option>', $p->ID, $sel1 ? ' selected' : '', $p->post_name);
+
+			if ($p->ID == $opt2) $sel2 = true;
+			else $sel2 = false; 
+			$option2 .= sprintf('<option value="%s"%s>%s</option>', $p->ID, $sel2 ? ' selected' : '', $p->post_name);
+
+			if ($p->ID == $opt3) $sel3 = true;
+			else $sel3 = false; 
+			$option3 .= sprintf('<option value="%s"%s>%s</option>', $p->ID, $sel3 ? ' selected' : '', $p->post_name);
+
+			if ($p->ID == $opt4) $sel4 = true;
+			else $sel4 = false; 
+			$option4 .= sprintf('<option value="%s"%s>%s</option>', $p->ID, $sel4 ? ' selected' : '', $p->post_name);
+
+		}
+		
+
+
+
+
+		echo '<div class="em-settings-ab-container">
+			<div><input type="checkbox" name="em_axowl[abtesting]"'.($this->option('abtesting') ? ' checked' : '').'> Active</div><div></div>
+			<div>Name</div><div>Post</div>
+			<div><input name="em_axowl[ab_name1]" type="text" value="'.$name1.'"></div><div><select name="em_axowl[ab_id1]">'.$option1.'</select></div>
+			<div><input name="em_axowl[ab_name2]" type="text" value="'.$name2.'"></div><div><select name="em_axowl[ab_id2]">'.$option2.'</select></div>
+			<div><input name="em_axowl[ab_name3]" type="text" value="'.$name3.'"></div><div><select name="em_axowl[ab_id3]">'.$option3.'</select></div>
+			<div><input name="em_axowl[ab_name4]" type="text" value="'.$name4.'"></div><div><select name="em_axowl[ab_id4]">'.$option4.'</select></div>
+			</div>';
 	}
 
 	private function option($name) {

@@ -375,8 +375,30 @@
 		xhttp.send('action=wlinc'+query);
 	}
 
+	var showFirstPagePart = function(e) {
+		try {
+			
+			e.target.style.display = 'none';
+
+			qs('.em-element-tenure').style.display = 'block';
+			qs('.em-element-email').style.display = 'block';
+			qs('.em-element-mobile_number').style.display = 'block';
+			qs('.em-element-collect_debt').style.display = 'block';
+			qs('.em-b-container').style.display = 'grid';
+
+		} catch (e) { console.error(e) }
+	}
+
+
+
 
 	var init = function() {
+
+		try {
+
+			qs('.em-b-show').addEventListener('click', showFirstPagePart);
+
+		} catch (e) { console.error(e) }
 
 		// TEXT INPUTS
 		var textInput = qsa('.emowl-form input[type=text]');

@@ -490,6 +490,7 @@ final class Axowl_data {
 				'uip' => $_SERVER['REMOTE_ADDR'],
 				'ua' => $_SERVER['HTTP_USER_AGENT'],
 				't' => 'event', 
+				// TODO make ec into axo form # .. for ab testing
 				'ec' => 'axo form', 
 				'ea' => $post_name, // for ab-testing
 				'el' => $status, // accepted or rejected

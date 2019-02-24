@@ -1,3 +1,4 @@
+user survey 
 
 skikkelig admin side
 	tabs
@@ -34,6 +35,15 @@ AB testing
 *ab testing av selve skjema: kopier hele axo wl plugin og gjør den om til versjon B 
 	- les delvis fra samme settings
 	- eget: text felt, css, js
+
+todo: js
+hvis man vil forandre tekst på ab versjoner kan man gjøre det via js
+testing
+cookie (setcookie i ab() og les cookie der også)
+
+
+
+
 
 
 #send event med label "incomplete" når epost har blitt fylt ut
