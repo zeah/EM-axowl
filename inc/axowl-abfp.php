@@ -40,11 +40,30 @@ final class Axowl_abfp {
 
 		$id = $ab[rand(0, sizeof($ab)-1)];
 
+		if (isset($_COOKIE['abname'])) {
+
+			$c = $_COOKIE['abname'];
+
+			if (isset($opt['ab_name1']) && $opt['ab_name1'] == $c) $id = 'ab_id1';
+			if (isset($opt['ab_name2']) && $opt['ab_name2'] == $c) $id = 'ab_id2';
+			if (isset($opt['ab_name3']) && $opt['ab_name3'] == $c) $id = 'ab_id3';
+			if (isset($opt['ab_name4']) && $opt['ab_name4'] == $c) $id = 'ab_id4';
+
+			// wp_die('<xmp>'.print_r($opt['ab_id2'], true).'</xmp>');
+			
+			// wp_die('<xmp>'.print_r($_COOKIE['abname'], true).'</xmp>');
+			
+			// foreach ($ab as $a)
+				// if ($opt[$a] == $_COOKIE['abname']) $id = $_COOKIE['abname'];
+		}
+
 		$name = '';
 
 		$post = get_post($opt[$id]);
 
 		if (!$post) return $content;
+
+		// setcookie('abtest', $name, time()+60*60*24*30);
 
 		// $d = [];
 
@@ -57,7 +76,7 @@ final class Axowl_abfp {
 
 		if (!$name) $name = $post->post_name;
 
-		return $post->post_content.'<input type="hidden" name="abtesting-name" value="'.$name.'">';
+		return $post->post_content.'<input type="hidden" id="abtesting-name" value="'.$name.'">';
 
 		// return $opt[$id].'<br>'.$name;
 

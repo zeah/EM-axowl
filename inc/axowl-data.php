@@ -142,11 +142,25 @@ final class Axowl_data {
 
 		$url .= http_build_query($data);
 
-		$ga = false;
-		if (isset($data['ga'])) {
-			$ga = $data['ga'];
-			unset($data['ga']);
+		// ga, abid, abname
+
+		$ga = [];
+		$temp_ga = ['ga', 'abid', 'abname'];
+		foreach ($temp_ga as $value) {
+			$ga[$value] = $data[$value];
+			unset($data[$value]);
 		}
+
+		// if (isset($data['ga'])) {
+		// 	$ga['ga'] = $data['ga'];
+		// 	unset($data['ga']);
+		// }
+
+		// if (isset($data['abid'])) {
+		// 	$ga['abid'] = $data['abid'];
+		// 	unset($data['abit']);
+		// }
+
 
 		// testing - to be deleted
 		// echo 'axo url: '.$url."\n\n";
@@ -453,7 +467,7 @@ final class Axowl_data {
 	// 	);
 	// }
 
-	private function ga($status, $value, $ga = false) {
+	private function ga($status, $value, $data = []) {
 		// status: accepted, rejected, incomplete
 		// value: event value (2200)
 		if (is_user_logged_in()) return;
@@ -468,7 +482,9 @@ final class Axowl_data {
 
 		$post_name = $post->post_name ? $post->post_name : 'no postname';
 
-		if (!$ga) $ga = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
+		$action = isset($data['abname']) ? $data['abname'] : $post_name .' - '.isset($data['abid']) ? $data['abid'] : 'n/a';
+
+		if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
 
 		// getting site url without query string
 		global $wp;
@@ -486,14 +502,14 @@ final class Axowl_data {
 			'body' => [
 				'v' => '1', 
 				'tid' => $tag, 
-				'cid' => $ga,
+				'cid' => $data['ga'],
 				'uip' => $_SERVER['REMOTE_ADDR'],
 				'ua' => $_SERVER['HTTP_USER_AGENT'],
 				't' => 'event', 
 				// TODO make ec into axo form # .. for ab testing
 				'ec' => 'axo form', 
-				'ea' => $post_name, // for ab-testing
-				'el' => $status, // accepted or rejected
+				'ea' => $action, // for ab-testing - abname or postname + shortcode #
+				'el' => $status, // accepted, rejected or incomplete
 				'dl' => $dl, // url without query
 				'ev' => $value, // value of conversion
 				'dr' => $this->get_referer() // document referer

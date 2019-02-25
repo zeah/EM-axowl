@@ -170,7 +170,7 @@ final class Axowl_shortcode {
 
 		$html .= $p->popup();
 
-		$html .= '<input type="hidden" name="abtesting-sc" value="2">';
+		$html .= '<input type="hidden" id="abtesting-sc" value="2">';
 
 		// TODO set transient
 

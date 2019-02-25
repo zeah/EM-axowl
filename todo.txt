@@ -53,3 +53,6 @@ cookie (setcookie i ab() og les cookie der også)
 
 
 teste om riktig referrer blir send til GA
+
+
+adding fax input to ajax

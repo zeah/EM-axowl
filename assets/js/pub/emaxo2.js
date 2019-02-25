@@ -20,7 +20,6 @@
 
 
 (function() {
-
 	"use strict";
 
 	/**
@@ -96,51 +95,33 @@
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
 
-	payment();
-
-
-
 	var val = {
-
 		numbersOnly: function(d) {
-
 			if (/^\d+$/.test(d)) return true;
-
 			return false
 		},
 
 		textOnly: function(d) {
-
 			return true;
-
 		},
 
 		list: function(d) {
 			if (!d) return false;
-
 			return true;
 		},
 
 		phone: function(d) {
-
 			var n = val.numbersOnly(d);
-
 			if (!n) return false;
-
 			if (d.length == 8) return true;
-
-
 			return false;
 		},
 
 		socialnumber: function(d) {
-
 			var n = val.numbersOnly(d);
-
 			if (!n) return false;
 
 			if (d.length == 11) {
-				
 				// special rule
 				if (d == '00000000000') return false;
 
@@ -163,25 +144,16 @@
 			    
 			    // success
 			    return true;
-
 			}
 
 			return false;
-
 		},
 
-		email: function(d) {
+		email: function(d) { return /.+@.+\..{2,}/.test(d) },
 
-			return /.+@.+\..{2,}/.test(d);
-
-		},
-
-		name: function(d) {
-			
-		},
+		name: function(d) { return true },
 
 		currency: function(d) {
-
 			d = d.replace(/\s/g, '');
 			d = d.replace(/kr/, '');
 
@@ -200,9 +172,7 @@
 			return false;
 		},
 
-		check: function(d) {
-			return d;
-		},
+		check: function(d) { return d },
 
 		bankAccount: function(d) {
 			var n = val.numbersOnly(d);
@@ -235,7 +205,6 @@
 
 			return false;
 		}
-
 	}
 
 	var v = function(e, format, valid) {
@@ -310,7 +279,6 @@
 
 			var a = n.getAttribute('data-val');
 
-
 			if (!a) continue;
 
 			t++;
@@ -332,7 +300,6 @@
 			qs('.em-progress-text').innerHTML = parseInt(p.value) + '%';
 		} catch (e) { }
 	}
-
 
 	var incomplete = function(e) {
 
@@ -375,6 +342,37 @@
 		xhttp.send('action=wlinc'+query);
 	}
 
+	var abtesting = function() {
+		var data = '';
+
+		var ab = qs('#abtesting-name');
+		if (ab) ab = ab.value;
+		if (ab) data += '&abname='+ab;
+
+		var abid = qs('#abtesting-sc');
+		if (abid) abid = abid.value;
+		if (abid) data += '&abid='+abid;
+	
+		return data;
+	}
+
+	var setCookie = function() {
+		var ab = qs('#abtesting-name'); // name from wp settings
+		if (ab) ab = ab.value;
+
+		var abid = qs('#abtesting-sc'); // shortcode #
+		if (abid) abid = abid.value;
+
+		var date = new Date();
+
+		if (ab) document.cookie = 'abname='+ab+'; expires='+date.setDate(date.getDate() + 30);
+		if (abid) document.cookie = 'abid='+abid+'; expires='+date.setDate(date.getDate() + 30);
+
+		// if (ab) setcookie('abname', ab, date.setDate(date.getDate() + 30))
+		// if (abid) setcookie('abid', abid, date.setDate(date.getDate() + 30))
+	}
+
+	// AB2
 	var showFirstPagePart = function(e) {
 		try {
 			
@@ -393,16 +391,12 @@
 
 
 	var init = function() {
-
-		try {
-
-			qs('.em-b-show').addEventListener('click', showFirstPagePart);
-
+		// AB 2
+		try { qs('.em-b-show').addEventListener('click', showFirstPagePart);
 		} catch (e) { console.error(e) }
 
 		// TEXT INPUTS
 		var textInput = qsa('.emowl-form input[type=text]');
-
 		for (var i = 0; i < textInput.length; i++) (function() { // scoping for events
 
 			var n = textInput[i];
@@ -531,8 +525,6 @@
 					});
 					break;
 			}
-
-
 		})();
 		
 		
@@ -577,74 +569,71 @@
 
 		// CHECKBOX INPUTS
 		var checkboxInput = qsa('.em-cc');
+		for (var i = 0; i < checkboxInput.length; i++) (function() {
+			var c = checkboxInput[i];
 
-		for (var i = 0; i < checkboxInput.length; i++) {
-			(function() {
-				var c = checkboxInput[i];
+			var yes = c.querySelector('.em-cc-yes');
+			var no = c.querySelector('.em-cc-no');
+			var input = c.querySelector('.em-c');
 
-				var yes = c.querySelector('.em-cc-yes');
-				var no = c.querySelector('.em-cc-no');
-				var input = c.querySelector('.em-c');
-
-				var show = input.getAttribute('data-show');
+			var show = input.getAttribute('data-show');
 
 
-				yes.addEventListener('click', function(e) {
+			yes.addEventListener('click', function(e) {
 
-					input.value = 1;
+				input.value = 1;
 
-					if (show) {
-						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+				if (show) {
+					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
 
-						var temp = qs('.'+c);
+					var temp = qs('.'+c);
 
-						if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
-						else temp.classList.remove('em-hidden');
+					if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
+					else temp.classList.remove('em-hidden');
 
+				}
+
+				yes.classList.add('em-cc-green');
+				no.classList.remove('em-cc-green');
+
+				progress();
+
+			});
+
+			no.addEventListener('click', function(e) {
+
+				input.value = '';
+
+				if (show) {
+					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+					var temp = qs('.'+c);
+
+					if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
+					else temp.classList.add('em-hidden');
+					
+				}
+
+				yes.classList.remove('em-cc-green');
+				no.classList.add('em-cc-green');
+
+				// special rule
+				try {
+					var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
+					if (co) {
+						var hInput = qs('.em-c-co_applicant_norwegian'); 
+						hInput.value = '1';
+						hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
+						hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+
+						qs('.em-co-applicant-norwegian').classList.add('em-hidden');
 					}
+				} catch (e) { console.error(e) }
+				progress();
 
-					yes.classList.add('em-cc-green');
-					no.classList.remove('em-cc-green');
-
-					progress();
-
-				});
-
-				no.addEventListener('click', function(e) {
-
-					input.value = '';
-
-					if (show) {
-						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
-
-						var temp = qs('.'+c);
-
-						if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
-						else temp.classList.add('em-hidden');
-						
-					}
-
-					yes.classList.remove('em-cc-green');
-					no.classList.add('em-cc-green');
-
-					// special rule
-					try {
-						var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
-						if (co) {
-							var hInput = qs('.em-c-co_applicant_norwegian'); 
-							hInput.value = '1';
-							hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
-							hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
-
-							qs('.em-co-applicant-norwegian').classList.add('em-hidden');
-						}
-					} catch (e) { console.error(e) }
-					progress();
-
-				});
-
-			})();
-		}
+			});
+		})();
+		
 
 
 		// CHECK INPUTS
@@ -656,129 +645,122 @@
 			n.addEventListener('change', function(e) {
 				v(e.target, null, e.target.getAttribute('data-val'));
 			});
-
 		})();
+
+
 
 		// LIST INPUTS
 		var lists = qsa('.emowl-form select');
+		for (var i = 0; i < lists.length; i++) (function() {
+			var n = lists[i];
+			var val = n.getAttribute('data-val');
 
-		for (var i = 0; i < lists.length; i++) {
+			if (val) n.addEventListener('input', function(e) { v(e.target, null, val) });
 
-			(function() {
+			// showing html element
+			var show = function(o) {
+				try {
+					for (var i = 0; i < o.length; i++) 
+						qs(o[i]).classList.remove('em-hidden');
+					
+				} catch (e) {}
+			}
 
-				var n = lists[i];
-				var val = n.getAttribute('data-val');
+			// hiding html element
+			var hide = function(o) {
+				try {
+					for (var i = 0; i < o.length; i++) 
+						qs(o[i]).classList.add('em-hidden');
+					
+				} catch (e) {}
+			}
 
-				if (val) n.addEventListener('input', function(e) { v(e.target, null, val) });
+			// SPECIAL RULES
+			switch (n.classList[1]) {
 
-				// showing html element
-				var show = function(o) {
-					try {
-						for (var i = 0; i < o.length; i++) 
-							qs(o[i]).classList.remove('em-hidden');
-						
-					} catch (e) {}
-				}
+				// EDUCATION
+				case 'em-i-education':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Høysk./universitet 1-3 år':
+							case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
+							default: hide(['.em-element-education_loan']);
+						}
+					})
+					break;
 
-				// hiding html element
-				var hide = function(o) {
-					try {
-						for (var i = 0; i < o.length; i++) 
-							qs(o[i]).classList.add('em-hidden');
-						
-					} catch (e) {}
-				}
+				// EMPLOYMENT TYPE
+				case 'em-i-employment_type':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Fast ansatt (privat)':
+							case 'Fast ansatt (offentlig)':
+							case 'Midlertidig ansatt/vikar':
+							case 'Selvst. næringsdrivende':
+							case 'Langtidssykemeldt': show(['.em-element-employment_since', '.em-element-employer']); break;
+							default: hide(['.em-element-employment_since', '.em-element-employer']);
+						}
+					});
+					break;
 
-				// SPECIAL RULES
-				switch (n.classList[1]) {
+				// CIVIL STATUS
+				case 'em-i-civilstatus':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Gift/partner':
+							case 'Samboer':
+								try {
+									if (qs('.em-c-co_applicant').value === '0') show(['.em-element-spouse_income']);
+									else hide(['.em-element-spouse_income']);
+								} catch (e) {}
+								break;
 
-					// EDUCATION
-					case 'em-i-education':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Høysk./universitet 1-3 år':
-								case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
-								default: hide(['.em-element-education_loan']);
-							}
-						})
-						break;
+							default: hide(['.em-element-spouse_income']);
+						}
+					});
+					break;
 
-					// EMPLOYMENT TYPE
-					case 'em-i-employment_type':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Fast ansatt (privat)':
-								case 'Fast ansatt (offentlig)':
-								case 'Midlertidig ansatt/vikar':
-								case 'Selvst. næringsdrivende':
-								case 'Langtidssykemeldt': show(['.em-element-employment_since', '.em-element-employer']); break;
-								default: hide(['.em-element-employment_since', '.em-element-employer']);
-							}
-						});
-						break;
+				// LIVING CONDITIONS
+				case 'em-i-living_conditions':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Leier':
+							case 'Bor hos foreldre': show(['.em-element-rent']); hide(['.em-element-rent_income', '.em-element-mortgage']); break;
+							
+							case 'Aksje/andel/borettslag':
+							case 'Selveier': show(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']); break;
 
-					// CIVIL STATUS
-					case 'em-i-civilstatus':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Gift/partner':
-								case 'Samboer':
-									try {
-										if (qs('.em-c-co_applicant').value === '0') show(['.em-element-spouse_income']);
-										else hide(['.em-element-spouse_income']);
-									} catch (e) {}
-									break;
+							case 'Enebolig': show(['.em-element-rent_income', '.em-element-mortgage']); hide(['.em-element-rent']); break;
 
-								default: hide(['.em-element-spouse_income']);
-							}
-						});
-						break;
+							default: hide(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']);
+						}
+					});
+					break;
 
-					// LIVING CONDITIONS
-					case 'em-i-living_conditions':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Leier':
-								case 'Bor hos foreldre': show(['.em-element-rent']); hide(['.em-element-rent_income', '.em-element-mortgage']); break;
-								
-								case 'Aksje/andel/borettslag':
-								case 'Selveier': show(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']); break;
+				// NUMBER OF CHILDREN
+				case 'em-i-number_of_children':
+					n.addEventListener('change', function(e) {
+						if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
+						else hide(['.em-element-allimony_per_month']);
+					});
+					break;
 
-								case 'Enebolig': show(['.em-element-rent_income', '.em-element-mortgage']); hide(['.em-element-rent']); break;
-
-								default: hide(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']);
-							}
-						});
-						break;
-
-					// NUMBER OF CHILDREN
-					case 'em-i-number_of_children':
-						n.addEventListener('change', function(e) {
-							if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
-							else hide(['.em-element-allimony_per_month']);
-						});
-						break;
-
-					// CO APPLICANT: EMPLOYMENT TYPE
-					case 'em-i-co_applicant_employment_type':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Fast ansatt (privat)':
-								case 'Fast ansatt (offentlig)':
-								case 'Midlertidig ansatt/vikar':
-								case 'Selvst. næringsdrivende':
-								case 'Langtidssykemeldt': show(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']); break;
-								default: hide(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']);
-							}
-						});
-						break;
-
-				} // end of switch
-
-			})();
-		}
-
-
+				// CO APPLICANT: EMPLOYMENT TYPE
+				case 'em-i-co_applicant_employment_type':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Fast ansatt (privat)':
+							case 'Fast ansatt (offentlig)':
+							case 'Midlertidig ansatt/vikar':
+							case 'Selvst. næringsdrivende':
+							case 'Langtidssykemeldt': show(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']); break;
+							default: hide(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']);
+						}
+					});
+					break;
+			} // end of switch
+		})();
+		
 
 
 		// NEXT/PREV/SUBMIT BUTTONS
@@ -911,9 +893,7 @@
 					if (temp[0] == '_ga') data += '&data[ga]='+temp[1];
 				}
 
-
-				// console.log(data);
-				// if (!valid) return;				
+				data += abtesting();
 
 				qs('.em-b-submit').removeEventListener('click', post);
 
@@ -995,11 +975,14 @@
 
 	} // end of init
 
+	// console.log(abtesting());
+
+	// document.cookie = 'test=hi';
+	// console.log(document.cookie);
 
 
-
-
-
+	setCookie();
+	payment();
 	init();
 	progress();
 

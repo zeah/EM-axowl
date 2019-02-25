@@ -376,6 +376,20 @@
 	}
 
 
+	var abtesting = function() {
+		var data = '';
+
+		var ab = qs('#abtesting-name');
+		if (ab) ab = ab.value;
+		if (ab) data += '&abname='+ab;
+
+		var abid = qs('#abtesting-sc');
+		if (abid) abid = abid.value;
+		if (abid) data += '&abid='+abid;
+	
+		return data;
+	}
+
 	var init = function() {
 
 		// TEXT INPUTS
@@ -890,6 +904,7 @@
 				}
 
 
+				data += abtesting();
 				// console.log(data);
 				// if (!valid) return;				
 
