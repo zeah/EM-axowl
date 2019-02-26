@@ -46,6 +46,21 @@ final class Axowl_shortcode_parts {
 		';
 	}
 
+	public function form_buttons2() {
+		// return '<button class="em-b em-b-next" type="button">Neste</button>';
+				// <div class="em-progress-container">
+				// 	<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>
+				// 	<div class="em-progress-text">0%</div>
+				// </div>
+		return '
+			<div class="em-b-container">
+				<button class="em-b em-b-next" type="button">Neste</button>
+				<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>
+				<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>
+			</div>
+		';
+	}
+
 	public function popup() {
 		return '
 			<div class="em-popup">
@@ -98,6 +113,7 @@ final class Axowl_shortcode_parts {
 		// error text
 		if (isset($data[$key.'_error'])) $d['error'] = $data[$key.'_error'];
 
+		if (isset($value['button_text'])) $d['text'] = $value['button_text'];
 		// html element container
 		$html = sprintf('
 			<div class="em-element-container em-element-%s%s">', 
@@ -124,6 +140,8 @@ final class Axowl_shortcode_parts {
 
 		// list input
 		if (isset($value['list'])) $html .= $this->list($d);
+
+		if (isset($value['button'])) $html .= $this->button($d);
 
 		// end of html element container		
 		$html .= '</div>';
@@ -240,7 +258,7 @@ final class Axowl_shortcode_parts {
 		return sprintf('
 			<div class="em-element em-element-check em-element-check-%1$s">
 				<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s checked>
-				<label for="em-check-%1$s">%2$s</label>
+				<label for="em-check-%1$s"><span>%2$s</span></label>
 			</div>',
 			
 			$o['name'],
@@ -309,6 +327,13 @@ final class Axowl_shortcode_parts {
 			$o['text'],
 			
 			$o['name']
+		);
+	}
+
+	private function button($o = []) {
+		return sprintf('
+			<button class="em-b-neste" type="button">%s</button>',
+			$o['text']
 		);
 	}
 

@@ -96,45 +96,27 @@
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
 
-	payment();
-
-
-
 	var val = {
-
 		numbersOnly: function(d) {
-
 			if (/^\d+$/.test(d)) return true;
-
 			return false
 		},
 
-		textOnly: function(d) {
-
-			return true;
-
-		},
+		textOnly: function(d) { return true	},
 
 		list: function(d) {
 			if (!d) return false;
-
 			return true;
 		},
 
 		phone: function(d) {
-
 			var n = val.numbersOnly(d);
-
 			if (!n) return false;
-
 			if (d.length == 8) return true;
-
-
 			return false;
 		},
 
 		socialnumber: function(d) {
-
 			var n = val.numbersOnly(d);
 
 			if (!n) return false;
@@ -163,25 +145,16 @@
 			    
 			    // success
 			    return true;
-
 			}
 
 			return false;
-
 		},
 
-		email: function(d) {
+		email: function(d) { return /.+@.+\..{2,}/.test(d) },
 
-			return /.+@.+\..{2,}/.test(d);
-
-		},
-
-		name: function(d) {
-			
-		},
+		name: function(d) { return true },
 
 		currency: function(d) {
-
 			d = d.replace(/\s/g, '');
 			d = d.replace(/kr/, '');
 
@@ -200,9 +173,7 @@
 			return false;
 		},
 
-		check: function(d) {
-			return d;
-		},
+		check: function(d) { return d },
 
 		bankAccount: function(d) {
 			var n = val.numbersOnly(d);
@@ -235,12 +206,10 @@
 
 			return false;
 		}
-
 	}
 
 	var v = function(e, format, valid) {
 		try { 
-
 			var data = e.value;
 			var pa = e.parentNode;
 			// var pa = e.parentNode.parentNode;
@@ -388,6 +357,22 @@
 		if (abid) data += '&abid='+abid;
 	
 		return data;
+	}
+
+	var setCookie = function() {
+		var ab = qs('#abtesting-name'); // name from wp settings
+		if (ab) ab = ab.value;
+
+		var abid = qs('#abtesting-sc'); // shortcode #
+		if (abid) abid = abid.value;
+
+		var date = new Date();
+
+		if (ab) document.cookie = 'abname='+ab+'; expires='+date.setDate(date.getDate() + 30);
+		if (abid) document.cookie = 'abid='+abid+'; expires='+date.setDate(date.getDate() + 30);
+
+		// if (ab) setcookie('abname', ab, date.setDate(date.getDate() + 30))
+		// if (abid) setcookie('abid', abid, date.setDate(date.getDate() + 30))
 	}
 
 	var init = function() {
@@ -992,8 +977,9 @@
 
 
 
-
+	setCookie();
 	init();
+	payment();
 	progress();
 
 	// var ajatest = new XMLHttpRequest();

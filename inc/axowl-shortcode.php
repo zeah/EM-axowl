@@ -107,7 +107,7 @@ final class Axowl_shortcode {
 
 		$html .= $p->popup();
 
-		$html .= '<input type="hidden" name="abtesting-sc" value="1">';
+		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
 
 		// TODO set transient
 
@@ -163,8 +163,9 @@ final class Axowl_shortcode {
 		// ends last page and ends part container
 		$html .= '</div></div>';
 
-		$html .= $p->form_buttons();
-		$html .= '<div class="em-element"><button type="button" class="em-b-show">Gå Videre</button></div>';
+		// $html .= $p->form_buttons2();
+
+		$html .= '<div class="progress-numbers"><div class="progress-nr"><span>1</span></div><div class="progress-nr"><span>2</span></div><div class="progress-nr"><span>3</span></div><div class="progress-nr"><span>4</span></div><div class="progress-line"></div></div>';
 
 		$html .= '</form>';
 

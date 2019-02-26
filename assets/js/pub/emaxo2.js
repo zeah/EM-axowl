@@ -266,6 +266,8 @@
 
 
 	var progress = function() {
+		return;
+		
 		var li = qsa('.em-i:not(button)');
 		// var li = document.querySelectorAll('.em-i:not(button)');
 
@@ -392,8 +394,8 @@
 
 	var init = function() {
 		// AB 2
-		try { qs('.em-b-show').addEventListener('click', showFirstPagePart);
-		} catch (e) { console.error(e) }
+		// try { qs('.em-b-show').addEventListener('click', showFirstPagePart);
+		// } catch (e) { console.error(e) }
 
 		// TEXT INPUTS
 		var textInput = qsa('.emowl-form input[type=text]');

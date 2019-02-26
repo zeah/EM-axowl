@@ -266,22 +266,26 @@ final class Axowl_settings {
 		// echo 'title';
 	}
 
-	public function ab_setting() {
+	public function ab_setting2() {
 		$data = get_option('em_axowl');
 
 		// echo print_r($data, true);
 
 		$opt1 = isset($data['ab_id1']) ? $data['ab_id1'] : '';
 		$name1 = isset($data['ab_name1']) ? $data['ab_name1'] : '';
+		$chance1 = isset($data['ab_chance1']) ? $data['ab_chance1'] : '';
 
 		$opt2 = isset($data['ab_id2']) ? $data['ab_id2'] : '';
 		$name2 = isset($data['ab_name2']) ? $data['ab_name2'] : '';
+		$chance2 = isset($data['ab_chance2']) ? $data['ab_chance2'] : '';
 
 		$opt3 = isset($data['ab_id3']) ? $data['ab_id3'] : '';
 		$name3 = isset($data['ab_name3']) ? $data['ab_name3'] : '';
+		$chance3 = isset($data['ab_chance3']) ? $data['ab_chance3'] : '';
 
 		$opt4 = isset($data['ab_id4']) ? $data['ab_id4'] : '';
 		$name4 = isset($data['ab_name4']) ? $data['ab_name4'] : '';
+		$chance4 = isset($data['ab_chance4']) ? $data['ab_chance4'] : '';
 
 		$posts = get_posts(['numberposts' => -1, 'post_type' => ['post', 'page'], 'orderby' => 'name', 'order' => 'asc']);
 		
@@ -312,18 +316,71 @@ final class Axowl_settings {
 		}
 		
 
-
-
-
 		echo '<div class="em-settings-ab-container">
-			<div><input type="checkbox" name="em_axowl[abtesting]"'.($this->option('abtesting') ? ' checked' : '').'> Active</div><div></div>
-			<div>Name</div><div>Post</div>
-			<div><input name="em_axowl[ab_name1]" type="text" value="'.$name1.'"></div><div><select name="em_axowl[ab_id1]">'.$option1.'</select></div>
-			<div><input name="em_axowl[ab_name2]" type="text" value="'.$name2.'"></div><div><select name="em_axowl[ab_id2]">'.$option2.'</select></div>
-			<div><input name="em_axowl[ab_name3]" type="text" value="'.$name3.'"></div><div><select name="em_axowl[ab_id3]">'.$option3.'</select></div>
-			<div><input name="em_axowl[ab_name4]" type="text" value="'.$name4.'"></div><div><select name="em_axowl[ab_id4]">'.$option4.'</select></div>
+			<div><input type="checkbox" name="em_axowl[abtesting]"'.($this->option('abtesting') ? ' checked' : '').'> Active</div><div></div><div></div>
+			<div>Name</div><div>Post</div><div>Chance</div>
+			<div><input name="em_axowl[ab_name1]" type="text" value="'.$name1.'"></div><div><select name="em_axowl[ab_id1]">'.$option1.'</select></div><div><input name="em_axowl[ab_chance1]" value="'.$chance1.'" type="text"></div>
+			<div><input name="em_axowl[ab_name2]" type="text" value="'.$name2.'"></div><div><select name="em_axowl[ab_id2]">'.$option2.'</select></div><div><input name="em_axowl[ab_chance2]" value="'.$chance2.'" type="text"></div>
+			<div><input name="em_axowl[ab_name3]" type="text" value="'.$name3.'"></div><div><select name="em_axowl[ab_id3]">'.$option3.'</select></div><div><input name="em_axowl[ab_chance3]" value="'.$chance3.'" type="text"></div>
+			<div><input name="em_axowl[ab_name4]" type="text" value="'.$name4.'"></div><div><select name="em_axowl[ab_id4]">'.$option4.'</select></div><div><input name="em_axowl[ab_chance4]" value="'.$chance4.'" type="text"></div>
 			</div>';
 	}
+
+
+	public function ab_setting() {
+		$d = get_option('em_axowl');
+		$posts = get_posts(['numberposts' => -1, 'post_type' => ['post', 'page'], 'orderby' => 'name', 'order' => 'asc']);
+
+		$divs = '';
+		for ($i = 1; $i < 5; $i++) {
+			$divs .= sprintf(
+				'<div>
+					<input name="em_axowl[ab_name%1$s]" type="text" value="%2$s">
+				 </div>
+				 <div>
+				 	<select name="em_axowl[ab_id%1$s]">%3$s</select>
+				 </div>
+				 <div>
+					<input name="em_axowl[ab_chance%1$s]" type="text" value="%4$s">
+				 </div>
+				',
+				$i,
+				$this->option('ab_name'.$i),
+				$this->option_html($d['ab_id'.$i], $posts),
+				$this->option('ab_chance'.$i)
+			);
+		}
+
+		echo sprintf('
+			<div class="em-settings-ab-container">
+				<div><input type="checkbox" name="em_axowl[abtesting]"%1$s> Active</div>
+				<div></div>
+				<div></div>
+				
+				<div>Name</div>
+				<div>Post</div>
+				<div>Chance</div>
+				
+				%2$s
+			</div>',
+			$this->option('abtesting') ? ' checked' : '',
+			$divs
+		);
+
+	}
+
+
+	private function option_html($id, $posts = []) {
+		$html = '<option>Inactive</option>';
+		foreach ($posts as $p) {
+
+			$sel = false;
+			if ($p->ID == $id) $sel = true;
+			$html .= sprintf('<option value="%s"%s>%s</option>', $p->ID, $sel ? ' selected' : '', $p->post_name);
+		}
+		return $html;
+	}
+
 
 	private function option($name) {
 

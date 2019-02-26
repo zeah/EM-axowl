@@ -24,6 +24,7 @@ final class Axowl_inputs {
 			'email' => ['text' => true, 'validation' => 'email'],
 			'axo_accept' => ['check' => true, 'validation' => 'check'],
 			'contact_accept' => ['check' => true],
+			'button' => ['button' => true, 'button_text' => 'Neste'],
 			'/div0' => '',
 			
 			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],
