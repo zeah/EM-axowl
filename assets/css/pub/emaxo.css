@@ -151,7 +151,8 @@ button.em-i {
 	width: 90rem;
 	max-width: 100%;
 
-	border: solid 6px hsl(240, 70%, 70%);
+	border: solid 6px #9966FF;
+	border: solid 6px #333;
 
 	border-radius: 25px;
 
@@ -253,6 +254,7 @@ button.em-i {
 /* 1.2.4 next button */
 .em-b-next {
 	background-color: hsl(30, 90%, 60%);
+	background-color: #96F;
 	grid-area: next;
 }
 
@@ -293,7 +295,7 @@ button.em-i {
 .em-progress::-webkit-progress-value {
 	/*background-color: orange;*/
 	border-right: solid 1px black;
-	background-image:
+	/*background-image:
 		-webkit-linear-gradient( 135deg,
 								 transparent,
 								 transparent 33%,
@@ -302,6 +304,18 @@ button.em-i {
 								 transparent 66%),
     	-webkit-linear-gradient( top,
 								 rgba(255, 255, 255, .25),
+								 rgba(0,0,0,.2)),
+    	-webkit-linear-gradient( left, #09c, #4f4);	*/
+
+    	background-image:
+		-webkit-linear-gradient( 135deg,
+								 transparent,
+								 transparent 33%,
+								 #9966FF 33%,
+								 rgba(0,0,0,.1) 66%,
+								 transparent 66%),
+    	-webkit-linear-gradient( top,
+								 #FFCC66,
 								 rgba(0,0,0,.2)),
     	-webkit-linear-gradient( left, #09c, #4f4);
 }
@@ -378,7 +392,8 @@ button.em-i {
 	text-align: center;
 	margin: 0;
 	margin-bottom: 1rem;
-	background-color: hsl(240, 70%, 70%);
+	background-color: #9966FF;
+	background-color: #333;
 	padding: .5rem 0;
 /*	position: relative;
 	left: -400px;*/
@@ -462,7 +477,8 @@ button.em-i {
 	border-radius: 3px;
 
 	border: solid 1px hsl(0, 0%, 50%);
-	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
+	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
+	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #96f;*/
 }
 
 /**/
@@ -474,7 +490,11 @@ button.em-i {
 	padding-left: 1rem;
 }
 .em-i:focus {
-	box-shadow: 1px 1px 5px hsl(280, 80%, 60%);
+	/*box-shadow: 1px 1px 5px hsl(280, 80%, 60%);*/
+	/*box-shadow: 1px 1px 5px #96F;*/
+	/*box-shadow: 1px 1px 5px orange;*/
+	/*outline: solid 1px #96f;*/
+	outline: none;
 }
 
 /* 1.4.3 range input container */
@@ -623,6 +643,7 @@ button.em-i {
 /* 1.4.6.4 checkbox selected */
 .em-cc-green {
 	background-color: hsl(120, 80%, 60%);
+	background-color: #fc6;
 }
 
 
@@ -719,10 +740,12 @@ button.em-i {
     width: 40px; /* 1 */
     height: 48px;
     background: #fff;
-    background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/piler.png');
+    /*background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/piler.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/02/piler.png');
     background-repeat: no-repeat;
     background-position: center; 
-    box-shadow: -100vw 0 0 100vw hsl(120, 50%, 40%);
+    /*box-shadow: -100vw 0 0 100vw hsl(120, 50%, 40%);*/
+    box-shadow: -100vw 0 0 100vw #FC6;
     border: 1px solid black; 
     /* 1 */
 }
@@ -875,6 +898,7 @@ button.em-i {
 	font-size: 3rem !important;
 
 	background-color: hsl(30, 100%, 50%);
+	background-color: #96F;
 }
 
 
