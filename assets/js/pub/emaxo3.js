@@ -375,31 +375,6 @@
 		// if (abid) setcookie('abid', abid, date.setDate(date.getDate() + 30))
 	}
 
-	// AB2
-	var showFirstPagePart = function(e) {
-		try {
-			
-			e.target.style.display = 'none';
-
-			qs('.em-element-tenure').classList.add('em-show');
-			// qs('.em-element-tenure').style.display = 'block';
-			qs('.em-element-email').classList.add('em-show');
-			// qs('.em-element-email').style.display = 'block';
-			qs('.em-element-mobile_number').classList.add('em-show');
-			// qs('.em-element-mobile_number').style.display = 'block';
-			qs('.em-element-collect_debt').classList.add('em-show');
-			// qs('.em-element-collect_debt').style.display = 'block';
-			qs('.em-b-container').classList.add('em-show');
-
-			qs('.em-element-axo_accept').classList.add('em-show');
-			qs('.em-element-contact_accept').classList.add('em-show');
-			// qs('.em-b-container').style.display = 'grid';
-
-		} catch (e) { console.error(e) }
-	}
-
-	qs('.em-b-neste').addEventListener('click', showFirstPagePart);
-
 	var init = function() {
 
 		// TEXT INPUTS
@@ -520,18 +495,18 @@
 					n.addEventListener('focusout', function(e) { payment() });
 					break;
 
-				// case 'em-i-email':
-				// 	n.addEventListener('input', function(e) {
-				// 		var l = e.target.value.length;
-				// 		var s = function(p) { e.target.style.fontSize = p }
+				case 'em-i-email':
+					n.addEventListener('input', function(e) {
+						var l = e.target.value.length;
+						var s = function(p) { e.target.style.fontSize = p }
 
-				// 		if (l > 10) s('18px');
-				// 		if (l > 20) s('16px');
-				// 		if (l > 30) s('14px');
-				// 		if (l > 40) s('12px');
+						if (l > 10) s('18px');
+						if (l > 20) s('16px');
+						if (l > 30) s('14px');
+						if (l > 40) s('12px');
 
-				// 	});
-				// 	break;
+					});
+					break;
 			}
 
 
@@ -816,28 +791,28 @@
 				}
 				
 				// hiding current part
-				// current.style.display = 'none';
+				current.style.display = 'none';
 
-				// try {
-				// showing next part
-				// current.nextSibling.style.display = 'block';
-				current.nextSibling.classList.add('em-show');
-				// showing prev button
-				// qs('.em-b-back').classList.remove('em-hidden');
+				try {
+					// showing next part
+					current.nextSibling.style.display = 'block';
+		
+					// showing prev button
+					qs('.em-b-back').classList.remove('em-hidden');
 
-				// replace next button with submit button if no more parts
-				if (!current.nextSibling.nextSibling) {
-					e.target.classList.add('em-hidden');
-					qs('.em-b-submit').classList.remove('em-hidden');
-				}
+					// replace next button with submit button if no more parts
+					if (!current.nextSibling.nextSibling) {
+						e.target.classList.add('em-hidden');
+						qs('.em-b-submit').classList.remove('em-hidden');
+					}
 
-				current = current.nextSibling;
+					current = current.nextSibling;
 
-				current.querySelector('.em-i').focus();
+					current.querySelector('.em-i').focus();
 
-				// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
+					// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
 
-				// } catch (e) { console.error(e) }
+				} catch (e) { console.error(e) }
 
 			});
 
@@ -847,25 +822,25 @@
 
 		// back button
 		try {
-			// qs('.em-b-back').addEventListener('click', function(e) {
-			// 	try {
-			// 		current.style.display = 'none';
+			qs('.em-b-back').addEventListener('click', function(e) {
+				try {
+					current.style.display = 'none';
 
-			// 		var p = current.previousSibling;
+					var p = current.previousSibling;
 
-			// 		p.style.display = 'block';
+					p.style.display = 'block';
 
-			// 		if (!p.previousSibling) e.target.classList.add('em-hidden');
+					if (!p.previousSibling) e.target.classList.add('em-hidden');
 
-			// 		qs('.em-b-next').classList.remove('em-hidden');
-			// 		qs('.em-b-submit').classList.add('em-hidden');
+					qs('.em-b-next').classList.remove('em-hidden');
+					qs('.em-b-submit').classList.add('em-hidden');
 
-			// 		current = p;
+					current = p;
 
-			// 		current.querySelector('.em-i').focus();
+					current.querySelector('.em-i').focus();
 					
-			// 	} catch (e) {}
-			// });
+				} catch (e) {}
+			});
 		} catch (e) {}
 
 		// SUBMIT BUTTON
@@ -904,8 +879,6 @@
 					// adding to query string
 					data += '&data['+n.name+']='+value;
 				}
-
-				if (!valid) return;
 
 				var cookie = document.cookie.split('; ');
 				for (var i in cookie) {

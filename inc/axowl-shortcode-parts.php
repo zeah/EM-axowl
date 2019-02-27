@@ -34,16 +34,16 @@ final class Axowl_shortcode_parts {
 
 	public function form_buttons() {
 		return '
-			<div class="em-b-container">
+			<div class="em-b-container"><div class="em-b-inner">
 				<button class="em-b em-b-next" type="button">Neste</button>
 				<div class="em-progress-container">
 					<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>
 					<div class="em-progress-text">0%</div>
 				</div>
 				<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>
-				<button class="em-b em-b-back em-hidden" type="button">Tilbake</button>
-			</div>
+			</div></div>
 		';
+				// <button class="em-b em-b-back em-hidden" type="button">Tilbake</button>
 	}
 
 	public function form_buttons2() {
@@ -277,16 +277,25 @@ final class Axowl_shortcode_parts {
 	private function list($o = []) {
 		if (!$o) return '';
 
-		$options = '<option></option>';
+		if (isset($o['value']['empty']) && $o['value']['empty'] === false) $options = '';
+		else $options = '<option></option>';
+
 		if (isset($o['value']['list']))
-			foreach ($o['value']['list'] as $key => $value)
+			foreach ($o['value']['list'] as $key => $value) {
+
+				$sel = false;
+				if (isset($o['value']['start']) && $o['value']['start'] == $key) $sel = true;
+
 				$options .= sprintf(
-					'<option value="%s">%s</option>',
+					'<option value="%s"%s>%s</option>',
 
 					isset($o['value']['key_as_value']) ? $key : $value,
 
+					$sel ? ' selected' : '',
+
 					$value
 				);
+			}
 
 		if ($options == '') return ''; 
 
