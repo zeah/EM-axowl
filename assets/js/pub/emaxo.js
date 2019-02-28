@@ -406,9 +406,7 @@
 
 		// TEXT INPUTS
 		var textInput = qsa('.emowl-form input[type=text]');
-
 		for (var i = 0; i < textInput.length; i++) (function() { // scoping for events
-
 			var n = textInput[i];
 			var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
 			var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
@@ -438,7 +436,6 @@
 					else 						e.target.value = min;
 				}
 			});
-
 
 			// formating currency
 			if (format == 'currency') {
@@ -477,7 +474,6 @@
 				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
 			}
 
-
 			// selecting all text when focusing input
 			n.addEventListener('focus', function(e) { 
 			
@@ -488,7 +484,6 @@
 
 				e.target.select();
 			});
-
 
 			// if parent has range input
 			var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
@@ -516,7 +511,7 @@
 
 			// SPECIAL RULES
 			switch (n.classList[1]) {
-				case 'em-i-tenure':
+				// case 'em-i-tenure':
 				case 'em-i-loan_amount': 
 					n.addEventListener('input', function(e) { payment() });
 					n.addEventListener('focusout', function(e) { payment() });
@@ -535,10 +530,7 @@
 				// 	});
 				// 	break;
 			}
-
-
 		})();
-		
 		
 
 		// RANGE INPUTS
@@ -581,74 +573,64 @@
 
 		// CHECKBOX INPUTS
 		var checkboxInput = qsa('.em-cc');
+		for (var i = 0; i < checkboxInput.length; i++) (function() {
+			var c = checkboxInput[i];
 
-		for (var i = 0; i < checkboxInput.length; i++) {
-			(function() {
-				var c = checkboxInput[i];
+			var yes = c.querySelector('.em-cc-yes');
+			var no = c.querySelector('.em-cc-no');
+			var input = c.querySelector('.em-c');
 
-				var yes = c.querySelector('.em-cc-yes');
-				var no = c.querySelector('.em-cc-no');
-				var input = c.querySelector('.em-c');
+			var show = input.getAttribute('data-show');
 
-				var show = input.getAttribute('data-show');
+			yes.addEventListener('click', function(e) {
+				input.value = 1;
 
+				if (show) {
+					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
 
-				yes.addEventListener('click', function(e) {
+					var temp = qs('.'+c);
 
-					input.value = 1;
+					if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
+					else temp.classList.remove('em-hidden');
+				}
 
-					if (show) {
-						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+				yes.classList.add('em-cc-green');
+				no.classList.remove('em-cc-green');
 
-						var temp = qs('.'+c);
+				progress();
+			});
 
-						if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
-						else temp.classList.remove('em-hidden');
+			no.addEventListener('click', function(e) {
+				input.value = '';
 
+				if (show) {
+					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+					var temp = qs('.'+c);
+
+					if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
+					else temp.classList.add('em-hidden');
+				}
+
+				yes.classList.remove('em-cc-green');
+				no.classList.add('em-cc-green');
+
+				// special rule
+				try {
+					var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
+					if (co) {
+						var hInput = qs('.em-c-co_applicant_norwegian'); 
+						hInput.value = '1';
+						hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
+						hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+
+						qs('.em-co-applicant-norwegian').classList.add('em-hidden');
 					}
-
-					yes.classList.add('em-cc-green');
-					no.classList.remove('em-cc-green');
-
-					progress();
-
-				});
-
-				no.addEventListener('click', function(e) {
-
-					input.value = '';
-
-					if (show) {
-						var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
-
-						var temp = qs('.'+c);
-
-						if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
-						else temp.classList.add('em-hidden');
-						
-					}
-
-					yes.classList.remove('em-cc-green');
-					no.classList.add('em-cc-green');
-
-					// special rule
-					try {
-						var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
-						if (co) {
-							var hInput = qs('.em-c-co_applicant_norwegian'); 
-							hInput.value = '1';
-							hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
-							hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
-
-							qs('.em-co-applicant-norwegian').classList.add('em-hidden');
-						}
-					} catch (e) { console.error(e) }
-					progress();
-
-				});
-
-			})();
-		}
+				} catch (e) { console.error(e) }
+				progress();
+			});
+		})();
+		
 
 
 		// CHECK INPUTS
@@ -665,122 +647,122 @@
 
 		// LIST INPUTS
 		var lists = qsa('.emowl-form select');
+		for (var i = 0; i < lists.length; i++) (function() {
+			var n = lists[i];
+			var val = n.getAttribute('data-val');
 
-		for (var i = 0; i < lists.length; i++) {
+			if (val) n.addEventListener('input', function(e) { v(e.target, null, val) });
 
-			(function() {
+			// showing html element
+			var show = function(o) {
+				try {
+					for (var i = 0; i < o.length; i++) 
+						qs(o[i]).classList.remove('em-hidden');
+					
+				} catch (e) {}
+			}
 
-				var n = lists[i];
-				var val = n.getAttribute('data-val');
+			// hiding html element
+			var hide = function(o) {
+				try {
+					for (var i = 0; i < o.length; i++) 
+						qs(o[i]).classList.add('em-hidden');
+					
+				} catch (e) {}
+			}
 
-				if (val) n.addEventListener('input', function(e) { v(e.target, null, val) });
+			// SPECIAL RULES
+			switch (n.classList[1]) {
 
-				// showing html element
-				var show = function(o) {
-					try {
-						for (var i = 0; i < o.length; i++) 
-							qs(o[i]).classList.remove('em-hidden');
-						
-					} catch (e) {}
-				}
+				case 'em-i-tenure':
+					n.addEventListener('change', function(e) {
+						payment();
+					});
+					break;
+				// EDUCATION
+				case 'em-i-education':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Høysk./universitet 1-3 år':
+							case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
+							default: hide(['.em-element-education_loan']);
+						}
+					});
+					break;
 
-				// hiding html element
-				var hide = function(o) {
-					try {
-						for (var i = 0; i < o.length; i++) 
-							qs(o[i]).classList.add('em-hidden');
-						
-					} catch (e) {}
-				}
+				// EMPLOYMENT TYPE
+				case 'em-i-employment_type':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Fast ansatt (privat)':
+							case 'Fast ansatt (offentlig)':
+							case 'Midlertidig ansatt/vikar':
+							case 'Selvst. næringsdrivende':
+							case 'Langtidssykemeldt': show(['.em-element-employment_since', '.em-element-employer']); break;
+							default: hide(['.em-element-employment_since', '.em-element-employer']);
+						}
+					});
+					break;
 
-				// SPECIAL RULES
-				switch (n.classList[1]) {
+				// CIVIL STATUS
+				case 'em-i-civilstatus':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Gift/partner':
+							case 'Samboer':
+								try {
+									if (qs('.em-c-co_applicant').value === '0') show(['.em-element-spouse_income']);
+									else hide(['.em-element-spouse_income']);
+								} catch (e) {}
+								break;
 
-					// EDUCATION
-					case 'em-i-education':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Høysk./universitet 1-3 år':
-								case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
-								default: hide(['.em-element-education_loan']);
-							}
-						})
-						break;
+							default: hide(['.em-element-spouse_income']);
+						}
+					});
+					break;
 
-					// EMPLOYMENT TYPE
-					case 'em-i-employment_type':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Fast ansatt (privat)':
-								case 'Fast ansatt (offentlig)':
-								case 'Midlertidig ansatt/vikar':
-								case 'Selvst. næringsdrivende':
-								case 'Langtidssykemeldt': show(['.em-element-employment_since', '.em-element-employer']); break;
-								default: hide(['.em-element-employment_since', '.em-element-employer']);
-							}
-						});
-						break;
+				// LIVING CONDITIONS
+				case 'em-i-living_conditions':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Leier':
+							case 'Bor hos foreldre': show(['.em-element-rent']); hide(['.em-element-rent_income', '.em-element-mortgage']); break;
+							
+							case 'Aksje/andel/borettslag':
+							case 'Selveier': show(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']); break;
 
-					// CIVIL STATUS
-					case 'em-i-civilstatus':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Gift/partner':
-								case 'Samboer':
-									try {
-										if (qs('.em-c-co_applicant').value === '0') show(['.em-element-spouse_income']);
-										else hide(['.em-element-spouse_income']);
-									} catch (e) {}
-									break;
+							case 'Enebolig': show(['.em-element-rent_income', '.em-element-mortgage']); hide(['.em-element-rent']); break;
 
-								default: hide(['.em-element-spouse_income']);
-							}
-						});
-						break;
+							default: hide(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']);
+						}
+					});
+					break;
 
-					// LIVING CONDITIONS
-					case 'em-i-living_conditions':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Leier':
-								case 'Bor hos foreldre': show(['.em-element-rent']); hide(['.em-element-rent_income', '.em-element-mortgage']); break;
-								
-								case 'Aksje/andel/borettslag':
-								case 'Selveier': show(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']); break;
+				// NUMBER OF CHILDREN
+				case 'em-i-number_of_children':
+					n.addEventListener('change', function(e) {
+						if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
+						else hide(['.em-element-allimony_per_month']);
+					});
+					break;
 
-								case 'Enebolig': show(['.em-element-rent_income', '.em-element-mortgage']); hide(['.em-element-rent']); break;
+				// CO APPLICANT: EMPLOYMENT TYPE
+				case 'em-i-co_applicant_employment_type':
+					n.addEventListener('change', function(e) {
+						switch (e.target.value) {
+							case 'Fast ansatt (privat)':
+							case 'Fast ansatt (offentlig)':
+							case 'Midlertidig ansatt/vikar':
+							case 'Selvst. næringsdrivende':
+							case 'Langtidssykemeldt': show(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']); break;
+							default: hide(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']);
+						}
+					});
+					break;
+			} // end of switch
 
-								default: hide(['.em-element-rent', '.em-element-rent_income', '.em-element-mortgage']);
-							}
-						});
-						break;
-
-					// NUMBER OF CHILDREN
-					case 'em-i-number_of_children':
-						n.addEventListener('change', function(e) {
-							if (e.target.value && e.target.value != '0') show(['.em-element-allimony_per_month']);
-							else hide(['.em-element-allimony_per_month']);
-						});
-						break;
-
-					// CO APPLICANT: EMPLOYMENT TYPE
-					case 'em-i-co_applicant_employment_type':
-						n.addEventListener('change', function(e) {
-							switch (e.target.value) {
-								case 'Fast ansatt (privat)':
-								case 'Fast ansatt (offentlig)':
-								case 'Midlertidig ansatt/vikar':
-								case 'Selvst. næringsdrivende':
-								case 'Langtidssykemeldt': show(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']); break;
-								default: hide(['.em-element-co_applicant_employment_since', '.em-element-co_applicant_employer']);
-							}
-						});
-						break;
-
-				} // end of switch
-
-			})();
-		}
+		})();
+		
 
 
 
