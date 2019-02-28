@@ -816,7 +816,7 @@
 					// success = true;
 					// return;
 				}
-				
+
 				// hiding current part
 				// current.style.display = 'none';
 
@@ -833,10 +833,27 @@
 					qs('.em-b-submit').classList.remove('em-hidden');
 				}
 
+				// TODO disable on mobile?
+				if (window.innerWidth > 816) window.scroll(0, 1500);
+
 				current = current.nextSibling;
 
 				current.querySelector('.em-i').focus();
 
+
+				// var o = qs('.em-progress-container');
+
+				// o.scrollTop = o.scrollHeight;
+
+				// console.log(qs('.em-b-next').getBoundingClientRect());
+
+				// var y = qs('.em-progress-container').getBoundingClientRect()['y'];
+
+				// console.log(y);
+
+				// y = window.height - y;
+
+				// window.scroll(0, y);
 				// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
 
 				// } catch (e) { console.error(e) }
@@ -937,14 +954,19 @@
 					if (this.readyState == 4 && this.status == 200) {
 
 						try {
-							qs('.em-b-submit').style.display = 'none';
-
+							// qs('.em-b-submit').style.display = 'none';
+							qs('.emowl-form').style.display = 'none';
+							qs('.em-glass').style.display = 'none';
 							qs('.em-popup').classList.add('em-popup-show');
-						} catch (e) {}
+						} catch (e) { console.error(e) }
 
 						console.log(this.responseText);
 					}
 				}
+
+				try {
+					qs('.em-glass').style.display = 'block';
+				} catch (e) { console.log(e) }
 
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);

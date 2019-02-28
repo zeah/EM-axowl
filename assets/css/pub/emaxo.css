@@ -138,8 +138,25 @@ button.em-i {
 	/*padding: .5rem 1rem;*/
 }
 
+/* 0.1 form container */
+.em-form-container {
+	position: relative;
+}
 
+.em-glass {
+	display: none;
 
+	position: absolute;
+
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	background-color: white;
+	opacity: .7;
+	z-index: 99;
+}
 
 /* 1.0 form element and container */
 .emowl-form {
@@ -931,15 +948,15 @@ button.em-i {
 		"content content"
 		"button button";
 
-	position: fixed;
-	width: 70rem;
-	max-width: 90%;
-	height: 20rem;
+	/*position: fixed;*/
+	/*width: 70rem;*/
+	/*max-width: 90%;*/
+	/*height: 20rem;*/
 
-	top: 20%;
-	left: 0;
-	right: 0;
-	margin: auto;
+	/*top: 20%;*/
+	/*left: 0;*/
+	/*right: 0;*/
+	/*margin: auto;*/
 
 	border: double 4px hsl(0, 0%, 50%);
 
