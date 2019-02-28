@@ -202,8 +202,10 @@ final class Axowl_shortcode_parts {
 	private function range($o = []) {
 		if (!isset($o['name'])) return '';
 
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
+
 		return sprintf(
-			'<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%s%s%s%s>',
+			'<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>',
 
 			$o['name'],
 			

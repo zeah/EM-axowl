@@ -178,7 +178,7 @@ final class Axowl_data {
 
 		if (!is_array($res) || !isset($res['status'])) return;
 
-
+		echo print_r($res, true);
 		// $res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
@@ -221,6 +221,12 @@ final class Axowl_data {
 		$value = isset($value['payout']) ? $value['payout'] : 0;
 		$this->ga('accepted', $value, $ga);
 
+		if (isset($data['email'])) {
+			$unsub = Axowl_unsub::get_instance();
+
+			$unsub->unsub($data['email']); // ends in exit;
+		}
+
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
 	}
@@ -237,7 +243,8 @@ final class Axowl_data {
 		$data['status'] = 'rejected';
 		
 		// send data to sql
-		$this->send(http_build_query($data), 'sql_info');
+		if ($this->contact_accept) $this->send(http_build_query($data), 'sql_info');
+		else $this->send(http_build_query($data), 'sql_info');
 
 		// google analytics
 		$this->ga('rejected', 0, $ga);
@@ -482,7 +489,9 @@ final class Axowl_data {
 
 		$post_name = $post->post_name ? $post->post_name : 'no postname';
 
-		$action = isset($data['abname']) ? $data['abname'] : $post_name .' - '.isset($data['abid']) ? $data['abid'] : 'n/a';
+		$action = isset($data['abname']) ? 
+					$data['abname'].' - '.(isset($data['abid']) ? $data['abid'] : 'n/a') :
+					$post_name .' - '.(isset($data['abid']) ? $data['abid'] : 'n/a');
 
 		if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
 

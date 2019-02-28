@@ -310,8 +310,8 @@
 		var xhttp = new XMLHttpRequest();
 
 		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200)
-				console.log(this.responseText);
+			// if (this.readyState == 4 && this.status == 200)
+				// console.log(this.responseText);
 		}
 
 		var query = '';
@@ -394,6 +394,8 @@
 			qs('.em-element-axo_accept').classList.add('em-show');
 			qs('.em-element-contact_accept').classList.add('em-show');
 			// qs('.em-b-container').style.display = 'grid';
+
+			qs('.em-i-tenure').focus();
 
 		} catch (e) { console.error(e) }
 	}
@@ -994,7 +996,7 @@
 			selects[i].addEventListener('change', function() { progress() });
 		})();
 
-		qs('.em-i-loan_amount').focus();
+		// qs('.em-i-loan_amount').focus();
 
 
 

@@ -311,7 +311,9 @@ button.em-i {
     	-webkit-linear-gradient( top,
 								 rgba(255, 255, 255, .25),
 								 rgba(0,0,0,.2)),
-    	-webkit-linear-gradient( left, #fc6, #96f);	
+    	/*-webkit-linear-gradient( left, #fc6, #fc6);	*/
+    	/*-webkit-linear-gradient( left, #96f, #fc6);	*/
+    	-webkit-linear-gradient( left, #96f, #96f);	
     	/*-webkit-linear-gradient( left, #09c, #4f4);	*/
 
     	/*background-image:
@@ -470,7 +472,7 @@ button.em-i {
 
 /* 1.4.2 text input */
 .em-i {
-	/*border: none;*/
+	border: none;
 
 	padding: 1rem 0;
 
@@ -504,8 +506,8 @@ button.em-i {
 	/*box-shadow: 1px 1px 5px hsl(280, 80%, 60%);*/
 	/*box-shadow: 1px 1px 5px #96F;*/
 	/*box-shadow: 1px 1px 5px orange;*/
-	/*outline: solid 1px #96f;*/
-	outline: none;
+	outline: solid 1px #96f;
+	/*outline: none;*/
 }
 
 /* 1.4.3 range input container */
@@ -757,6 +759,7 @@ button.em-i {
     background-position: center; 
     /*box-shadow: -100vw 0 0 100vw hsl(120, 50%, 40%);*/
     box-shadow: -100vw 0 0 100vw #FC6;
+    box-shadow: -100vw 0 0 100vw hsl(120, 80%, 60%);
     border: 1px solid black; 
     /* 1 */
 }

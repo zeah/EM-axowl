@@ -20,11 +20,13 @@ final class Axowl_unsub {
 		add_action('init', [$this, 'unsub']);
 	}
 
-	public function unsub() {
+	public function unsub($e = null) {
 		// wp_die('<xmp>'.print_r('hi', true).'</xmp>');
 		
-		if (!isset($_GET['action']) || $_GET['action'] != 'unsub') return;
-		if (!isset($_GET['email'])) return;
+		if (!$e) {
+			if (!isset($_GET['action']) || $_GET['action'] != 'unsub') return;
+			if (!isset($_GET['email'])) return;
+		}
 
 		$url = get_option('em_axowl');
 
@@ -32,7 +34,7 @@ final class Axowl_unsub {
 
 		$url = $url['unsub'];
 
-		$email = $_GET['email'];
+		$email = isset($_GET['email']) ? $_GET['email'] : $e;
 
 		preg_match('/.*@.*?\..*/', $email, $matches);
 
@@ -43,10 +45,12 @@ final class Axowl_unsub {
 
 		// echo 'Email unsubbed '.$url.'?email='.$email;
 
-		echo 'Hvis '.$email.' var registrert skal den være fjernet nå.';
-		echo '<br>If '.$email.' was registered then it is removed now.';
-
-		// wp_remote_get($url.'?email='.$email), ['blocking' => false]);
+		if (!$e) {
+			echo 'Hvis '.$email.' var registrert skal den være fjernet nå.';
+			echo '<br>If '.$email.' was registered then it is removed now.';
+		}
+		
+		wp_remote_get($url.'?email='.$email, ['blocking' => false]);
 		exit;
 		// wp_die();
 	}
