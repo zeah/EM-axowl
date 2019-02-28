@@ -105,7 +105,7 @@ final class Axowl_shortcode_parts {
 
 		// text for disabled text input
 		if (isset($value['notInput'])) $d['text'] = isset($value['text_field']) ? $value['text_field'] : '';
-		else $d['text'] = $data[$key];
+		else $d['text'] = isset($data[$key]) ? $data[$key] : '';
 
 		// help text 
 		if (isset($data[$key.'_ht']) && $data[$key.'_ht']) $d['ht'] = $data[$key.'_ht'];

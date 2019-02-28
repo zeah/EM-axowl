@@ -118,6 +118,11 @@
 	/*padding: 1rem;*/
 }
 
+/* theme stuff */
+.content-title {
+	display: none;
+}
+
 .em-r,
 .em-i {
 	width: 100%;
@@ -152,7 +157,7 @@ button.em-i {
 	max-width: 100%;
 
 	border: solid 6px #9966FF;
-	border: solid 6px #333;
+	/*border: solid 6px #333;*/
 
 	border-radius: 25px;
 
@@ -232,7 +237,7 @@ button.em-i {
 	padding: 1rem;
 	border-radius: 5px;
 	font-size: 3rem !important;
-
+	/*color: white;*/
 }
 
 .em-b:focus {
@@ -254,7 +259,8 @@ button.em-i {
 /* 1.2.4 next button */
 .em-b-next {
 	background-color: hsl(30, 90%, 60%);
-	background-color: #96F;
+	/*background-color: #96F;*/
+	background-color: #FFCC66;
 	grid-area: next;
 }
 
@@ -295,7 +301,7 @@ button.em-i {
 .em-progress::-webkit-progress-value {
 	/*background-color: orange;*/
 	border-right: solid 1px black;
-	/*background-image:
+	background-image:
 		-webkit-linear-gradient( 135deg,
 								 transparent,
 								 transparent 33%,
@@ -305,20 +311,18 @@ button.em-i {
     	-webkit-linear-gradient( top,
 								 rgba(255, 255, 255, .25),
 								 rgba(0,0,0,.2)),
-    	-webkit-linear-gradient( left, #09c, #4f4);	*/
+    	-webkit-linear-gradient( left, #fc6, #96f);	
+    	/*-webkit-linear-gradient( left, #09c, #4f4);	*/
 
-    	background-image:
+    	/*background-image:
 		-webkit-linear-gradient( 135deg,
-								 transparent,
-								 transparent 33%,
-								 #9966FF 33%,
-								 rgba(0,0,0,.1) 66%,
-								 transparent 66%),
-    	-webkit-linear-gradient( top,
+								 #fc6 30%,
+								 #9966FF)*/
+/*    	-webkit-linear-gradient( top,
 								 #FFCC66,
 								 rgba(0,0,0,.2)),
-    	-webkit-linear-gradient( left, #09c, #4f4);
-}
+    	-webkit-linear-gradient( left, #fc6, #96f);
+*/}
 
 /* 1.3 part container */
 .em-part-container {
@@ -393,7 +397,7 @@ button.em-i {
 	margin: 0;
 	margin-bottom: 1rem;
 	background-color: #9966FF;
-	background-color: #333;
+	/*background-color: #333;*/
 	padding: .5rem 0;
 /*	position: relative;
 	left: -400px;*/
@@ -466,7 +470,7 @@ button.em-i {
 
 /* 1.4.2 text input */
 .em-i {
-	border: none;
+	/*border: none;*/
 
 	padding: 1rem 0;
 
@@ -477,8 +481,15 @@ button.em-i {
 	border-radius: 3px;
 
 	border: solid 1px hsl(0, 0%, 50%);
+	/*border: solid 4px black;*/
+
 	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
 	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #96f;*/
+}
+
+.em-i,
+.em-r {
+	/*border: solid 1px black !important;*/
 }
 
 /**/
@@ -898,7 +909,10 @@ button.em-i {
 	font-size: 3rem !important;
 
 	background-color: hsl(30, 100%, 50%);
-	background-color: #96F;
+	/*background-color: #96F;*/
+	background-color: #fc6;
+	border-radius: 5px;
+	/*color: white;*/
 }
 
 
