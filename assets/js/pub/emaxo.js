@@ -234,6 +234,9 @@
 				else {
 					pa.querySelector('.em-marker-valid').classList.add('em-hidden');
 					pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
+
+					var errEl = pa.querySelector('.em-error'); 
+					if (errEl) errEl.classList.remove('em-hidden');
 				}
 				// qs('.em-marker-valid').classList.add('em-hidden');
 				// qs('.em-marker-invalid').classList.remove('em-hidden');
@@ -249,6 +252,10 @@
 				else {
 					pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
 					pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
+					
+					var errEl = pa.querySelector('.em-error'); 
+					if (errEl) errEl.classList.add('em-hidden');
+					// pa.querySelector('.em-error').classList.add('em-hidden');
 				}
 				// qs('.em-marker-valid').classList.remove('em-hidden');
 				// qs('.em-marker-invalid').classList.add('em-hidden');
@@ -381,19 +388,35 @@
 			
 			e.target.style.display = 'none';
 
-			qs('.em-element-tenure').classList.add('em-show');
-			// qs('.em-element-tenure').style.display = 'block';
-			qs('.em-element-email').classList.add('em-show');
-			// qs('.em-element-email').style.display = 'block';
-			qs('.em-element-mobile_number').classList.add('em-show');
-			// qs('.em-element-mobile_number').style.display = 'block';
-			qs('.em-element-collect_debt').classList.add('em-show');
-			// qs('.em-element-collect_debt').style.display = 'block';
-			qs('.em-b-container').classList.add('em-show');
+			var el = ['.em-element-tenure', '.em-element-email', '.em-element-mobile_number',
+					  '.em-element-collect_debt', '.em-b-container', '.em-element-axo_accept',
+					  '.em-element-contact_accept'];
 
-			qs('.em-element-axo_accept').classList.add('em-show');
-			qs('.em-element-contact_accept').classList.add('em-show');
-			// qs('.em-b-container').style.display = 'grid';
+	        for (var i in el) {
+	        	var ele = qs(el[i]);
+	        	ele.classList.remove('em-hidden');
+	        	ele.classList.add('em-animate-show');
+	        }
+
+			// qs('.em-element-tenure').classList.remove('em-hidden').add('em-animate-show');
+
+			// qs('.em-element-email').classList.remove('em-hidden');
+			// qs('.em-element-email').classList.add('em-animate-show');
+
+			// qs('.em-element-mobile_number').classList.remove('em-hidden');
+			// qs('.em-element-mobile_number').classList.add('em-animate-show');
+
+			// qs('.em-element-collect_debt').classList.remove('em-hidden');
+			// qs('.em-element-collect_debt').classList.add('em-animate-show');
+
+			// qs('.em-b-container').classList.remove('em-hidden');
+			// qs('.em-b-container').classList.add('em-animate-show');
+
+			// qs('.em-element-axo_accept').classList.remove('em-hidden');
+			// qs('.em-element-axo_accept').classList.add('em-animate-show');
+
+			// qs('.em-element-contact_accept').classList.remove('em-hidden');
+			// qs('.em-element-contact_accept').classList.add('em-animate-show');
 
 			qs('.em-i-tenure').focus();
 

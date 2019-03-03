@@ -32,17 +32,19 @@ final class Axowl_shortcode_parts {
 		);
 	}
 
-	public function form_buttons() {
-		return '
-			<div class="em-b-container"><div class="em-b-inner">
+	public function form_buttons($o = []) {
+		return sprintf('
+			<div class="em-b-container%s"><div class="em-b-inner">
 				<button class="em-b em-b-next" type="button">Neste</button>
 				<div class="em-progress-container">
 					<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>
-					<div class="em-progress-text">0%</div>
+					<div class="em-progress-text">0%%</div>
 				</div>
 				<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>
 			</div></div>
-		';
+		',
+			isset($o['hidden']) ? ' em-hidden' : ''
+		);
 				// <button class="em-b em-b-back em-hidden" type="button">Tilbake</button>
 	}
 
@@ -111,7 +113,7 @@ final class Axowl_shortcode_parts {
 		if (isset($data[$key.'_ht']) && $data[$key.'_ht']) $d['ht'] = $data[$key.'_ht'];
 		
 		// error text
-		if (isset($data[$key.'_error'])) $d['error'] = $data[$key.'_error'];
+		if (isset($data[$key.'_error']) && $data[$key.'_error']) $d['et'] = $data[$key.'_error'];
 
 		if (isset($value['button_text'])) $d['text'] = $value['button_text'];
 		// html element container
@@ -164,7 +166,7 @@ final class Axowl_shortcode_parts {
 					%3$s
 				</label>
 				<input class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s%5$s type="%6$s" value="%7$s"%8$s%9$s%10$s%11$s>
-				%12$s
+				%12$s%13$s
 			</div>',
 
 			$o['name'], // 1
@@ -189,7 +191,9 @@ final class Axowl_shortcode_parts {
 			
 			isset($o['value']['show']) ? ' data-show="'.$o['value']['show'].'"' : '', // 11
 
-			$this->valid_element()
+			$this->valid_element(), // 12
+
+			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : '' // 13
 		);
 	}
 
@@ -310,7 +314,7 @@ final class Axowl_shortcode_parts {
 				<select class="em-i em-i-%1$s" id="%1$s" name="%1$s"%4$s>
 					%5$s
 				</select>
-				%6$s
+				%6$s%7$s
 			</div>
 			',
 
@@ -324,7 +328,10 @@ final class Axowl_shortcode_parts {
 
 			$options,
 
-			$this->valid_element()
+			$this->valid_element(),
+
+			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : ''
+
 		);
 	}
 
@@ -360,6 +367,16 @@ final class Axowl_shortcode_parts {
 			$name,
 
 			$text
+		);
+	}
+
+	private function error_element($name, $text) {
+		return sprintf(
+			'<div class="em-error em-error-%s em-hidden">%s</div>',
+
+			$name, // class name
+
+			$text // element content
 		);
 	}
 

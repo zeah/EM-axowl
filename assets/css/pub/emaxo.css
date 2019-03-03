@@ -220,7 +220,7 @@ button.em-i {
 /* 1.2 next / prev buttons */
 /* button container */
 .em-b-container {
-	display: none;
+	/*display: none;*/
 }
 .em-b-inner {
 	/*position: absolute;*/
@@ -453,19 +453,29 @@ button.em-i {
 }
 
 .em-part-title-slide {
-	position: relative;
+	/*position: relative;*/
 	/*left: -400px;*/
-	animation-name: slideleft;
-	animation-duration: 2s;
+	/*animation-name: slideleft;*/
+	/*animation-duration: 2s;*/
 }
 
-@keyframes slideleft {
+/*@keyframes slideleft {
 	from { left: -250px; }
 	to { left: 0; }
-}
+}*/
 
 .em-hidden {
 	display: none !important;
+}
+
+.em-animate-show {
+	animation-name: show;
+	animation-duration: 1s;
+}
+
+@keyframes show {
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 /* 1.4 generic elements and element-parts */
@@ -691,8 +701,13 @@ button.em-i {
 	opacity: .5;
 }
 
-
-
+/* 1.4.8 error text */
+.em-error {
+	background-color: hsl(0, 50%, 90%);
+	padding: .5rem;
+	font-size: 1.4rem;
+	margin-top: .5rem;
+}
 
 /* 2.0 loan amount element container */
 .em-element-loan_amount {
@@ -831,7 +846,7 @@ button.em-i {
 /* 3.0 tenure */
 .em-element-tenure {
 	grid-area: tenure;
-	display: none;
+	/*display: none;*/
 }
 
 .em-ic-tenure > .em-val-marker {
@@ -845,19 +860,19 @@ button.em-i {
 /* 4.0 refinancing / collect debt */
 .em-element-collect_debt {
 	grid-area: refinancing;
-	display: none;
+	/*display: none;*/
 }
 
 /* 5.0 mobile number */
 .em-element-mobile_number {
 	grid-area: mobile;
-	display: none;
+	/*display: none;*/
 }
 
 /* 6.0 email */
 .em-element-email {
 	grid-area: email;
-	display: none;
+	/*display: none;*/
 }
 
 
@@ -898,12 +913,12 @@ button.em-i {
 	grid-area: axoaccept;
 	padding-bottom: 0;
 	margin-bottom: 0;
-	display: none;
+	/*display: none;*/
 }
 
 .em-element-contact_accept {
 	grid-area: contactaccept;
-	display: none;
+	/*display: none;*/
 }
 
 .em-check {
@@ -928,7 +943,7 @@ button.em-i {
 
 	font-size: 3rem !important;
 
-	background-color: hsl(30, 100%, 50%);
+	/*background-color: hsl(30, 100%, 50%);*/
 	/*background-color: #96F;*/
 	background-color: #fc6;
 	border-radius: 5px;
@@ -1077,7 +1092,8 @@ button.em-i {
     background-repeat: no-repeat;
     /*display: block;*/
     /*border: solid 1px black;*/
-    background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/banklogoer.png');
+    /*background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/banklogoer.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/02/banklogoer.png');
     flex: 0 0 auto;
     margin-right: 3rem;
 }
@@ -1278,3 +1294,4 @@ button.em-i {
 
 
 }
+

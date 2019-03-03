@@ -16,15 +16,16 @@ final class Axowl_inputs {
 
 	public static $inputs = [
 			'div0' => ['class' => 'em-part-1-grid'],
-			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
+			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 
+							  'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
 			'monthly_cost' => ['text_field' => 'Månedskostnad fra', 'notInput' => true],
 			// 'tenure' => ['text' => true, 'range' => true, 'validation' => 'ar', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
-			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true],
-			'collect_debt' => ['checkbox' => true, 'no' => true],
-			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8],
-			'email' => ['text' => true, 'validation' => 'email'],
-			'axo_accept' => ['check' => true, 'validation' => 'check'],
-			'contact_accept' => ['check' => true],
+			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true, 'hidden' => true],
+			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true],
+			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8, 'hidden' => true],
+			'email' => ['text' => true, 'validation' => 'email', 'hidden' => true],
+			'axo_accept' => ['check' => true, 'validation' => 'check', 'hidden' => true],
+			'contact_accept' => ['check' => true, 'hidden' => true],
 			'neste' => ['button' => true, 'button_text' => 'Neste'],
 			'/div0' => '',
 			

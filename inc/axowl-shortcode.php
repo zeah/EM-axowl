@@ -101,7 +101,7 @@ final class Axowl_shortcode {
 		// ends last page and ends part container
 		$html .= '</div></div>';
 
-		$html .= $p->form_buttons();
+		$html .= $p->form_buttons(['hidden' => true]);
 
 		$html .= '</form>';
 
@@ -558,7 +558,7 @@ final class Axowl_shortcode {
 
 
 	public function sands() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.1.1', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.1.2', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.4', '(max-width: 815px)');
         
         wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.9', true);
