@@ -397,28 +397,8 @@
 	        	ele.classList.remove('em-hidden');
 	        	ele.classList.add('em-animate-show');
 	        }
-
-			// qs('.em-element-tenure').classList.remove('em-hidden').add('em-animate-show');
-
-			// qs('.em-element-email').classList.remove('em-hidden');
-			// qs('.em-element-email').classList.add('em-animate-show');
-
-			// qs('.em-element-mobile_number').classList.remove('em-hidden');
-			// qs('.em-element-mobile_number').classList.add('em-animate-show');
-
-			// qs('.em-element-collect_debt').classList.remove('em-hidden');
-			// qs('.em-element-collect_debt').classList.add('em-animate-show');
-
-			// qs('.em-b-container').classList.remove('em-hidden');
-			// qs('.em-b-container').classList.add('em-animate-show');
-
-			// qs('.em-element-axo_accept').classList.remove('em-hidden');
-			// qs('.em-element-axo_accept').classList.add('em-animate-show');
-
-			// qs('.em-element-contact_accept').classList.remove('em-hidden');
-			// qs('.em-element-contact_accept').classList.add('em-animate-show');
-
-			qs('.em-i-tenure').focus();
+	        console.log('h');
+			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
 
 		} catch (e) { console.error(e) }
 	}
@@ -843,8 +823,7 @@
 
 				current = current.nextSibling;
 
-				current.querySelector('.em-i').focus();
-
+				if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
 
 				// var o = qs('.em-progress-container');
 

@@ -16,9 +16,9 @@ final class Axowl_inputs {
 
 	public static $inputs = [
 			'div0' => ['class' => 'em-part-1-grid'],
+			'monthly_cost' => ['text_field' => 'Månedskostnad fra', 'notInput' => true],
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 
 							  'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 150000, 'step' => 10000],
-			'monthly_cost' => ['text_field' => 'Månedskostnad fra', 'notInput' => true],
 			// 'tenure' => ['text' => true, 'range' => true, 'validation' => 'ar', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true, 'hidden' => true],
 			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true],
