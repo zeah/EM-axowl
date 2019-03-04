@@ -272,6 +272,7 @@
 	}
 
 
+
 	var progress = function() {
 		var li = qsa('.em-i:not(button)');
 		// var li = document.querySelectorAll('.em-i:not(button)');
@@ -311,7 +312,7 @@
 
 
 	var incomplete = function(e) {
-
+		console.log('incomplete');
 		e.target.removeEventListener('click', incomplete);
 
 		var xhttp = new XMLHttpRequest();
@@ -399,6 +400,8 @@
 	        }
 	        // console.log('h');
 			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
+
+			progress();
 
 		} catch (e) { console.error(e) }
 	}
@@ -773,7 +776,7 @@
 		// NEXT/PREV/SUBMIT BUTTONS
 		try {
 			qs('.em-b-next').addEventListener('click', function(e) {
-
+				// console.log('hi');
 				// VALIDATION OF CURRENT PART
 				var test = current.querySelectorAll('.em-i');
 				var success = true;
@@ -782,6 +785,8 @@
 					var n = test[i];
 
 					var p = n.parentNode.parentNode;
+
+					// console.log(p);
 
 					if (p.classList.contains('em-hidden')) return;
 
@@ -819,11 +824,11 @@
 				}
 
 				// TODO disable on mobile?
-				if (window.innerWidth > 816) window.scroll(0, 1500);
+				// if (window.innerWidth > 816) window.scroll(0, 1500);
 
 				current = current.nextSibling;
 
-				if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
+				// if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
 
 				// var o = qs('.em-progress-container');
 

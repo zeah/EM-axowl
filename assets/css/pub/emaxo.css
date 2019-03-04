@@ -648,16 +648,16 @@ button.em-i {
 
 /* 1.4.7 val marker */
 .em-marker-val {
-	color: green;
+	/*color: green;*/
 	position: absolute;
-	right: .2rem;
-	top: 3.6rem;
+	right: 0.7rem;
+	top: 3.9rem;
 	z-index: 50;
 
-	height: 2.8rem;
-	width: 2.8rem;
+	/*height: 2.8rem;*/
+	/*width: 2.8rem;*/
 
-	opacity: .5;
+	/*opacity: .5;*/
 }
 
 /* 1.4.8 error text */

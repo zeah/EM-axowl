@@ -385,9 +385,11 @@ final class Axowl_shortcode_parts {
 			'<img class="em-marker-valid em-marker-val em-hidden" src="%s">
 			<img class="em-marker-invalid em-marker-val em-hidden" src="%s">',
 			
-			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/greentick.png'),
+			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/hook.png'),
+			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/greentick.png'),
 			
-			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png')
+			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/cross.png')
+			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png')
 		);		
 	}
 
