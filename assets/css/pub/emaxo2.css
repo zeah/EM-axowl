@@ -438,9 +438,6 @@ button.em-i {
 	to { left: 0; }
 }
 
-.em-hidden {
-	display: none !important;
-}
 
 /* 1.4 generic elements and element-parts */
 .em-element-container {
@@ -711,10 +708,10 @@ button.em-i {
 	background-image: url('/wp/wp-content/plugins/em-axowl/assets/img/greentick.png');
 }*/
 
-.em-element-button {
+.em-element-neste {
 	grid-area: neste;
 
-	align-self: center;
+	align-self: flex-end;
 	/*justify-self: stretch;*/
 }
 
@@ -771,7 +768,7 @@ button.em-i {
 /* 3.0 tenure */
 .em-element-tenure {
 	grid-area: nedbetaling;
-	/*display: none;*/
+	display: block !important;
 }
 
 .em-ic-tenure > .em-val-marker {
@@ -785,12 +782,14 @@ button.em-i {
 /* 4.0 refinancing / collect debt */
 .em-element-collect_debt {
 	grid-area: refinansiering;
+	display: block !important;
 	/*display: none;*/
 }
 
 /* 5.0 mobile number */
 .em-element-mobile_number {
 	grid-area: telefon;
+	display: block !important;
 	/*display: none;*/
 }
 
@@ -798,6 +797,7 @@ button.em-i {
 .em-element-email {
 	grid-area: epost;
 	/*opacity: .2;*/
+	display: block !important;
 	/*display: none;*/
 }
 
@@ -847,7 +847,7 @@ button.em-i {
 
 	/*justify-self: center;*/
 	/*align-self: center;*/
-	/*display: none;*/
+	display: block !important;
 }
 
 .em-element-contact_accept label,
@@ -877,6 +877,7 @@ input[type="checkbox"]:checked + label span::before {
 	grid-area: norskfinans;
 
 	align-self: center;
+	display: block !important;
 
 	/*font-size: 2rem;*/
 	/*justify-self: center;*/
@@ -1230,4 +1231,8 @@ input[type="checkbox"]:checked + label span::before {
 
 
 
+}
+
+.em-hidden {
+	display: none;
 }

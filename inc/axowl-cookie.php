@@ -25,7 +25,7 @@ final class Axowl_cookie {
 		// if no referer data
 		//if (!isset($_SERVER['REFERER']) || !$_SERVER['REFERER']) return;
 
-		$r = $_SERVER['HTTP_REFERER'];
+		$r = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''; 
 		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
 
 		if (strpos($r, $_SERVER['SERVER_NAME']) !== false) return;

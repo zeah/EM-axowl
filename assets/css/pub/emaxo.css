@@ -790,7 +790,7 @@ button.em-i {
     background-repeat: no-repeat;
     background-position: center; 
     /*box-shadow: -100vw 0 0 100vw hsl(120, 50%, 40%);*/
-    box-shadow: -100vw 0 0 100vw #FC6;
+    /*box-shadow: -100vw 0 0 100vw #FC6;*/
     box-shadow: -100vw 0 0 100vw hsl(120, 80%, 60%);
     border: 1px solid black; 
     /* 1 */
@@ -803,24 +803,27 @@ button.em-i {
 
 .em-r-loan_amount::-moz-range-thumb {
     background: #fff;
-    height: 40px;
-    width: 20px;
-    border: 3px solid #999;
+    height: 48px;
+    width: 40px;
+    border: 1px solid #999;
     border-radius: 0 !important;
     box-shadow: -100vw 0 0 100vw dodgerblue;
     box-sizing: border-box;
 }
 
 .em-r-loan_amount::-ms-fill-lower { 
-    background: dodgerblue;
+    background: hsl(120, 80%, 60%);
 }
 
 .em-r-loan_amount::-ms-thumb { 
     background: #fff;
-    border: 2px solid #999;
-    height: 40px;
-    width: 20px;
+    border: 1px solid #999;
+    height: 48px;
+    width: 40px;
     box-sizing: border-box;
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/02/piler.png');
+    background-repeat: no-repeat;
+    background-position: center; 
 }
 
 .em-r-loan_amount::-ms-ticks-after { 
@@ -834,7 +837,7 @@ button.em-i {
 .em-r-loan_amount::-ms-track { 
     background: #ddd;
     color: transparent;
-    height: 40px;
+    height: 48px;
     border: none;
 }
 
@@ -1204,77 +1207,90 @@ button.em-i {
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	.em-part-1-grid {
-		display: -ms-inline-grid;
+		display: -ms-grid;
 
 		-ms-grid-columns: 1fr 1fr;
-		-ms-grid-rows: auto auto auto auto auto auto;
+		-ms-grid-rows: auto auto auto auto auto auto auto;
 	}
 
-	.em-element-monthly_cost {
+	.em-element-loan_amount {
 		-ms-grid-row: 1;
 		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
 	}
 
-	.em-element-loan_amount {
+	.em-r-loan_amount {
+		position: relative;
+		top: 3.2rem;
+	}
+
+	.em-element-monthly_cost {
 		-ms-grid-row: 2;
 		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
 	}
 
-	.em-element-tenure {
+	.em-element-neste {
 		-ms-grid-row: 3;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+
+		text-align: center;
+	}
+
+	.em-element-tenure {
+		-ms-grid-row: 4;
 		-ms-grid-column: 1;
 	}
 
 	.em-element-collect_debt {
-		-ms-grid-row: 3;
+		-ms-grid-row: 4;
 		-ms-grid-column: 2;
 	}
 
 	.em-element-mobile_number {
-		-ms-grid-row: 4;
+		-ms-grid-row: 5;
 		-ms-grid-column: 1;
 	}
 
 	.em-element-email {
-		-ms-grid-row: 4;
+		-ms-grid-row: 5;
 		-ms-grid-column: 2;
 	}
 
 	.em-element-axo_accept {
-		-ms-grid-row: 5;
-		-ms-grid-column: 1;
-		-ms-grid-column-span: 2;
-	}
-
-	.em-element-contact_accept {
 		-ms-grid-row: 6;
 		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
 	}
 
-
-	.em-b-container {
-		display: -ms-grid;
-		-ms-grid-columns: 1fr 1fr 1fr;
+	.em-element-contact_accept {
+		-ms-grid-row: 7;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
 	}
 
-	.em-b-back {
+
+	.em-b-inner {
+		display: -ms-grid;
+		-ms-grid-columns: 2fr 1fr;
+	}
+
+/*	.em-b-back {
 		-ms-grid-column: 1;
 
-	}
+	}*/
 
 	.em-progress-container {
-		-ms-grid-column: 2;
+		-ms-grid-column: 1;
 		height: 2.1rem;
-		margin: 0 10%;
+		/*margin: 0 10%;*/
 	}
 
 
 	.em-b-submit,
 	.em-b-next {
-		-ms-grid-column: 3;
+		-ms-grid-column: 2;
 
 	}
 
