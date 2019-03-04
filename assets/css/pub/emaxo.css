@@ -1345,7 +1345,7 @@ input[type="checkbox"]:checked + label span::before {
 }
 
 .em-progress-container {
-	max-width: 37.4rem;
+	max-width: 36.9rem;
 }
 
 .em-progress-text {
@@ -1355,7 +1355,8 @@ input[type="checkbox"]:checked + label span::before {
 
 .em-progress {
 	height: 7rem;
-	max-width: 36.4rem;
+	width: 100%;
+	/*max-width: 36.4rem;*/
 }
 
 

@@ -397,7 +397,7 @@
 	        	ele.classList.remove('em-hidden');
 	        	ele.classList.add('em-animate-show');
 	        }
-	        console.log('h');
+	        // console.log('h');
 			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
 
 		} catch (e) { console.error(e) }
