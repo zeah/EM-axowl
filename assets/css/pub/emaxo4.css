@@ -1304,7 +1304,7 @@ button.em-i {
 
 
 /*destillert design*/
-.em-part-title {
+/*.em-part-title {
 	background-color: #fc6;
 	color: black;
 	text-shadow: none;
@@ -1374,4 +1374,4 @@ input[type="checkbox"]:checked + label span::before {
 
 .em-cc-no {
 	border-left: solid 3px black;
-}
+}*/

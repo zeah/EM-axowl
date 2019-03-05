@@ -49,6 +49,7 @@ final class Axowl_shortcode {
 			case '1': return $this->shortcode_1($atts, $content); break;
 			case '2': return $this->shortcode_2($atts, $content); break;
 			case '3': return $this->shortcode_3($atts, $content); break;
+			case '4': return $this->shortcode_4($atts, $content); break;
 		}
 	}
 
@@ -233,6 +234,62 @@ final class Axowl_shortcode {
 		$html .= $p->popup();
 		$html .= '<input type="hidden" name="abtesting-sc" value="3">';
 
+
+		// TODO set transient
+
+		return $html;
+	}
+
+	public function shortcode_4($atts, $content = null) {
+
+		$p = self::$parts;
+		
+		// TODO get transient
+
+		// add_action('wp_footer', [$this, 'footer']);
+		add_action('wp_head', [$this, 'sands4']);
+
+		$data = get_option('em_axowl');
+		if (!is_array($data)) $data = [];
+		$data = $this->sanitize($data);
+
+		$inputs = AXOWL_inputs::$inputs;
+
+		$html = sprintf(
+			'<div class="em-form-container"><div class="em-glass"></div><form class="emowl-form"%s>',
+			
+			isset($atts['style']) ? ' style="'.$atts['style'].'"' : ''
+		);
+
+
+		// $html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+		// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
+		// 	    );
+
+		$html .= '<input type="hidden" name="fax">';
+
+		$html .= '<div class="em-part-container">';
+
+		$html .= $p->page_top(1);
+
+		foreach($inputs as $key => $value) {
+			// if new page
+			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page']);
+			
+			// page content
+			$html .= $p->element($key, $value, $data);
+		}
+			
+		// ends last page and ends part container
+		$html .= '</div></div>';
+
+		$html .= $p->form_buttons(['hidden' => true]);
+
+		$html .= '</form>';
+
+		$html .= $p->popup().'</div>';
+
+		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
 
 		// TODO set transient
 
@@ -578,6 +635,14 @@ final class Axowl_shortcode {
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.2', '(max-width: 815px)');
         
         wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo.js', array(), '1.0.6', true);
+		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
+	}
+
+	public function sands4() {
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo4.css', array(), '1.0.0', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 815px)');
+        
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo4.js', array(), '1.0.6', true);
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 }

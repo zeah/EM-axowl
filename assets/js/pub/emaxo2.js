@@ -367,8 +367,8 @@
 
 		var date = new Date();
 
-		if (ab) document.cookie = 'abname='+ab+'; expires='+date.setDate(date.getDate() + 30);
-		if (abid) document.cookie = 'abid='+abid+'; expires='+date.setDate(date.getDate() + 30);
+		if (ab) document.cookie = 'abname='+ab+'; expires='+date.setDate(date.getDate() + 60);
+		if (abid) document.cookie = 'abid='+abid+'; expires='+date.setDate(date.getDate() + 60);
 
 		// if (ab) setcookie('abname', ab, date.setDate(date.getDate() + 30))
 		// if (abid) setcookie('abid', abid, date.setDate(date.getDate() + 30))
