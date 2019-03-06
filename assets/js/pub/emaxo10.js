@@ -20,7 +20,6 @@
 
 
 (function() {
-
 	"use strict";
 
 	/**
@@ -102,7 +101,9 @@
 			return false
 		},
 
-		textOnly: function(d) { return true	},
+		textOnly: function(d) {
+			return true;
+		},
 
 		list: function(d) {
 			if (!d) return false;
@@ -118,11 +119,9 @@
 
 		socialnumber: function(d) {
 			var n = val.numbersOnly(d);
-
 			if (!n) return false;
 
 			if (d.length == 11) {
-				
 				// special rule
 				if (d == '00000000000') return false;
 
@@ -210,6 +209,7 @@
 
 	var v = function(e, format, valid) {
 		try { 
+
 			var data = e.value;
 			var pa = e.parentNode;
 			// var pa = e.parentNode.parentNode;
@@ -234,9 +234,6 @@
 				else {
 					pa.querySelector('.em-marker-valid').classList.add('em-hidden');
 					pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
-
-					var errEl = pa.querySelector('.em-error'); 
-					if (errEl) errEl.classList.remove('em-hidden');
 				}
 				// qs('.em-marker-valid').classList.add('em-hidden');
 				// qs('.em-marker-invalid').classList.remove('em-hidden');
@@ -252,10 +249,6 @@
 				else {
 					pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
 					pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
-					
-					var errEl = pa.querySelector('.em-error'); 
-					if (errEl) errEl.classList.add('em-hidden');
-					// pa.querySelector('.em-error').classList.add('em-hidden');
 				}
 				// qs('.em-marker-valid').classList.remove('em-hidden');
 				// qs('.em-marker-invalid').classList.add('em-hidden');
@@ -272,8 +265,9 @@
 	}
 
 
-
 	var progress = function() {
+		return;
+		
 		var li = qsa('.em-i:not(button)');
 		// var li = document.querySelectorAll('.em-i:not(button)');
 
@@ -286,7 +280,6 @@
 			if (n.parentNode.parentNode.parentNode.classList.contains('em-hidden')) continue;
 
 			var a = n.getAttribute('data-val');
-
 
 			if (!a) continue;
 
@@ -310,16 +303,15 @@
 		} catch (e) { }
 	}
 
-
 	var incomplete = function(e) {
-		console.log('incomplete');
+
 		e.target.removeEventListener('click', incomplete);
 
 		var xhttp = new XMLHttpRequest();
 
 		xhttp.onreadystatechange = function() {
-			// if (this.readyState == 4 && this.status == 200)
-				// console.log(this.responseText);
+			if (this.readyState == 4 && this.status == 200)
+				console.log(this.responseText);
 		}
 
 		var query = '';
@@ -351,7 +343,6 @@
 		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhttp.send('action=wlinc'+query);
 	}
-
 
 	var abtesting = function() {
 		var data = '';
@@ -389,30 +380,27 @@
 			
 			e.target.style.display = 'none';
 
-			var el = ['.em-element-tenure', '.em-element-email', '.em-element-mobile_number',
-					  '.em-element-collect_debt', '.em-b-container', '.em-element-axo_accept',
-					  '.em-element-contact_accept'];
-
-	        for (var i in el) {
-	        	var ele = qs(el[i]);
-	        	ele.classList.remove('em-hidden');
-	        	ele.classList.add('em-animate-show');
-	        }
-	        // console.log('h');
-			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
-
-			progress();
+			qs('.em-element-tenure').style.display = 'block';
+			qs('.em-element-email').style.display = 'block';
+			qs('.em-element-mobile_number').style.display = 'block';
+			qs('.em-element-collect_debt').style.display = 'block';
+			qs('.em-b-container').style.display = 'grid';
 
 		} catch (e) { console.error(e) }
 	}
 
-	qs('.em-b-neste').addEventListener('click', showFirstPagePart);
+
+
 
 	var init = function() {
+		// AB 2
+		// try { qs('.em-b-show').addEventListener('click', showFirstPagePart);
+		// } catch (e) { console.error(e) }
 
 		// TEXT INPUTS
 		var textInput = qsa('.emowl-form input[type=text]');
 		for (var i = 0; i < textInput.length; i++) (function() { // scoping for events
+
 			var n = textInput[i];
 			var format = n.getAttribute('data-format') ? n.getAttribute('data-format') : '';
 			var min = n.getAttribute('min') ? parseInt(n.getAttribute('min')) : '';
@@ -442,6 +430,7 @@
 					else 						e.target.value = min;
 				}
 			});
+
 
 			// formating currency
 			if (format == 'currency') {
@@ -480,6 +469,7 @@
 				n.addEventListener('focus', function(e) { e.target.value = numb(e.target.value )});
 			}
 
+
 			// selecting all text when focusing input
 			n.addEventListener('focus', function(e) { 
 			
@@ -490,6 +480,7 @@
 
 				e.target.select();
 			});
+
 
 			// if parent has range input
 			var innerRange = n.parentNode.parentNode.querySelectorAll('input[type=range]');
@@ -517,26 +508,27 @@
 
 			// SPECIAL RULES
 			switch (n.classList[1]) {
-				// case 'em-i-tenure':
+				case 'em-i-tenure':
 				case 'em-i-loan_amount': 
 					n.addEventListener('input', function(e) { payment() });
 					n.addEventListener('focusout', function(e) { payment() });
 					break;
 
-				// case 'em-i-email':
-				// 	n.addEventListener('input', function(e) {
-				// 		var l = e.target.value.length;
-				// 		var s = function(p) { e.target.style.fontSize = p }
+				case 'em-i-email':
+					n.addEventListener('input', function(e) {
+						var l = e.target.value.length;
+						var s = function(p) { e.target.style.fontSize = p }
 
-				// 		if (l > 10) s('18px');
-				// 		if (l > 20) s('16px');
-				// 		if (l > 30) s('14px');
-				// 		if (l > 40) s('12px');
+						if (l > 10) s('18px');
+						if (l > 20) s('16px');
+						if (l > 30) s('14px');
+						if (l > 40) s('12px');
 
-				// 	});
-				// 	break;
+					});
+					break;
 			}
 		})();
+		
 		
 
 		// RANGE INPUTS
@@ -588,7 +580,9 @@
 
 			var show = input.getAttribute('data-show');
 
+
 			yes.addEventListener('click', function(e) {
+
 				input.value = 1;
 
 				if (show) {
@@ -598,15 +592,18 @@
 
 					if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
 					else temp.classList.remove('em-hidden');
+
 				}
 
 				yes.classList.add('em-cc-green');
 				no.classList.remove('em-cc-green');
 
 				progress();
+
 			});
 
 			no.addEventListener('click', function(e) {
+
 				input.value = '';
 
 				if (show) {
@@ -616,6 +613,7 @@
 
 					if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
 					else temp.classList.add('em-hidden');
+					
 				}
 
 				yes.classList.remove('em-cc-green');
@@ -634,6 +632,7 @@
 					}
 				} catch (e) { console.error(e) }
 				progress();
+
 			});
 		})();
 		
@@ -648,8 +647,9 @@
 			n.addEventListener('change', function(e) {
 				v(e.target, null, e.target.getAttribute('data-val'));
 			});
-
 		})();
+
+
 
 		// LIST INPUTS
 		var lists = qsa('.emowl-form select');
@@ -680,11 +680,6 @@
 			// SPECIAL RULES
 			switch (n.classList[1]) {
 
-				case 'em-i-tenure':
-					n.addEventListener('change', function(e) {
-						payment();
-					});
-					break;
 				// EDUCATION
 				case 'em-i-education':
 					n.addEventListener('change', function(e) {
@@ -693,7 +688,7 @@
 							case 'Høysk./universitet 4+år': show(['.em-element-education_loan']); break;
 							default: hide(['.em-element-education_loan']);
 						}
-					});
+					})
 					break;
 
 				// EMPLOYMENT TYPE
@@ -766,17 +761,14 @@
 					});
 					break;
 			} // end of switch
-
 		})();
 		
-
-
 
 
 		// NEXT/PREV/SUBMIT BUTTONS
 		try {
 			qs('.em-b-next').addEventListener('click', function(e) {
-				// console.log('hi');
+
 				// VALIDATION OF CURRENT PART
 				var test = current.querySelectorAll('.em-i');
 				var success = true;
@@ -785,8 +777,6 @@
 					var n = test[i];
 
 					var p = n.parentNode.parentNode;
-
-					// console.log(p);
 
 					if (p.classList.contains('em-hidden')) return;
 
@@ -806,46 +796,30 @@
 					// success = true;
 					// return;
 				}
-
+				
 				// hiding current part
-				// current.style.display = 'none';
+				current.style.display = 'none';
 
-				// try {
-				// showing next part
-				// current.nextSibling.style.display = 'block';
-				current.nextSibling.classList.add('em-animate-show');
-				// showing prev button
-				// qs('.em-b-back').classList.remove('em-hidden');
+				try {
+					// showing next part
+					current.nextSibling.style.display = 'block';
+		
+					// showing prev button
+					qs('.em-b-back').classList.remove('em-hidden');
 
-				// replace next button with submit button if no more parts
-				if (!current.nextSibling.nextSibling) {
-					e.target.classList.add('em-hidden');
-					qs('.em-b-submit').classList.remove('em-hidden');
-				}
+					// replace next button with submit button if no more parts
+					if (!current.nextSibling.nextSibling) {
+						e.target.classList.add('em-hidden');
+						qs('.em-b-submit').classList.remove('em-hidden');
+					}
 
-				// TODO disable on mobile?
-				// if (window.innerWidth > 816) window.scroll(0, 1500);
+					current = current.nextSibling;
 
-				current = current.nextSibling;
+					current.querySelector('.em-i').focus();
 
-				// if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
+					// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
 
-				// var o = qs('.em-progress-container');
-
-				// o.scrollTop = o.scrollHeight;
-
-				// console.log(qs('.em-b-next').getBoundingClientRect());
-
-				// var y = qs('.em-progress-container').getBoundingClientRect()['y'];
-
-				// console.log(y);
-
-				// y = window.height - y;
-
-				// window.scroll(0, y);
-				// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
-
-				// } catch (e) { console.error(e) }
+				} catch (e) { console.error(e) }
 
 			});
 
@@ -855,25 +829,25 @@
 
 		// back button
 		try {
-			// qs('.em-b-back').addEventListener('click', function(e) {
-			// 	try {
-			// 		current.style.display = 'none';
+			qs('.em-b-back').addEventListener('click', function(e) {
+				try {
+					current.style.display = 'none';
 
-			// 		var p = current.previousSibling;
+					var p = current.previousSibling;
 
-			// 		p.style.display = 'block';
+					p.style.display = 'block';
 
-			// 		if (!p.previousSibling) e.target.classList.add('em-hidden');
+					if (!p.previousSibling) e.target.classList.add('em-hidden');
 
-			// 		qs('.em-b-next').classList.remove('em-hidden');
-			// 		qs('.em-b-submit').classList.add('em-hidden');
+					qs('.em-b-next').classList.remove('em-hidden');
+					qs('.em-b-submit').classList.add('em-hidden');
 
-			// 		current = p;
+					current = p;
 
-			// 		current.querySelector('.em-i').focus();
+					current.querySelector('.em-i').focus();
 					
-			// 	} catch (e) {}
-			// });
+				} catch (e) {}
+			});
 		} catch (e) {}
 
 		// SUBMIT BUTTON
@@ -913,8 +887,6 @@
 					data += '&data['+n.name+']='+value;
 				}
 
-				if (!valid) return;
-
 				var cookie = document.cookie.split('; ');
 				for (var i in cookie) {
 					if (cookie[i].indexOf('=') == -1) continue;
@@ -923,10 +895,7 @@
 					if (temp[0] == '_ga') data += '&data[ga]='+temp[1];
 				}
 
-
 				data += abtesting();
-				// console.log(data);
-				// if (!valid) return;				
 
 				qs('.em-b-submit').removeEventListener('click', post);
 
@@ -943,19 +912,14 @@
 					if (this.readyState == 4 && this.status == 200) {
 
 						try {
-							// qs('.em-b-submit').style.display = 'none';
-							qs('.emowl-form').style.display = 'none';
-							qs('.em-glass').style.display = 'none';
+							qs('.em-b-submit').style.display = 'none';
+
 							qs('.em-popup').classList.add('em-popup-show');
-						} catch (e) { console.error(e) }
+						} catch (e) {}
 
 						console.log(this.responseText);
 					}
 				}
-
-				try {
-					qs('.em-glass').style.display = 'block';
-				} catch (e) { console.log(e) }
 
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
@@ -1007,19 +971,21 @@
 			selects[i].addEventListener('change', function() { progress() });
 		})();
 
-		// qs('.em-i-loan_amount').focus();
+		qs('.em-i-loan_amount').focus();
 
 
 
 	} // end of init
 
+	// console.log(abtesting());
 
-
+	// document.cookie = 'test=hi';
+	// console.log(document.cookie);
 
 
 	setCookie();
-	init();
 	payment();
+	init();
 	progress();
 
 	// var ajatest = new XMLHttpRequest();

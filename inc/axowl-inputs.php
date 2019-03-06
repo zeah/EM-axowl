@@ -31,10 +31,8 @@ final class Axowl_inputs {
 			
 			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],
 			'employment_type' => ['list' => Axowl_list::employment_type, 'validation' => 'list'],
-
 			'employment_since' => ['hidden' => true, 'list' => Axowl_list::years, 'validation' => 'list'],
 			'employer' => ['text' => true, 'hidden' => true, 'validation' => 'notEmpty'],
-
 			'education' => ['list' => Axowl_list::education, 'validation' => 'list'],
 
 			'education_loan' => ['hidden' => true, 'text' => true, 'validation' => 'currency', 'format' => 'currency'],
@@ -46,7 +44,7 @@ final class Axowl_inputs {
 			'country_of_origin' => ['key_as_value' => true, 'list' => Axowl_list::country_of_origin, 'validation' => 'list'],
 			'/div' => '',
 			'income' => ['text' => true, 'validation' => 'currency', 'format' => 'currency'],
-
+			// '/div6' => '',
 			'co_applicant' => ['checkbox' => true, 'page' => '3', 'no' => true, 'show' => 'em-co-applicant'],
 
 			'div2' => ['class' => 'em-co-applicant', 'hidden' => true], 
@@ -86,13 +84,9 @@ final class Axowl_inputs {
 
 
 
-
-
-
 			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'total_unsecured_debt_balance'],
 			'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
 			'account_number' => ['text' => true, 'validation' => 'bankAccount', 'digits' => '11']
-
 		];
 
 
