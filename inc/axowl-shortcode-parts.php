@@ -5,6 +5,8 @@ final class Axowl_shortcode_parts {
 	/* singleton */
 	private static $instance = null;
 
+	private $vers = false;
+
 	public static function get_instance() {
 		if (self::$instance === null) self::$instance = new self();
 
@@ -33,17 +35,20 @@ final class Axowl_shortcode_parts {
 	}
 
 	public function form_buttons($o = []) {
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
+		
 		return sprintf('
 			<div class="em-b-container%s"><div class="em-b-inner">
 				<button class="em-b em-b-next" type="button">Neste</button>
-				<div class="em-progress-container">
-					<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>
-					<div class="em-progress-text">0%%</div>
-				</div>
+				%s
 				<button class="em-b em-b-submit em-hidden" type="button">Send inn</button>
 			</div></div>
 		',
-			isset($o['hidden']) ? ' em-hidden' : ''
+			isset($o['hidden']) ? ' em-hidden' : '',
+			isset($o['hide_prog']) ? '' : '<div class="em-progress-container">
+												<progress title="framdriftsbar" class="em-progress" value="0" max="100"></progress>
+												<div class="em-progress-text">0%</div>
+											</div>'
 		);
 				// <button class="em-b em-b-back em-hidden" type="button">Tilbake</button>
 	}
@@ -82,8 +87,11 @@ final class Axowl_shortcode_parts {
 	 * @param  Array $data  content
 	 * @return String        html element
 	 */
-	public function element($key, $value, $data) {
+	public function element($key, $value, $data, $vers = false) {
 
+		// if ($vers) $this->$vers = $vers;
+		// wp_die('<xmp>'.print_r($this->$vers, true).'</xmp>');
+		
 		// div element (container)
 		if (substr($key, 0,3) == 'div') {
 			return sprintf(
@@ -104,6 +112,8 @@ final class Axowl_shortcode_parts {
 			'name' => $key,
 			'value' => $value
 		];
+
+		if ($vers) $d['vers'] = $vers;
 
 		// text for disabled text input
 		if (isset($value['notInput'])) $d['text'] = isset($value['text_field']) ? $value['text_field'] : '';
@@ -191,7 +201,7 @@ final class Axowl_shortcode_parts {
 			
 			isset($o['value']['show']) ? ' data-show="'.$o['value']['show'].'"' : '', // 11
 
-			$this->valid_element(), // 12
+			$this->valid_element(isset($o['vers']) ? $o['vers'] : null), // 12
 
 			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : '' // 13
 		);
@@ -328,7 +338,7 @@ final class Axowl_shortcode_parts {
 
 			$options,
 
-			$this->valid_element(),
+			$this->valid_element(isset($o['vers']) ? $o['vers'] : null),
 
 			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : ''
 
@@ -380,15 +390,29 @@ final class Axowl_shortcode_parts {
 		);
 	}
 
-	private function valid_element() {
+	private function valid_element($vers) {
+
+		$valid = 'hook.png';
+		$invalid = 'cross.png';
+
+		
+		switch ($vers) {
+			case '5': 
+				$valid = 'okrect.png';
+				$invalid = 'invalidrect.png';
+				break;
+		}
+
+		// wp_die('<xmp>'.print_r($valid, true).'</xmp>');
 		return sprintf(
 			'<img class="em-marker-valid em-marker-val em-hidden" src="%s">
 			<img class="em-marker-invalid em-marker-val em-hidden" src="%s">',
 			
-			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/hook.png'),
+			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/'.$valid),
+			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/hook.png'),
 			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/greentick.png'),
 			
-			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/cross.png')
+			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/'.$invalid)
 			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png')
 		);		
 	}

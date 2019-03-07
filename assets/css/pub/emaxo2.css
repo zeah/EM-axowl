@@ -619,8 +619,8 @@
 /* 3.10 validation marker */
 .em-marker-val {
 	position: absolute;
-	right: 0.7rem;
-	top: 3.9rem;
+	right: .4rem;
+	top: 3.1rem;
 	z-index: 50;
 }
 

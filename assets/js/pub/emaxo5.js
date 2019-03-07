@@ -807,26 +807,37 @@
 					// return;
 				}
 
+				while (current.nextSibling) {
+					jQuery(current.nextSibling).slideDown('slow');
+					// current.nextSibling.classList.add('em-animate-show');
+					current = current.nextSibling;
+				}
+
+				if (!current.nextSibling) {
+					e.target.classList.add('em-hidden');
+					qs('.em-b-submit').classList.remove('em-hidden');
+				}
+
 				// hiding current part
 				// current.style.display = 'none';
 
 				// try {
 				// showing next part
 				// current.nextSibling.style.display = 'block';
-				current.nextSibling.classList.add('em-animate-show');
-				// showing prev button
-				// qs('.em-b-back').classList.remove('em-hidden');
+				// current.nextSibling.classList.add('em-animate-show');
+				// // showing prev button
+				// // qs('.em-b-back').classList.remove('em-hidden');
 
-				// replace next button with submit button if no more parts
-				if (!current.nextSibling.nextSibling) {
-					e.target.classList.add('em-hidden');
-					qs('.em-b-submit').classList.remove('em-hidden');
-				}
+				// // replace next button with submit button if no more parts
+				// if (!current.nextSibling.nextSibling) {
+				// 	e.target.classList.add('em-hidden');
+				// 	qs('.em-b-submit').classList.remove('em-hidden');
+				// }
 
-				// TODO disable on mobile?
-				// if (window.innerWidth > 816) window.scroll(0, 1500);
+				// // TODO disable on mobile?
+				// // if (window.innerWidth > 816) window.scroll(0, 1500);
 
-				current = current.nextSibling;
+				// current = current.nextSibling;
 
 				// if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
 

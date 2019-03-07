@@ -163,7 +163,7 @@ final class Axowl_shortcode {
 			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page']);
 			
 			// page content
-			$html .= $p->element($key, $value, $data);
+			$html .= $p->element($key, $value, $data, 5);
 		}
 			
 		// ends last page and ends part container
@@ -224,7 +224,7 @@ final class Axowl_shortcode {
 			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page']);
 			
 			// page content
-			$html .= $p->element($key, $value, $data);
+			$html .= $p->element($key, $value, $data, 5);
 		}
 			
 		// ends last page and ends part container
@@ -352,13 +352,13 @@ final class Axowl_shortcode {
 			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page']);
 			
 			// page content
-			$html .= $p->element($key, $value, $data);
+			$html .= $p->element($key, $value, $data, 5);
 		}
 			
 		// ends last page and ends part container
 		$html .= '</div></div>';
 
-		$html .= $p->form_buttons(['hidden' => true]);
+		$html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
 
 		$html .= '</form>';
 
@@ -834,7 +834,7 @@ final class Axowl_shortcode {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo5.css', array(), '1.0.0', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 815px)');
         
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo5.js', array(), '1.0.6', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'/assets/js/pub/emaxo5.js', ['jquery'], '1.0.6', true);
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
