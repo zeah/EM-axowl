@@ -38,7 +38,7 @@ final class EM_axowl {
 	}
 
 	private function __construct() {
-
+	
 
 		// $temp = '260410';
 
