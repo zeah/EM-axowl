@@ -347,10 +347,9 @@ final class Axowl_shortcode_parts {
 
 	private function text_field($o = []) {
 		return sprintf('
-			<div style="display: flex; justify-content: center;">
 				<div class="em-container-%2$s">%1$s</div>
 				<input type="text" class="em-if em-if-%2$s" disabled value=50>
-			</div>',
+			',
 
 			$o['text'],
 			

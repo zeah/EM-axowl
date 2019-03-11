@@ -227,16 +227,22 @@
 			// validating
 			if (!val[valid](data)) {
 				// console.log(e.type);
-				if (e.type == 'checkbox') pa.style.backgroundColor = 'hsl(0, 80%, 70%)';
+				// if (e.type == 'checkbox') pa.style.backgroundColor = 'hsl(0, 80%, 70%)';
+				// console.log(e.nextSibling.nextSibling);
+				if (e.type == 'checkbox') e.nextSibling.nextSibling.style.color = 'hsl(0, 100%, 70%)';
 				// console.log(e.type);
 				// switch (e.type) {
 				else {
-					pa.querySelector('.em-marker-valid').classList.add('em-hidden');
-					pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
+					// e.style.border = "solid 3px black";
+					// console.log('hey');
+					// pa.querySelector('.em-marker-valid').classList.add('em-hidden');
+					// pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
 
+					e.style.border = "solid 3px hsl(0, 70%, 60%)";
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.remove('em-hidden');
 				}
+
 				// qs('.em-marker-valid').classList.add('em-hidden');
 				// qs('.em-marker-invalid').classList.remove('em-hidden');
 				// if (mark) {
@@ -247,10 +253,12 @@
 			} 
 			
 			else { 
-				if (e.type == 'checkbox') pa.style.backgroundColor = 'transparent';
+				if (e.type == 'checkbox') e.nextSibling.nextSibling.style.color = 'hsl(0, 0%, 0%)';
+				// if (e.type == 'checkbox') pa.style.backgroundColor = 'transparent';
 				else {
-					pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
-					pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
+					// pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
+					// pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
+					e.style.border = "solid 3px black";
 					
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.add('em-hidden');
@@ -400,7 +408,7 @@
 	        // console.log('h');
 			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
 
-			progress();
+			// progress();
 
 		} catch (e) { console.error(e) }
 	}
@@ -499,7 +507,7 @@
 
 			// VALIDATION
 			if (valid) {
-				n.addEventListener('input', function(e) { v(e.target, format, valid) });
+				// n.addEventListener('input', function(e) { v(e.target, format, valid) });
 				n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
 			}
 
@@ -602,7 +610,7 @@
 				yes.classList.add('em-cc-green');
 				no.classList.remove('em-cc-green');
 
-				progress();
+				// progress();
 			});
 
 			no.addEventListener('click', function(e) {
@@ -632,7 +640,7 @@
 						qs('.em-co-applicant-norwegian').classList.add('em-hidden');
 					}
 				} catch (e) { console.error(e) }
-				progress();
+				// progress();
 			});
 		})();
 		
@@ -998,13 +1006,13 @@
 		var inputs = qsa('input.em-i:not(.em-check)');
 		var selects = qsa('select.em-i, input.em-check');
 
-		for (var i = 0; i < inputs.length; i++) (function() {
-			inputs[i].addEventListener('focusout', function() { progress() });
-		})();
+		// for (var i = 0; i < inputs.length; i++) (function() {
+		// 	inputs[i].addEventListener('focusout', function() { progress() });
+		// })();
 
-		for (var i = 0; i < selects.length; i++) (function() {
-			selects[i].addEventListener('change', function() { progress() });
-		})();
+		// for (var i = 0; i < selects.length; i++) (function() {
+		// 	selects[i].addEventListener('change', function() { progress() });
+		// })();
 
 		// qs('.em-i-loan_amount').focus();
 
@@ -1019,7 +1027,7 @@
 	setCookie();
 	init();
 	payment();
-	progress();
+	// progress();
 
 	// var ajatest = new XMLHttpRequest();
 
