@@ -141,9 +141,9 @@
 
 
 /* 0.2 hidden */
-.em-hidden {
-	display: none !important;
-}
+/*.em-hidden {
+	display: none;
+}*/
 
 /* 1.0 form container */
 .em-form-container {
@@ -188,11 +188,11 @@
 }
 
 /* 1.1.1 font size */
-.emowl-form,
-.emowl-form button,
-.emowl-form select,
-.emowl-form input {
-	font-size: 1.8rem;
+.emowl-form {
+/*.emowl-form button,*/
+/*.emowl-form select,*/
+/*.emowl-form input {*/
+	font-size: 1.6rem;
 	font-family: merriweather;
 }
 
@@ -211,16 +211,16 @@
 .em-r {
 	/*border-color: black red green blue;*/
 	/*border: ridge 3px;*/
-	border: solid 3px black;
+	border: solid 2px hsl(0, 0%, 20%);
 	/*outline: solid 1px hsl(0, 0%, 35%);*/
 }
 
 .em-cc-yes {
-	border-right: solid 1.5px black;
+	border-right: solid 1px hsl(0, 0%, 20%);
 }
 
 .em-cc-no {
-	border-left: solid 1.5px black;
+	border-left: solid 1px hsl(0, 0%, 20%);
 }
 
 /* 1.1.3 focus */
@@ -257,8 +257,8 @@
 
 	cursor: pointer;
 	border: solid 1px black;
-	padding: 1rem 8rem;
-	font-size: 3rem !important;
+	padding: .5rem 4rem;
+	font-size: 2rem !important;
 	font-weight: 700;
 	/*font-family: montserrat;*/
 
@@ -267,6 +267,7 @@
 
 /* 1.3.3 submit button */
 .em-b-submit {
+	margin-top: 2rem;
 	background-color: hsl(120, 90%, 60%);
 	grid-area: next;
 }
@@ -335,18 +336,31 @@
 
 /* 2.1 part container */
 .em-part-container {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-areas: 
-		"first first"
-		"second third"
-		"fourth fifth";
+	/*display: grid;*/
+	/*grid-template-columns: 1fr 1fr;*/
+	/*grid-template-areas: */
+		/*"first first"*/
+		/*"second third"*/
+		/*"fourth fifth";*/
+}
+
+.em-part-lower-container {
+	display: flex;
 }
 
 /* 2.1.1 generic */
 .em-part {
-	display: none;
+	/*display: none;*/
 	margin-top: 5rem;
+	/*flex-grow: 1;*/
+	/*flex-basis: 0;*/
+	overflow: hidden;
+
+}
+
+.em-part-lower-container .em-part {
+	flex: 1 0 0;
+	margin-top: 0;
 }
 
 /* 2.1.2 part 1*/
@@ -356,17 +370,35 @@
 
 	margin-top: 0;
 
-	padding: 4rem 8rem 0;
+	/*padding: 4rem 8rem 0;*/
 }
 
 /* 2.1.2.1 text */
-.em-part-1 .em-part-title::after {
+/*.em-part-1 .em-part-title::after {
 	content: 'Sjekk dine lånetilbud';
-}
+}*/
 
 /* 2.1.2.3 part 1 title */
 .em-part-1 .em-part-title {
 	display: none;
+	margin: 0;
+	cursor: pointer;
+
+	justify-content: space-around;
+
+	background-color: white;
+
+	/*border-top-right-radius: 25px;*/
+	/*border-top-left-radius: 25px;*/
+}
+
+.em-part-2 .em-part-title {
+	/*border-top-left-radius: 25px;*/
+
+}
+
+.em-part-5 .em-part-title {
+	/*border-top-right-radius: 25px;*/
 }
 
 /* 2.1.2.4 part 1 inner */
@@ -388,11 +420,35 @@
 	"mobile email"
 	"axoaccept axoaccept"
 	"contactaccept contactaccept";*/
+	padding: 4rem 8rem 0;
 
 	justify-content: space-between;
 	align-items: stretch;
 	/*grid-column-gap: 1rem;*/
 }
+
+/*.em-part-1-done {
+	grid-template-columns: 1fr 1fr;
+
+	grid-template-areas: 
+	"loan monthly"
+	"tenure refinancing"
+	"mobile email";
+
+	grid-column-gap: 2rem
+}
+
+.em-part-1-done .em-element-contact_accept,
+.em-part-1-done .em-element-axo_accept {
+	display: none;
+}
+
+.em-part-1-done .em-element-container {
+	margin: 0;
+}
+
+.em-part-done .em-element-loan_amount {
+}*/
 
 /* 2.1.3 part 2*/
 .em-part-2 {
@@ -443,11 +499,13 @@
 
 /* 2.2.2 title element */
 .em-part-title {
-	text-align: center;
 	margin: 0;
 	margin-bottom: 1rem;
 	padding: .5rem 0;
 	background-color: #fc6;
+	text-align: center;
+	font-size: 1.6rem;
+	overflow: hidden;
 }
 
 
@@ -459,7 +517,8 @@
 	display: block;
 
 	animation-name: show;
-	animation-duration: 1s;
+	animation-duration: 1.5s;
+	/*overflow: hidden;*/
 }
 
 /* 2.3.2 animation */
@@ -472,26 +531,36 @@
 
 /* 3.1 container */
 .em-element-container {
-	position: relative;
+	/*position: relative;*/
 
-	margin-bottom: 1rem;
-	margin: 0 4rem;
+	/*margin-bottom: 1rem;*/
+	margin: 1rem 4rem 1rem;
 	padding: .5rem 0;
-}	
+	overflow: hidden;
+}
+
+.em-part-lower-container .em-element-container {
+	margin: 1rem;
+}
 
 /* 3.2 title */
 .em-it {
 	margin: 0;
-	font-size: 2rem;
-	margin-bottom: .5rem;
-	font-weight: 1400;
+	font-size: 1.2rem;
+	margin-bottom: .2rem;
 
-	/*font-family: cambria;*/
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.em-part-lower-container .em-it {
+
 }
 
 /* 3.3 text input */
 .em-i {
-	padding: 1rem 0 1rem 1rem;
+	padding: .5rem;
+	/*padding: 1rem 0 1rem 1rem;*/
 	z-index: 20;
 	width: 100%;
 }
@@ -543,7 +612,7 @@
 
 .em-element-axo_accept span::before {
 	/*position: relative;*/
-	top: 1rem;
+	/*top: 1rem;*/
 }
 
 /* 3.6.4 check text */
@@ -650,8 +719,13 @@
 	background-color: white;
 	cursor: pointer;
 
-	padding: 1rem;
+	padding: 1.1rem 1rem;
 	font-family: montserrat;
+}
+
+.em-part-lower-container .em-cc-yes,
+.em-part-lower-container .em-cc-no {
+	padding: .5rem 0;
 }
 
 /* 3.9.3 checkbox selected */
@@ -711,7 +785,7 @@
 .em-i-loan_amount {
 	text-align: center;
 	/*font-family: impact;*/
-	font-size: 3rem !important;
+	font-size: 3rem;
 
 	padding: .5rem 0;
 }
@@ -814,14 +888,14 @@
 	grid-area: tenure;
 	margin-right: 1rem;
 
-	margin-bottom: 5rem;
+	/*margin-bottom: 5rem;*/
 }
 
 /* 4.2.2 tenure input */
 .em-i-tenure {
-	width: auto;
+	/*width: auto;*/
 	padding-left: 0;
-	padding: 1rem 2.5rem 1rem 4.5rem;
+	padding: 1rem 1.5rem 1rem 4.5rem;
 }
 
 /* 4.2.3 tenure validation marker */
@@ -920,12 +994,13 @@
 
 	margin-top: 2rem;
 
-	padding: 1rem 8rem;
+	padding: .5rem 8rem;
 	font-weight: 700;
-	font-size: 3rem !important;
+	font-size: 2rem !important;
 	border: solid 1px black;
 
 	background-color: #fc6;
+	cursor: pointer;
 }
 
 
@@ -1268,4 +1343,8 @@
 
 		font-size: 1.6rem;
 	}
+}
+
+.em-hidden {
+	display: none;
 }

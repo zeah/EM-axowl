@@ -115,6 +115,8 @@ final class Axowl_shortcode_parts {
 
 		if ($vers) $d['vers'] = $vers;
 
+		if (isset($value['help'])) $d['help'] = true;
+
 		// text for disabled text input
 		if (isset($value['notInput'])) $d['text'] = isset($value['text_field']) ? $value['text_field'] : '';
 		else $d['text'] = isset($data[$key]) ? $data[$key] : '';
@@ -183,7 +185,7 @@ final class Axowl_shortcode_parts {
 			
 			$o['text'], // 2
 			
-			isset($o['ht']) ? $this->help_element($o['name'], $o['ht']) : '', // 3
+			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '', // 3
 
 			isset($o['value']['max']) ? ' max='.$o['value']['max'] : '', // 4
 			
@@ -253,7 +255,7 @@ final class Axowl_shortcode_parts {
 			
 			$o['text'],
 
-			isset($o['ht']) ? $this->help_element($o['name'], $o['ht']) : '',
+			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
 			
 			isset($o['value']['yes']) ? ' em-cc-green' : '',
 			
@@ -332,7 +334,7 @@ final class Axowl_shortcode_parts {
 
 			$o['text'],
 
-			isset($o['ht']) ? $this->help_element($o['name'], $o['ht']) : '',
+			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
 
 			isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : '',
 

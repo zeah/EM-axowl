@@ -238,7 +238,7 @@
 					// pa.querySelector('.em-marker-valid').classList.add('em-hidden');
 					// pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
 
-					e.style.border = "solid 3px hsl(0, 70%, 60%)";
+					e.style.border = "solid 2px hsl(0, 70%, 60%)";
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.remove('em-hidden');
 				}
@@ -258,7 +258,7 @@
 				else {
 					// pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
 					// pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
-					e.style.border = "solid 3px black";
+					e.style.border = "solid 2px black";
 					
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.add('em-hidden');
@@ -319,7 +319,8 @@
 
 
 	var incomplete = function(e) {
-		console.log('incomplete');
+		console.log('incomplete stopped');
+		return;
 		e.target.removeEventListener('click', incomplete);
 
 		var xhttp = new XMLHttpRequest();
@@ -400,11 +401,18 @@
 					  '.em-element-collect_debt', '.em-b-container', '.em-element-axo_accept',
 					  '.em-element-contact_accept'];
 
+
+			// jQuery(el).slideDown('slow');
 	        for (var i in el) {
 	        	var ele = qs(el[i]);
+
+	        	// ele.style.display = 'block';
+	        	// ele.style.maxHeight = 0;
+	        	// jQuery(ele).slideDown(3000);
 	        	ele.classList.remove('em-hidden');
 	        	ele.classList.add('em-animate-show');
 	        }
+
 	        // console.log('h');
 			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
 
@@ -820,20 +828,54 @@
 				// try {
 				// showing next part
 				// current.nextSibling.style.display = 'block';
-				current.nextSibling.classList.add('em-animate-show');
 				// showing prev button
 				// qs('.em-b-back').classList.remove('em-hidden');
 
-				// replace next button with submit button if no more parts
-				if (!current.nextSibling.nextSibling) {
-					e.target.classList.add('em-hidden');
-					qs('.em-b-submit').classList.remove('em-hidden');
-				}
+					// current.nextSibling.classList.add('em-animate-show');
+					// // replace next button with submit button if no more parts
+					// if (!current.nextSibling.nextSibling) {
+					// 	e.target.classList.add('em-hidden');
+					// 	qs('.em-b-submit').classList.remove('em-hidden');
+					// }
+					// current = current.nextSibling;
+
+				// qs('.em-part-1').classList.add('em-hidden');
+				qs('.em-part-1-grid').classList.add('em-part-1-done');
+				// qs('.em-part-lower-container').classList.remove('em-hidden');
+				// 
+				// 
+
+
+
+				e.target.classList.add('em-hidden');
+				qs('.em-b-submit').classList.remove('em-hidden');
+
+				jQuery('.em-slidedown').slideDown(800);
+
+				var part1 = qs('.em-part-1-grid');
+
+				jQuery(part1).slideUp(800);
+
+				var title = qs('.em-part-1 .em-part-title');
+
+				title.innerHTML = '<div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
+				title.style.display = 'flex';
+
+				jQuery(title).on('click', function() {
+					jQuery(part1).slideToggle();
+				});
+
+				// qs('.em-part-1 .em-part-title').style.display = 'block';
+
+				// jQuery('.em-part-lower-container').slideDown({duration: 3000,
+				// 	  start: function () {
+				// 	    qs('.em-part-lower-container').style.display = 'flex';
+				// 	  }
+				// 	});
 
 				// TODO disable on mobile?
 				// if (window.innerWidth > 816) window.scroll(0, 1500);
 
-				current = current.nextSibling;
 
 				// if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
 
@@ -853,6 +895,19 @@
 				// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
 
 				// } catch (e) { console.error(e) }
+				// 
+				// 
+
+				// console.log(qs('.em-form-container').parentNode.querySelectorAll('*:not(.em-form-container)'));
+
+				var eles = qsa('.content-post > div:not(.em-form-container)');
+
+				for (var i = 0; i < eles.length; i++)
+					jQuery(eles[i]).fadeOut('fast');
+					// eles[i].style.display = 'none';
+					// console.log(eles[i]);
+				// for (var el in eles)
+					// console.log(eles[el]);
 
 			});
 
@@ -860,28 +915,7 @@
 
 		} catch (e) {}
 
-		// back button
-		try {
-			// qs('.em-b-back').addEventListener('click', function(e) {
-			// 	try {
-			// 		current.style.display = 'none';
 
-			// 		var p = current.previousSibling;
-
-			// 		p.style.display = 'block';
-
-			// 		if (!p.previousSibling) e.target.classList.add('em-hidden');
-
-			// 		qs('.em-b-next').classList.remove('em-hidden');
-			// 		qs('.em-b-submit').classList.add('em-hidden');
-
-			// 		current = p;
-
-			// 		current.querySelector('.em-i').focus();
-					
-			// 	} catch (e) {}
-			// });
-		} catch (e) {}
 
 		// SUBMIT BUTTON
 		try {
