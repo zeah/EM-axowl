@@ -908,6 +908,10 @@
 					// console.log(eles[i]);
 				// for (var el in eles)
 					// console.log(eles[el]);
+					// 
+					// 
+
+				window.location.hash = 'form';
 
 			});
 
@@ -1056,6 +1060,13 @@
 
 
 
+
+	window.addEventListener('hashchange', function() {
+		//reset form 
+		//change title
+		//bookmarking? test to figure out
+		console.log('heya');
+	});
 
 
 	setCookie();
