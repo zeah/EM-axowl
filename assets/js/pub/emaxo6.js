@@ -258,7 +258,7 @@
 				else {
 					// pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
 					// pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
-					e.style.border = "solid 2px black";
+					e.style.border = "solid 2px hsl(120, 70%, 30%)";
 					
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.add('em-hidden');
@@ -611,8 +611,20 @@
 
 					var temp = qs('.'+c);
 
-					if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
-					else temp.classList.remove('em-hidden');
+					// if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
+					// else temp.classList.remove('em-hidden');
+
+
+					if (show.indexOf('no:') != 1)
+						jQuery('.'+c).slideToggle(500, function(e) {
+							this.classList.remove('em-hidden');
+						});
+
+					else
+						jQuery('.'+c).slideToggle(500, function(e) {
+							this.classList.add('em-hidden');
+						});
+
 				}
 
 				yes.classList.add('em-cc-green');
@@ -629,8 +641,19 @@
 
 					var temp = qs('.'+c);
 
-					if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
-					else temp.classList.add('em-hidden');
+					// if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
+					// else temp.classList.add('em-hidden');
+
+
+					if (show.indexOf('no:') != 1)
+						jQuery('.'+c).slideToggle(500, function(e) {
+							this.classList.remove('em-hidden');
+						});
+
+					else
+						jQuery('.'+c).slideToggle(500, function(e) {
+							this.classList.add('em-hidden');
+						});
 				}
 
 				yes.classList.remove('em-cc-green');
@@ -678,7 +701,9 @@
 			var show = function(o) {
 				try {
 					for (var i = 0; i < o.length; i++) 
-						qs(o[i]).classList.remove('em-hidden');
+						jQuery(o[i]).slideDown(500, function(e) {
+							this.classList.remove('em-hidden');
+						});
 					
 				} catch (e) {}
 			}
@@ -687,7 +712,9 @@
 			var hide = function(o) {
 				try {
 					for (var i = 0; i < o.length; i++) 
-						qs(o[i]).classList.add('em-hidden');
+						jQuery(o[i]).slideUp(500, function(e) {
+							this.classList.add('em-hidden');
+						});
 					
 				} catch (e) {}
 			}
@@ -858,7 +885,7 @@
 
 				var title = qs('.em-part-1 .em-part-title');
 
-				title.innerHTML = '<div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
+				title.innerHTML = '<div>Endre -></div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
 				title.style.display = 'flex';
 
 				jQuery(title).on('click', function() {
@@ -1062,10 +1089,22 @@
 
 
 	window.addEventListener('hashchange', function() {
+
+		if (window.location.hash == '') {
+			var eles = qsa('.content-post > div:not(.em-form-container)');
+
+			for (var i = 0; i < eles.length; i++)
+				jQuery(eles[i]).fadeIn('fast');
+
+
+			
+		}
+
+		// console.log('hash '+window.location.hash);
 		//reset form 
 		//change title
 		//bookmarking? test to figure out
-		console.log('heya');
+		// console.log('heya');
 	});
 
 
