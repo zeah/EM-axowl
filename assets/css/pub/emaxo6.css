@@ -566,11 +566,13 @@
 /* 3.2 title */
 .em-it {
 	margin: 0;
-	font-size: 1.2rem;
+	font-size: 1.6rem;
 	margin-bottom: .2rem;
 
 	white-space: nowrap;
 	overflow: hidden;
+	font-family: Merriweather;
+	font-weight: 900;
 }
 
 .em-part-lower-container .em-it {

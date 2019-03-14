@@ -919,7 +919,7 @@ final class Axowl_shortcode {
 
 	public function fonts6($data) {
 
-		return $data[] = ['Merriweather' => [400, 700], 'Montserrat' => [200]];
+		return $data[] = ['Merriweather' => [400, 900], 'Montserrat' => [200]];
 
 	}
 
