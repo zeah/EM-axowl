@@ -39,7 +39,7 @@ final class EM_axowl {
 
 	private function __construct() {
 	
-
+		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
 		// $temp = '260410';
 
 		// wp_die('<xmp>'.print_r('hi'.sprintf('%s-%s-%s', 

@@ -621,17 +621,17 @@
 				no.classList.add('em-cc-green');
 
 				// special rule
-				try {
-					var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
-					if (co) {
-						var hInput = qs('.em-c-co_applicant_norwegian'); 
-						hInput.value = '1';
-						hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
-						hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+				// try {
+				// 	var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
+				// 	if (co) {
+				// 		var hInput = qs('.em-c-co_applicant_norwegian'); 
+				// 		hInput.value = '1';
+				// 		hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
+				// 		hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
 
-						qs('.em-co-applicant-norwegian').classList.add('em-hidden');
-					}
-				} catch (e) { console.error(e) }
+				// 		qs('.em-co-applicant-norwegian').classList.add('em-hidden');
+				// 	}
+				// } catch (e) { console.error(e) }
 				progress();
 			});
 		})();
