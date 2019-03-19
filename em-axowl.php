@@ -3,7 +3,7 @@
 /*
 Plugin Name: EM Axo WL
 Description: Axo White Label
-Version: 0.0.24
+Version: 0.0.25
 GitHub Plugin URI: zeah/EM-axowl
 */
 
@@ -39,7 +39,7 @@ final class EM_axowl {
 
 	private function __construct() {
 	
-		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
+		// wp_die('<xmp>'.print_r(parse_url($_SERVER['HTTP_REFERER']), true).'</xmp>');
 		// $temp = '260410';
 
 		// wp_die('<xmp>'.print_r('hi'.sprintf('%s-%s-%s', 

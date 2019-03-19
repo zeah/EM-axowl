@@ -238,7 +238,7 @@
 					// pa.querySelector('.em-marker-valid').classList.add('em-hidden');
 					// pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
 
-					e.style.border = "solid 2px hsl(0, 70%, 60%)";
+					e.style.border = "solid 3px hsl(0, 70%, 60%)";
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.remove('em-hidden');
 				}
@@ -258,7 +258,7 @@
 				else {
 					// pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
 					// pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
-					e.style.border = "solid 2px hsl(120, 70%, 30%)";
+					e.style.border = "solid 3px hsl(120, 70%, 30%)";
 					
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.add('em-hidden');
