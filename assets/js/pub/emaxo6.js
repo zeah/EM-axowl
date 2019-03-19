@@ -885,10 +885,11 @@
 
 				var title = qs('.em-part-1 .em-part-title');
 
-				title.innerHTML = '<div>Endre -></div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
+				title.innerHTML = '<div>Endre Lånebeløp:</div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
 				title.style.display = 'flex';
 
-				jQuery(title).on('click', function() {
+				jQuery(title).one('click', function() {
+					jQuery(this).hide();
 					jQuery(part1).slideToggle();
 				});
 

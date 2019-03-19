@@ -266,6 +266,12 @@
 
 }
 
+h2 {
+
+	font-family: montserrat;
+	
+}
+
 
 /* 1.3.3 submit button */
 .em-b-submit {
@@ -365,7 +371,21 @@
 	margin-top: 0;
 }
 
-.em-part-lower-container .em-i {
+/*.em-part-lower-container .em-i {*/
+.em-if-monthly_cost,
+/*.em-element-monthly_cost,*/
+.em-r-loan_amount::-webkit-slider-thumb,
+.em-element-contact_accept span::before,
+.em-element-axo_accept span::before,
+.em-progress,
+.em-b-neste,
+.em-b-next,
+.em-b-submit,
+.em-i,
+.em-r {
+/*.em-r,
+.em-if,
+.em-i {*/
 	border: solid 1px #949494;
 	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
 	border-radius: 3px;
@@ -745,18 +765,22 @@
 	font-family: montserrat;
 }
 
-.em-part-lower-container .em-cc-yes {
+/*.em-part-lower-container .em-cc-yes {*/
+.em-cc-yes {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 
-.em-part-lower-container .em-cc-no {
+/*.em-part-lower-container .em-cc-no {*/
+.em-cc-no {
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 }
 
-.em-part-lower-container .em-cc-yes,
-.em-part-lower-container .em-cc-no {
+/*.em-part-lower-container .em-cc-yes,*/
+.em-cc-yes,
+.em-cc-no {
+/*.em-part-lower-container .em-cc-no {*/
 	padding: .5rem 0;
 	box-shadow: none;
 }
