@@ -139,6 +139,16 @@
 	background-color: #f2e7d5;
 }
 
+.content {
+	background-color: transparent;
+}
+
+.em-popup,
+.em-sprites,
+.em-qa-container {
+	background-color: white;
+}
+
 
 /* 0.2 hidden */
 /*.em-hidden {
@@ -150,8 +160,9 @@
 
 	/* for glass */
 	position: relative;
-	border-bottom: solid 4rem #f2e7d5;
-	margin: -20px;	
+	/*border-bottom: solid 4rem #f2e7d5;*/
+	/*margin: -20px;	*/
+	margin-bottom: 4rem;
 }
 
 /* 1.0.1 form cover */
@@ -1122,8 +1133,18 @@ h2 {
 /* 5.1 popup container */
 .em-popup {
 	display: none;
+	position: relative;
+	/*display: block;*/
 
-	grid-template-columns: 1fr auto;
+	/*background-color: red;*/
+	height: 323px;
+	width: 100%;
+/*
+	grid-template-areas:
+		"title x"
+		"content content";*/
+
+	/*grid-template-columns: 1fr auto;
 	grid-template-rows: auto 1fr auto;
 
 	grid-template-areas: 
@@ -1133,66 +1154,96 @@ h2 {
 
 	border: double 4px hsl(0, 0%, 50%);
 
-	background-color: hsl(120, 80%, 95%);
+	background-color: hsl(120, 80%, 95%);*/
 	z-index: 999;
 }
 
 /* 5.2 popup show */
 .em-popup-show {
-	display: grid;
+	/*display: grid;
 
+
+	
 	animation-name: popup;
-	animation-duration: .5s;
+	animation-duration: .5s;*/
 }
 
 /* 5.3 popup animation */
-@keyframes popup {
+/*@keyframes popup {
 	from { opacity: 0; }
 	to { opacity: 1; }
-}
+}*/
 
 /* 5.3 popup title */
 .em-popup-title {
-	grid-area: title;
+	/*grid-area: title;*/
 }
 
 /* 5.4 popup close button */
 .em-popup-x {
-	grid-area: x;
+	/*display: none;*/
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	/*grid-area: x;*/
 
-	background-color: transparent;
+	/*background-color: transparent;*/
 
-	align-self: flex-start;
+	/*align-self: flex-start;*/
 
-	margin: 1rem 1rem 0 0;
+	/*margin: 1rem 1rem 0 0;*/
+
+	background-color: black;
+	color: white;
+
+	border-radius: 25px;
+	padding: .5rem 1.1rem;
+
+	/*font-size: 2rem;*/
 
 	border: none;
 	cursor: pointer;
 }
 .em-popup-x::after {
 	content: 'X';
-	font-size: 2rem;
+	font-size: 2.4rem;
+	font-weight: 700;
 }
 .em-popup-x:hover {
-	font-weight: 700;
+	/*font-weight: 700;*/
 }
 
 /* 5.5 popup text */
 .em-popup-content {
-	grid-area: content;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-family: Merriweather;
+	font-weight: 700;
+	font-size: 2rem;
 
+	text-align: center;
+	/*grid-area: content;*/
+}
+
+.em-popup-content span {
+	/*align-self: center;*/
+	/*height: 100%;*/
+	/*display: inline-block;*/
+	/*vertical-align: middle;*/
 }
 
 /* 5.6 popup button */
 .em-popup-button {
-	grid-area: button;
+	/*grid-area: button;*/
+	
+	/*align-self: center;*/
 
-	justify-self: center;
-
-	background-color: transparent;
+	/*background-color: transparent;
 	border: none;
 	font-size: 3rem;
-	cursor: pointer;
+	cursor: pointer;*/
 }
 
 

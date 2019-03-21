@@ -396,8 +396,9 @@ final class Axowl_shortcode {
 		$inputs = AXOWL_inputs::$inputs2;
 
 		$html = sprintf(
-			'<div class="em-form-container"><div class="em-glass"></div><form class="emowl-form"%s>',
+			'<div class="em-form-container"><div class="em-glass"></div>%s<form class="emowl-form"%s>',
 			
+			$p->popup(),
 			isset($atts['style']) ? ' style="'.$atts['style'].'"' : ''
 		);
 
@@ -426,9 +427,9 @@ final class Axowl_shortcode {
 
 		$html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
 
-		$html .= '</form>';
+		$html .= '</form></div>';
 
-		$html .= $p->popup().'</div>';
+		// $html .= $p->popup().'</div>';
 
 		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
 
