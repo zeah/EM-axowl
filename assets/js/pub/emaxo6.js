@@ -613,17 +613,23 @@
 
 					// if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
 					// else temp.classList.remove('em-hidden');
+					// console.log(qs('.'+c).parentNode);
 
-
-					if (show.indexOf('no:') != 1)
-						jQuery('.'+c).slideToggle(500, function(e) {
+					if (show.indexOf('no:') != 1) {
+						qs('.'+c).parentNode.style.display = 'block';
+						jQuery('.'+c).slideDown(500, function(e) {
 							this.classList.remove('em-hidden');
 						});
+					}
 
-					else
-						jQuery('.'+c).slideToggle(500, function(e) {
+					else {
+						jQuery('.'+c).slideUp(500, function(e) {
 							this.classList.add('em-hidden');
+							// jQuery(this).hide();
+							// console.log(qs('.'+c).parentNode);
+							qs('.'+c).parentNode.style.display = 'none';
 						});
+					}
 
 				}
 
@@ -645,15 +651,17 @@
 					// else temp.classList.add('em-hidden');
 
 
-					if (show.indexOf('no:') != 1)
-						jQuery('.'+c).slideToggle(500, function(e) {
+					if (show.indexOf('no:') != 1) {
+						jQuery('.'+c).slideUp(500, function(e) {
 							this.classList.remove('em-hidden');
+							qs('.'+c).parentNode.style.display = 'none';
 						});
-
-					else
-						jQuery('.'+c).slideToggle(500, function(e) {
+					}
+					else {
+						jQuery('.'+c).slideDown(500, function(e) {
 							this.classList.add('em-hidden');
 						});
+					}
 				}
 
 				yes.classList.remove('em-cc-green');
@@ -892,6 +900,9 @@
 					jQuery(this).hide();
 					jQuery(part1).slideToggle();
 				});
+
+
+				qs('.em-form-container').style.borderBottom = 'none';
 
 				// qs('.em-part-1 .em-part-title').style.display = 'block';
 
