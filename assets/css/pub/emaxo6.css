@@ -125,6 +125,12 @@
  *	  		
  */
 
+
+ .em-slidedown {
+ 	padding: 3rem 1rem;
+ 	/*display: block !important;*/
+ }
+
 /* 0.1 theme stuff */
 
 /* 0.1.1 content-title 
@@ -189,7 +195,7 @@
 	width: 90rem;
 	max-width: 100%;
 
-	padding-bottom: 2rem;
+	/*padding-bottom: 2rem;*/
 
 	background-color: hsl(240, 50%, 98%);
 	background-color: white;
@@ -230,9 +236,9 @@
 	/*outline: solid 1px hsl(0, 0%, 35%);*/
 }
 
-.em-part-lower-container .em-i {
+/*.em-part-lower-container .em-i {
 	border: solid 1.6px hsl(0, 0%, 70%);
-}
+}*/
 
 .em-cc-yes {
 	border-right: solid 1.5px hsl(0, 0%, 20%);
@@ -257,71 +263,61 @@
 
 /* 1.3 buttons */
 
-/* 1.3.1 buttons inner container */
-.em-b-inner {
-	display: grid;
-	text-align: center;
-	margin: 1rem 10rem 0;
 
-	grid-template-columns: 25% 25% 25% 25%;
-	grid-template-areas: ". next next .";
 
-	/*justify-content: space-between;*/
-	/*align-self: flex-end;*/
-}
-
-/* 1.3.2 button */
+/* 1.3.1 buttons */
 .em-b {
-	/*border: none;*/
-
-	cursor: pointer;
-	border: solid 1px black;
-	padding: .5rem 4rem;
-	font-size: 2rem !important;
-	font-weight: 700;
-	/*font-family: montserrat;*/
-
-}
-
-h2 {
-
-	font-family: montserrat;
-	
-}
-
-
-/* 1.3.3 submit button */
-.em-b-submit {
-	margin-top: 2rem;
-	background-color: hsl(120, 90%, 60%);
-	grid-area: next;
-}
-
-/* 1.3.4 next button */
-.em-b-next {
 	background-color: hsl(30, 90%, 60%);
-	/*background-color: #FFCC66;*/
-	grid-area: next;
 
 	height: auto;
 	width: 100%;
 
 	margin: 2rem 0;
 	padding: 1.3rem 0;
-	/*padding: .5rem 8rem;*/
 	font-weight: 700;
 	font-size: 2rem !important;
-	border: solid 1px; 
-	border-color: hsl(0, 0%, 50%) hsl(0, 0%, 20%) hsl(0, 0%, 50%) hsl(0, 0%, 20%);
-	box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;
-	/*white red blue hsl(0, 0%, 20%);*/
+	border: solid 1px #333; 
+	/*border-color: hsl(0, 0%, 50%) hsl(0, 0%, 20%) hsl(0, 0%, 50%) hsl(0, 0%, 20%);*/
+	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
 	height: auto;
 	background-color: #fc6;
 	cursor: pointer;
 	font-family: merriweather;
+}
 
+.em-b-container {
+	display: none;
+	text-align: center;
+	margin: 0 10rem;
+}
 
-	/*max-width: 20rem;*/
+.em-b-next {
+	width: 50%;
+}
+
+.em-b-endre,
+.em-b-send {
+	display: none;
+	width: 100%;
+	margin-top: 3.3rem;
+	margin-bottom: 0;
+}
+
+.em-b-endre {
+	background-color: #96f;
+	color: #fff;
+}
+
+.em-b-send {
+	margin-top: 3.5rem;
+}
+
+.em-b-text {
+	display: none;
+	margin-top: 2rem;
+	text-align: left;
+	font-weight: 900;
+
 }
 
 /* 1.4 progress bar */
@@ -426,8 +422,8 @@ h2 {
 	/*border: solid 3px hsl(0, 0%, 30%);*/
 	/*box-shadow: 0 0 0 transparent, inset 0 2px 2px #d4d4d4;*/
 	/*border-radius: 3px;*/
-	height: 5rem;
-	font-size: 1.8rem;
+	height: 4rem;
+	font-size: 1.6rem;
 }
 
 /* 2.1.2 part 1*/
@@ -572,10 +568,12 @@ h2 {
 	margin: 0;
 	margin-bottom: 1rem;
 	padding: .5rem 0;
-	background-color: #fc6;
-	text-align: center;
-	font-size: 1.6rem;
+	/*background-color: #fc6;*/
+	/*text-align: center;*/
+	font-size: 2rem;
 	overflow: hidden;
+	font-family: Merriweather;
+	font-weight: 900;
 }
 
 
@@ -619,7 +617,7 @@ h2 {
 }
 
 .em-part-lower-container .em-it {
-	font-weight: 400;
+	/*font-weight: 400;*/
 	font-size: 1.4rem;
 }
 
@@ -641,7 +639,7 @@ h2 {
 
 /* 3.3 text input */
 .em-i {
-	padding: .5rem;
+	padding: .2rem .5rem;
 	/*padding: 1rem 0 1rem 1rem;*/
 	z-index: 20;
 	width: 100%;
@@ -649,9 +647,30 @@ h2 {
 
 /* 3.4 select input */
 .em-lc .em-i {
-	/*appearance: none;*/
-	/*-webkit-appearance: none;*/
+	appearance: none;
+	-webkit-appearance: none;
 	/*padding-left: 1rem;*/
+}
+
+.em-lc {
+	position: relative;
+	/*cursor: pointer;*/
+}
+
+.em-lc::after {
+	content: ' ';
+	position: absolute;
+	bottom: 0;
+	right: 1rem;
+	height: 4rem;
+	width: 3rem;
+	background: url('https://norskfinans.no/wp-content/uploads/2019/03/downarrow.png') no-repeat center center;
+	pointer-events: none;
+	/*cursor: pointer;*/
+}
+
+select.em-i {
+	cursor: pointer;
 }
 
 /* 3.5 range input */
@@ -1107,9 +1126,9 @@ h2 {
 }
 
 
-.em-co-applicant {
-	float: right;
-}
+/*.em-co-applicant {*/
+	/*float: right;*/
+/*}*/
 
 /* 4.9 neste button */
 

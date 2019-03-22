@@ -425,7 +425,13 @@ final class Axowl_shortcode {
 		// ends last page and ends part container
 		$html .= '</div></div>';
 
-		$html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
+		$html .= '<div class="em-b-container">
+			<button type="button" class="em-b em-b-next">Neste</button>
+			<button type="button" class="em-b em-b-endre">Endre Lånebeløp</button>
+			<button type="button" class="em-b em-b-send">Send Søknad</button>
+			<div class="em-b-text">Du mottar et helt uforpliktende tilbud som er gyldig i 30 dager.</div>
+			</div>';
+		// $html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
 
 		$html .= '</form></div>';
 
@@ -903,10 +909,10 @@ final class Axowl_shortcode {
 	}
 
 	public function sands6() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6.css', array(), '1.0.3', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6.css', array(), '1.0.4', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.1', '(max-width: 815px)');
         
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo6.js', ['jquery'], '1.0.9', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo6.js', ['jquery'], '1.0.12', true);
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 

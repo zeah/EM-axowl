@@ -883,24 +883,68 @@
 
 
 
-				e.target.classList.add('em-hidden');
-				qs('.em-b-submit').classList.remove('em-hidden');
+				// e.target.classList.add('em-hidden');
+				// qs('.em-b-submit').classList.remove('em-hidden');
 
-				jQuery('.em-slidedown').slideDown(800);
+				$('.emtheme-footer-container, .navbar-menu').hide();
+				$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
+				$('.em-part-1-grid').slideUp(800, function() {
 
-				var part1 = qs('.em-part-1-grid');
+					$('.emowl-form').css('width', 'auto');
+					$('.em-element-mobile_number').detach().prependTo('.em-part-2');
+					$('.em-element-email').detach().prependTo('.em-part-2');
+					$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
 
-				jQuery(part1).slideUp(800);
+					$('.em-b-endre, .em-b-send, .em-b-text').show();
+					$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 
-				var title = qs('.em-part-1 .em-part-title');
+					$('.em-part-1-grid').css({
+						'grid-template-columns': '1fr 1fr 1fr 1fr',
+						'grid-template-areas': '"loan tenure monthly refinancing"',
+						'grid-column-gap': '2rem',
+						'padding': '4rem 2rem'
+					});
 
-				title.innerHTML = '<div>Endre Lånebeløp:</div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
-				title.style.display = 'flex';
+					$('.em-element-monthly_cost').css({
+						'justify-self': 'auto',
+						'align-self': 'auto',
+						'margin': '0'
+					});
 
-				jQuery(title).one('click', function() {
-					jQuery(this).hide();
-					jQuery(part1).slideToggle();
+					$('.em-container-monthly_cost').css({
+						'font-family': 'Merriweather',
+						'font-weight': '900'
+					});
+
+					$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
+						jQuery('.em-slidedown').slideDown(800);
+
+					});
+
 				});
+				// });
+
+
+				$('.em-b-endre').click(function() {
+					$('.em-part-1-grid').slideToggle();
+					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
+				});
+
+				// var part1 = qs('.em-part-1-grid');
+
+				// jQuery(part1).slideUp(800);
+
+				// var title = qs('.em-part-1 .em-part-title');
+
+				// title.innerHTML = '<div>Endre Lånebeløp:</div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
+				// title.style.display = 'flex';
+
+
+				// jQuery(title).one('click', function() {
+				// 	jQuery(this).hide();
+				// 	jQuery(part1).slideToggle();
+				// });
+
 
 
 				qs('.em-form-container').style.borderBottom = 'none';
