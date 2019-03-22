@@ -18,7 +18,7 @@
  */
 
 
-(function() {
+(function($) {
 
 	"use strict";
 
@@ -321,6 +321,7 @@
 	var incomplete = function(e) {
 		console.log('incomplete stopped');
 		return;
+
 		e.target.removeEventListener('click', incomplete);
 
 		var xhttp = new XMLHttpRequest();
@@ -875,7 +876,7 @@
 					// current = current.nextSibling;
 
 				// qs('.em-part-1').classList.add('em-hidden');
-				qs('.em-part-1-grid').classList.add('em-part-1-done');
+				// qs('.em-part-1-grid').classList.add('em-part-1-done');
 				// qs('.em-part-lower-container').classList.remove('em-hidden');
 				// 
 				// 
@@ -997,7 +998,9 @@
 					data += '&data['+n.name+']='+value;
 				}
 
-				if (!valid) return;
+				if (!valid) {
+					// return;
+				}
 
 				var cookie = document.cookie.split('; ');
 				for (var i in cookie) {
@@ -1014,12 +1017,12 @@
 
 				qs('.em-b-submit').removeEventListener('click', post);
 
-				var close = function(e) { e.target.parentNode.style.display = 'none' }
+				var close = function(e) { $('.em-popup').slideUp(1000) }
 
-				qs('.em-popup-button').addEventListener('click', close);
+				// qs('.em-popup-button').addEventListener('click', close);
 				qs('.em-popup-x').addEventListener('click', close);
 
-				qs('.em-b-submit').innerHTML = 'Sendes...';
+				qs('.em-b-submit').innerHTML = 'Søknad sendes ...';
 
 				var xhttp = new XMLHttpRequest();
 
@@ -1028,18 +1031,33 @@
 
 						try {
 							// qs('.em-b-submit').style.display = 'none';
-							qs('.emowl-form').style.display = 'none';
-							qs('.em-glass').style.display = 'none';
-							qs('.em-popup').classList.add('em-popup-show');
+							// qs('.emowl-form').style.display = 'none';
+							// 
+							// 
+							$('.emowl-form').slideUp(800, function() {
+								// $('.emowl-form').fadeOut();
+								$('.em-popup').slideDown(800, function() {
+									// var eles = qsa('.content-post > div:not(.em-form-container)');
+									// for (var i = 0; i < eles.length; i++)
+										// jQuery(eles[i]).fadeOut('fast');
+
+									$('.content-post > div:not(.em-form-container)').each(function() {
+										$(this).fadeIn(2000);
+									});
+
+								});
+							});
+							// qs('.em-glass').style.display = 'none';
+							// qs('.em-popup').classList.add('em-popup-show');
 						} catch (e) { console.error(e) }
 
 						console.log(this.responseText);
 					}
 				}
 
-				try {
-					qs('.em-glass').style.display = 'block';
-				} catch (e) { console.log(e) }
+				// try {
+					// qs('.em-glass').style.display = 'block';
+				// } catch (e) { console.log(e) }
 
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
@@ -1139,4 +1157,4 @@
 	// ajatest.send('action=wlinc');
 
 
-})();
+})(jQuery);

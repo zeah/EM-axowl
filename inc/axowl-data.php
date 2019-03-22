@@ -74,6 +74,9 @@ final class Axowl_data {
 
 		$this->contact_accept = $data['contact_accept'] ? true : false;
 
+		echo 'stopped at from_form';
+		return;
+
 		// testing
 		echo 'Referrer: '.$this->get_referer();
 
@@ -129,6 +132,8 @@ final class Axowl_data {
 	private function send_axo($data) {
 		$settings = get_option('em_axowl');
 		if (!isset($settings['form_url']) || !isset($settings['name'])) return;
+		echo 'hi';
+		return;
 
 		// axo url
 		$url = $settings['form_url'].'?';

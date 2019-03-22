@@ -71,10 +71,8 @@ final class Axowl_shortcode_parts {
 	public function popup() {
 		return '
 			<div class="em-popup">
-				<h2 class="em-popup-title">Din søknad er sendt til Axo.</h2>
 				<button type="button" class="em-popup-x"></button>
-				<div class="em-popup-content"></div>
-				<button type="button" class="em-popup-button">Ok</button>
+				<div class="em-popup-content"><span>DIN SØKNAD ER SENDT INN TIL NORSK FINANS AS.<br>DU VIL FÅR SVAR I LØPET AV 1 DAG.</span></div>
 			</div>
 		';
 	}
