@@ -1059,14 +1059,14 @@
 				// console.log(data);
 				// if (!valid) return;				
 
-				qs('.em-b-submit').removeEventListener('click', post);
+				qs('.em-b-send').removeEventListener('click', post);
 
 				var close = function(e) { $('.em-popup').slideUp(1000) }
 
 				// qs('.em-popup-button').addEventListener('click', close);
 				qs('.em-popup-x').addEventListener('click', close);
 
-				qs('.em-b-submit').innerHTML = 'Søknad sendes ...';
+				qs('.em-b-send').innerHTML = 'Søknad sendes ...';
 
 				var xhttp = new XMLHttpRequest();
 
@@ -1088,6 +1088,8 @@
 									$('.content-post > div:not(.em-form-container)').each(function() {
 										$(this).fadeIn(2000);
 									});
+
+									$('.navbar-menu, .emtheme-footer-container').show();
 
 								});
 							});
@@ -1111,7 +1113,7 @@
 
 			}
 
-			qs('.em-b-submit').addEventListener('click', post);
+			qs('.em-b-send').addEventListener('click', post);
 
 		} catch (e) { console.error(e) }
 
