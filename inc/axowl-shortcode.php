@@ -395,11 +395,35 @@ final class Axowl_shortcode {
 
 		$inputs = AXOWL_inputs::$inputs2;
 
+		$epop = '<div class="em-glass"></div>
+				 <div class="email-popup"><div class="email-popup-grid">
+
+				 	<h2 class="pop-title">VIL DU FYLLE UT SØKNADSSKJEMA SENERE?</h2>
+
+				 	<div class="pop-input-container pop-phone-container">
+					 	<label for="pop-phone" class="pop-label-phone">Telefon</label>
+					 	<input type="text" class="em-i em-pop-phone" name="pop-phone" id="pop-phone">
+				 	</div>
+
+				 	<div class="pop-input-container pop-email-container">
+					 	<label for="pop-email" class="pop-label-email">E-Post</label>
+					 	<input type="text" class="em-i em-pop-email" name="pop-email" id="pop-email">
+					</div>
+				 	
+				 	<button type="button" class="em-b pop-neste">Neste</button>
+
+				 	<div class="pop-text">Klikker du åp "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
+				 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
+
+				 	</div><div class="em-pop-email-x"></div>
+				 </div>';
+
 		$html = sprintf(
-			'<div class="em-form-container"><div class="em-glass"></div>%s<form class="emowl-form"%s>',
+			'<div class="em-form-container"%s>%s%s<form class="emowl-form">',
 			
+			isset($atts['style']) ? ' style="'.$atts['style'].'"' : '',
 			$p->popup(),
-			isset($atts['style']) ? ' style="'.$atts['style'].'"' : ''
+			$epop
 		);
 
 

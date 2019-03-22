@@ -1208,6 +1208,7 @@ select.em-i {
 }
 
 /* 5.4 popup close button */
+.em-pop-email-x,
 .em-popup-x {
 	/*display: none;*/
 	position: absolute;
@@ -1232,6 +1233,8 @@ select.em-i {
 	border: none;
 	cursor: pointer;
 }
+
+.em-pop-email-x::after,
 .em-popup-x::after {
 	content: 'X';
 	font-size: 2.4rem;
@@ -1304,6 +1307,92 @@ select.em-i {
 @keyframes spriteslide {
 	from { left: 0; }
 	to { left: -1630px; }
+}
+
+
+/* 9.0 email/phone popup */
+.email-popup {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	/*height: 100%;*/
+	background-color: white;
+	z-index: 101;
+	width: 90rem;
+	margin: auto;
+
+	padding: 8rem 15rem;
+
+	font-family: Merriweather;
+	font-weight: 900;
+}
+
+.email-popup-grid {
+	display: grid;
+
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas: 
+		"title title"
+		"phone email"
+		"button button"
+		"text text";
+
+	grid-column-gap: 4rem;
+	grid-row-gap: 4rem
+}
+
+.pop-title {
+	grid-area: title;
+	margin: 0;
+}
+
+.pop-phone-container {
+	grid-area: phone;
+}
+
+.pop-email-container {
+	grid-area: email;
+}
+
+.pop-neste {
+	grid-area: button;
+	justify-self: center;
+	width: 50%;
+
+	font-family: montserrat;
+	font-weight: 400;
+}
+
+.pop-text {
+	grid-area: text;
+
+	font-family: Montserrat;
+	font-weight: 400;
+
+	font-size: 1.2rem;
+}
+
+.pop-link {
+	font-weight: 700;
+	color: black;
+	text-decoration: none;
+}
+
+.em-glass {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	opacity: .8;
+
+	background-color: black;
+
+	z-index: 100;
 }
 
 /* 10.4 sprites paused */
