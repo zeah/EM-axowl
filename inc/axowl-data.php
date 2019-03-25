@@ -32,7 +32,6 @@ final class Axowl_data {
 	 * gdocs_ads() fixed data for gdocs for gads.
 	 * get_url() gets url from WP options
 	 * remove_confidential()
-	 * anon()
 	 * get_clid() gets the google or bing click id - either from cookie or query string
 	 * 
 	 */
@@ -58,6 +57,9 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_wlinc', [$this, 'incomplete']);
 		add_action( 'wp_ajax_wlinc', [$this, 'incomplete']);
+
+		add_action( 'wp_ajax_nopriv_popup', [$this, 'popup']);
+		add_action( 'wp_ajax_popup', [$this, 'popup']);
 	}
 
 
@@ -74,8 +76,8 @@ final class Axowl_data {
 
 		$this->contact_accept = $data['contact_accept'] ? true : false;
 
-		echo 'stopped at from_form';
-		return;
+		// echo 'stopped at from_form';
+		// return;
 
 		// testing
 		echo 'Referrer: '.$this->get_referer();
@@ -121,6 +123,45 @@ final class Axowl_data {
 		$this->ga('incomplete', 0, $ga);
 
 		exit;
+	}
+
+
+	/**
+	 * [popup description]
+	 */
+	public function popup() {
+		// echo print_r($_POST, true);
+		// wp_die('<xmp>'.print_r($_POST, true).'</xmp>');
+
+		$data = ['status' => 'popup'];
+
+		$email = false;
+		$phone = false;
+
+		$ga = isset($_POST['ga']) ? $_POST['ga'] : false;
+
+		if (isset($_POST['pop-email']) && $this->val_email($_POST['pop-email'])) $email = $_POST['pop-email'];
+		if (isset($_POST['pop-phone']) && $this->val_phone($_POST['pop-phone'])) $phone = $_POST['pop-phone'];
+
+		if (!$email && !$phone) exit;
+
+		$data['email'] = $email;
+		$data['mobile_number'] = $phone;
+
+		// echo 'Data to be sent from popup: '.http_build_query($data);
+
+		$this->send(http_build_query($data), 'sql_info');
+		$this->ga('popup', 0, $ga);
+
+		exit;
+	}
+
+	private function val_email($email) {
+		return true;
+	}
+
+	private function val_phone($phone) {
+		return true;
 	}
 
 
@@ -189,7 +230,6 @@ final class Axowl_data {
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
 
-		if (!$this->contact_accept) $data = $this->anon($data);
 
 		switch ($res['status']) {
 			case 'Accepted': $this->accepted($data, $ga); break;
@@ -211,8 +251,8 @@ final class Axowl_data {
 		$data['status'] = 'accepted';
 
 
-		// send all anonymized gfunc sql
-		$this->send(http_build_query($this->anon($data)), 'sql_info');
+		// send gfunc sql
+		$this->send(http_build_query($data), 'sql_info');
 
 		// sending conversion details to sql
 		$this->sql_conversions($data);
@@ -226,11 +266,11 @@ final class Axowl_data {
 		$value = isset($value['payout']) ? $value['payout'] : 0;
 		$this->ga('accepted', $value, $ga);
 
-		if (isset($data['email'])) {
-			$unsub = Axowl_unsub::get_instance();
+		// if (isset($data['email'])) {
+		// 	$unsub = Axowl_unsub::get_instance();
 
-			$unsub->unsub($data['email']); // ends in exit;
-		}
+		// 	$unsub->unsub($data['email']); // ends in exit;
+		// }
 
 		// send event or/and ecommerce data to GA
 		// google ads import from GA?
@@ -437,15 +477,15 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function anon($data) {
+	// private function anon($data) {
 
-		$unset = ['email', 'mobile_number', 'co_applicant_name', 'co_applicant_social_number'];
+	// 	$unset = ['email', 'mobile_number', 'co_applicant_name', 'co_applicant_social_number'];
 
-		foreach ($unset as $value)
-			if (isset($data[$value])) unset($data[$value]);
+	// 	foreach ($unset as $value)
+	// 		if (isset($data[$value])) unset($data[$value]);
 
-		return $data;
-	}
+	// 	return $data;
+	// }
 
 
 
@@ -486,7 +526,7 @@ final class Axowl_data {
 
 		$tag = get_option('em_axowl');
 
-		if (!isset($tag['ga_code'])) return;
+		if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
 
 		$tag = $tag['ga_code'];
 

@@ -412,7 +412,7 @@ final class Axowl_shortcode {
 				 	
 				 	<button type="button" class="em-b pop-neste">Neste</button>
 
-				 	<div class="pop-text">Klikker du åp "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
+				 	<div class="pop-text">Klikker du på "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
 				 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
 
 				 	</div><div class="em-pop-email-x"></div>

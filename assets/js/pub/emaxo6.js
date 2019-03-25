@@ -383,13 +383,13 @@
 		var abid = qs('#abtesting-sc'); // shortcode #
 		if (abid) abid = abid.value;
 
+
 		var date = new Date();
+		date.setTime(date.getTime() + (90*24*60*60*1000));
+		date = date.toUTCString();
 
-		if (ab) document.cookie = 'abname='+ab+'; expires='+date.setDate(date.getDate() + 60);
-		if (abid) document.cookie = 'abid='+abid+'; expires='+date.setDate(date.getDate() + 60);
-
-		// if (ab) setcookie('abname', ab, date.setDate(date.getDate() + 30))
-		// if (abid) setcookie('abid', abid, date.setDate(date.getDate() + 30))
+		if (ab) document.cookie = 'abname='+ab+'; expires='+date;
+		if (abid) document.cookie = 'abid='+abid+'; expires='+date;
 	}
 
 	// AB2
@@ -1212,14 +1212,67 @@
 	var showPopup = function() {
 		$('.email-popup, .em-glass').fadeIn(1000);
 
-		$('.pop-neste, .em-pop-email-x').one('click', function() {
+		$('.em-pop-email-x').one('click', function() {
 			$('.email-popup, .em-glass').fadeOut(500);
 		});
+
+		var click = function() {
+
+			var phone = $('#pop-phone').val();
+			var email = $('#pop-email').val();
+
+			var valid = true;
+
+			if (!/\d{8}/.test(phone)) {
+				$('#pop-phone').css('border-color', 'hsl(0, 80%, 60%');
+				valid = false;
+			}
+
+			if (!/.+\@.+\..{2,3}/.test(email)) {
+				$('#pop-email').css('border-color', 'hsl(0, 80%, 60%');
+				valid = false;
+			}
+
+			if (!valid) {
+				$('.pop-neste').one('click', click);
+				return;
+			}
+
+			$('.email-popup, .em-glass').fadeOut(500);
+
+			$.post(emurl.ajax_url, 
+				{
+					action: 'popup',
+					'pop-email': $('#pop-email').val(),
+					'pop-phone': $('#pop-phone').val()
+				}, 
+			
+				function(data) {
+					console.log(data);
+				}
+			);
+		}
+		$('.pop-neste').one('click', click);
+
+		$('#pop-phone').on('input', function() {
+	  		$(this).val($(this).val().substring(0, 8).replace(/[^0-9]/g, ''));
+		});
+
+		$('#pop-phone, #pop-email').focus(function(e) {
+			e.target.style.borderColor = '#000';
+		})
+	
+		// cookie
+		var date = new Date();
+		date.setTime(date.getTime() + (60*24*60*60*1000));
+		document.cookie = 'em_popup=tester; expires='+date.toUTCString();
 	}
 
+	// console.log(emurl.ajax_url);
 
+	// Check cookies first
+	// if (!/(^| )em_popup=/.test(document.cookie))  
+		$('body').one('mouseleave', function() { showPopup() });
+		
 
-
-	// EVENT
-	$('body').one('mouseleave', function() { showPopup() });
 })(jQuery);
