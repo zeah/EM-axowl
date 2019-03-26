@@ -422,7 +422,7 @@
 	var showFirstPagePart = function(e) {
 		try {
 			
-			e.target.style.display = 'none';
+			e.target.parentNode.style.display = 'none';
 
 			var el = ['.em-element-tenure', '.em-element-email', '.em-element-mobile_number',
 					  '.em-element-collect_debt', '.em-b-container', '.em-element-axo_accept',
@@ -621,7 +621,7 @@
 
 		// CHECKBOX INPUTS
 
-		$('.em-cc').each(function() {
+		$('.em-cc:not(.em-cc-co_applicant)').each(function() {
 
 			var show = $(this).children('.em-c').attr('data-show');
 
@@ -634,8 +634,8 @@
 			show = show.replace(/no:( |)/, '');			
 
 
-			var s = function(d) { $(d).slideDown('fast') }
-			var h = function(d) { $(d).slideUp('fast') }
+			var s = function(d) { $(d).slideDown('slow') }
+			var h = function(d) { $(d).slideUp('slow') }
 			var tno = function(d) { 
 				$(d).children('.em-cc-no').addClass('em-cc-green');
 				$(d).children('.em-cc-yes').removeClass('em-cc-green');
@@ -658,6 +658,49 @@
 			// console.log(yes);
 			// console.log(show);
 			// console.log($(this).children('.em-c').attr('data-show'));
+		});
+
+		$('.em-cc-co_applicant').each(function() {
+			var show = $(this).children('.em-c').attr('data-show');
+
+			if (show == undefined) return;
+
+			var yes = true;
+
+			if (/no:/.test(show)) yes = false;
+
+			show = show.replace(/no:( |)/, '');
+
+			$(this).find('.em-cc-yes').click(function() {
+				// $('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
+				$('.em-part-lower-container').find('.em-part').animate({
+					width: '19rem'
+				});
+				$('.em-part-4').show();
+				// $('.em-part-4').show().animate({
+				// 	width: '19rem'
+				// });
+
+				$(this).addClass('em-cc-green');
+				$('.em-cc-co_applicant').find('.em-cc-no').removeClass('em-cc-green');			
+			});
+
+			$(this).find('.em-cc-no').click(function() {
+				$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
+					width: '26rem'
+				});
+
+				$('.em-part-4').animate({
+					width: '0rem'
+				}, function() {
+					$(this).hide();
+				});				
+
+				$(this).addClass('em-cc-green');
+				$('.em-cc-co_applicant').find('.em-cc-yes').removeClass('em-cc-green');			
+
+			});
+
 		});
 
 
@@ -966,8 +1009,8 @@
 					$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 
 					$('.em-part-1-grid').css({
-						'grid-template-columns': '1fr 1fr 1fr 1fr',
-						'grid-template-areas': '"loan tenure monthly refinancing" "compare compare compare compare"',
+						'grid-template-columns': '2fr 1fr 1fr 1fr',
+						'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
 						'grid-column-gap': '2rem',
 						'padding': '4rem 2rem'
 					});
@@ -978,10 +1021,10 @@
 						'margin': '0'
 					});
 
-					$('.em-container-monthly_cost').css({
-						'font-family': 'Merriweather',
-						'font-weight': '900'
-					});
+					// $('.em-container-monthly_cost').css({
+					// 	'font-family': 'Merriweather',
+					// 	'font-weight': '900'
+					// });
 
 					$('.em-compare-text').css('font-size', '2rem');
 
@@ -1189,27 +1232,42 @@
 
 		// helper text
 		// var hm = document.querySelectorAll('.em-ht-q');
-		var hm = qsa('.em-ht-q');
+		var hm = qsa('.em-ht-mark');
 		for (var i = 0; i < hm.length; i++) 
 			(function() { 
 				var q = hm[i];
-				var p = q.parentNode;
+				// var p = q.parentNode.parentNode;
+				var p = $(q).parent().parent().find('.em-ht');
 
-				q.addEventListener('mouseover', function(e) {
-					try { p.querySelector('.em-ht').classList.remove('em-hidden');
-					} catch (e) {}
+				$(q).mouseenter(function() {
+					$(p).fadeIn(100);
 				});
 
-				q.addEventListener('mouseout', function(e) {
-					try { p.querySelector('.em-ht').classList.add('em-hidden');
-					} catch (e) {}
+				$(q).mouseleave(function() {
+					$(p).fadeOut(200);
 				});
 
-				q.addEventListener('click', function(e) {
-					try { p.querySelector('.em-ht').classList.toggle('em-hidden');
-					} catch (e) {}
-
+				$(q).on('keypress', function(e) {
+					console.log(e);
+					if (e.which == 13)
+					$(p).toggle();
 				});
+
+				// q.addEventListener('mouseover', function(e) {
+				// 	try { p.querySelector('.em-ht').classList.remove('em-hidden');
+				// 	} catch (e) {}
+				// });
+
+				// q.addEventListener('mouseout', function(e) {
+				// 	try { p.querySelector('.em-ht').classList.add('em-hidden');
+				// 	} catch (e) {}
+				// });
+
+				// q.addEventListener('click', function(e) {
+				// 	try { p.querySelector('.em-ht').classList.toggle('em-hidden');
+				// 	} catch (e) {}
+
+				// });
 			})();
 		
 

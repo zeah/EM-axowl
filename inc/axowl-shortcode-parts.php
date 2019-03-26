@@ -257,7 +257,7 @@ final class Axowl_shortcode_parts {
 			
 			$o['text'],
 
-			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
+			(isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
 			
 			isset($o['value']['yes']) ? ' em-cc-green' : '',
 			
@@ -336,7 +336,7 @@ final class Axowl_shortcode_parts {
 
 			$o['text'],
 
-			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
+			(isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
 
 			isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : '',
 
@@ -371,7 +371,7 @@ final class Axowl_shortcode_parts {
 	private function help_element($name, $text) {
 		return sprintf(
 			'<button type="button" class="em-ht-q">
-					
+			 	<span class="em-ht-mark">?</span>
 				</button>
 				<div class="em-ht em-hidden em-ht-%s">
 					<div class="em-ht-arrowdown"></div>

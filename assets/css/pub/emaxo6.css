@@ -231,7 +231,8 @@
 .em-b-submit,
 .em-i,
 .em-r,
-.em-compare-save {
+.em-compare-save,
+.em-ht {
 	/*border-color: black red green blue;*/
 	/*border: ridge 3px;*/
 	border: solid 2.6px hsl(0, 0%, 20%);
@@ -387,7 +388,19 @@
 }
 
 .em-part-lower-container {
-	display: flex;
+	display: grid;
+	grid-template-areas: 
+	 "title title title title title"
+	 "one two three four five";
+
+	 /*display: flex;*/
+	 /*flex-wrap: wrap;*/
+	 /*grid-template-columns: repeat(5, 1fr);*/
+}
+
+.em-lower-titles {
+	/*width: 100%;*/
+	grid-area: title;
 }
 
 /* 2.1.1 generic */
@@ -396,12 +409,38 @@
 	margin-top: 5rem;
 	/*flex-grow: 1;*/
 	/*flex-basis: 0;*/
-	overflow: hidden;
+	/*overflow: hidden;*/
 
 }
 
 .em-part-lower-container .em-part {
-	flex: 1 0 0;
+	width: 26rem;
+	/*flex-grow: 1;*/
+    /*flex-basis: 0;*/
+    /*max-width: 33%;*/
+    /*min-width: 20%;*/
+}
+
+.em-part-lower-container .em-part-4 {
+	width: 0;
+	display: none;
+}
+
+/*.em-part-lower-container .em-element {*/
+/*.em-part-lower-container .em-part:before
+.em-part-lower-container .em-part:after {
+	content: ".";    */
+    /*display: block;    */
+    /*height: 0;    */
+    /*overflow: hidden; */
+/*.em-part-lower-container .em-it {*/
+	/*overflow: hidden;*/
+/*}*/
+
+/*.em-part-lower-container .em-part:after { clear: both; }*/
+
+.em-part-lower-container .em-part {
+	/*flex: 1 0 0;*/
 	margin-top: 0;
 }
 
@@ -520,7 +559,7 @@
 
 /* 2.1.3 part 2*/
 .em-part-2 {
-	grid-area: second;
+	grid-area: two;
 }
 
 /* 2.1.3.1 text */
@@ -530,7 +569,7 @@
 
 /* 2.1.4 part 3*/
 .em-part-3 {
-	grid-area: third;
+	grid-area: three;
 }
 
 /* 2.1.4.1 text */
@@ -540,8 +579,8 @@
 
 /* 2.1.5 part 4*/
 .em-part-4 {
-	grid-area: fourth;
-	display: none;
+	grid-area: four;
+	/*display: none;*/
 }
 
 /* 2.1.5.1 text */
@@ -551,7 +590,7 @@
 
 /* 2.1.6 part 5*/
 .em-part-5 {
-	grid-area: fifth;
+	grid-area: five;
 }
 
 /* 2.1.6.1 text */
@@ -757,43 +796,54 @@ select.em-i {
 
 	position: absolute;
 	/*top: 2.8rem;*/
-	right: 1rem;
-	bottom: 100%;
+	right: -1rem;
+	bottom: 110%;
 	/*right: -18.9rem;*/
 
 	width: 20rem;
 
-	padding: .5rem;
+	padding: 2rem;
 
-	background-color: hsl(120, 100%, 99%);
-	border: solid 1px hsl(0, 0%, 70%);
+	background-color: #96f;
+	color: white;
+	/*border: solid 1px hsl(0, 0%, 70%);*/
 
 	font-size: 1.4rem;
 	line-height: 1;
 	z-index: 199;
+
+	font-family: montserrat;
+	font-weight: 300;
+
+	/*background-color: red;*/
+
 }
 
 .em-ht-arrowdown {
-  width: 0; 
-  height: 0; 
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  
-  border-top: 20px solid #f00;
+	position: absolute;
+
+	top: 100%;
+	right: 1.3rem;
+
+	width: 0; 
+	height: 0; 
+	border-left: 1rem solid transparent;
+	border-right: 1rem solid transparent;
+	border-top: 1rem solid hsl(0, 0%, 20%);
 }
 
 /* 3.7.2 help icon */
 .em-ht-q {
 	display: block;
 	position: absolute;
-	right: 1rem;
-	top: 1rem;
+	right: 0;
+	top: 0;
 
-	width: 1.5rem;
-	height: 1.5rem;
+	/*width: 1.5rem;*/
+	/*height: 1.5rem;*/
 
 	border: none;
-
+	padding: .5rem;
 	/*border-radius: 25px;*/
 	/*border: solid 1px gray;*/
 
@@ -802,29 +852,33 @@ select.em-i {
 	font-weight: 400;
 	text-align: center;
 	line-height: 2rem;
-	cursor: pointer;
-
-	background: url('https://norskfinans.no/wp-content/uploads/2019/03/spm.png') center center;
+	/*cursor: pointer;*/
+	background-color: white;
+	/*background: url('https://norskfinans.no/wp-content/uploads/2019/03/spm.png') center center;*/
 }
 
-.em-ht-q::after {
-	/*	width: 1.5rem;
-	height: 1.5rem;
-	content: ' ';*/
+.em-part-lower-container .em-lc .em-ht {
+	bottom: 140%;
 }
 
-/* 3.7.2.1 icon hover */
-.em-ht-q:hover {
-	background-color: hsl(0, 0%, 90%);
+.em-part-lower-container .em-ht-q {
+	top: -.5rem;
 }
 
 /* 2.7.2.2 help icon text */
-.em-ht-q > span {
-	/*position: relative;
-	bottom: .2rem;
-	right: .1rem;
+.em-ht-mark {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	font-size: 1.8rem;
+	border-radius: 50%;
+	background-color: #000;
+	color: #fff;
+	font-family: Montserrat;
+	font-weight: 700;
+	cursor: pointer;
 
-	font-size: 1.6rem;*/
 }
 
 /* 3.8 label */
@@ -844,6 +898,10 @@ select.em-i {
 }
 
 /* 3.9.2 checkbox buttons */
+.em-cc {
+	position: relative;
+}
+
 .em-cc-yes,
 .em-cc-no {
 	flex: 1;
@@ -1054,9 +1112,12 @@ select.em-i {
 
 /* 4.2.2 tenure input */
 .em-i-tenure {
+	/*text-align: center;*/
+	padding: 0 0 0 5rem;
 	/*width: auto;*/
-	padding-left: 0;
-	padding: 1rem 1.5rem 1rem 4.5rem;
+	/*padding-left: 0;*/
+	/*padding: 1rem 1.5rem 1rem 4.5rem;*/
+	font-family: Merriweather;
 }
 
 /* 4.2.3 tenure validation marker */
