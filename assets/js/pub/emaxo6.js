@@ -111,7 +111,9 @@
 			// console.log('kk: '+parseInt($('.em-compare-kk').html()));
 			// console.log('cost: '+parseInt(numb($('.em-if-monthly_cost').val())));
 
-			$('.em-compare-save').html(parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val())));
+			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
+
+			$('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
 			// qs('.em-if-monthly_cost').value = kroner(cost);
 
 

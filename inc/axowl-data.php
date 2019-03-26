@@ -173,6 +173,7 @@ final class Axowl_data {
 	private function send_axo($data) {
 		$settings = get_option('em_axowl');
 		if (!isset($settings['form_url']) || !isset($settings['name'])) return;
+		
 		echo 'hi';
 		return;
 

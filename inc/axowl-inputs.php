@@ -106,7 +106,7 @@ final class Axowl_inputs {
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 
 							  'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 250000, 'step' => 10000],
 			// 'tenure' => ['text' => true, 'range' => true, 'validation' => 'ar', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
-			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true, 'hidden' => true],
+			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 15, 'key_as_value' => true, 'hidden' => true],
 			// 'tenure' => ['text' => true, 'hidden' => true],
 			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true, 'show' => 'em-element-collect_compare'],
 			'collect_compare' => ['compare' => true],

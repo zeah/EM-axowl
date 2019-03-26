@@ -172,7 +172,7 @@ final class Axowl_shortcode_parts {
 	 */
 	private function text($o = []) {
 		if (!isset($o['name'])) return '';
-		
+		// if (isset($o['ht'])) wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		return sprintf(
 			'<div class="em-ic em-ic-%1$s">
 				<label for="%1$s" class="em-label em-label-%1$s">
@@ -187,7 +187,7 @@ final class Axowl_shortcode_parts {
 			
 			$o['text'], // 2
 			
-			(!isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '', // 3
+			(isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '', // 3
 
 			isset($o['value']['max']) ? ' max='.$o['value']['max'] : '', // 4
 			
@@ -371,10 +371,10 @@ final class Axowl_shortcode_parts {
 	private function help_element($name, $text) {
 		return sprintf(
 			'<button type="button" class="em-ht-q">
-					<span>?</span>
+					
 				</button>
 				<div class="em-ht em-hidden em-ht-%s">
-					<div class="arrow-right"></div>
+					<div class="em-ht-arrowdown"></div>
 					<div>%s</div></div>',
 			
 			$name,
