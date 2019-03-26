@@ -126,6 +126,8 @@ final class Axowl_shortcode_parts {
 		if (isset($data[$key.'_error']) && $data[$key.'_error']) $d['et'] = $data[$key.'_error'];
 
 		if (isset($value['button_text'])) $d['text'] = $value['button_text'];
+
+
 		// html element container
 		$html = sprintf('
 			<div class="em-element-container em-element-%s%s">', 
@@ -154,6 +156,8 @@ final class Axowl_shortcode_parts {
 		if (isset($value['list'])) $html .= $this->list($d);
 
 		if (isset($value['button'])) $html .= $this->button($d);
+
+		if (isset($value['compare'])) $html .= $this->compare();
 
 		// end of html element container		
 		$html .= '</div>';
@@ -414,6 +418,22 @@ final class Axowl_shortcode_parts {
 			esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/'.$invalid)
 			// esc_url(EM_AXOWL_PLUGIN_URL.'assets/img/redtick.png')
 		);		
+	}
+
+	private function compare() {
+
+		return '<div class="em-compare-text">Besparelse intill
+				<span class="em-compare-save"></span>
+				pr mnd* hvis du refinansierer kr
+				<span class="em-compare-amount"></span>
+				</div>
+				<div class="em-compare-text-info">
+					Månedsrente kredittkort 22% nom, kostnad per måned: kr 
+					<span class="em-compare-kk">4 174</span>,-. Månedsrente lån gjennom Axo Finans 7.90% nom, månedsbeløp: kr 
+				    <span class="em-compare-monthly">1 417</span>,-, nedbetalingstid: 
+				    <span class="em-compare-tenure">5</span> år.
+				</div>';
+
 	}
 
 

@@ -85,13 +85,37 @@
 
 	var numb = function(n) { return n.replace(/[^0-9]/g, '') }
 
+	var cost = function(i) {
+		i = i / 12;
+
+		var p = numb(qs('.em-i-loan_amount').value);
+		var n = numb(qs('.em-i-tenure').value)*12;
+		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))
+	}
+
 	var payment = function() {
-		var i = 0.0681/12;
+		// var i = 0.0681/12;
 		try { 
 			var p = numb(qs('.em-i-loan_amount').value);
 			var n = numb(qs('.em-i-tenure').value)*12;
 
-			qs('.em-if-monthly_cost').value = kroner(Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))) 
+			// var cost = Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i));
+
+			$('.em-if-monthly_cost').val(kroner(cost(0.0681)));
+			$('.em-compare-amount').html(p);
+
+			$('.em-compare-kk').html(cost(0.22));
+			$('.em-compare-monthly').html(cost(0.0681));
+			$('.em-compare-tenure').html(numb($('.em-i-tenure').val()));
+
+			// console.log('kk: '+parseInt($('.em-compare-kk').html()));
+			// console.log('cost: '+parseInt(numb($('.em-if-monthly_cost').val())));
+
+			$('.em-compare-save').html(parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val())));
+			// qs('.em-if-monthly_cost').value = kroner(cost);
+
+
+
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
 
@@ -594,95 +618,136 @@
 
 
 		// CHECKBOX INPUTS
-		var checkboxInput = qsa('.em-cc');
-		for (var i = 0; i < checkboxInput.length; i++) (function() {
-			var c = checkboxInput[i];
 
-			var yes = c.querySelector('.em-cc-yes');
-			var no = c.querySelector('.em-cc-no');
-			var input = c.querySelector('.em-c');
+		$('.em-cc').each(function() {
 
-			var show = input.getAttribute('data-show');
+			var show = $(this).children('.em-c').attr('data-show');
 
-			yes.addEventListener('click', function(e) {
-				input.value = 1;
+			if (show == undefined) return;
 
-				if (show) {
-					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+			var yes = true;
 
-					var temp = qs('.'+c);
+			if (/no:/.test(show)) yes = false;
 
-					// if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
-					// else temp.classList.remove('em-hidden');
-					// console.log(qs('.'+c).parentNode);
-
-					if (show.indexOf('no:') != 1) {
-						qs('.'+c).parentNode.style.display = 'block';
-						jQuery('.'+c).slideDown(500, function(e) {
-							this.classList.remove('em-hidden');
-						});
-					}
-
-					else {
-						jQuery('.'+c).slideUp(500, function(e) {
-							this.classList.add('em-hidden');
-							// jQuery(this).hide();
-							// console.log(qs('.'+c).parentNode);
-							qs('.'+c).parentNode.style.display = 'none';
-						});
-					}
-
-				}
-
-				yes.classList.add('em-cc-green');
-				no.classList.remove('em-cc-green');
-
-				// progress();
-			});
-
-			no.addEventListener('click', function(e) {
-				input.value = '';
-
-				if (show) {
-					var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
-
-					var temp = qs('.'+c);
-
-					// if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
-					// else temp.classList.add('em-hidden');
+			show = show.replace(/no:( |)/, '');			
 
 
-					if (show.indexOf('no:') != 1) {
-						jQuery('.'+c).slideUp(500, function(e) {
-							this.classList.remove('em-hidden');
-							qs('.'+c).parentNode.style.display = 'none';
-						});
-					}
-					else {
-						jQuery('.'+c).slideDown(500, function(e) {
-							this.classList.add('em-hidden');
-						});
-					}
-				}
+			var s = function(d) { $(d).slideDown('fast') }
+			var h = function(d) { $(d).slideUp('fast') }
+			var tno = function(d) { 
+				$(d).children('.em-cc-no').addClass('em-cc-green');
+				$(d).children('.em-cc-yes').removeClass('em-cc-green');
+			}
 
-				yes.classList.remove('em-cc-green');
-				no.classList.add('em-cc-green');
+			var tyes = function(d) { 
+				$(d).children('.em-cc-yes').addClass('em-cc-green');
+				$(d).children('.em-cc-no').removeClass('em-cc-green');
+			}
 
-				// special rule
-				// try {
-				// 	var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
-				// 	if (co) {
-				// 		var hInput = qs('.em-c-co_applicant_norwegian'); 
-				// 		hInput.value = '1';
-				// 		hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
-				// 		hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+			if (yes) {
+				$(this).find('.em-cc-yes').click(function() { s('.'+show); tyes($(this).parent()) });
+				$(this).find('.em-cc-no').click(function() { h('.'+show); tno($(this).parent()) });
+			}
+			else {
+				$(this).find('.em-cc-no').click(function() { s('.'+show); tno($(this).parent()) });
+				$(this).find('.em-cc-yes').click(function() { h('.'+show); tyes($(this).parent()) });
+			}
 
-				// 		qs('.em-co-applicant-norwegian').classList.add('em-hidden');
-				// 	}
-				// } catch (e) { console.error(e) }
-				// progress();
-			});
-		})();
+			// console.log(yes);
+			// console.log(show);
+			// console.log($(this).children('.em-c').attr('data-show'));
+		});
+
+
+		// var checkboxInput = qsa('.em-cc');
+		// for (var i = 0; i < checkboxInput.length; i++) (function() {
+		// 	var c = checkboxInput[i];
+
+		// 	var yes = c.querySelector('.em-cc-yes');
+		// 	var no = c.querySelector('.em-cc-no');
+		// 	var input = c.querySelector('.em-c');
+
+		// 	var show = input.getAttribute('data-show');
+
+		// 	yes.addEventListener('click', function(e) {
+		// 		input.value = 1;
+
+		// 		if (show) {
+		// 			var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+		// 			var temp = qs('.'+c);
+
+		// 			// if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
+		// 			// else temp.classList.remove('em-hidden');
+		// 			// console.log(qs('.'+c).parentNode);
+
+		// 			if (show.indexOf('no:') != 1) {
+		// 				qs('.'+c).parentNode.style.display = 'block';
+		// 				jQuery('.'+c).slideDown(500, function(e) {
+		// 					this.classList.remove('em-hidden');
+		// 				});
+		// 			}
+
+		// 			else {
+		// 				jQuery('.'+c).slideUp(500, function(e) {
+		// 					this.classList.add('em-hidden');
+		// 					// jQuery(this).hide();
+		// 					// console.log(qs('.'+c).parentNode);
+		// 					qs('.'+c).parentNode.style.display = 'none';
+		// 				});
+		// 			}
+
+		// 		}
+
+		// 		yes.classList.add('em-cc-green');
+		// 		no.classList.remove('em-cc-green');
+
+		// 		// progress();
+		// 	});
+
+		// 	no.addEventListener('click', function(e) {
+		// 		input.value = '';
+
+		// 		if (show) {
+		// 			var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
+
+		// 			var temp = qs('.'+c);
+
+		// 			// if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
+		// 			// else temp.classList.add('em-hidden');
+
+
+		// 			if (show.indexOf('no:') != 1) {
+		// 				jQuery('.'+c).slideUp(500, function(e) {
+		// 					this.classList.remove('em-hidden');
+		// 					qs('.'+c).parentNode.style.display = 'none';
+		// 				});
+		// 			}
+		// 			else {
+		// 				jQuery('.'+c).slideDown(500, function(e) {
+		// 					this.classList.add('em-hidden');
+		// 				});
+		// 			}
+		// 		}
+
+		// 		yes.classList.remove('em-cc-green');
+		// 		no.classList.add('em-cc-green');
+
+		// 		// special rule
+		// 		// try {
+		// 		// 	var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
+		// 		// 	if (co) {
+		// 		// 		var hInput = qs('.em-c-co_applicant_norwegian'); 
+		// 		// 		hInput.value = '1';
+		// 		// 		hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
+		// 		// 		hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
+
+		// 		// 		qs('.em-co-applicant-norwegian').classList.add('em-hidden');
+		// 		// 	}
+		// 		// } catch (e) { console.error(e) }
+		// 		// progress();
+		// 	});
+		// })();
 		
 
 
@@ -900,7 +965,7 @@
 
 					$('.em-part-1-grid').css({
 						'grid-template-columns': '1fr 1fr 1fr 1fr',
-						'grid-template-areas': '"loan tenure monthly refinancing"',
+						'grid-template-areas': '"loan tenure monthly refinancing" "compare compare compare compare"',
 						'grid-column-gap': '2rem',
 						'padding': '4rem 2rem'
 					});
@@ -915,6 +980,8 @@
 						'font-family': 'Merriweather',
 						'font-weight': '900'
 					});
+
+					$('.em-compare-text').css('font-size', '2rem');
 
 					$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
 						jQuery('.em-slidedown').slideDown(800);
@@ -1271,7 +1338,7 @@
 	// console.log(emurl.ajax_url);
 
 	// Check cookies first
-	// if (!/(^| )em_popup=/.test(document.cookie))  
+	if (!/(^| )em_popup=/.test(document.cookie))  
 		$('body').one('mouseleave', function() { showPopup() });
 		
 

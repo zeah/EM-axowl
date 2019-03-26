@@ -100,9 +100,10 @@
  *	  		4.8.1 container
  *	  		4.8.2 inner container
  *	  		4.8.3 input (disabled)
- *	  	4.9 neste button (first part button)
- *	  		4.9.1 container
- *	  		4.9.2 button
+ 		4.9	compare to credit card
+ *	  	4.10 neste button (first part button)
+ *	  		4.10.1 container
+ *	  		4.10.2 button
  *
  * 	5.0 popup window (on form post)
  * 		5.1 container
@@ -229,7 +230,8 @@
 /*.em-b-next,*/
 .em-b-submit,
 .em-i,
-.em-r {
+.em-r,
+.em-compare-save {
 	/*border-color: black red green blue;*/
 	/*border: ridge 3px;*/
 	border: solid 2.6px hsl(0, 0%, 20%);
@@ -475,6 +477,7 @@
 	grid-template-areas: 
 	"loan loan monthly monthly"
 	". neste neste ."
+	"compare compare compare compare"
 	"tenure refinancing mobile mobile"
 	"axoaccept axoaccept email email"
 	"contactaccept contactaccept email email";
@@ -1126,13 +1129,39 @@ select.em-i {
 }
 
 
-/*.em-co-applicant {*/
-	/*float: right;*/
-/*}*/
+/* 4.9 compare to credit card */
+.em-element-collect_compare {
+	grid-area: compare;
+	display: none;
+	margin: 1rem 0;
+}
 
-/* 4.9 neste button */
+.em-compare-text {
+	margin: 1rem 0;
+	font-family: montserrat;
+}
 
-/* 4.9.1 neste container */
+.em-compare-save {
+	display: inline-block;
+	background-color: #96f;
+	font-size: 2rem;
+	padding: 1rem 0;
+	margin: 0 2rem;
+	color: white;
+	width: 10rem;
+	text-align: center;
+
+}
+
+.em-compare-text-info {
+	margin-top: 3rem;
+
+	font-size: 1rem;
+}
+
+/* 4.10 neste button */
+
+/* 4.10.1 neste container */
 .em-element-neste {
 	grid-area: neste;
 	/*justify-self: stretch;*/
@@ -1154,6 +1183,8 @@ select.em-i {
 	cursor: pointer;
 	font-family: merriweather;
 }
+
+
 
 
 /* 5.0 popup window */

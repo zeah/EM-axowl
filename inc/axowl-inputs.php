@@ -108,7 +108,8 @@ final class Axowl_inputs {
 			// 'tenure' => ['text' => true, 'range' => true, 'validation' => 'ar', 'format' => 'postfix: år', 'max' => 15, 'min' => 1, 'default' => 5],
 			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true, 'hidden' => true],
 			// 'tenure' => ['text' => true, 'hidden' => true],
-			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true],
+			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true, 'show' => 'em-element-collect_compare'],
+			'collect_compare' => ['compare' => true],
 			'mobile_number' => ['text' => true, 'type' => 'text', 'validation' => 'phone', 'digits' => 8, 'hidden' => true],
 			'email' => ['text' => true, 'validation' => 'email', 'hidden' => true],
 			'axo_accept' => ['check' => true, 'validation' => 'check', 'hidden' => true],
@@ -139,7 +140,7 @@ final class Axowl_inputs {
 			// '/div6' => '',
 			// 
 			// 
-			'co_applicant' => ['checkbox' => true, 'page' => '3', 'no' => true, 'show' => 'em-co-applicant'],
+			'co_applicant' => ['checkbox' => true, 'page' => '3', 'no' => true, 'show' => 'em-part-4'],
 
 			// 'div2' => ['class' => 'em-co-applicant em-lower', 'hidden' => true], 
 			// 'co_applicant_name' => ['text' => true, 'validation' => 'notEmpty'],
@@ -176,7 +177,7 @@ final class Axowl_inputs {
 			'number_of_children' => ['key_as_value' => true, 'list' => Axowl_list::number_of_children, 'validation' => 'list'],
 			'allimony_per_month' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
 
-			'div2' => ['class' => 'em-co-applicant em-lower', 'page' => '4', 'hidden' => true], 
+			'div2' => ['class' => 'em-co-applicant em-lower', 'page' => '4'], 
 			'co_applicant_name' => ['text' => true, 'validation' => 'notEmpty'],
 			'co_applicant_social_number' => ['text' => true, 'validation' => 'socialnumber', 'digits' => 11],
 			'co_applicant_mobile_number' => ['text' => true, 'validation' => 'phone', 'digits' => 8],
