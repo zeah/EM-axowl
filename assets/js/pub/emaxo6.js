@@ -674,7 +674,7 @@
 			$(this).find('.em-cc-yes').click(function() {
 				// $('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
 				$('.em-part-lower-container').find('.em-part').animate({
-					width: '19rem'
+					width: '25rem'
 				});
 				$('.em-part-4').show();
 				// $('.em-part-4').show().animate({
@@ -687,7 +687,7 @@
 
 			$(this).find('.em-cc-no').click(function() {
 				$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
-					width: '26rem'
+					width: '30rem'
 				});
 
 				$('.em-part-4').animate({
@@ -968,6 +968,8 @@
 					// return;
 				}
 
+				$('body').off('mouseleave', showPopup);
+
 				// hiding current part
 				// current.style.display = 'none';
 
@@ -1012,14 +1014,28 @@
 						'grid-template-columns': '2fr 1fr 1fr 1fr',
 						'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
 						'grid-column-gap': '2rem',
-						'padding': '4rem 2rem'
+						'padding': '4rem 6rem'
 					});
 
-					$('.em-element-monthly_cost').css({
-						'justify-self': 'auto',
-						'align-self': 'auto',
+					// $('.em-element-monthly_cost').css({
+					// 	'justify-self': 'auto',
+					// 	'align-self': 'auto',
+					// 	'margin': '0'
+					// });
+
+					// $('.em-element-tenure').css('margin-bottom', '0');
+					$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
+						'align-self': 'center',
+						'justify-self': 'center',
 						'margin': '0'
 					});
+					
+					$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
+						'width': '15rem'
+					})
+
+					$('.em-i-tenure, .em-c')
+
 
 					// $('.em-container-monthly_cost').css({
 					// 	'font-family': 'Merriweather',
@@ -1330,11 +1346,11 @@
 	// ajatest.send('action=wlinc');
 
 
-})(jQuery);
+// })(jQuery);
 
 
 
-(function($) {
+// (function($) {
 
 	var showPopup = function() {
 		$('.email-popup, .em-glass').fadeIn(1000);
@@ -1399,7 +1415,7 @@
 
 	// Check cookies first
 	if (!/(^| )em_popup=/.test(document.cookie))  
-		$('body').one('mouseleave', function() { showPopup() });
+		$('body').one('mouseleave', showPopup);
 		
 
 })(jQuery);
