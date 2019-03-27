@@ -88,38 +88,88 @@
 	var cost = function(i) {
 		i = i / 12;
 
+
 		var p = numb(qs('.em-i-loan_amount').value);
 		var n = numb(qs('.em-i-tenure').value)*12;
+		// return Math.floor(p * i);
 		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))
 	}
 
 	var payment = function() {
-		// var i = 0.0681/12;
+		// calculate(7.9);
+		// calculate(21.83);
 		try { 
 			var p = numb(qs('.em-i-loan_amount').value);
 			var n = numb(qs('.em-i-tenure').value)*12;
 
-			// var cost = Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i));
 
-			$('.em-if-monthly_cost').val(kroner(cost(0.0681)));
+			$('.em-if-monthly_cost').val(kroner(cost(0.068)));
 			$('.em-compare-amount').html(p);
 
-			$('.em-compare-kk').html(cost(0.22));
-			$('.em-compare-monthly').html(cost(0.0681));
+			$('.em-compare-kk').html(cost(0.220));
+			$('.em-compare-monthly').html(cost(0.068));
 			$('.em-compare-tenure').html(numb($('.em-i-tenure').val()));
 
-			// console.log('kk: '+parseInt($('.em-compare-kk').html()));
-			// console.log('cost: '+parseInt(numb($('.em-if-monthly_cost').val())));
 
 			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
+			// console.log(cost(0.22)+' ### '+cost(0.068));
+			// console.log(cost(0.068));
 
 			$('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
-			// qs('.em-if-monthly_cost').value = kroner(cost);
-
-
 
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
+
+	// function calculate(i) {
+	// 	var p = 300000;
+	// 	var interest = i / 100 / 12;
+
+	// 	var payments = 15 * 12;
+
+	// 	console.log(Math.round(p * interest));
+	// }
+
+
+// 	function calculate2(i) {
+//     // Get the user's input from the form. Assume it is all valid.
+//     // Convert interest from a percentage to a decimal, and convert from
+//     // an annual rate to a monthly rate. Convert payment period in years
+//     // to the number of monthly payments.
+//     // var principal = numb($('.em-i-loan_amount').val());
+//     var principal = 300000;
+//     var interest = i / 100 / 12;
+//     // var payments = numb($('.em-i-tenure').val()) * 12;
+//     var payments = 5 * 12;
+
+
+//     // principal = parseInt(principal) + 950;
+
+//     // Now compute the monthly payment figure, using esoteric math.
+//     var x = Math.pow(1 + interest, payments);
+//     var monthly = (principal*x*interest)/(x-1);
+
+//     // Check that the result is a finite number. If so, display the results.
+//     if (!isNaN(monthly) && 
+//         (monthly != Number.POSITIVE_INFINITY) &&
+//         (monthly != Number.NEGATIVE_INFINITY)) {
+//     	console.log(round(monthly));
+//         // document.loandata.payment.value = round(monthly);
+//         // document.loandata.total.value = round(monthly * payments);
+//         // document.loandata.totalinterest.value = round((monthly * payments) - principal);
+//     }
+//     // Otherwise, the user's input was probably invalid, so don't
+//     // display anything.
+//     // else {
+//     //     document.loandata.payment.value = "";
+//     //     document.loandata.total.value = "";
+//     //     document.loandata.totalinterest.value = "";
+//     // }
+// }
+
+// This simple method rounds a number to two decimal places.
+function round(x) {
+  return Math.round(x*100)/100;
+}
 
 	var val = {
 		numbersOnly: function(d) {
@@ -237,9 +287,7 @@
 		try { 
 			var data = e.value;
 			var pa = e.parentNode;
-			// var pa = e.parentNode.parentNode;
 
-			// var mark = pa.querySelector('.em-val-marker');
 			// removing postfix
 			if (format && format.indexOf('postfix:') -1) {
 				var temp = format.replace('postfix:', '');
@@ -252,51 +300,25 @@
 
 			// validating
 			if (!val[valid](data)) {
-				// console.log(e.type);
-				// if (e.type == 'checkbox') pa.style.backgroundColor = 'hsl(0, 80%, 70%)';
-				// console.log(e.nextSibling.nextSibling);
 				if (e.type == 'checkbox') e.nextSibling.nextSibling.style.color = 'hsl(0, 100%, 70%)';
-				// console.log(e.type);
-				// switch (e.type) {
 				else {
-					// e.style.border = "solid 3px black";
-					// console.log('hey');
-					// pa.querySelector('.em-marker-valid').classList.add('em-hidden');
-					// pa.querySelector('.em-marker-invalid').classList.remove('em-hidden');
 
 					e.style.border = "solid 3px hsl(0, 70%, 60%)";
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.remove('em-hidden');
 				}
 
-				// qs('.em-marker-valid').classList.add('em-hidden');
-				// qs('.em-marker-invalid').classList.remove('em-hidden');
-				// if (mark) {
-					// mark.classList.remove('em-val-marker-yes');
-					// mark.classList.add('em-val-marker-no');
-				// }
 				return false;
 			} 
 			
 			else { 
 				if (e.type == 'checkbox') e.nextSibling.nextSibling.style.color = 'hsl(0, 0%, 0%)';
-				// if (e.type == 'checkbox') pa.style.backgroundColor = 'transparent';
 				else {
-					// pa.querySelector('.em-marker-valid').classList.remove('em-hidden');
-					// pa.querySelector('.em-marker-invalid').classList.add('em-hidden');
 					e.style.border = "solid 3px hsl(120, 70%, 30%)";
 					
 					var errEl = pa.querySelector('.em-error'); 
 					if (errEl) errEl.classList.add('em-hidden');
-					// pa.querySelector('.em-error').classList.add('em-hidden');
 				}
-				// qs('.em-marker-valid').classList.remove('em-hidden');
-				// qs('.em-marker-invalid').classList.add('em-hidden');
-				// pa.style.backgroundColor = 'transparent';
-				// if (mark) {
-					// mark.classList.remove('em-val-marker-no');
-					// mark.classList.add('em-val-marker-yes');
-				// }
 				return true;
 			}
 		}
@@ -308,7 +330,6 @@
 
 	var progress = function() {
 		var li = qsa('.em-i:not(button)');
-		// var li = document.querySelectorAll('.em-i:not(button)');
 
 		var t = 0;
 		var c = 0;
@@ -353,8 +374,8 @@
 		var xhttp = new XMLHttpRequest();
 
 		xhttp.onreadystatechange = function() {
-			// if (this.readyState == 4 && this.status == 200)
-				// console.log(this.responseText);
+			if (this.readyState == 4 && this.status == 200)
+				console.log(this.responseText);
 		}
 
 		var query = '';
@@ -429,13 +450,9 @@
 					  '.em-element-contact_accept'];
 
 
-			// jQuery(el).slideDown('slow');
 	        for (var i in el) {
 	        	var ele = qs(el[i]);
 
-	        	// ele.style.display = 'block';
-	        	// ele.style.maxHeight = 0;
-	        	// jQuery(ele).slideDown(3000);
 	        	ele.classList.remove('em-hidden');
 	        	ele.classList.add('em-animate-show');
 	        }
@@ -524,12 +541,6 @@
 
 			// selecting all text when focusing input
 			n.addEventListener('focus', function(e) { 
-			
-				// var mark = e.target.parentNode.querySelector('.em-val-marker');
-				// console.log(e.target.parentNode);
-				// mark.classList.remove('em-val-marker-yes');
-				// mark.classList.remove('em-val-marker-no');
-
 				e.target.select();
 			});
 
@@ -542,7 +553,6 @@
 
 			// VALIDATION
 			if (valid) {
-				// n.addEventListener('input', function(e) { v(e.target, format, valid) });
 				n.addEventListener('focusout', function(e) { v(e.target, format, valid) });
 			}
 
@@ -559,24 +569,11 @@
 
 			// SPECIAL RULES
 			switch (n.classList[1]) {
-				// case 'em-i-tenure':
 				case 'em-i-loan_amount': 
 					n.addEventListener('input', function(e) { payment() });
 					n.addEventListener('focusout', function(e) { payment() });
 					break;
 
-				// case 'em-i-email':
-				// 	n.addEventListener('input', function(e) {
-				// 		var l = e.target.value.length;
-				// 		var s = function(p) { e.target.style.fontSize = p }
-
-				// 		if (l > 10) s('18px');
-				// 		if (l > 20) s('16px');
-				// 		if (l > 30) s('14px');
-				// 		if (l > 40) s('12px');
-
-				// 	});
-				// 	break;
 			}
 		})();
 		
@@ -655,9 +652,6 @@
 				$(this).find('.em-cc-yes').click(function() { h('.'+show); tyes($(this).parent()) });
 			}
 
-			// console.log(yes);
-			// console.log(show);
-			// console.log($(this).children('.em-c').attr('data-show'));
 		});
 
 		$('.em-cc-co_applicant').each(function() {
@@ -672,14 +666,10 @@
 			show = show.replace(/no:( |)/, '');
 
 			$(this).find('.em-cc-yes').click(function() {
-				// $('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
 				$('.em-part-lower-container').find('.em-part').animate({
 					width: '25rem'
 				});
 				$('.em-part-4').show();
-				// $('.em-part-4').show().animate({
-				// 	width: '19rem'
-				// });
 
 				$(this).addClass('em-cc-green');
 				$('.em-cc-co_applicant').find('.em-cc-no').removeClass('em-cc-green');			
@@ -702,98 +692,6 @@
 			});
 
 		});
-
-
-		// var checkboxInput = qsa('.em-cc');
-		// for (var i = 0; i < checkboxInput.length; i++) (function() {
-		// 	var c = checkboxInput[i];
-
-		// 	var yes = c.querySelector('.em-cc-yes');
-		// 	var no = c.querySelector('.em-cc-no');
-		// 	var input = c.querySelector('.em-c');
-
-		// 	var show = input.getAttribute('data-show');
-
-		// 	yes.addEventListener('click', function(e) {
-		// 		input.value = 1;
-
-		// 		if (show) {
-		// 			var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
-
-		// 			var temp = qs('.'+c);
-
-		// 			// if (show.indexOf('no:') != -1) temp.classList.add('em-hidden');
-		// 			// else temp.classList.remove('em-hidden');
-		// 			// console.log(qs('.'+c).parentNode);
-
-		// 			if (show.indexOf('no:') != 1) {
-		// 				qs('.'+c).parentNode.style.display = 'block';
-		// 				jQuery('.'+c).slideDown(500, function(e) {
-		// 					this.classList.remove('em-hidden');
-		// 				});
-		// 			}
-
-		// 			else {
-		// 				jQuery('.'+c).slideUp(500, function(e) {
-		// 					this.classList.add('em-hidden');
-		// 					// jQuery(this).hide();
-		// 					// console.log(qs('.'+c).parentNode);
-		// 					qs('.'+c).parentNode.style.display = 'none';
-		// 				});
-		// 			}
-
-		// 		}
-
-		// 		yes.classList.add('em-cc-green');
-		// 		no.classList.remove('em-cc-green');
-
-		// 		// progress();
-		// 	});
-
-		// 	no.addEventListener('click', function(e) {
-		// 		input.value = '';
-
-		// 		if (show) {
-		// 			var c = show.replace(/^(yes:\s?)|(no:\s?)/, '');
-
-		// 			var temp = qs('.'+c);
-
-		// 			// if (show.indexOf('no:') != -1) temp.classList.remove('em-hidden');
-		// 			// else temp.classList.add('em-hidden');
-
-
-		// 			if (show.indexOf('no:') != 1) {
-		// 				jQuery('.'+c).slideUp(500, function(e) {
-		// 					this.classList.remove('em-hidden');
-		// 					qs('.'+c).parentNode.style.display = 'none';
-		// 				});
-		// 			}
-		// 			else {
-		// 				jQuery('.'+c).slideDown(500, function(e) {
-		// 					this.classList.add('em-hidden');
-		// 				});
-		// 			}
-		// 		}
-
-		// 		yes.classList.remove('em-cc-green');
-		// 		no.classList.add('em-cc-green');
-
-		// 		// special rule
-		// 		// try {
-		// 		// 	var co = e.target.parentNode.parentNode.querySelector('.em-c-co_applicant');
-		// 		// 	if (co) {
-		// 		// 		var hInput = qs('.em-c-co_applicant_norwegian'); 
-		// 		// 		hInput.value = '1';
-		// 		// 		hInput.parentNode.querySelector('.em-cc-yes').classList.add('em-cc-green');
-		// 		// 		hInput.parentNode.querySelector('.em-cc-no').classList.remove('em-cc-green');
-
-		// 		// 		qs('.em-co-applicant-norwegian').classList.add('em-hidden');
-		// 		// 	}
-		// 		// } catch (e) { console.error(e) }
-		// 		// progress();
-		// 	});
-		// })();
-		
 
 
 		// CHECK INPUTS
@@ -937,7 +835,7 @@
 		// NEXT/PREV/SUBMIT BUTTONS
 		try {
 			qs('.em-b-next').addEventListener('click', function(e) {
-				// console.log('hi');
+
 				// VALIDATION OF CURRENT PART
 				var test = current.querySelectorAll('.em-i');
 				var success = true;
@@ -946,8 +844,6 @@
 					var n = test[i];
 
 					var p = n.parentNode.parentNode;
-
-					// console.log(p);
 
 					if (p.classList.contains('em-hidden')) return;
 
@@ -963,40 +859,10 @@
 				})();
 
 				// exit ramp
-				if (!success) {
-					// success = true;
-					// return;
-				}
+				if (!success) return;
 
 				$('body').off('mouseleave', showPopup);
 
-				// hiding current part
-				// current.style.display = 'none';
-
-				// try {
-				// showing next part
-				// current.nextSibling.style.display = 'block';
-				// showing prev button
-				// qs('.em-b-back').classList.remove('em-hidden');
-
-					// current.nextSibling.classList.add('em-animate-show');
-					// // replace next button with submit button if no more parts
-					// if (!current.nextSibling.nextSibling) {
-					// 	e.target.classList.add('em-hidden');
-					// 	qs('.em-b-submit').classList.remove('em-hidden');
-					// }
-					// current = current.nextSibling;
-
-				// qs('.em-part-1').classList.add('em-hidden');
-				// qs('.em-part-1-grid').classList.add('em-part-1-done');
-				// qs('.em-part-lower-container').classList.remove('em-hidden');
-				// 
-				// 
-
-
-
-				// e.target.classList.add('em-hidden');
-				// qs('.em-b-submit').classList.remove('em-hidden');
 
 				$('.emtheme-footer-container, .navbar-menu').fadeOut(100);
 				$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
@@ -1017,13 +883,6 @@
 						'padding': '4rem 6rem'
 					});
 
-					// $('.em-element-monthly_cost').css({
-					// 	'justify-self': 'auto',
-					// 	'align-self': 'auto',
-					// 	'margin': '0'
-					// });
-
-					// $('.em-element-tenure').css('margin-bottom', '0');
 					$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
 						'align-self': 'center',
 						'justify-self': 'center',
@@ -1037,10 +896,6 @@
 					$('.em-i-tenure, .em-c')
 
 
-					// $('.em-container-monthly_cost').css({
-					// 	'font-family': 'Merriweather',
-					// 	'font-weight': '900'
-					// });
 
 					$('.em-compare-text').css('font-size', '2rem');
 
@@ -1050,7 +905,6 @@
 					});
 
 				});
-				// });
 
 
 				$('.em-b-endre').click(function() {
@@ -1058,70 +912,15 @@
 					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
 				});
 
-				// var part1 = qs('.em-part-1-grid');
-
-				// jQuery(part1).slideUp(800);
-
-				// var title = qs('.em-part-1 .em-part-title');
-
-				// title.innerHTML = '<div>Endre Lånebeløp:</div><div>Lånebeløp: '+qs('.em-i-loan_amount').value + '</div><div>Månedskostnad fra '+qs('.em-if-monthly_cost').value+'</div>';
-				// title.style.display = 'flex';
-
-
-				// jQuery(title).one('click', function() {
-				// 	jQuery(this).hide();
-				// 	jQuery(part1).slideToggle();
-				// });
-
 
 
 				qs('.em-form-container').style.borderBottom = 'none';
 
-				// qs('.em-part-1 .em-part-title').style.display = 'block';
-
-				// jQuery('.em-part-lower-container').slideDown({duration: 3000,
-				// 	  start: function () {
-				// 	    qs('.em-part-lower-container').style.display = 'flex';
-				// 	  }
-				// 	});
-
-				// TODO disable on mobile?
-				// if (window.innerWidth > 816) window.scroll(0, 1500);
-
-
-				// if (window.innerWidth > 1000) current.querySelector('.em-i').focus();
-
-				// var o = qs('.em-progress-container');
-
-				// o.scrollTop = o.scrollHeight;
-
-				// console.log(qs('.em-b-next').getBoundingClientRect());
-
-				// var y = qs('.em-progress-container').getBoundingClientRect()['y'];
-
-				// console.log(y);
-
-				// y = window.height - y;
-
-				// window.scroll(0, y);
-				// current.querySelector('.em-part-title').classList.add('em-part-title-slide');
-
-				// } catch (e) { console.error(e) }
-				// 
-				// 
-
-				// console.log(qs('.em-form-container').parentNode.querySelectorAll('*:not(.em-form-container)'));
 
 				var eles = qsa('.content-post > div:not(.em-form-container)');
 
 				for (var i = 0; i < eles.length; i++)
 					jQuery(eles[i]).fadeOut('fast');
-					// eles[i].style.display = 'none';
-					// console.log(eles[i]);
-				// for (var el in eles)
-					// console.log(eles[el]);
-					// 
-					// 
 
 				window.location.hash = 'form';
 
@@ -1141,7 +940,6 @@
 
 				var valid = true;
 
-				// var inputs = qsa('input.em-i:not(.em-check), .em-c, select.em-i');
 				var inputs = qsa('.emowl-form input.em-i, .emowl-form .em-c, .emowl-form select.em-i');
 
 				for (var i = 0; i < inputs.length; i++) {
@@ -1170,9 +968,8 @@
 					data += '&data['+n.name+']='+value;
 				}
 
-				if (!valid) {
-					// return;
-				}
+
+				if (!valid) return;
 
 				var cookie = document.cookie.split('; ');
 				for (var i in cookie) {
@@ -1184,14 +981,11 @@
 
 
 				data += abtesting();
-				// console.log(data);
-				// if (!valid) return;				
 
 				qs('.em-b-send').removeEventListener('click', post);
 
 				var close = function(e) { $('.em-popup').slideUp(1000) }
 
-				// qs('.em-popup-button').addEventListener('click', close);
 				qs('.em-popup-x').addEventListener('click', close);
 
 				qs('.em-b-send').innerHTML = 'Søknad sendes ...';
@@ -1202,16 +996,8 @@
 					if (this.readyState == 4 && this.status == 200) {
 
 						try {
-							// qs('.em-b-submit').style.display = 'none';
-							// qs('.emowl-form').style.display = 'none';
-							// 
-							// 
 							$('.emowl-form').slideUp(800, function() {
-								// $('.emowl-form').fadeOut();
 								$('.em-popup').slideDown(800, function() {
-									// var eles = qsa('.content-post > div:not(.em-form-container)');
-									// for (var i = 0; i < eles.length; i++)
-										// jQuery(eles[i]).fadeOut('fast');
 
 									$('.content-post > div:not(.em-form-container)').each(function() {
 										$(this).fadeIn(2000);
@@ -1221,23 +1007,17 @@
 
 								});
 							});
-							// qs('.em-glass').style.display = 'none';
-							// qs('.em-popup').classList.add('em-popup-show');
 						} catch (e) { console.error(e) }
 
 						console.log(this.responseText);
 					}
 				}
 
-				// try {
-					// qs('.em-glass').style.display = 'block';
-				// } catch (e) { console.log(e) }
 
 				// sending to server
 				xhttp.open('POST', emurl.ajax_url, true);
 				xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhttp.send('action=axowl'+data);
-				// console.log(data);
 
 			}
 
@@ -1247,12 +1027,10 @@
 
 
 		// helper text
-		// var hm = document.querySelectorAll('.em-ht-q');
 		var hm = qsa('.em-ht-mark');
 		for (var i = 0; i < hm.length; i++) 
 			(function() { 
 				var q = hm[i];
-				// var p = q.parentNode.parentNode;
 				var p = $(q).parent().parent().find('.em-ht');
 
 				$(q).mouseenter(function() {
@@ -1269,36 +1047,14 @@
 					$(p).toggle();
 				});
 
-				// q.addEventListener('mouseover', function(e) {
-				// 	try { p.querySelector('.em-ht').classList.remove('em-hidden');
-				// 	} catch (e) {}
-				// });
-
-				// q.addEventListener('mouseout', function(e) {
-				// 	try { p.querySelector('.em-ht').classList.add('em-hidden');
-				// 	} catch (e) {}
-				// });
-
-				// q.addEventListener('click', function(e) {
-				// 	try { p.querySelector('.em-ht').classList.toggle('em-hidden');
-				// 	} catch (e) {}
-
-				// });
+			
 			})();
 		
 
 		var inputs = qsa('input.em-i:not(.em-check)');
 		var selects = qsa('select.em-i, input.em-check');
 
-		// for (var i = 0; i < inputs.length; i++) (function() {
-		// 	inputs[i].addEventListener('focusout', function() { progress() });
-		// })();
-
-		// for (var i = 0; i < selects.length; i++) (function() {
-		// 	selects[i].addEventListener('change', function() { progress() });
-		// })();
-
-		// qs('.em-i-loan_amount').focus();
+	
 
 
 
@@ -1319,40 +1075,21 @@
 			
 		}
 
-		// console.log('hash '+window.location.hash);
-		//reset form 
-		//change title
-		//bookmarking? test to figure out
-		// console.log('heya');
+		
 	});
-
 
 	setCookie();
 	init();
 	payment();
-	// progress();
 
-	// var ajatest = new XMLHttpRequest();
+	var showPopup = function(e) {
 
-	// ajatest.onreadystatechange = function() {
-	// 	if (this.readyState == 4 && this.status == 200) {
-	// 		console.log(this.responseText);
-	// 	}
-	// }
+		// not all things on top of body is in body
+		// so do nothing if pointer has not left the window
+		if (e.clientX > 100 && e.clientY > 100) return;
 
-	// // sending to server
-	// ajatest.open('POST', emurl.ajax_url, true);
-	// ajatest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	// ajatest.send('action=wlinc');
+		$('body').off('mouseleave', showPopup);
 
-
-// })(jQuery);
-
-
-
-// (function($) {
-
-	var showPopup = function() {
 		$('.email-popup, .em-glass').fadeIn(1000);
 
 		$('.em-pop-email-x').one('click', function() {
@@ -1411,11 +1148,10 @@
 		document.cookie = 'em_popup=tester; expires='+date.toUTCString();
 	}
 
-	// console.log(emurl.ajax_url);
 
 	// Check cookies first
 	if (!/(^| )em_popup=/.test(document.cookie))  
-		$('body').one('mouseleave', showPopup);
+		$('body').on('mouseleave', showPopup);
 		
 
 })(jQuery);

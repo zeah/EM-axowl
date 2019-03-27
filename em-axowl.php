@@ -3,7 +3,7 @@
 /*
 Plugin Name: EM Axo WL
 Description: Axo White Label
-Version: 0.0.28
+Version: 0.0.29
 GitHub Plugin URI: zeah/EM-axowl
 */
 
