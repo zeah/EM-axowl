@@ -391,8 +391,12 @@
 .em-part-lower-container {
 	display: grid;
 	grid-template-areas: 
-	 "title title title title title"
-	 "one two three four five";
+	 "title title title"
+	 "two three five";
+
+	 grid-template-rows: auto auto;
+
+	 justify-items: center;
 
 	 /*display: flex;*/
 	 /*flex-wrap: wrap;*/
@@ -976,6 +980,8 @@ select.em-i {
 .em-element-loan_amount {
 	grid-area: loan;
 
+
+	margin-bottom: 4rem;
 	/*display: flex;*/
 
 	/*align-items: flex-end;*/

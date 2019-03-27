@@ -666,6 +666,9 @@ function round(x) {
 			show = show.replace(/no:( |)/, '');
 
 			$(this).find('.em-cc-yes').click(function() {
+
+				$('.em-part-lower-container').css('grid-template-areas', '"title title title title" "two three four five"');
+
 				$('.em-part-lower-container').find('.em-part').animate({
 					width: '25rem'
 				});
@@ -674,6 +677,8 @@ function round(x) {
 				$(this).addClass('em-cc-green');
 				$('.em-cc-co_applicant').find('.em-cc-no').removeClass('em-cc-green');			
 			});
+
+
 
 			$(this).find('.em-cc-no').click(function() {
 				$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
@@ -684,6 +689,8 @@ function round(x) {
 					width: '0rem'
 				}, function() {
 					$(this).hide();
+					$('.em-part-lower-container').css('grid-template-areas', '"title title title" "two three five"');
+
 				});				
 
 				$(this).addClass('em-cc-green');
@@ -869,6 +876,7 @@ function round(x) {
 				$('.em-part-1-grid').slideUp(800, function() {
 
 					$('.emowl-form').css('width', 'auto');
+					$('.em-element-loan_amount').css('margin-bottom', '0');
 					$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 					$('.em-element-email').detach().prependTo('.em-part-2');
 					$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');

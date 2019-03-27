@@ -933,10 +933,10 @@ final class Axowl_shortcode {
 	}
 
 	public function sands6() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6.css', array(), '1.0.7', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6.css', array(), '1.0.8', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.1', '(max-width: 815px)');
         
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo6.js', ['jquery'], '1.0.15', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo6.js', ['jquery'], '1.0.16', true);
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
