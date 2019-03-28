@@ -363,7 +363,7 @@ final class Axowl_shortcode_parts {
 
 	private function button($o = []) {
 		return sprintf('
-			<button class="em-b-neste" type="button">%s</button>',
+			<button class="em-b em-b-neste" type="button">%s</button>',
 			$o['text']
 		);
 	}
@@ -394,6 +394,7 @@ final class Axowl_shortcode_parts {
 	}
 
 	private function valid_element($vers) {
+		return '';
 
 		$valid = 'hook.png';
 		$invalid = 'cross.png';
@@ -429,7 +430,7 @@ final class Axowl_shortcode_parts {
 				</div>
 				<div class="em-compare-text-info">
 					Månedsrente kredittkort 22% nom, kostnad per måned: kr 
-					<span class="em-compare-kk">4 174</span>,-. Månedsrente lån gjennom Axo Finans 7.90% nom, månedsbeløp: kr 
+					<span class="em-compare-kk">4 174</span>,-. Månedsrente lån gjennom Axo Finans 7.90% nom, månedsbeløp: 
 				    <span class="em-compare-monthly">1 417</span>,-, nedbetalingstid: 
 				    <span class="em-compare-tenure">5</span> år.
 				</div>';

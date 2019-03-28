@@ -46,6 +46,16 @@
 		return t;
 	}
 
+	var mob = function() {
+		if ($(window).width() < 816) return true;
+		return false;
+	}
+
+	var desktop = function() {
+		if ($(window).width() > 815) return true;
+		return false;
+	}
+
 	var isHidden = function(n) {
 		try {
 
@@ -104,7 +114,7 @@
 
 
 			$('.em-if-monthly_cost').val(kroner(cost(0.068)));
-			$('.em-compare-amount').html(p);
+			$('.em-compare-amount').html('kr '+p);
 
 			$('.em-compare-kk').html(cost(0.220));
 			$('.em-compare-monthly').html(cost(0.068));
@@ -443,19 +453,22 @@ function round(x) {
 	var showFirstPagePart = function(e) {
 		try {
 			
-			e.target.parentNode.style.display = 'none';
+			$('.em-element-neste').hide(0);
 
 			var el = ['.em-element-tenure', '.em-element-email', '.em-element-mobile_number',
 					  '.em-element-collect_debt', '.em-b-container', '.em-element-axo_accept',
 					  '.em-element-contact_accept'];
 
+			$(el).each(function() {
+				$(this).fadeIn('slow');
+			});				 
 
-	        for (var i in el) {
-	        	var ele = qs(el[i]);
+	        // for (var i in el) {
+	        // 	var ele = qs(el[i]);
 
-	        	ele.classList.remove('em-hidden');
-	        	ele.classList.add('em-animate-show');
-	        }
+	        // 	ele.classList.remove('em-hidden');
+	        // 	ele.classList.add('em-animate-show');
+	        // }
 
 	        // console.log('h');
 			if (window.innerWidth > 1000) qs('.em-i-tenure').focus();
@@ -866,12 +879,16 @@ function round(x) {
 				})();
 
 				// exit ramp
-				if (!success) return;
+				// if (!success) return;
 
 				$('body').off('mouseleave', showPopup);
 
 
-				$('.emtheme-footer-container, .navbar-menu').fadeOut(100);
+				// $('.emtheme-footer-container, .navbar-menu').fadeOut(100);
+
+				$('.emtheme-footer-container').slideUp(100);
+				$('.navbar-menu, .mobile-icon-container').hide();
+
 				$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 				$('.em-part-1-grid').slideUp(800, function() {
 
@@ -1041,17 +1058,20 @@ function round(x) {
 				var q = hm[i];
 				var p = $(q).parent().parent().find('.em-ht');
 
-				$(q).mouseenter(function() {
-					$(p).fadeIn(100);
-				});
 
-				$(q).mouseleave(function() {
-					$(p).fadeOut(200);
-				});
+				// if (desktop()) {
+					$(q).mouseenter(function() {
+						if (desktop()) $(p).fadeIn(100);
+					});
 
-				$(q).on('keypress', function(e) {
-					console.log(e);
-					if (e.which == 13)
+					$(q).mouseleave(function() {
+						if (desktop()) $(p).fadeOut(200);
+					});
+				// }
+
+				$(q).on('click', function(e) {
+					// console.log(e);
+					// if (e.which == 13)
 					$(p).toggle();
 				});
 
@@ -1074,17 +1094,15 @@ function round(x) {
 	window.addEventListener('hashchange', function() {
 
 		if (window.location.hash == '') {
-			var eles = qsa('.content-post > div:not(.em-form-container)');
-
-			for (var i = 0; i < eles.length; i++)
-				jQuery(eles[i]).fadeIn('fast');
-
-
-			
+			$('.content-post > *:not(.em-form-container), .navbar-menu, .emtheme-footer-container').each(function() {
+				$(this).fadeIn('fast');
+			});
+			$('.em-part-1-grid').slideDown();
+			$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
 		}
-
-		
 	});
+
+	if (window.location.hash == '#form') { showFirstPagePart() }
 
 	setCookie();
 	init();
