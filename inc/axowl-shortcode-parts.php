@@ -21,16 +21,18 @@ final class Axowl_shortcode_parts {
 	 * @param  [type] $nr [description]
 	 * @return [type]     [description]
 	 */
-	public function page_top($nr = null) {
+	public function page_top($nr = null, $class = null) {
 		if (!$nr) return '';
 
 		return sprintf(
-			'<div class="em-part em-part-%s">
+			'<div class="em-part em-part-%s%s">
 				<div class="em-part-title-container">
 					<h2 class="em-part-title"></h2>
 				</div>',
 
-				$nr
+				$nr,
+
+				$class ? ' '.$class : ''
 		);
 	}
 
@@ -277,7 +279,7 @@ final class Axowl_shortcode_parts {
 	private function check($o = []) {
 		return sprintf('
 			<div class="em-element em-element-check em-element-check-%1$s">
-				<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s checked>
+				<input type="checkbox" name="%1$s" id="em-check-%1$s" class="em-i em-check em-check-%1$s"%3$s>
 				<label for="em-check-%1$s"><span>%2$s</span></label>
 			</div>',
 			

@@ -140,10 +140,15 @@
 	display: none;
 }
 
+body {
+	background-color: #f2e7d5 !important;
+}
+
 /*.content,*/
 .page-container {
 	/*background-color: #fc6;*/
-	background-color: #f2e7d5;
+	/*background-color: #f2e7d5;*/
+	min-height: auto;
 }
 
 .content {
@@ -790,6 +795,10 @@ select.em-i {
 	height: 1.7rem;
 	width: 1.7rem;
 	/*border-color: red;*/
+}
+
+.em-element-check-unchecked span::before {
+	border-color: hsl(0, 100%, 70%);
 }
 
 

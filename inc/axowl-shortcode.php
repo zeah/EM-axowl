@@ -440,7 +440,7 @@ final class Axowl_shortcode {
 		foreach($inputs as $key => $value) {
 			if (is_array($value)) $value['help'] = true;
 			// if new page
-			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page']);
+			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page'], (isset($value['page_class']) ? $value['page_class'] : null));
 			
 			// page content
 			$html .= $p->element($key, $value, $data);

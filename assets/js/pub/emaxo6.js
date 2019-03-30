@@ -19,6 +19,707 @@
 
 
 (function($) {
+	var validColor = 'green';
+	var invalidColor = 'red';
+
+	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+
+	var numb = function(n) { return parseInt(String(n).replace(/[^0-9]/g, '')) }
+
+	var kroner = function(n) {
+		n = numb(n);
+
+		if (n == '' || !n) return '';
+		return parseInt(n).toLocaleString(
+							// 'sv-SE', 
+							'nb-NO', 
+							{
+								style: 'currency', 
+								// currency: 'SEK',
+								currency: 'NOK',
+								minimumFractionDigits: 0
+							});
+	}
+
+	var cost = function(i) {
+		i = i / 12;
+
+		var p = numb($('.em-i-loan_amount').val());
+		var n = numb($('.em-i-tenure').val())*12;
+
+		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))
+	}
+
+	var payment = function() {
+		try { 
+			var p = numb($('.em-i-loan_amount').val());
+			var n = numb($('.em-i-tenure').val())*12;
+
+			$('.em-if-monthly_cost').val(kroner(cost(0.068)));
+			$('.em-compare-amount').html('kr '+p);
+
+			$('.em-compare-kk').html(cost(0.220));
+			$('.em-compare-monthly').html(cost(0.068));
+			$('.em-compare-tenure').html(numb($('.em-i-tenure').val()));
+
+
+			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
+
+			$('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
+
+		} catch (e) { console.error('Cost calculation: '+e) }
+	};
+
+	payment();
+
+	$.fn.extend({
+		validate: function() { try { return this[0].val() } catch (e) { } },
+		validation: function() { return validation.call(this[0]) }
+	});
+
+	var val = {
+		list: function() { if (this.value == '') return false; return true },
+		
+		number: function() { if (/^\d+$/.test(this.value)) return true; return false },
+		
+		phone: function() {
+			var n = this.value.replace(/\D/g, '');
+			if (/^\d+$/.test(n) && n.length == 8) return true; 
+			return false 
+		},
+		
+		email: function() { if (/.+\@.+\..{2,}/.test(this.value)) return true; return false },
+		
+		currency: function() { if (/^\d+$/.test(this.value.replace(/[kr\.\s]/g, ''))) return true; return false },
+		
+		text: function() { if (/^[A-ZØÆÅa-zøæå\s]+$/.test(this.value)) return true; return false },
+		
+		notempty: function() { if (/.+/.test(this.value)) return true; return false },
+		
+		check: function() { return this.checked },
+		
+		bankaccount: function() { if (/^\d+$/.test(this.value) && this.value.length == 11) return true; return false },
+		
+		socialnumber: function() {
+			var d = this.value.replace(/[^0-9]/g, '');
+
+			if (d.length == 11) {
+				
+				// special rule
+				if (d == '00000000000') return false;
+				var f = d.split('');
+			    
+			    // first control number
+			    var k1 = (11 - (((3 * f[0]) + (7 * f[1]) + (6 * f[2])
+			            + (1 * f[3]) + (8 * f[4]) + (9 * f[5]) + (4 * f[6])
+			            + (5 * f[7]) + (2 * f[8])) % 11)) % 11;
+			    
+			    // second control number
+			    var k2 = (11 - (((5 * f[0]) + (4 * f[1]) + (3 * f[2])
+			            + (2 * f[3]) + (7 * f[4]) + (6 * f[5]) + (5 * f[6])
+			            + (4 * f[7]) + (3 * f[8]) + (2 * k1)) % 11)) % 11;
+			    
+			    if (k1 == 11) k1 = 0;
+
+			    // failed validation
+			    if (k1 != f[9] || k2 != f[10]) return false;
+			    
+			    // success
+			    return true;
+			}
+
+			return false;
+		}
+	}
+
+	// formats
+	var input = {
+		list: function() {},
+		number: function() { this.value = this.value.replace(/[^0-9]/g, '') },
+		phone: function() { 
+			var v = this.value;
+			this.value = v.replace(/[^0-9\s]/g, '');
+
+			var c = v.replace(/\s/g, '');  
+			if (c.length == 8) validation.call(this);
+			else if (c.length > 8) this.value = v.substring(0, v.length-1); 
+		},
+		email: function() {},
+		currency: function() {},
+		text: function() { this.value = this.value.replace(/[^A-ZØÆÅa-zøæå\s]/g, '') },
+		notempty: function() {},
+		check: function() { if (!this.val()) invalid.call(this); else valid.call(this) },
+		bankaccount: function() {},
+		socialnumber: function() {}
+	}
+
+	var focus = {
+		list: function() {},
+		number: function() {},
+		phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		email: function() {},
+		currency: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		text: function() {},
+		notempty: function() {},
+		check: function() {},
+		bankaccount: function() {},
+		socialnumber: function() {}
+	}
+
+	var focusout = {
+		list: function() {},
+		number: function() { },
+		phone: function() {
+			// dont do anything of spaces already put in
+			if (/\s/.test(this.value)) return;
+
+			// convert to number with spaces
+			var v = this.value.replace(/\D/g, '');
+			var m = v.match(/^(\d{3})(\d{2})(\d{3})/); 
+			if (m) this.value = m[1]+' '+m[2]+' '+m[3];
+		},
+		email: function() {},
+		currency: function() {
+			if (this.value == '') return;
+			this.value = numb(this.value).toLocaleString(
+														// 'sv-SE', 
+														'nb-NO', 
+														{
+															style: 'currency', 
+															// currency: 'SEK',
+															currency: 'NOK',
+															minimumFractionDigits: 0
+														});
+		},
+		text: function() {},
+		notempty: function() {},
+		check: function() {},
+		bankaccount: function() {},
+		socialnumber: function() {}
+	}
+
+	// validation on focus out
+	var validation = function() {
+		try {
+			if (this.val()) {
+				valid.call(this);
+				return true;
+			}
+			invalid.call(this);
+			return false;
+		} catch (e) {
+			console.log(e);
+			return true;
+		}
+	}
+
+	var valid = function() {
+		if (this.type == 'checkbox') $(this).siblings('label').css('color', 'inherit');
+		else $(this).css('border-color', validColor);
+
+		$(this).siblings('.em-error').addClass('em-hidden');
+	}
+
+	var invalid = function() { 
+		if (this.type == 'checkbox') $(this).siblings('label').css('color', invalidColor);
+		else $(this).css('border-color', invalidColor);
+		
+		$(this).siblings('.em-error').removeClass('em-hidden');
+	}
+
+
+	$('.emowl-form input').each(function() {
+		$(this).keyup(function(e) {
+			if (e.keyCode == 13) $(this).blur();
+		});
+	});
+
+	$('.emowl-form *[data-val]').each(function() { 
+
+		try {
+			$(this).focusout(validation);
+		} catch (e) { console.error(e) }
+
+
+		switch ($(this).attr('data-val')) {
+			case 'currency': 
+				focusout.currency.call(this);
+				$(this)[0].val = val.currency;
+				$(this).focus(focus.currency).focusout(focusout.currency).on('input', input.number); 
+				break;
+			
+			case 'phone':
+				$(this)[0].val = val.phone;
+				$(this).on('input', input.phone);
+				$(this).focusout(focusout.phone);
+				break;
+			
+			case 'email': 
+				$(this)[0].val = val.email;
+				break;
+			
+			case 'number': 
+				$(this)[0].val = val.number; 
+				break;
+			
+			case 'text': 
+				$(this)[0].val = val.text; 
+				break;
+			
+			case 'socialnumber': 
+				$(this)[0].val = val.socialnumber; 
+				break;
+			
+			case 'bankaccount': 
+				$(this)[0].val = val.bankaccount; 
+				break;
+			
+			case 'name': 
+				$(this)[0].val = val.name; 
+				break;
+			
+			case 'ar': 
+				$(this)[0].val = val.ar; 
+				break;
+			
+			case 'list': 
+				$(this)[0].val = val.list; 
+				break;
+			
+			case 'check': 
+				$(this)[0].val = val.check;
+				$(this).on('input', input.check);
+				break;
+		}
+	});
+
+
+	$('.em-i-loan_amount').on('input', function() { payment() });
+	
+	if (!isIE)  $('.em-r-loan_amount').on('input', function() { 
+					$('.em-i-loan_amount').val(kroner($(this).val()));
+					payment();
+				});
+	
+	else 		$('.em-r-loan_amount').on('change', function() { 
+					$('.em-i-loan_amount').val(kroner($(this).val()));
+					payment();
+				});
+
+	$('.em-r-loan_amount, .em-i-tenure').on('change', function() {
+		payment();
+	});
+
+	var showNeste = function() {
+		$('.em-element-neste').remove();
+
+		$('.em-part-1-grid > .em-hidden, .em-b-container').each(function() {
+			$(this).slideDown(600).removeClass('em-hidden');
+		});		
+	}
+	$('.em-b-neste').one('click', showNeste);
+
+
+
+	$('.em-b-next').one('click', function() {
+
+		var valid = true;
+		$('.em-part-1-grid *[data-val]').each(function() {
+			if (!$(this).validation()) valid = false;
+		});
+
+		// if (!valid) return;
+
+		// $('.emowl-form').css('width', 'auto');
+		// $('.em-slidedown').slideDown().removeClass('em-hidden');
+
+		$('.content-post > div:not(.em-form-container)').each(function() {
+			$(this).fadeOut();
+		});
+		$('.emtheme-footer-container').slideUp(100);
+		$('.navbar-menu, .mobile-icon-container').hide();
+
+		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
+		$('.em-part-1-grid').slideUp(800, function() {
+
+			$('.content, .main').css({
+				'margin-bottom': '0'
+				// 'padding-bottom': '0'
+			})
+			$('.em-form-container').css('margin-bottom', '0');
+			$('.emowl-form').css('width', 'auto');
+			$('.em-element-loan_amount').css('margin-bottom', '0');
+			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
+			$('.em-element-email').detach().prependTo('.em-part-2');
+			$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
+
+
+			$('.em-b-endre, .em-b-send, .em-b-text').show();
+			$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
+
+			$('.em-part-1-grid').css({
+				'grid-template-columns': '2fr 1fr 1fr 1fr',
+				'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
+				'grid-column-gap': '2rem',
+				'padding': '4rem 6rem'
+			});
+
+			$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
+				'align-self': 'center',
+				'justify-self': 'center',
+				'margin': '0'
+			});
+			
+			$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
+				'width': '15rem'
+			});
+
+
+			$('.em-compare-text').css('font-size', '2rem');
+
+			$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
+				jQuery('.em-slidedown').slideDown(800);
+
+			});
+
+		});
+
+
+		$('.em-b-endre').click(function() {
+			$('.em-part-1-grid').slideToggle();
+			$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
+		});
+
+	});
+
+	$('.em-b-send').one('click', function() {
+		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
+			if ($(this).parents('.em-hidden').length != 0) return;
+
+			console.log($(this)[0]);
+		});
+	});
+
+})(jQuery);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// BEHAVIOUR
+(function($) {
+
+	$.fn.extend({
+		down: function() {
+			this.slideDown(300);
+			this.removeClass('em-hidden');
+
+		},
+
+		up: function() {
+			this.slideUp(300);
+			this.addClass('em-hidden');
+		}
+	});
+
+	// CHECKBOXES
+	$('.emowl-form [data-show]').each(function() {
+		var ele = '.'+$(this).attr('data-show').replace(/^no:( |)/, '');
+
+		var $input = $(this);
+
+		var no = $(this).attr('data-show').match(/^no:/) ? true : false;
+
+		var show = function() { $(ele).down() }
+		var hide = function() { $(ele).up() }
+
+
+		$(this).parent().find('.em-cc-yes').click(function() {
+
+			$input.val(1);
+
+			// co_applicant
+			if (ele == '.em-part-4') {
+				$('.em-part-lower-container').css('grid-template-areas', '"title title title title" "two three four five"');
+				$('.em-part-lower-container').find('.em-part').animate({
+					width: '25rem'
+				});
+				$('.em-part-4').show().removeClass('em-hidden');
+
+
+				$('.em-element-spouse_income:not(.em-hidden)').each(function() {
+					$(this).slideUp(300).addClass('em-hidden');
+				});
+			}
+
+
+			else {
+				if (!no) show();
+				else hide();
+			}
+
+			$(this).addClass('em-cc-green');
+			$(this).siblings('.em-cc-no').removeClass('em-cc-green');
+		});
+
+		$(this).parent().find('.em-cc-no').click(function() {
+
+			$input.val(0);
+
+			// co_applicant
+			if (ele == '.em-part-4') {
+				$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
+					width: '30rem'
+				});
+
+				$('.em-part-4').animate({
+					width: '0rem'
+				}, function() {
+					$(this).hide().addClass('em-hidden');
+					$('.em-part-lower-container').css('grid-template-areas', '"title title title" "two three five"');
+				});	
+
+				switch ($('.em-i-civilstatus').val()) {
+					case 'Gift/partner':
+					case 'Samboer':
+						$('.em-element-spouse_income').slideDown(300).removeClass('em-hidden'); 
+						break;
+				}
+			}
+
+
+			else {
+				if (no) show();
+				else hide();
+			}
+
+			$(this).addClass('em-cc-green');
+			$(this).siblings('.em-cc-yes').removeClass('em-cc-green');
+		});
+	});
+
+
+	// LISTS 
+	$('.em-i-tenure').change(function() {
+
+	});
+
+	$('.em-i-education').change(function() {
+		switch ($(this).val()) {
+			case 'Høysk./universitet 1-3 år':
+			case 'Høysk./universitet 4+år': $('.em-element-education_loan').down(); break;
+			default: $('.em-element-education_loan').up();			
+		}
+	});
+
+	$('.em-i-employment_type').change(function() {
+		switch ($(this).val()) {
+			case 'Fast ansatt (privat)':
+			case 'Fast ansatt (offentlig)':
+			case 'Midlertidig ansatt/vikar':
+			case 'Selvst. næringsdrivende':
+			case 'Langtidssykemeldt': 
+				$('.em-element-employment_since, .em-element-employer').down(); break;
+
+			default: $('.em-element-employment_since, .em-element-employer').up();
+		}
+	});
+
+	$('.em-i-civilstatus').change(function() {
+		switch ($(this).val()) {
+			case 'Gift/partner':
+			case 'Samboer':
+			// console.log($('.em-c-co_applicant').val());
+				if ($('.em-c-co_applicant').val() == 0)
+					$('.em-element-spouse_income').down(); break;
+			
+			default: $('.em-element-spouse_income').up();
+		}
+	});
+
+	$('.em-i-living_conditions').change(function() {
+		switch ($(this).val()) {
+			case 'Leier':
+			case 'Bor hos foreldre':
+				$('.em-element-rent').down();
+				$('.em-element-rent_income, .em-element-mortgage').up();
+				break;
+
+			case 'Akjse/andel/borettslag':
+			case 'Selveier': 
+				$('.em-element-rent, .em-element-rent_income, .em-element-mortgage').down();
+				break;
+
+			case 'Enebolig':
+				$('.em-element-rent_income, .em-element-mortgage').down();
+				$('.em-element-rent').up();
+				break;
+
+			default:
+				$('.em-element-rent, .em-element-rent_income, .em-element-mortgage').up();
+		}
+	});
+
+	$('.em-i-number_of_children').change(function() {
+		if ($(this).val() > 0) $('.em-element-allimony_per_month').down();
+		else $('.em-element-allimony_per_month').up() ;
+	});
+
+
+	// $('.emowl-form *:not(.em-hidden) .em-i').each(function() {
+	// 	console.log($(this)[0]);
+	// });
+
+})(jQuery);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function($) {
+	return;
 
 	"use strict";
 
@@ -38,6 +739,9 @@
 		return t;
 	}
 
+	// qs('.em-i-tenure').val();
+
+	// qs('.em-i-loan_amount').testfunc();
 	var qsa = function(e) {
 		var t = document.querySelectorAll(e);
 
@@ -46,11 +750,13 @@
 		return t;
 	}
 
+	// true if mobile width
 	var mob = function() {
 		if ($(window).width() < 816) return true;
 		return false;
 	}
 
+	// true if desktop width
 	var desktop = function() {
 		if ($(window).width() > 815) return true;
 		return false;
@@ -857,26 +1563,39 @@ function round(x) {
 			qs('.em-b-next').addEventListener('click', function(e) {
 
 				// VALIDATION OF CURRENT PART
-				var test = current.querySelectorAll('.em-i');
-				var success = true;
 
-				for (var i = 0; i < test.length; i++) (function() {
-					var n = test[i];
+				var valid = true;
+				$('.em-part-1-grid .em-i:not(button)').each(function() { 
 
-					var p = n.parentNode.parentNode;
+					if ($(this).attr('data-val') == undefined) return;
 
-					if (p.classList.contains('em-hidden')) return;
+					console.log($(this)[0]);
+					console.log($(this).attr('data-val'));
 
-					if (p.parentNode.classList.contains('em-hidden')) return;
+					// console.log(v($(this)[0], null, $(this).attr('data-val')));
 
-					if (n.getAttribute('data-val')) {
-						var val = n.getAttribute('data-val');
-						var f = n.getAttribute('format');
-						var ver = v(n, null, val);
+				});
 
-						if (!ver) success = false;
-					}
-				})();
+
+				// var test = current.querySelectorAll('.em-i');
+
+				// for (var i = 0; i < test.length; i++) (function() {
+				// 	var n = test[i];
+
+				// 	var p = n.parentNode.parentNode;
+
+				// 	if (p.classList.contains('em-hidden')) return;
+
+				// 	if (p.parentNode.classList.contains('em-hidden')) return;
+
+				// 	if (n.getAttribute('data-val')) {
+				// 		var val = n.getAttribute('data-val');
+				// 		var f = n.getAttribute('format');
+				// 		var ver = v(n, null, val);
+
+				// 		if (!ver) success = false;
+				// 	}
+				// })();
 
 				// exit ramp
 				// if (!success) return;
@@ -916,9 +1635,9 @@ function round(x) {
 					
 					$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
 						'width': '15rem'
-					})
+					});
 
-					$('.em-i-tenure, .em-c')
+					// $('.em-i-tenure, .em-c')
 
 
 

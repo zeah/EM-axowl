@@ -125,7 +125,7 @@ final class Axowl_inputs {
 			'social_number' => ['text' => true, 'page' => '2', 'validation' => 'socialnumber', 'digits' => 11],
 			'employment_type' => ['list' => Axowl_list::employment_type, 'validation' => 'list'],
 			'employment_since' => ['hidden' => true, 'list' => Axowl_list::years, 'validation' => 'list'],
-			'employer' => ['text' => true, 'hidden' => true, 'validation' => 'notEmpty'],
+			'employer' => ['text' => true, 'hidden' => true, 'validation' => 'empty'],
 			'education' => ['list' => Axowl_list::education, 'validation' => 'list'],
 
 			'education_loan' => ['hidden' => true, 'text' => true, 'validation' => 'currency', 'format' => 'currency'],
@@ -151,14 +151,14 @@ final class Axowl_inputs {
 			'number_of_children' => ['key_as_value' => true, 'list' => Axowl_list::number_of_children, 'validation' => 'list'],
 			'allimony_per_month' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
 
-			'div2' => ['class' => 'em-co-applicant em-lower', 'page' => '4'], 
-			'co_applicant_name' => ['text' => true, 'validation' => 'notEmpty'],
+			'div2' => ['class' => 'em-co-applicant em-lower', 'page' => '4', 'page_class' => 'em-hidden'], 
+			'co_applicant_name' => ['text' => true, 'validation' => 'empty'],
 			'co_applicant_social_number' => ['text' => true, 'validation' => 'socialnumber', 'digits' => 11],
 			'co_applicant_mobile_number' => ['text' => true, 'validation' => 'phone', 'digits' => 8],
 			'co_applicant_email' => ['text' => true, 'validation' => 'email'],
 			'co_applicant_employment_type' => ['list' => Axowl_list::employment_type, 'validation' => 'list'],
 			'co_applicant_employment_since' => ['list' => Axowl_list::years, 'validation' => 'list', 'hidden' => true],
-			'co_applicant_employer' => ['text' => true, 'hidden' => true, 'validation' => 'notEmpty'],
+			'co_applicant_employer' => ['text' => true, 'hidden' => true, 'validation' => 'empty'],
 			'co_applicant_education' => ['list' => Axowl_list::education, 'validation' => 'list'],
 			'co_applicant_norwegian' => ['checkbox' => true, 'yes' => true, 'show' => 'no:em-co-applicant-norwegian'],
 
@@ -172,7 +172,7 @@ final class Axowl_inputs {
 
 			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'total_unsecured_debt_balance'],
 			'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
-			'account_number' => ['text' => true, 'validation' => 'bankAccount', 'digits' => '11'],
+			'account_number' => ['text' => true, 'validation' => 'bankaccount', 'digits' => '11'],
 			'/div98' => '',
 			// '/div98' => '',
 			'/div99' => ''
