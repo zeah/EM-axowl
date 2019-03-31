@@ -72,15 +72,15 @@ final class Axowl_data {
 		$data = $_POST['data'];
 
 		// TODO testes
-		if (isset($data['fax'])) return;
+		// if (isset($data['fax'])) return;
 
-		$this->contact_accept = $data['contact_accept'] ? true : false;
+		if (isset($data['contact_accept'])) $this->contact_accept = $data['contact_accept'] ? true : false;
 
 		// echo 'stopped at from_form';
 		// return;
 
 		// testing
-		echo 'Referrer: '.$this->get_referer();
+		// echo 'Referrer: '.$this->get_referer();
 
 
 		// match from inputs.php
@@ -93,8 +93,10 @@ final class Axowl_data {
 			if (in_array($k, $input_keys))
 				$send[$k] = $data[$k];
 
+		echo print_r($send, true);
+
 		// sending to axo
-		$this->send_axo($send);
+		// $this->send_axo($send);
 
 		exit;
 		// wp_die();
@@ -108,6 +110,9 @@ final class Axowl_data {
 	 * 
 	 */
 	public function incomplete() {
+
+		echo print_r($_POST, true);
+		exit;
 
 		// checkbox
 		if (!isset($_POST['contact_accept'])) exit;

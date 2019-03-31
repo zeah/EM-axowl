@@ -812,7 +812,7 @@ select.em-i {
 	position: absolute;
 	/*top: 2.8rem;*/
 	right: -1.1rem;
-	bottom: 110%;
+	bottom: 120%;
 	/*right: -18.9rem;*/
 
 	width: 20rem;
@@ -837,7 +837,7 @@ select.em-i {
 .em-ht-arrowdown {
 	position: absolute;
 
-	top: 100%;
+	top: 101%;
 	right: 1.3rem;
 
 	width: 0; 
@@ -873,7 +873,7 @@ select.em-i {
 }
 
 .em-part-lower-container .em-ht {
-	bottom: 145%;
+	/*bottom: 145%;*/
 }
 
 .em-part-lower-container .em-ht-q {

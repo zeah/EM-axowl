@@ -17,14 +17,17 @@
  * 
  */
 
-
+// VALIDATION AND EVENTS
 (function($) {
 	var validColor = 'green';
 	var invalidColor = 'red';
 
 	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
 
-	var numb = function(n) { return parseInt(String(n).replace(/[^0-9]/g, '')) }
+	var numb = function(n) { 
+		if (!n) return null;
+		return parseInt(String(n).replace(/[^0-9]/g, '')); 
+	}
 
 	var kroner = function(n) {
 		n = numb(n);
@@ -83,6 +86,8 @@
 		number: function() { if (/^\d+$/.test(this.value)) return true; return false },
 		
 		phone: function() {
+			if (!this.value) return false;
+
 			var n = this.value.replace(/\D/g, '');
 			if (/^\d+$/.test(n) && n.length == 8) return true; 
 			return false 
@@ -90,7 +95,10 @@
 		
 		email: function() { if (/.+\@.+\..{2,}/.test(this.value)) return true; return false },
 		
-		currency: function() { if (/^\d+$/.test(this.value.replace(/[kr\.\s]/g, ''))) return true; return false },
+		currency: function() { 
+			if (!this.value) return false;
+			if (/^\d+$/.test(this.value.replace(/[kr\.\s]/g, ''))) return true; return false 
+		},
 		
 		text: function() { if (/^[A-ZØÆÅa-zøæå\s]+$/.test(this.value)) return true; return false },
 		
@@ -98,9 +106,43 @@
 		
 		check: function() { return this.checked },
 		
-		bankaccount: function() { if (/^\d+$/.test(this.value) && this.value.length == 11) return true; return false },
+		bankaccount: function() { 
+			if (!this.value) return false;
+
+			var n = this.value.replace(/[^0-9]/g, '');
+			if (!n) return false;
+
+			if (n.length == 11) {
+
+				var cn = [2,3,4,5,6,7];
+				var cnp = -1;
+				var ccn = function() {
+					cnp++;
+					if (cnp == cn.length) cnp = 0;
+					return cn[cnp];
+				}
+
+				var control = n.toString().split('').pop();
+
+				var c = n.substring(0, n.length-1);
+
+				var sum = 0;
+				for (var i = c.length-1; i >= 0; i--)
+					sum += c[i] * ccn();
+
+
+				sum = sum % 11;
+				sum = 11 - sum;
+
+				if (sum == control) return true;
+			}
+
+			return false;
+		},
 		
 		socialnumber: function() {
+			if (!this.value) return false;
+
 			var d = this.value.replace(/[^0-9]/g, '');
 
 			if (d.length == 11) {
@@ -149,16 +191,21 @@
 		text: function() { this.value = this.value.replace(/[^A-ZØÆÅa-zøæå\s]/g, '') },
 		notempty: function() {},
 		check: function() { if (!this.val()) invalid.call(this); else valid.call(this) },
-		bankaccount: function() {},
+		bankaccount: function() {
+			this.value = this.value
+							.replace(/[^\d\.\s]/g, '')
+							.replace(/\.{2,}/g, '.')
+							.replace(/\s{2,}/g, ' ');
+		},
 		socialnumber: function() {}
 	}
 
 	var focus = {
 		list: function() {},
-		number: function() {},
-		phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		number: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		// phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		email: function() {},
-		currency: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		// currency: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		text: function() {},
 		notempty: function() {},
 		check: function() {},
@@ -181,27 +228,35 @@
 		email: function() {},
 		currency: function() {
 			if (this.value == '') return;
-			this.value = numb(this.value).toLocaleString(
-														// 'sv-SE', 
-														'nb-NO', 
-														{
-															style: 'currency', 
-															// currency: 'SEK',
-															currency: 'NOK',
-															minimumFractionDigits: 0
-														});
+			this.value = numb(this.value)
+							.toLocaleString(
+								// 'sv-SE', 
+								'nb-NO', 
+								{
+									style: 'currency', 
+									// currency: 'SEK',
+									currency: 'NOK',
+									minimumFractionDigits: 0
+							});
 		},
 		text: function() {},
 		notempty: function() {},
 		check: function() {},
-		bankaccount: function() {},
+		bankaccount: function() {
+
+			var d = this.value.replace(/[\D]/g, '');
+			var m = d.match(/^(\d{4})(\d{2})(\d{5})$/);
+			if (m) this.value = m[1]+'.'+m[2]+'.'+m[3];
+		},
 		socialnumber: function() {}
 	}
 
 	// validation on focus out
 	var validation = function() {
 		try {
-			if (this.val()) {
+			// if (this.val == undefined) return true;
+			// console.log(this);
+			if (this.val == undefined || this.val()) {
 				valid.call(this);
 				return true;
 			}
@@ -234,6 +289,11 @@
 		});
 	});
 
+
+
+	/******************************
+		ELEMENTS WITH VALIDATION
+	 ******************************/
 	$('.emowl-form *[data-val]').each(function() { 
 
 		try {
@@ -245,33 +305,25 @@
 			case 'currency': 
 				focusout.currency.call(this);
 				$(this)[0].val = val.currency;
-				$(this).focus(focus.currency).focusout(focusout.currency).on('input', input.number); 
+				$(this).focus(focus.number).focusout(focusout.currency).on('input', input.number); 
 				break;
 			
 			case 'phone':
 				$(this)[0].val = val.phone;
-				$(this).on('input', input.phone);
-				$(this).focusout(focusout.phone);
+				$(this).on('input', input.phone).focusout(focusout.phone);
 				break;
 			
-			case 'email': 
-				$(this)[0].val = val.email;
-				break;
+			case 'email': $(this)[0].val = val.email; break;
 			
-			case 'number': 
-				$(this)[0].val = val.number; 
-				break;
+			case 'number': $(this)[0].val = val.number; break;
 			
-			case 'text': 
-				$(this)[0].val = val.text; 
-				break;
+			case 'text': $(this)[0].val = val.text; break;
 			
-			case 'socialnumber': 
-				$(this)[0].val = val.socialnumber; 
-				break;
+			case 'socialnumber': $(this)[0].val = val.socialnumber; break;
 			
 			case 'bankaccount': 
-				$(this)[0].val = val.bankaccount; 
+				$(this)[0].val = val.bankaccount;
+				$(this).focusout(focusout.bankaccount).on('input', input.bankaccount);
 				break;
 			
 			case 'name': 
@@ -290,9 +342,15 @@
 				$(this)[0].val = val.check;
 				$(this).on('input', input.check);
 				break;
+
+			// default: $(this)[0].val = function() { return true; }
 		}
 	});
 
+
+	/***************************
+		MONTHLY COST UPDATING
+	 ***************************/
 
 	$('.em-i-loan_amount').on('input', function() { payment() });
 	
@@ -306,10 +364,16 @@
 					payment();
 				});
 
-	$('.em-r-loan_amount, .em-i-tenure').on('change', function() {
+	// $('.em-r-loan_amount, .em-i-tenure').on('change', function() {
+	$('.em-i-tenure').on('change', function() {
 		payment();
 	});
 
+
+
+	/**************
+		BUTTONS
+	***************/
 	var showNeste = function() {
 		$('.em-element-neste').remove();
 
@@ -321,17 +385,25 @@
 
 
 
-	$('.em-b-next').one('click', function() {
+	$('.em-b-next').on('click', function() {
 
 		var valid = true;
 		$('.em-part-1-grid *[data-val]').each(function() {
 			if (!$(this).validation()) valid = false;
 		});
 
-		// if (!valid) return;
+		if (!valid) return;
 
-		// $('.emowl-form').css('width', 'auto');
-		// $('.em-slidedown').slideDown().removeClass('em-hidden');
+
+		if ($('.em-check-contact_accept')[0].checked)
+			$.post(emurl.ajax_url, {
+				action: 'wlinc',
+				'contact_accept': $('.em-check-contact_accept').val(),
+				'email': $('.em-i-email').val(),
+				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, '')
+			}, function(data) {
+				console.log(data);
+			}); 
 
 		$('.content-post > div:not(.em-form-container)').each(function() {
 			$(this).fadeOut();
@@ -342,10 +414,7 @@
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 		$('.em-part-1-grid').slideUp(800, function() {
 
-			$('.content, .main').css({
-				'margin-bottom': '0'
-				// 'padding-bottom': '0'
-			})
+			$('.content, .main').css('margin-bottom', '0');
 			$('.em-form-container').css('margin-bottom', '0');
 			$('.emowl-form').css('width', 'auto');
 			$('.em-element-loan_amount').css('margin-bottom', '0');
@@ -378,7 +447,7 @@
 			$('.em-compare-text').css('font-size', '2rem');
 
 			$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
-				jQuery('.em-slidedown').slideDown(800);
+				$('.em-slidedown').slideDown(800).removeClass('em-hidden');
 
 			});
 
@@ -388,16 +457,53 @@
 		$('.em-b-endre').click(function() {
 			$('.em-part-1-grid').slideToggle();
 			$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
+			window.scrollTo(0, 0);
 		});
 
 	});
 
-	$('.em-b-send').one('click', function() {
-		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
-			if ($(this).parents('.em-hidden').length != 0) return;
+	$('.em-b-send').on('click', function() {
+		var data = {};
+		var valid = true;
 
-			console.log($(this)[0]);
+		console.log($('.emowl-form .em-i:not(button), .emowl-form .em-c').length);
+
+		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
+			// console.log($(this).parents('.em-hidden'));
+			if ($(this).parents('.em-hidden').length != 0) return;
+			// console.log($(this));
+			var value = $(this).val();
+
+			if (!$(this).validation()) valid = false;
+
+			switch ($(this).attr('data-val')) {
+				case 'socialnumber':
+				case 'bankaccount':
+				case 'currency':
+				case 'number':
+				case 'phone': value = numb(value); break;
+			}
+
+			// if ($(this).attr('data-val') == 'currency') val = numb(val);
+
+			data[$(this).attr('name')] = value;
+
 		});
+
+		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
+		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
+
+		if (!valid) return;
+
+		console.log(data);
+
+		$.post(emurl.ajax_url, {
+			action: 'axowl',
+			data: data
+		}, function(d) {
+			console.log(d);
+		});
+			// console.log($(this)[0]);
 	});
 
 })(jQuery);
@@ -437,6 +543,22 @@
 			this.slideUp(300);
 			this.addClass('em-hidden');
 		}
+	});
+
+
+	$('.em-ht-mark').mouseenter(function() {
+
+		$(this).parent().siblings('.em-ht').fadeIn(300);
+
+		$(this).one('mouseleave', function() {
+			var $this = $(this);
+			var timer = setTimeout(function() { $this.parent().siblings('.em-ht').fadeOut(300) }, 300);
+
+			$(this).one('mouseenter', function() {
+				clearTimeout(timer);
+			})
+
+		});
 	});
 
 	// CHECKBOXES
@@ -546,7 +668,6 @@
 		switch ($(this).val()) {
 			case 'Gift/partner':
 			case 'Samboer':
-			// console.log($('.em-c-co_applicant').val());
 				if ($('.em-c-co_applicant').val() == 0)
 					$('.em-element-spouse_income').down(); break;
 			
@@ -583,9 +704,11 @@
 	});
 
 
-	// $('.emowl-form *:not(.em-hidden) .em-i').each(function() {
-	// 	console.log($(this)[0]);
-	// });
+	$('.em-i-total_unsecured_debt').on('input', function() {
+		if ($(this).val()) $('.em-element-total_unsecured_debt_balance').down();
+		else $('.em-element-total_unsecured_debt_balance').up();
+	});
+
 
 })(jQuery);
 
@@ -593,9 +716,13 @@
 
 
 
+/***********
+	POPUP
+ **********/
 
+(function($) {
 
-
+})(jQuery);
 
 
 
