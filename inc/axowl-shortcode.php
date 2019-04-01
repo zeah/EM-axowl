@@ -43,7 +43,7 @@ final class Axowl_shortcode {
 	 */
 	public function shortcode($atts, $content = null) {
 
-		if (!isset($atts[0])) return $this->shortcode_1($atts, $content);
+		if (!isset($atts[0])) return $this->shortcode_6($atts, $content);
 
 		switch ($atts[0]) {
 			case '1': return $this->shortcode_1($atts, $content); break;
@@ -382,8 +382,10 @@ final class Axowl_shortcode {
 	public function shortcode_6($atts, $content = null) {
 
 		$p = self::$parts;
-		
+		global $post;
 		// TODO get transient
+
+
 
 		// add_action('wp_footer', [$this, 'footer']);
 		add_action('wp_head', [$this, 'sands6']);
@@ -463,6 +465,10 @@ final class Axowl_shortcode {
 
 		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
 
+		if (!isset($data['abtesting']))
+			$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
+		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
+		
 		// TODO set transient
 
 		return $html;

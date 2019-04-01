@@ -125,7 +125,7 @@ final class Axowl_data {
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('incomplete', 0, $ga);
+		$this->ga('incomplete', 0, ['ga' => $ga]);
 
 		exit;
 	}
@@ -135,8 +135,8 @@ final class Axowl_data {
 	 * [popup description]
 	 */
 	public function popup() {
-		// echo print_r($_POST, true);
-		// wp_die('<xmp>'.print_r($_POST, true).'</xmp>');
+		echo print_r($_POST, true);
+		exit;
 
 		$data = ['status' => 'popup'];
 
@@ -156,7 +156,7 @@ final class Axowl_data {
 		// echo 'Data to be sent from popup: '.http_build_query($data);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('popup', 0, $ga);
+		$this->ga('popup', 0, ['ga' => $ga]);
 
 		exit;
 	}
@@ -478,20 +478,6 @@ final class Axowl_data {
 
 
 
-	/**
-	 * [anon description]
-	 * @param  [type] $data [description]
-	 * @return [type]       [description]
-	 */
-	// private function anon($data) {
-
-	// 	$unset = ['email', 'mobile_number', 'co_applicant_name', 'co_applicant_social_number'];
-
-	// 	foreach ($unset as $value)
-	// 		if (isset($data[$value])) unset($data[$value]);
-
-	// 	return $data;
-	// }
 
 
 
@@ -540,11 +526,35 @@ final class Axowl_data {
 
 		$post_name = $post->post_name ? $post->post_name : 'no postname';
 
-		$action = isset($data['abname']) ? 
-					$data['abname'].' - '.(isset($data['abid']) ? $data['abid'] : 'n/a') :
-					$post_name .' - '.(isset($data['abid']) ? $data['abid'] : 'n/a');
+		$abname = isset($data['abname']) ? $data['abname'] : $post_name;
+		$absc = isset($data['absc']) ? $data['absc'] : 'na';
 
-		if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
+		$action = abname.' - '.$absc;
+
+		// if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
+
+		$d = [
+			'v' => '1', 
+			'tid' => $tag, 
+			// 'cid' => $data['ga'],
+			'uip' => $_SERVER['REMOTE_ADDR'],
+			'ua' => $_SERVER['HTTP_USER_AGENT'],
+			't' => 'event', 
+			// TODO make ec into axo form # .. for ab testing
+			'ec' => 'axo form', 
+			'ea' => $action, // for ab-testing - abname or postname + shortcode #
+			'el' => $status, // accepted, rejected or incomplete or popup
+			'dl' => $dl, // url without query
+			'ev' => $value, // value of conversion
+			// 'dr' => $this->get_referer() // document referer
+		];
+
+		if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : false;
+		if ($data['ga']) $d['cid'] = $data['ga'];
+
+		$ref = $this-get_referer();
+		if  ($ref) $d['dr'] = $ref;
+
 
 		// getting site url without query string
 		global $wp;
@@ -559,21 +569,7 @@ final class Axowl_data {
 			// 'httpversion' => '1.0',
 			'blocking' => false,
 			'headers' => [],
-			'body' => [
-				'v' => '1', 
-				'tid' => $tag, 
-				'cid' => $data['ga'],
-				'uip' => $_SERVER['REMOTE_ADDR'],
-				'ua' => $_SERVER['HTTP_USER_AGENT'],
-				't' => 'event', 
-				// TODO make ec into axo form # .. for ab testing
-				'ec' => 'axo form', 
-				'ea' => $action, // for ab-testing - abname or postname + shortcode #
-				'el' => $status, // accepted, rejected or incomplete
-				'dl' => $dl, // url without query
-				'ev' => $value, // value of conversion
-				'dr' => $this->get_referer() // document referer
-				],
+			'body' => $d,
 			'cookies' => []
 			]
 		);
@@ -610,7 +606,7 @@ final class Axowl_data {
 
 		elseif (isset($_COOKIE['referer'])) return $_COOKIE['referer'];
 
-		return '';
+		return false;
 	}
 
 

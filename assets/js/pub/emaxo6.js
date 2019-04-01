@@ -24,6 +24,9 @@
 
 	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
 
+	var mobile = function() { return $(window).width() < 816 }
+	var desktop = function() { return $(window).width() > 815 }
+
 	var numb = function(n) { 
 		if (!n) return null;
 		return parseInt(String(n).replace(/[^0-9]/g, '')); 
@@ -197,7 +200,14 @@
 							.replace(/\.{2,}/g, '.')
 							.replace(/\s{2,}/g, ' ');
 		},
-		socialnumber: function() {}
+		socialnumber: function() {
+			var v = this.value;
+			this.value = v.replace(/[^0-9\s]/g, '');
+
+			var c = v.replace(/\s/g, '');  
+			if (c.length == 11) validation.call(this);
+			else if (c.length > 11) this.value = v.substring(0, v.length-1); 
+		}
 	}
 
 	var focus = {
@@ -243,12 +253,15 @@
 		notempty: function() {},
 		check: function() {},
 		bankaccount: function() {
-
 			var d = this.value.replace(/[\D]/g, '');
 			var m = d.match(/^(\d{4})(\d{2})(\d{5})$/);
 			if (m) this.value = m[1]+'.'+m[2]+'.'+m[3];
 		},
-		socialnumber: function() {}
+		socialnumber: function() {
+			var d = this.value.replace(/[\D]/g, '');
+			var m = d.match(/^(\d{6})(\d{5})$/);
+			if (m) this.value = m[1]+' '+m[2];
+		}
 	}
 
 	// validation on focus out
@@ -270,16 +283,21 @@
 
 	var valid = function() {
 		if (this.type == 'checkbox') $(this).siblings('label').css('color', 'inherit');
-		else $(this).css('border-color', validColor);
+		else $(this).removeClass('em-invalid-border').addClass('em-valid-border');
 
-		$(this).siblings('.em-error').addClass('em-hidden');
+		// else $(this).css('border-color', validColor);
+
+		$(this).siblings('.em-error').slideUp(300);
+		// $(this).siblings('.em-error').addClass('em-hidden');
 	}
 
 	var invalid = function() { 
 		if (this.type == 'checkbox') $(this).siblings('label').css('color', invalidColor);
-		else $(this).css('border-color', invalidColor);
+		// else $(this).css('border-color', invalidColor);
+		else $(this).removeClass('em-valid-border').addClass('em-invalid-border');
 		
-		$(this).siblings('.em-error').removeClass('em-hidden');
+		$(this).siblings('.em-error').slideDown(300);
+		// $(this).siblings('.em-error').removeClass('em-hidden');
 	}
 
 
@@ -319,7 +337,10 @@
 			
 			case 'text': $(this)[0].val = val.text; break;
 			
-			case 'socialnumber': $(this)[0].val = val.socialnumber; break;
+			case 'socialnumber': 
+				$(this)[0].val = val.socialnumber;
+				$(this).on('input', input.socialnumber).focus(focus.number).focusout(focusout.socialnumber);
+				break;
 			
 			case 'bankaccount': 
 				$(this)[0].val = val.bankaccount;
@@ -348,6 +369,13 @@
 	});
 
 
+	$('#pop-phone')[0].val = val.phone;
+	$('#pop-phone').on('input', input.phone).focusout(focusout.phone).focusout(validation);
+
+	$('#pop-email')[0].val = val.email;
+	$('#pop-email').on('input', input.email).focusout(focusout.email).focusout(validation);
+
+
 	/***************************
 		MONTHLY COST UPDATING
 	 ***************************/
@@ -364,7 +392,6 @@
 					payment();
 				});
 
-	// $('.em-r-loan_amount, .em-i-tenure').on('change', function() {
 	$('.em-i-tenure').on('change', function() {
 		payment();
 	});
@@ -394,6 +421,7 @@
 
 		if (!valid) return;
 
+		location.hash = 'form';
 
 		if ($('.em-check-contact_accept')[0].checked)
 			$.post(emurl.ajax_url, {
@@ -412,53 +440,78 @@
 		$('.navbar-menu, .mobile-icon-container').hide();
 
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
-		$('.em-part-1-grid').slideUp(800, function() {
 
-			$('.content, .main').css('margin-bottom', '0');
-			$('.em-form-container').css('margin-bottom', '0');
-			$('.emowl-form').css('width', 'auto');
-			$('.em-element-loan_amount').css('margin-bottom', '0');
+		if (desktop()) {
+			$('.em-part-1-grid').slideUp(800, function() {
+
+				$('.content, .main').css('margin-bottom', '0');
+				$('.em-form-container').css('margin-bottom', '0');
+				$('.emowl-form').css('width', 'auto');
+				$('.em-element-loan_amount').css('margin-bottom', '0');
+				$('.em-element-mobile_number').detach().prependTo('.em-part-2');
+				$('.em-element-email').detach().prependTo('.em-part-2');
+				$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
+
+
+				$('.em-b-endre, .em-b-send, .em-b-text').show();
+				$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
+
+				$('.em-part-1-grid').css({
+					'grid-template-columns': '2fr 1fr 1fr 1fr',
+					'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
+					'grid-column-gap': '2rem',
+					'padding': '4rem 6rem'
+				});
+
+				$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
+					'align-self': 'center',
+					'justify-self': 'center',
+					'margin': '0'
+				});
+				
+				$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
+					'width': '15rem'
+				});
+
+
+				$('.em-compare-text').css('font-size', '2rem');
+
+				$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
+					$('.em-slidedown').slideDown(800).removeClass('em-hidden');
+				});
+
+			});
+		
+		$('.em-b-endre').click(function() {
+				// $('html').animate({'scrollTop': 0}, 1000, 'swing', function() {
+					$('.em-part-1-grid').slideToggle();
+					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
+				window.scrollTo(0, 0);
+				// });
+			});
+		}
+
+
+
+		if (mobile()) {
 			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 			$('.em-element-email').detach().prependTo('.em-part-2');
 			$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
-
-
+			$('.em-element-axo_accept, .em-element-contact_accept').hide(0);
+			$('.em-slidedown').slideDown(800).removeClass('em-hidden');
+			$('.em-part-1-grid').slideUp(800);
 			$('.em-b-endre, .em-b-send, .em-b-text').show();
-			$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 
-			$('.em-part-1-grid').css({
-				'grid-template-columns': '2fr 1fr 1fr 1fr',
-				'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
-				'grid-column-gap': '2rem',
-				'padding': '4rem 6rem'
-			});
-
-			$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
-				'align-self': 'center',
-				'justify-self': 'center',
-				'margin': '0'
-			});
-			
-			$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
-				'width': '15rem'
-			});
-
-
-			$('.em-compare-text').css('font-size', '2rem');
-
-			$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
-				$('.em-slidedown').slideDown(800).removeClass('em-hidden');
-
-			});
-
-		});
-
-
-		$('.em-b-endre').click(function() {
-			$('.em-part-1-grid').slideToggle();
-			$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
 			window.scrollTo(0, 0);
-		});
+			$('.em-b-endre').click(function() {
+				$('html').animate({'scrollTop': 0}, 1000, 'swing', function() {
+					$('.em-part-1-grid').slideToggle();
+					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
+				// window.scrollTo(0, 0);
+				});
+			});
+		}
+
 
 	});
 
@@ -469,9 +522,7 @@
 		console.log($('.emowl-form .em-i:not(button), .emowl-form .em-c').length);
 
 		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
-			// console.log($(this).parents('.em-hidden'));
 			if ($(this).parents('.em-hidden').length != 0) return;
-			// console.log($(this));
 			var value = $(this).val();
 
 			if (!$(this).validation()) valid = false;
@@ -484,10 +535,8 @@
 				case 'phone': value = numb(value); break;
 			}
 
-			// if ($(this).attr('data-val') == 'currency') val = numb(val);
 
 			data[$(this).attr('name')] = value;
-
 		});
 
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
@@ -503,7 +552,6 @@
 		}, function(d) {
 			console.log(d);
 		});
-			// console.log($(this)[0]);
 	});
 
 })(jQuery);
@@ -532,6 +580,14 @@
 // BEHAVIOUR
 (function($) {
 
+	var desktop = function() {
+		return $(window).width() > 815;
+	}
+
+	var mobile = function() {
+		return $(window).width() < 816;
+	}
+
 	$.fn.extend({
 		down: function() {
 			this.slideDown(300);
@@ -547,18 +603,25 @@
 
 
 	$('.em-ht-mark').mouseenter(function() {
+		if (desktop()) {
+			$(this).parent().siblings('.em-ht').fadeIn(300);
 
-		$(this).parent().siblings('.em-ht').fadeIn(300);
+			$(this).one('mouseleave', function() {
+					var $this = $(this);
+					var timer = setTimeout(function() { $this.parent().siblings('.em-ht').fadeOut(300) }, 300);
 
-		$(this).one('mouseleave', function() {
-			var $this = $(this);
-			var timer = setTimeout(function() { $this.parent().siblings('.em-ht').fadeOut(300) }, 300);
+					$(this).one('mouseenter', function() {
+						clearTimeout(timer);
+					})
 
-			$(this).one('mouseenter', function() {
-				clearTimeout(timer);
-			})
+			});
+		}
+	});
 
-		});
+	$('.em-ht-q').click(function() {
+
+		$(this).siblings('.em-ht').slideToggle(300);
+
 	});
 
 	// CHECKBOXES
@@ -639,10 +702,6 @@
 
 
 	// LISTS 
-	$('.em-i-tenure').change(function() {
-
-	});
-
 	$('.em-i-education').change(function() {
 		switch ($(this).val()) {
 			case 'Høysk./universitet 1-3 år':
@@ -722,11 +781,83 @@
 
 (function($) {
 
+
+	var showPopup = function(e) {
+
+		// not all things on top of body is in body
+		// so do nothing if pointer has not left the window
+		if (e.clientX > 100 && e.clientY > 100) return;
+
+		$('body').off('mouseleave', showPopup);
+
+		$('.email-popup, .em-glass').fadeIn(1000);
+
+		$('.em-pop-email-x').one('click', function() {
+			$('.email-popup, .em-glass').fadeOut(500);
+		});
+
+		var click = function() {
+			var valid = true;
+			if (!$('#pop-phone').validation()) valid = false;
+			if (!$('#pop-email').validation()) valid = false;
+			if (!valid) return;
+			
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var cookies = decodedCookie.split(';');
+			var ga = null;
+
+			for (var i in cookies){
+				var c = cookies[i].trim();
+				if (/^_ga=/.test(c)) {
+					ga = c.replace(/^_ga=/, '');
+					break;
+				}
+			}
+
+			$('.pop-neste').off('click', click);
+			$('.email-popup, .em-glass').fadeOut(500);
+
+			$.post(emurl.ajax_url, 
+				{
+					action: 'popup',
+					'ga': ga,
+					'ab-name': $('#abtesting-name').val(),
+					'ab-sc': $('#abtesting-sc').val(),
+					'pop-email': $('#pop-email').val(),
+					'pop-phone': $('#pop-phone').val()
+				}, 
+				function(data) {
+					console.log(data);
+				}
+			);
+		}
+		$('.pop-neste').on('click', click);
+
+		// cookie
+		var date = new Date();
+		date.setTime(date.getTime() + (20*24*60*60*1000));
+		document.cookie = 'em_popup=done; expires='+date.toUTCString();
+	}
+
+
+	// Check cookies first
+	if (!/(^| )em_popup=/.test(document.cookie))  
+		$('body').on('mouseleave', showPopup);
+
 })(jQuery);
 
 
+/*****************
+	BACK BUTTON
+ *****************/
+(function($) {
+	var hash = '';
+	$(window).on('hashchange', function() {
+		if (location.hash == '' && hash == '#form') location.reload();
 
-
+		hash = location.hash;
+	});
+})(jQuery);
 
 
 
@@ -1900,31 +2031,31 @@ function round(x) {
 
 
 		// helper text
-		var hm = qsa('.em-ht-mark');
-		for (var i = 0; i < hm.length; i++) 
-			(function() { 
-				var q = hm[i];
-				var p = $(q).parent().parent().find('.em-ht');
+		// var hm = qsa('.em-ht-mark');
+		// for (var i = 0; i < hm.length; i++) 
+		// 	(function() { 
+		// 		var q = hm[i];
+		// 		var p = $(q).parent().parent().find('.em-ht');
 
 
-				// if (desktop()) {
-					$(q).mouseenter(function() {
-						if (desktop()) $(p).fadeIn(100);
-					});
+		// 		// if (desktop()) {
+		// 			$(q).mouseenter(function() {
+		// 				if (desktop()) $(p).fadeIn(100);
+		// 			});
 
-					$(q).mouseleave(function() {
-						if (desktop()) $(p).fadeOut(200);
-					});
-				// }
+		// 			$(q).mouseleave(function() {
+		// 				if (desktop()) $(p).fadeOut(200);
+		// 			});
+		// 		// }
 
-				$(q).on('click', function(e) {
-					// console.log(e);
-					// if (e.which == 13)
-					$(p).toggle();
-				});
+		// 		$(q).on('click', function(e) {
+		// 			// console.log(e);
+		// 			// if (e.which == 13)
+		// 			$(p).toggle();
+		// 		});
 
 			
-			})();
+		// 	})();
 		
 
 		var inputs = qsa('input.em-i:not(.em-check)');

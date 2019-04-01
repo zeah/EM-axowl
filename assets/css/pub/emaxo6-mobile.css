@@ -47,9 +47,9 @@
 	background-color: #fff;
 }
 
-.emowl-form * {
-	font-size: 1.8rem;
-}
+/*.emowl-form * {*/
+	/*font-size: 1.8rem;*/
+/*}*/
 
 .em-part {
 	display: flex;
@@ -90,7 +90,11 @@
 }
 
 .em-i:focus {
-	border-color: hsl(240, 80%, 30%) !important;
+	border-color: hsl(0, 0%, 0%) !important;
+	outline: none;
+	box-shadow: inset 0 0 2px black, inset 0 -0 2px gray;
+
+	/*outline: solid 4px hsl(240, 50%, 50%);*/
 }
 
 
@@ -199,7 +203,7 @@
 
 	background-color: #000;
 	color: #fff;
-
+	font-size: 1.6rem;
 	font-family: Montserrat;
 	font-weight: 700;
 }
@@ -309,6 +313,30 @@
 
 }
 
+.em-error {
+	color: hsl(0, 100%, 60%);
+}
+
+.em-invalid-border {
+	animation-name: bcolor;
+	animation-duration: .3s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes bcolor {
+	to { border-color: hsl(0, 100%, 50%); }
+}
+
+.em-valid-border {
+	animation-name: vbcolor;
+	animation-duration: .3s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes vbcolor {
+	from { border-color: hsl(0, 100%, 50%); }
+	to { border-color: hsl(120, 50%, 50%); }
+}
 
 
 .em-hidden {

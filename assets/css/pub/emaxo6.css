@@ -142,6 +142,7 @@
 
 body {
 	background-color: #f2e7d5 !important;
+	overflow-y: scroll;
 }
 
 /*.content,*/
@@ -247,6 +248,31 @@ body {
 /*.em-part-lower-container .em-i {
 	border: solid 1.6px hsl(0, 0%, 70%);
 }*/
+
+.em-invalid-border {
+	animation-name: bcolor;
+	animation-duration: .3s;
+	/*border-color: #000;*/
+	animation-fill-mode: forwards;
+}
+
+@keyframes bcolor {
+	to { border-color: hsl(0, 100%, 50%); }
+}
+
+.em-valid-border {
+	animation-name: vbcolor;
+	animation-duration: .3s;
+	animation-fill-mode: forwards;
+	/*border-color: hsl(0, 100%, 50%);*/
+}
+
+@keyframes vbcolor {
+	from { border-color: hsl(0, 100%, 50%); }
+	to { border-color: hsl(0, 0%, 0%); }
+}
+
+
 
 .em-cc-yes {
 	border-right: solid 1.5px hsl(0, 0%, 20%);
@@ -893,7 +919,14 @@ select.em-i {
 	font-family: Montserrat;
 	font-weight: 700;
 	cursor: pointer;
+}
 
+.em-ht-q:focus {
+	outline: none;
+}
+
+.em-ht-q:focus .em-ht-mark {
+	box-shadow: 1px 1px hsl(120, 50%, 50%), -1px 1px hsl(120, 50%, 50%), 1px -1px hsl(120, 50%, 50%), -1px -1px hsl(120, 50%, 50%);
 }
 
 /* 3.8 label */
