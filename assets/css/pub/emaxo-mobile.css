@@ -87,6 +87,7 @@
 
 	font-size: 2rem;
 	font-family: Merriweather;
+	background-color: #fff;
 }
 
 .em-i:focus {
@@ -327,24 +328,46 @@
 .em-invalid-border {
 	animation-name: bcolor;
 	animation-duration: .3s;
+	/*border-color: #000;*/
 	animation-fill-mode: forwards;
 }
 
 @keyframes bcolor {
-	to { border-color: hsl(0, 100%, 50%); }
+	to { border-color: hsl(0, 50%, 40%); }
 }
 
 .em-valid-border {
 	animation-name: vbcolor;
 	animation-duration: .3s;
 	animation-fill-mode: forwards;
+	/*border-color: hsl(0, 100%, 50%);*/
 }
 
 @keyframes vbcolor {
-	from { border-color: hsl(0, 100%, 50%); }
-	to { border-color: hsl(120, 50%, 50%); }
+	/*from { border-color: hsl(0, 100%, 50%); }*/
+	to { border-color: hsl(120, 50%, 40%); }
 }
 
+
+.em-part-2 .em-part-title::after {
+	content: 'Om deg';
+}
+
+.em-part-3 .em-part-title::after {
+	content: 'Husholdning';
+}
+
+.em-part-4 .em-part-title::after {
+	content: 'Medsøker';
+}
+
+.em-part-5 .em-part-title::after {
+	content: 'Siste etappe';
+}
+
+.em-i-email {
+	font-size: 1.6rem;
+}
 
 .em-hidden {
 	display: none;

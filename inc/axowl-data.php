@@ -94,9 +94,10 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 		echo print_r($send, true);
-
+		exit;
+		
 		// sending to axo
-		// $this->send_axo($send);
+		$this->send_axo($send);
 
 		exit;
 		// wp_die();

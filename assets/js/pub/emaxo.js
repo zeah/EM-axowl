@@ -434,7 +434,7 @@
 			$(this).fadeOut();
 		});
 		$('.emtheme-footer-container').slideUp(100);
-		$('.navbar-menu, .mobile-icon-container').hide();
+		$('.navbar-menu, .mobile-icon-container').fadeTo(0, 0);
 
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 
