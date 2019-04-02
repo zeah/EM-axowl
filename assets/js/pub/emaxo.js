@@ -555,7 +555,7 @@
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
-		if (!valid) return;
+		// if (!valid) return;
 
 		console.log(data);
 
@@ -655,12 +655,13 @@
 
 			// co_applicant
 			if (ele == '.em-part-4') {
-				$('.em-part-lower-container').css('grid-template-areas', '"title title title title" "two three four five"');
-				$('.em-part-lower-container').find('.em-part').animate({
-					width: '25rem'
-				});
-				$('.em-part-4').show().removeClass('em-hidden');
-
+				if (desktop()) {
+					$('.em-part-lower-container').css('grid-template-areas', '"title title title title" "two three four five"');
+					$('.em-part-lower-container').find('.em-part').animate({
+						width: '25rem'
+					});
+					$('.em-part-4').show().removeClass('em-hidden');
+				}
 
 				$('.em-element-spouse_income:not(.em-hidden)').each(function() {
 					$(this).slideUp(300).addClass('em-hidden');
@@ -683,16 +684,19 @@
 
 			// co_applicant
 			if (ele == '.em-part-4') {
-				$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
-					width: '30rem'
-				});
 
-				$('.em-part-4').animate({
-					width: '0rem'
-				}, function() {
-					$(this).hide().addClass('em-hidden');
-					$('.em-part-lower-container').css('grid-template-areas', '"title title title" "two three five"');
-				});	
+				if (desktop()) {
+					$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
+						width: '30rem'
+					});
+
+					$('.em-part-4').animate({
+						width: '0rem'
+					}, function() {
+						$(this).hide().addClass('em-hidden');
+						$('.em-part-lower-container').css('grid-template-areas', '"title title title" "two three five"');
+					});	
+				}
 
 				switch ($('.em-i-civilstatus').val()) {
 					case 'Gift/partner':
