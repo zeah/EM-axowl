@@ -43,7 +43,7 @@ final class Axowl_shortcode {
 	 */
 	public function shortcode($atts, $content = null) {
 
-		if (!isset($atts[0])) return $this->shortcode_6($atts, $content);
+		if (!isset($atts[0])) return $this->shortcode_1($atts, $content);
 
 		switch ($atts[0]) {
 			case '1': return $this->shortcode_1($atts, $content); break;
@@ -51,11 +51,10 @@ final class Axowl_shortcode {
 			case '3': return $this->shortcode_3($atts, $content); break;
 			case '4': return $this->shortcode_4($atts, $content); break;
 			case '5': return $this->shortcode_5($atts, $content); break;
-			case '6': return $this->shortcode_6($atts, $content); break;
+			case '7': return $this->shortcode_7($atts, $content); break;
 			case '10': return $this->shortcode_10($atts, $content); break;
 		}
 	}
-
 	/**
 	 * [shortcode description]
 	 * @param  [type] $atts    [description]
@@ -65,11 +64,114 @@ final class Axowl_shortcode {
 	public function shortcode_1($atts, $content = null) {
 
 		$p = self::$parts;
+		global $post;
+		// TODO get transient
+
+
+
+		// add_action('wp_footer', [$this, 'footer']);
+		add_action('wp_head', [$this, 'sands']);
+		add_filter('google_link', [$this, 'fonts']);
+
+		$data = get_option('em_axowl');
+		if (!is_array($data)) $data = [];
+		$data = $this->sanitize($data);
+
+		$inputs = AXOWL_inputs::$inputs2;
+
+		$epop = '<div class="em-glass"></div>
+				 <div class="email-popup"><div class="email-popup-grid">
+
+				 	<h2 class="pop-title">VIL DU FYLLE UT SØKNADSSKJEMA SENERE?</h2>
+
+				 	<div class="pop-input-container pop-phone-container">
+					 	<label for="pop-phone" class="pop-label-phone">Telefon</label>
+					 	<input type="text" class="em-i em-pop-phone" name="pop-phone" id="pop-phone">
+				 	</div>
+
+				 	<div class="pop-input-container pop-email-container">
+					 	<label for="pop-email" class="pop-label-email">E-Post</label>
+					 	<input type="text" class="em-i em-pop-email" name="pop-email" id="pop-email">
+					</div>
+				 	
+				 	<button type="button" class="em-b pop-neste">Neste</button>
+
+				 	<div class="pop-text">Klikker du på "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
+				 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
+
+				 	</div><buttton type="button" class="em-pop-email-x"><img class="em-close" src="'.EM_AXOWL_PLUGIN_URL.'assets/img/close.png"></buttton>
+				 </div>';
+
+		$html = sprintf(
+			'<div class="em-form-container"%s>%s%s<form class="emowl-form">',
+			
+			isset($atts['style']) ? ' style="'.$atts['style'].'"' : '',
+			$p->popup(),
+			$epop
+		);
+
+
+		// $html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+		// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
+		// 	    );
+
+		$html .= '<input type="hidden" name="fax">';
+
+		$html .= '<div class="em-part-container">';
+
+		$html .= $p->page_top(1);
+		
+		foreach($inputs as $key => $value) {
+			if (is_array($value)) $value['help'] = true;
+			// if new page
+			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page'], (isset($value['page_class']) ? $value['page_class'] : null));
+			
+			// page content
+			$html .= $p->element($key, $value, $data);
+		}
+			
+		// ends last page and ends part container
+		$html .= '</div></div>';
+
+		$html .= '<div class="em-b-container">
+			<button type="button" class="em-b em-b-next">Neste</button>
+			<button type="button" class="em-b em-b-endre">Endre Lånebeløp</button>
+			<button type="button" class="em-b em-b-send">Send Søknad</button>
+			<div class="em-b-text">Du mottar et helt uforpliktende tilbud som er gyldig i 30 dager.</div>
+			</div>';
+		// $html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
+
+		$html .= '</form></div>';
+
+		// $html .= $p->popup().'</div>';
+
+		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
+
+		if (!isset($data['abtesting']))
+			$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
+		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
+		
+		// TODO set transient
+
+		return $html;
+	}
+
+
+
+	/**
+	 * [shortcode description]
+	 * @param  [type] $atts    [description]
+	 * @param  [type] $content [description]
+	 * @return [type]          [description]
+	 */
+	public function shortcode_7($atts, $content = null) {
+
+		$p = self::$parts;
 		
 		// TODO get transient
 
 		// add_action('wp_footer', [$this, 'footer']);
-		add_action('wp_head', [$this, 'sands']);
+		add_action('wp_head', [$this, 'sands7']);
 
 		$data = get_option('em_axowl');
 		if (!is_array($data)) $data = [];
@@ -373,106 +475,106 @@ final class Axowl_shortcode {
 	}
 
 
-	/**
-	 * [shortcode description]
-	 * @param  [type] $atts    [description]
-	 * @param  [type] $content [description]
-	 * @return [type]          [description]
-	 */
-	public function shortcode_6($atts, $content = null) {
+	// /**
+	//  * [shortcode description]
+	//  * @param  [type] $atts    [description]
+	//  * @param  [type] $content [description]
+	//  * @return [type]          [description]
+	//  */
+	// public function shortcode($atts, $content = null) {
 
-		$p = self::$parts;
-		global $post;
-		// TODO get transient
+	// 	$p = self::$parts;
+	// 	global $post;
+	// 	// TODO get transient
 
 
 
-		// add_action('wp_footer', [$this, 'footer']);
-		add_action('wp_head', [$this, 'sands6']);
-		add_filter('google_link', [$this, 'fonts6']);
+	// 	// add_action('wp_footer', [$this, 'footer']);
+	// 	add_action('wp_head', [$this, 'sands6']);
+	// 	add_filter('google_link', [$this, 'fonts6']);
 
-		$data = get_option('em_axowl');
-		if (!is_array($data)) $data = [];
-		$data = $this->sanitize($data);
+	// 	$data = get_option('em_axowl');
+	// 	if (!is_array($data)) $data = [];
+	// 	$data = $this->sanitize($data);
 
-		$inputs = AXOWL_inputs::$inputs2;
+	// 	$inputs = AXOWL_inputs::$inputs2;
 
-		$epop = '<div class="em-glass"></div>
-				 <div class="email-popup"><div class="email-popup-grid">
+	// 	$epop = '<div class="em-glass"></div>
+	// 			 <div class="email-popup"><div class="email-popup-grid">
 
-				 	<h2 class="pop-title">VIL DU FYLLE UT SØKNADSSKJEMA SENERE?</h2>
+	// 			 	<h2 class="pop-title">VIL DU FYLLE UT SØKNADSSKJEMA SENERE?</h2>
 
-				 	<div class="pop-input-container pop-phone-container">
-					 	<label for="pop-phone" class="pop-label-phone">Telefon</label>
-					 	<input type="text" class="em-i em-pop-phone" name="pop-phone" id="pop-phone">
-				 	</div>
+	// 			 	<div class="pop-input-container pop-phone-container">
+	// 				 	<label for="pop-phone" class="pop-label-phone">Telefon</label>
+	// 				 	<input type="text" class="em-i em-pop-phone" name="pop-phone" id="pop-phone">
+	// 			 	</div>
 
-				 	<div class="pop-input-container pop-email-container">
-					 	<label for="pop-email" class="pop-label-email">E-Post</label>
-					 	<input type="text" class="em-i em-pop-email" name="pop-email" id="pop-email">
-					</div>
+	// 			 	<div class="pop-input-container pop-email-container">
+	// 				 	<label for="pop-email" class="pop-label-email">E-Post</label>
+	// 				 	<input type="text" class="em-i em-pop-email" name="pop-email" id="pop-email">
+	// 				</div>
 				 	
-				 	<button type="button" class="em-b pop-neste">Neste</button>
+	// 			 	<button type="button" class="em-b pop-neste">Neste</button>
 
-				 	<div class="pop-text">Klikker du på "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
-				 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
+	// 			 	<div class="pop-text">Klikker du på "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
+	// 			 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
 
-				 	</div><buttton type="button" class="em-pop-email-x"><img class="em-close" src="'.EM_AXOWL_PLUGIN_URL.'assets/img/close.png"></buttton>
-				 </div>';
+	// 			 	</div><buttton type="button" class="em-pop-email-x"><img class="em-close" src="'.EM_AXOWL_PLUGIN_URL.'assets/img/close.png"></buttton>
+	// 			 </div>';
 
-		$html = sprintf(
-			'<div class="em-form-container"%s>%s%s<form class="emowl-form">',
+	// 	$html = sprintf(
+	// 		'<div class="em-form-container"%s>%s%s<form class="emowl-form">',
 			
-			isset($atts['style']) ? ' style="'.$atts['style'].'"' : '',
-			$p->popup(),
-			$epop
-		);
+	// 		isset($atts['style']) ? ' style="'.$atts['style'].'"' : '',
+	// 		$p->popup(),
+	// 		$epop
+	// 	);
 
 
-		// $html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
-		// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
-		// 	    );
+	// 	// $html = sprintf('<form class="emowl-form"%s><h1 class="form-title">Søk Lån hos Axo Finans</h1>',
+	// 	// 			(isset($atts['style']) ? ' style="'.$atts['style'].'"' : '')
+	// 	// 	    );
 
-		$html .= '<input type="hidden" name="fax">';
+	// 	$html .= '<input type="hidden" name="fax">';
 
-		$html .= '<div class="em-part-container">';
+	// 	$html .= '<div class="em-part-container">';
 
-		$html .= $p->page_top(1);
+	// 	$html .= $p->page_top(1);
 		
-		foreach($inputs as $key => $value) {
-			if (is_array($value)) $value['help'] = true;
-			// if new page
-			if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page'], (isset($value['page_class']) ? $value['page_class'] : null));
+	// 	foreach($inputs as $key => $value) {
+	// 		if (is_array($value)) $value['help'] = true;
+	// 		// if new page
+	// 		if (isset($value['page'])) $html .= '</div>'.$p->page_top($value['page'], (isset($value['page_class']) ? $value['page_class'] : null));
 			
-			// page content
-			$html .= $p->element($key, $value, $data);
-		}
+	// 		// page content
+	// 		$html .= $p->element($key, $value, $data);
+	// 	}
 			
-		// ends last page and ends part container
-		$html .= '</div></div>';
+	// 	// ends last page and ends part container
+	// 	$html .= '</div></div>';
 
-		$html .= '<div class="em-b-container">
-			<button type="button" class="em-b em-b-next">Neste</button>
-			<button type="button" class="em-b em-b-endre">Endre Lånebeløp</button>
-			<button type="button" class="em-b em-b-send">Send Søknad</button>
-			<div class="em-b-text">Du mottar et helt uforpliktende tilbud som er gyldig i 30 dager.</div>
-			</div>';
-		// $html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
+	// 	$html .= '<div class="em-b-container">
+	// 		<button type="button" class="em-b em-b-next">Neste</button>
+	// 		<button type="button" class="em-b em-b-endre">Endre Lånebeløp</button>
+	// 		<button type="button" class="em-b em-b-send">Send Søknad</button>
+	// 		<div class="em-b-text">Du mottar et helt uforpliktende tilbud som er gyldig i 30 dager.</div>
+	// 		</div>';
+	// 	// $html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
 
-		$html .= '</form></div>';
+	// 	$html .= '</form></div>';
 
-		// $html .= $p->popup().'</div>';
+	// 	// $html .= $p->popup().'</div>';
 
-		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
+	// 	$html .= '<input type="hidden" id="abtesting-sc" value="1">';
 
-		if (!isset($data['abtesting']))
-			$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
-		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
+	// 	if (!isset($data['abtesting']))
+	// 		$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
+	// 	// wp_die('<xmp>'.print_r($data, true).'</xmp>');
 		
-		// TODO set transient
+	// 	// TODO set transient
 
-		return $html;
-	}
+	// 	return $html;
+	// }
 
 
 
@@ -892,13 +994,21 @@ final class Axowl_shortcode {
 		return $d;
 	}
 
+	public function sands() {
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 815px)');
+        
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', ['jquery'], '1.0.0', true);
+		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
+	}
+
 	public function sands_icons() {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.6', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.2', '(max-width: 815px)');
 	}
 
 
-	public function sands() {
+	public function sands7() {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.1.7', '(min-width: 816px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.8', '(max-width: 815px)');
         
@@ -938,13 +1048,13 @@ final class Axowl_shortcode {
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
-	public function sands6() {
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6.css', array(), '1.0.9', '(min-width: 816px)');
-        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo6-mobile.css', array(), '1.0.1', '(max-width: 815px)');
+	// public function sands() {
+ //        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '1.0.0', '(min-width: 816px)');
+ //        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '1.0.0', '(max-width: 815px)');
         
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo6.js', ['jquery'], '1.0.17', true);
-		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
-	}
+ //        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', ['jquery'], '1.0.0', true);
+	// 	wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
+	// }
 
 	public function sands10() {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo10.css', array(), '1.0.0', '(min-width: 816px)');
@@ -954,7 +1064,7 @@ final class Axowl_shortcode {
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
-	public function fonts6($data) {
+	public function fonts($data) {
 
 		return $data[] = ['Merriweather' => [400, 900], 'Montserrat' => [300, 700]];
 
