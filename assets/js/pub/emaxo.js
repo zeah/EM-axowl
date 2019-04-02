@@ -211,11 +211,19 @@
 	}
 
 	var focus = {
-		list: function() {},
+		list: function() {
+
+			this.value = '';
+		},
 		number: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		// phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		email: function() {},
-		// currency: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		// currency: function() { 
+		// 	this.value = parseInt(this.value.replace(/[\D]/g, ''));  
+		// 	// $(this).attr('type', 'number');
+		// 	// this.value = this.value;
+		// 	this.select();
+		// },
 		text: function() {},
 		notempty: function() {},
 		check: function() {},
@@ -237,6 +245,7 @@
 		},
 		email: function() {},
 		currency: function() {
+			// $(this).attr('type', 'text');
 			if (this.value == '') return;
 			this.value = numb(this.value)
 							.toLocaleString(
@@ -353,7 +362,8 @@
 			
 			case 'list': 
 				$(this)[0].val = val.list; 
-				$(this).on('change', input.list)
+				$(this).click(function() { $(this).val('') });
+				$(this).on('change', input.list).focus(focus.list);
 				break;
 			
 			case 'check': 
@@ -434,11 +444,11 @@
 			$(this).fadeOut();
 		});
 		$('.emtheme-footer-container').slideUp(100);
-		$('.navbar-menu, .mobile-icon-container').fadeTo(0, 0);
 
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 
 		if (desktop()) {
+			$('.navbar-menu, .mobile-icon-container').fadeTo(0, 0);
 			$('.em-part-1-grid').slideUp(800, function() {
 
 				$('.content, .main').css('margin-bottom', '0');
@@ -479,11 +489,11 @@
 
 			});
 		
-		$('.em-b-endre').click(function() {
+			$('.em-b-endre').click(function() {
 				// $('html').animate({'scrollTop': 0}, 1000, 'swing', function() {
 					$('.em-part-1-grid').slideToggle();
 					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
-				window.scrollTo(0, 0);
+					window.scrollTo(0, 0);
 				// });
 			});
 		}

@@ -155,7 +155,8 @@ final class Axowl_shortcode_parts {
 		if (isset($value['check'])) $html .= $this->check($d);
 
 		// list input
-		if (isset($value['list'])) $html .= $this->list($d);
+		// if (isset($value['list'])) $html .= $this->list($d);
+		if (isset($value['list'])) $html .= $this->datalist($d);
 
 		if (isset($value['button'])) $html .= $this->button($d);
 
@@ -174,6 +175,8 @@ final class Axowl_shortcode_parts {
 	 */
 	private function text($o = []) {
 		if (!isset($o['name'])) return '';
+
+		if (isset($o['value']['validation']) && $o['value']['validation'] == 'currency') $o['value']['type'] = 'tel';
 		// if (isset($o['ht'])) wp_die('<xmp>'.print_r($o, true).'</xmp>');
 		return sprintf(
 			'<div class="em-ic em-ic-%1$s">
@@ -347,6 +350,64 @@ final class Axowl_shortcode_parts {
 			$this->valid_element(isset($o['vers']) ? $o['vers'] : null),
 
 			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : ''
+
+		);
+	}
+
+	private function datalist($o = []) {
+		if (!$o) return '';
+		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
+		
+		if (isset($o['value']['empty']) && $o['value']['empty'] === false) $options = '';
+		else $options = '<option></option>';
+
+		if (isset($o['value']['list']))
+			foreach ($o['value']['list'] as $key => $value) {
+
+				$sel = false;
+				if (isset($o['value']['start']) && $o['value']['start'] == $key) $sel = true;
+
+				$options .= sprintf(
+					'<option value="%s"%s>%s</option>',
+
+					// isset($o['value']['key_as_value']) ? $key : $value,
+					$value,
+
+					$sel ? ' selected' : '',
+
+					$value
+				);
+			}
+
+		if ($options == '') return ''; 
+
+		return sprintf(
+			'<div class="em-lc em-lc-%1$s">
+ 				<label class="em-label" for="%1$s">
+					<h4 class="em-it em-it-%1$s">%2$s</h4>
+					%3$s
+				</label>
+				<input class="em-i em-i-%1$s" type="list" list="datalist-%1$s" id="%1$s" name="%1$s"%4$s value="%7$s">
+				<datalist id="datalist-%1$s">
+					%5$s
+				</datalist>
+				%6$s
+			</div>
+			',
+
+			$o['name'],
+
+			$o['text'],
+
+			(isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '',
+
+			isset($o['value']['validation']) ? ' data-val="'.$o['value']['validation'].'"' : '',
+
+			$options,
+
+			isset($o['et']) ? $this->error_element($o['name'], $o['et']) : '',
+
+			isset($o['value']['start']) ? $o['value']['start'] : ''
 
 		);
 	}

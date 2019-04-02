@@ -737,7 +737,7 @@ body {
 	/*cursor: pointer;*/
 }
 
-.em-lc::after {
+.em2-lc::after {
 	content: ' ';
 	position: absolute;
 	bottom: 0;
@@ -1466,7 +1466,11 @@ select.em-i {
 }
 
 
-
+/*input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}*/
 
 /* 10.0 sprites */
 
