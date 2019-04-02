@@ -472,11 +472,40 @@
 
 }
 
-/*input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}*/
+.em-popup {
+	display: none;
+	position: relative;
+	height: 323px;
+	width: 100%;
+	z-index: 999;
+
+	background-color: #fff;
+}
+
+
+.em-pop-email-x,
+.em-popup-x {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	padding: 0;
+	border: none;
+	outline: none;
+	background: none;
+	cursor: pointer;
+}
+
+.em-popup-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-family: Merriweather;
+	font-weight: 700;
+	font-size: 2rem;
+
+	text-align: center;
+}
 
 .em-hidden {
 	display: none;

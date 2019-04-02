@@ -1402,7 +1402,10 @@ select.em-i {
 	top: 1rem;
 	right: 1rem;
 	/*grid-area: x;*/
-
+	padding: 0;
+	border: none;
+	outline: none;
+	background: none;
 	/*background-color: transparent;*/
 
 	/*align-self: flex-start;*/
