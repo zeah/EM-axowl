@@ -105,7 +105,7 @@
 		
 		text: function() { if (/^[A-ZØÆÅa-zøæå\s]+$/.test(this.value)) return true; return false },
 		
-		notempty: function() { if (/.+/.test(this.value)) return true; return false },
+		empty: function() { if (/.+/.test(this.value)) return true; return false },
 		
 		check: function() { return this.checked },
 		
@@ -213,9 +213,9 @@
 	var focus = {
 		list: function() {
 
-			this.value = '';
+			// this.value = '';
 		},
-		number: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
+		number: function() { this.value = this.value.replace(/[\D]/g, ''); },
 		// phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		email: function() {},
 		// currency: function() { 
@@ -225,7 +225,7 @@
 		// 	this.select();
 		// },
 		text: function() {},
-		notempty: function() {},
+		empty: function() {},
 		check: function() {},
 		bankaccount: function() {},
 		socialnumber: function() {}
@@ -259,8 +259,9 @@
 							});
 		},
 		text: function() {},
-		notempty: function() {},
-		check: function() {},
+		empty: function() {},
+		check: function() {
+		},
 		bankaccount: function() {
 			var d = this.value.replace(/[\D]/g, '');
 			var m = d.match(/^(\d{4})(\d{2})(\d{5})$/);
@@ -362,13 +363,17 @@
 			
 			case 'list': 
 				$(this)[0].val = val.list; 
-				$(this).click(function() { $(this).val('') });
-				$(this).on('change', input.list).focus(focus.list);
+				// $(this).click(function() { $(this).val('') });
+				$(this).on('change', input.list);
 				break;
 			
 			case 'check': 
 				$(this)[0].val = val.check;
 				$(this).on('input', input.check);
+				break;
+
+			case 'empty':
+				$(this)[0].val = val.empty;
 				break;
 
 			// default: $(this)[0].val = function() { return true; }
@@ -426,7 +431,7 @@
 			if (!$(this).validation()) valid = false;
 		});
 
-		if (!valid) return;
+		// if (!valid) return;
 
 		location.hash = 'form';
 
@@ -448,7 +453,7 @@
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 
 		if (desktop()) {
-			$('.navbar-menu, .mobile-icon-container').fadeTo(0, 0);
+			$('.navbar-menu').fadeTo(0, 0);
 			$('.em-part-1-grid').slideUp(800, function() {
 
 				$('.content, .main').css('margin-bottom', '0');
@@ -501,6 +506,7 @@
 
 
 		if (mobile()) {
+			$('.navbar-menu, .mobile-icon-container').hide();
 			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 			$('.em-element-email').detach().prependTo('.em-part-2');
 			$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');

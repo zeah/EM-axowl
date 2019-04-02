@@ -77,6 +77,7 @@
 	background-color: #fff;
 }
 
+
 .em-compare-save,
 .em-if,
 .em-i {
@@ -84,7 +85,7 @@
 	padding: .5rem 1rem;
 	width: 100%;
 	height: 4rem;
-
+	line-height: 2.5rem;
 	font-size: 2rem;
 	font-family: Merriweather;
 	background-color: #fff;
@@ -98,6 +99,12 @@
 	/*outline: solid 4px hsl(240, 50%, 50%);*/
 }
 
+.em-i-tenure {
+	padding-left: 40%;
+}
+.em-i-loan_amount {
+	text-align: center;
+}
 
 .em-r-loan_amount {
 	position: relative;
@@ -209,7 +216,14 @@
 	font-weight: 700;
 }
 
+.em-ht-q:focus {
+	outline: none;
+}
 
+.em-ht-q:focus .em-ht-mark {
+	/*box-shadow: 1px 1px hsl(120, 50%, 50%), -1px 1px hsl(120, 50%, 50%), 1px -1px hsl(120, 50%, 50%), -1px -1px hsl(120, 50%, 50%);*/
+	box-shadow: 1px 1px #96f, -1px 1px #96f, 1px -1px #96f, -1px -1px #96f;
+}
 
 .em-cc-selector {
 	display: flex;
@@ -241,11 +255,81 @@
 }
 
 .em-check {
+	display: none;
 	position: relative;
 	top: .6rem;
 	right: .5rem;
 	width: 2rem;
 	height: 2rem;
+}
+
+.em-element-check label {
+	position: relative;
+	left: 3.5rem;
+	/*font-family: montserrat;*/
+}
+
+.em-element-check span::before {
+	position: relative;
+	top: 0rem;
+}
+
+/* 3.6.4 check text */
+.em-element-contact_accept span::before,
+.em-element-axo_accept span::before {
+	border-color: hsl(0, 100%, 70%);
+	border: solid 2px;
+
+}
+.em-check:checked + label span::before {
+	/*background-color: green;*/
+	border: solid 2px;
+	border-color: hsl(0, 0%, 30%);
+    /*background-image: url('/wp/wp-content/plugins/EM-axowl/assets/img/checkcross.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/checkcross.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    /*opacity: .75;*/
+	/*outline: solid 3px black;*/
+}
+.em-element-check span::before {
+	content: '';
+
+	position: absolute;
+	left: -35px;
+
+	height: 1.7rem;
+	width: 1.7rem;
+	/*border-color: red;*/
+}
+
+.em-element-check-unchecked span::before {
+	border-color: hsl(0, 100%, 70%);
+}
+
+
+.em-lc .em-i {
+	appearance: none;
+	-webkit-appearance: none;
+	/*padding-left: 1rem;*/
+}
+
+.em-lc {
+	position: relative;
+	/*cursor: pointer;*/
+}
+
+.em-lc::after {
+	content: ' ';
+	position: absolute;
+	bottom: 0;
+	right: 1rem;
+	height: 4rem;
+	width: 3rem;
+	/*background: url('https://norskfinans.no/wp-content/uploads/2019/03/downarrow.png') no-repeat center center;*/
+	background: url('https://norskfinans.no/wp-content/uploads/2019/03/selectarrow.png') no-repeat center center;
+	pointer-events: none;
+	/*cursor: pointer;*/
 }
 
 .em-b-container {
@@ -367,6 +451,25 @@
 
 .em-i-email {
 	font-size: 1.6rem;
+}
+
+.em-element-monthly_cost {
+	/*background-color: red;*/
+	font-family: Montserrat;
+	font-weight: 300;
+	font-size: 2rem;
+}
+
+.em-if-monthly_cost {
+	background-color: hsl(0, 0%, 96%);
+	background-color: #96f;
+	color: white;
+	/*border: none;*/
+	/*text-shadow: 1px 1px 1px black, -1px 1px 1px black, 1px -1px 1px black, -1px -1px 1px black;*/
+	text-align: center;
+	font-weight: 700;
+	font-family: Montserrat;
+
 }
 
 /*input[type=number]::-webkit-inner-spin-button, 

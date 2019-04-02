@@ -737,10 +737,10 @@ body {
 	/*cursor: pointer;*/
 }
 
-.em2-lc::after {
+.em-lc::after {
 	content: ' ';
 	position: absolute;
-	bottom: 0;
+	bottom: .5rem;
 	right: 1rem;
 	height: 4rem;
 	width: 3rem;
@@ -838,10 +838,8 @@ select.em-i {
 	align-items: center;
 
 	position: absolute;
-	/*top: 2.8rem;*/
 	right: -1.1rem;
-	bottom: 120%;
-	/*right: -18.9rem;*/
+	bottom: 4rem;
 
 	width: 20rem;
 
@@ -849,7 +847,6 @@ select.em-i {
 
 	background-color: #96f;
 	color: white;
-	/*border: solid 1px hsl(0, 0%, 70%);*/
 
 	font-size: 1.4rem;
 	line-height: 1;
@@ -857,10 +854,20 @@ select.em-i {
 
 	font-family: montserrat;
 	font-weight: 300;
-
-	/*background-color: red;*/
-
 }
+
+.em-cc .em-ht {
+	bottom: 10rem;
+}
+
+.em-slidedown .em-ht {
+	bottom: 3.5rem;
+}
+
+.em-slidedown .em-cc .em-ht {
+	bottom: 8.5rem;
+}
+
 
 .em-ht-arrowdown {
 	position: absolute;
@@ -882,27 +889,18 @@ select.em-i {
 	right: 0;
 	top: 0;
 
-	/*width: 1.5rem;*/
-	/*height: 1.5rem;*/
 
 	border: none;
 	padding: .5rem;
-	/*border-radius: 25px;*/
-	/*border: solid 1px gray;*/
 
 	background-color: transparent;
 
 	font-weight: 400;
 	text-align: center;
 	line-height: 2rem;
-	/*cursor: pointer;*/
 	background-color: white;
-	/*background: url('https://norskfinans.no/wp-content/uploads/2019/03/spm.png') center center;*/
 }
 
-.em-part-lower-container .em-ht {
-	/*bottom: 145%;*/
-}
 
 .em-part-lower-container .em-ht-q {
 	top: -.5rem;
@@ -928,7 +926,8 @@ select.em-i {
 }
 
 .em-ht-q:focus .em-ht-mark {
-	box-shadow: 1px 1px hsl(120, 50%, 50%), -1px 1px hsl(120, 50%, 50%), 1px -1px hsl(120, 50%, 50%), -1px -1px hsl(120, 50%, 50%);
+	/*box-shadow: 1px 1px hsl(120, 50%, 50%), -1px 1px hsl(120, 50%, 50%), 1px -1px hsl(120, 50%, 50%), -1px -1px hsl(120, 50%, 50%);*/
+	box-shadow: 1px 1px #96f, -1px 1px #96f, 1px -1px #96f, -1px -1px #96f;
 }
 
 /* 3.8 label */
