@@ -468,12 +468,13 @@
 				$('.em-b-endre, .em-b-send, .em-b-text').show();
 				$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 
-				$('.em-part-1-grid').css({
-					'grid-template-columns': '2fr 1fr 1fr 1fr',
-					'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
-					'grid-column-gap': '2rem',
-					'padding': '4rem 6rem'
-				});
+				$('.em-part-1-grid').addClass('em-part-1-grid-2');
+				// $('.em-part-1-grid').css({
+				// 	'grid-template-columns': '2fr 1fr 1fr 1fr',
+				// 	'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
+				// 	'grid-column-gap': '2rem',
+				// 	'padding': '4rem 6rem'
+				// });
 
 				$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
 					'align-self': 'center',

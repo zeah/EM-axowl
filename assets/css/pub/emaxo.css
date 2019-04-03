@@ -572,6 +572,18 @@ body {
 	/*grid-column-gap: 1rem;*/
 }
 
+.em-part-1-grid-2 {
+	grid-template-columns: 2fr 1fr 1fr 1fr;
+
+	grid-template-areas: 
+		"loan tenure refinancing monthly"
+		"compare compare compare compare";
+
+	grid-column-gap: 2rem;
+
+	padding: 4rem 6rem;
+}
+
 /*.em-part-1-done {
 	grid-template-columns: 1fr 1fr;
 
@@ -1693,7 +1705,116 @@ input[type=number]::-webkit-outer-spin-button {
 /* 20.0 INTERNET EXPLORER GRIDS AND OTHERWISE */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 
-	.em-part-container {
+	/* email/send popups, em-lower-container - js stuff */
+
+	/*button,*/
+/*	button:focus,
+	button:active,*/
+	.em-b,
+	.em-compare-save,
+	.em-ht,
+	.em-if,
+	.em-i {
+		border: solid 2.4px black;
+	}
+
+	.em-cc-yes {
+		border-right: solid 1.5px black;
+	}
+
+	.em-cc-no {
+		border-left: solid 1.5px black;
+	}
+	
+	select::-ms-expand {
+	    display: none;
+	}
+
+	.em-element-contact_accept span::before {
+		border: solid 2px;
+	}
+
+	.em-part-1-grid {
+		display: -ms-grid;
+
+		-ms-grid-columns: 25% 25% 25% 25%;
+		-ms-grid-rows: auto auto auto auto auto auto;
+
+
+	/*grid-template-columns: 25% 25% 25% 25%;
+
+	grid-template-areas: 
+	"loan loan monthly monthly"
+	". neste neste ."
+	"compare compare compare compare"
+	"tenure refinancing mobile mobile"
+	"axoaccept axoaccept email email"
+	"contactaccept contactaccept email email";*/
+
+	}
+
+	.em-element-loan_amount {
+		-ms-grid-row: 1;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-monthly_cost {
+		-ms-grid-row: 1;
+		-ms-grid-column: 3;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-neste {
+		-ms-grid-row: 2;
+		-ms-grid-column: 2;
+		-ms-grid-column-span: 2;		
+	}
+
+	.em-element-collect_compare {
+		-ms-grid-row: 3;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 4;		
+	}
+
+	.em-element-tenure {
+		-ms-grid-row: 4;
+		-ms-grid-column: 1;
+		/*-ms-grid-column-span: 2;*/
+	}
+
+	.em-element-collect_debt {
+		-ms-grid-row: 4;
+		-ms-grid-column: 2;
+	}
+
+	.em-element-mobile_number {
+		-ms-grid-row: 4;
+		-ms-grid-column: 3;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-email {
+		-ms-grid-row: 5;
+		-ms-grid-column: 3;
+		-ms-grid-column-span: 2;
+		-ms-grid-row-span: 2;
+	}
+
+	.em-element-axo_accept {
+		-ms-grid-row: 5;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+	.em-element-contact_accept {
+		-ms-grid-row: 6;
+		-ms-grid-column: 1;
+		-ms-grid-column-span: 2;
+	}
+
+
+/*	.em-part-container {
 		display: -ms-grid;
 
 		-ms-grid-columns: 1fr 1fr;
@@ -1817,7 +1938,7 @@ input[type=number]::-webkit-outer-spin-button {
 		right: .3rem;
 
 		font-size: 1.6rem;
-	}
+	}*/
 }
 
 .em-hidden {
