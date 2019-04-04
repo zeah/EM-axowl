@@ -114,20 +114,27 @@
 }
 .em-slider-loan_amount .ui-widget-header {
 	border-radius: 0;
-	background-image: none;
-	background: url('https://www.axofinans.no/images/slider-bg.png') repeat top;
+	background-image: repeating-linear-gradient(
+    	45deg, 
+    	#96f, 
+    	#96f 10px, 
+    	#85e 0px, 
+    	#85e 20px);
+	/*background-image: none;*/
+	/*background: url('https://www.axofinans.no/images/slider-bg.png') repeat top;*/
 	/*background-color: #96f;*/
 	/*background: linear-gradient(45deg, black 0%, black 26%, transparent 26%), linear-gradient(-45deg, black 0%, black 27%, transparent 27%);*/
 }
 .em-slider-loan_amount .ui-slider-handle {
 	height: 5rem;
-	width: 3rem;
+	width: 5rem;
 	border: solid 3px black;
     background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');
     background-repeat: no-repeat;
     background-position: center; 
 	background-color: #fff;
 	top: -1.2rem;
+	margin-left: -2rem;
 	cursor: grab;
 }
 
