@@ -228,7 +228,7 @@ body {
 /* 1.1.2 border */
 .em-if-monthly_cost,
 /*.em-element-monthly_cost,*/
-.em-r-loan_amount::-webkit-slider-thumb,
+/*.em-r-loan_amount::-webkit-slider-thumb,*/
 .em-element-contact_accept span::before,
 .em-element-axo_accept span::before,
 .em-progress,
@@ -357,68 +357,11 @@ body {
 
 }
 
-/* 1.4 progress bar */
-
-/* 1.4.1 progress container */
-.em-progress-container {
-	position: relative;
-	grid-area: progress;
-	align-self: center;
-	max-width: 36.9rem;
-}
-
-/* 1.4.2 progress element */
-.em-progress {
-	width: 100%;
-	appearance: none;
-	/*border: none;*/
-	background-color: white;
-	height: 7rem;
-}
-
-/* 1.4.3 progress text */
-.em-progress-text {
-	position: absolute;
-	top: 1.4rem;
-	right: 2rem;
-	font-size: 3rem;
-}
-
-/* 1.4.4 progress bar*/
-.em-progress::-webkit-progress-bar {
-	background-color: whiteSmoke;
-}
-
-/* 1.4.5 progress value */
-.em-progress::-webkit-progress-value {
-	border-right: solid 1px black;
-	background-image:
-		-webkit-linear-gradient( 135deg,
-								 transparent,
-								 transparent 33%,
-								 rgba(0,0,0,.1) 33%,
-								 rgba(0,0,0,.1) 66%,
-								 transparent 66%),
-    	-webkit-linear-gradient( top,
-								 rgba(255, 255, 255, .25),
-								 rgba(0,0,0,.2)),
-    	/*-webkit-linear-gradient( left, #fc6, #fc6);	*/
-    	/*-webkit-linear-gradient( left, #96f, #fc6);	*/
-    	-webkit-linear-gradient( left, #96f, #96f);	
-    	/*-webkit-linear-gradient( left, #09c, #4f4);	*/
-
-}
 
 /* 2.0 form parts */
 
 /* 2.1 part container */
 .em-part-container {
-	/*display: grid;*/
-	/*grid-template-columns: 1fr 1fr;*/
-	/*grid-template-areas: */
-		/*"first first"*/
-		/*"second third"*/
-		/*"fourth fifth";*/
 }
 
 .em-part-lower-container {
@@ -431,32 +374,19 @@ body {
 
 	 justify-items: center;
 
-	 /*display: flex;*/
-	 /*flex-wrap: wrap;*/
-	 /*grid-template-columns: repeat(5, 1fr);*/
 }
 
 .em-lower-titles {
-	/*width: 100%;*/
 	grid-area: title;
 }
 
 /* 2.1.1 generic */
 .em-part {
-	/*display: none;*/
 	margin-top: 5rem;
-	/*flex-grow: 1;*/
-	/*flex-basis: 0;*/
-	/*overflow: hidden;*/
-
 }
 
 .em-part-lower-container .em-part {
 	width: 30rem;
-	/*flex-grow: 1;*/
-    /*flex-basis: 0;*/
-    /*max-width: 33%;*/
-    /*min-width: 20%;*/
 }
 
 .em-part-lower-container .em-part-4 {
@@ -464,28 +394,15 @@ body {
 	display: none;
 }
 
-/*.em-part-lower-container .em-element {*/
-/*.em-part-lower-container .em-part:before
-.em-part-lower-container .em-part:after {
-	content: ".";    */
-    /*display: block;    */
-    /*height: 0;    */
-    /*overflow: hidden; */
-/*.em-part-lower-container .em-it {*/
-	/*overflow: hidden;*/
-/*}*/
-
-/*.em-part-lower-container .em-part:after { clear: both; }*/
 
 .em-part-lower-container .em-part {
-	/*flex: 1 0 0;*/
 	margin-top: 0;
 }
 
 /*.em-part-lower-container .em-i {*/
 .em-if-monthly_cost,
 /*.em-element-monthly_cost,*/
-.em-r-loan_amount::-webkit-slider-thumb,
+/*.em-r-loan_amount::-webkit-slider-thumb,*/
 .em-element-contact_accept span::before,
 .em-element-axo_accept span::before,
 .em-progress,
@@ -1068,6 +985,50 @@ select.em-i {
 }
 
 /* 4.1.5 loan amount range input */
+
+.em-slider-loan_amount {
+	border: solid 3px black !important;
+	height: 3rem;
+	margin-top: 4rem;
+
+}
+.em-slider-loan_amount .ui-widget-header {
+	border-radius: 0;
+	/*background-image: none;*/
+    background-image: repeating-linear-gradient(
+    	45deg, 
+    	#96f, 
+    	#96f 10px, 
+    	#85e 0px, 
+    	#85e 20px);
+
+
+   /* background-image: repeating-linear-gradient(
+    	45deg, 
+    	rgb(78, 202, 34), 
+    	rgb(78, 202, 34) 10px, 
+    	rgb(62, 177, 21) 0px, 
+    	rgb(62, 177, 21) 20px);*/
+	/*background: url('https://www.axofinans.no/images/slider-bg.png') repeat top;*/
+	/*background-color: #96f;*/
+	/*background: linear-gradient(45deg, black 0%, black 26%, transparent 26%), linear-gradient(-45deg, black 0%, black 27%, transparent 27%);*/
+}
+.em-slider-loan_amount .ui-slider-handle {
+	height: 4rem;
+	width: 3rem;
+	border: solid 3px black;
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');
+    background-repeat: no-repeat;
+    background-position: center; 
+	background-color: #fff;
+	top: -.7rem;
+	cursor: grab;
+}
+
+.em-slider-loan_amount .ui-state-active {
+	background-color: #fff;
+}
+
 .em-r-loan_amount {
 	/*flex-grow: 1;*/
 	/*flex-basis: 0;*/
@@ -1293,7 +1254,7 @@ select.em-i {
 
 .em-compare-text {
 	margin: 1rem 0;
-	font-family: montserrat;
+	/*font-family: montserrat;*/
 }
 
 .em-compare-save {
@@ -1718,6 +1679,14 @@ input[type=number]::-webkit-outer-spin-button {
 		border: solid 2.4px black;
 	}
 
+	.em-i {
+		height: 4rem;
+	}
+
+	.em-part-lower-container .em-lc::after {
+		bottom: 0;
+	}
+
 	.em-cc-yes {
 		border-right: solid 1.5px black;
 	}
@@ -1740,17 +1709,6 @@ input[type=number]::-webkit-outer-spin-button {
 		-ms-grid-columns: 25% 25% 25% 25%;
 		-ms-grid-rows: auto auto auto auto auto auto;
 
-
-	/*grid-template-columns: 25% 25% 25% 25%;
-
-	grid-template-areas: 
-	"loan loan monthly monthly"
-	". neste neste ."
-	"compare compare compare compare"
-	"tenure refinancing mobile mobile"
-	"axoaccept axoaccept email email"
-	"contactaccept contactaccept email email";*/
-
 	}
 
 	.em-element-loan_amount {
@@ -1763,6 +1721,7 @@ input[type=number]::-webkit-outer-spin-button {
 		-ms-grid-row: 1;
 		-ms-grid-column: 3;
 		-ms-grid-column-span: 2;
+		-ms-grid-column-align: end;
 	}
 
 	.em-element-neste {
@@ -1780,7 +1739,6 @@ input[type=number]::-webkit-outer-spin-button {
 	.em-element-tenure {
 		-ms-grid-row: 4;
 		-ms-grid-column: 1;
-		/*-ms-grid-column-span: 2;*/
 	}
 
 	.em-element-collect_debt {
@@ -1813,135 +1771,144 @@ input[type=number]::-webkit-outer-spin-button {
 		-ms-grid-column-span: 2;
 	}
 
-
-/*	.em-part-container {
+	.em-part-lower-container {
 		display: -ms-grid;
 
-		-ms-grid-columns: 1fr 1fr;
-		-ms-grid-rows: auto auto auto auto auto;
+		-ms-grid-columns: 1fr 1fr auto 1fr;
+		-ms-grid-rows: auto auto auto auto auto auto;
 	}
 
-	.em-part-1 {
+	.em-part-lower-titles {
 		-ms-grid-row: 1;
 		-ms-grid-column: 1;
-		-ms-grid-column-span: 2;
 	}
 
 	.em-part-2 {
 		-ms-grid-row: 2;
 		-ms-grid-column: 1;
+		-ms-grid-column-align: center;
 	}
 
 	.em-part-3 {
 		-ms-grid-row: 2;
 		-ms-grid-column: 2;
+		-ms-grid-column-align: center;
 	}
 
+	
 	.em-part-4 {
-		-ms-grid-row: 3;
-		-ms-grid-column: 1;
+		-ms-grid-row: 2;
+		-ms-grid-column: 3;
+		-ms-grid-column-align: center;
 	}
 
+	
 	.em-part-5 {
-		-ms-grid-row: 3;
-		-ms-grid-column: 2;
+		-ms-grid-row: 2;
+		-ms-grid-column: 4;
+		-ms-grid-column-align: center;
 	}
 
-	.em-part-1-grid {
+
+	.email-popup-grid {
 		display: -ms-grid;
 
 		-ms-grid-columns: 1fr 1fr;
-		-ms-grid-rows: auto auto auto auto auto auto auto;
+		-ms-grid-rows: auto auto auto auto;
 	}
 
-	.em-element-loan_amount {
+	.pop-title {
 		-ms-grid-row: 1;
 		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
+		margin-bottom: 4rem;
 	}
 
-	.em-r-loan_amount {
-		position: relative;
-		top: 3.2rem;
-	}
-
-	.em-element-monthly_cost {
+	.pop-phone-container {
 		-ms-grid-row: 2;
 		-ms-grid-column: 1;
-		-ms-grid-column-span: 2;
+		margin-right: 1rem;
 	}
 
-	.em-element-neste {
+	.pop-email-container {
+		-ms-grid-row: 2;
+		-ms-grid-column: 2;
+		margin-left: 1rem;
+
+	}
+
+	.pop-neste {
 		-ms-grid-row: 3;
 		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
+		-ms-grid-column-align: center;
 
-		text-align: center;
+		margin-top: 4rem;
+
 	}
 
-	.em-element-tenure {
+	.pop-text {
 		-ms-grid-row: 4;
 		-ms-grid-column: 1;
-	}
-
-	.em-element-collect_debt {
-		-ms-grid-row: 4;
-		-ms-grid-column: 2;
-	}
-
-	.em-element-mobile_number {
-		-ms-grid-row: 5;
-		-ms-grid-column: 1;
-	}
-
-	.em-element-email {
-		-ms-grid-row: 5;
-		-ms-grid-column: 2;
-	}
-
-	.em-element-axo_accept {
-		-ms-grid-row: 6;
-		-ms-grid-column: 1;
 		-ms-grid-column-span: 2;
+
 	}
 
-	.em-element-contact_accept {
-		-ms-grid-row: 7;
-		-ms-grid-column: 1;
-		-ms-grid-column-span: 2;
+	.em-part-1-grid-2 {
+
+		-ms-grid-columns: 2fr 1fr 1fr 1fr;
+		-ms-grid-rows: auto auto;
+
+		/*grid-template-columns: 2fr 1fr 1fr 1fr;*/
+
+		/*grid-template-areas: */
+			/*"loan tenure refinancing monthly"*/
+			/*"compare compare compare compare";*/
+
+		/*grid-column-gap: 2rem;*/
+
+		padding: 4rem 6rem;
 	}
 
 
-	.em-b-inner {
-		display: -ms-grid;
-		-ms-grid-columns: 2fr 1fr;
+	.em-part-1-grid-2 .em-element-loan_amount {
+		-ms-grid-row: 1;
+		-ms-grid-column: 1;		
+		-ms-grid-column-span: 1;
+		margin-right: 3rem;		
 	}
 
-	.em-progress-container {
-		-ms-grid-column: 1;
-		height: 2.1rem;
+	.em-part-1-grid-2 .em-element-tenure {
+		-ms-grid-row: 1;
+		-ms-grid-column: 2;		
+		margin-right: 3rem;		
 	}
 
-	.em-b-submit,
-	.em-b-next {
-		-ms-grid-column: 2;
+	.em-part-1-grid-2 .em-element-monthly_cost {
+		-ms-grid-row: 1;
+		-ms-grid-column: 4;		
 	}
 
-	.em-r {
-		height: auto;
-		background-color: transparent;
+	.em-part-1-grid-2 .em-element-collect_debt {
+		-ms-grid-row: 1;
+		-ms-grid-column: 3;		
+		margin-right: 3rem;		
 	}
 
-	.em-ht-q > span {
-		position: relative;
-		bottom: .1rem;
-		right: .3rem;
+	.em-part-1-grid-2 .em-element-compare_debt {
+		-ms-grid-row: 2;
+		-ms-grid-column: 1;		
+		-ms-grid-column-span: 4;		
+	}
 
-		font-size: 1.6rem;
-	}*/
+	.em-part-1-grid-2 .em-lc::after {
+		bottom: .5rem;
+		right: 6rem;
+	}
 }
 
 .em-hidden {
 	display: none;
 }
 
+/*.ui-widget-header {background-image:none;background-color:#887e6d;}*/

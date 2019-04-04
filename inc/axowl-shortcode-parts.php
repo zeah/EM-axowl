@@ -199,9 +199,9 @@ final class Axowl_shortcode_parts {
 			
 			(isset($o['value']['help']) && isset($o['ht'])) ? $this->help_element($o['name'], $o['ht']) : '', // 3
 
-			isset($o['value']['max']) ? ' max='.$o['value']['max'] : '', // 4
+			isset($o['value']['max']) ? ' data-max='.$o['value']['max'] : '', // 4
 			
-			isset($o['value']['min']) ? ' min='.$o['value']['min'] : '', // 5
+			isset($o['value']['min']) ? ' data-min='.$o['value']['min'] : '', // 5
 			
 			isset($o['value']['type']) ? $o['value']['type'] : 'text', // 6
 			
@@ -231,6 +231,21 @@ final class Axowl_shortcode_parts {
 		if (!isset($o['name'])) return '';
 
 		// wp_die('<xmp>'.print_r($o, true).'</xmp>');
+
+		return sprintf(
+			'<div class="em-slider em-slider-%1$s" data-max="%2$s" data-min="%3$s" data-step="%4$s" data-def="%5$s"></div>',
+
+			$o['name'],
+
+			isset($o['value']['max']) ? $o['value']['max'] : '',
+			
+			isset($o['value']['min']) ? $o['value']['min'] : '',
+			
+			isset($o['value']['step']) ? $o['value']['step'] : '',
+			
+			isset($o['value']['default']) ? $o['value']['default'] : ''			
+
+		);
 
 		return sprintf(
 			'<input class="em-r em-r-%1$s" id="em-r-%1$s" type="range"%2$s%3$s%4$s%5$s>',
