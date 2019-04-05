@@ -162,6 +162,28 @@ body {
 	background-color: white;
 }
 
+.forside-overskrift,
+.forside-overtext,
+.em-qa-container {
+	width: 90rem;
+	max-width: 100%;
+	margin: auto;
+}
+
+.forside-overskrift {
+	font-family: Merriweather;
+	font-weight: 900;
+	font-size: 4rem;
+}
+
+.forside-overtext {
+	font-family: Montserrat;
+	font-weight: 300;
+	font-size: 2rem;
+
+	margin-bottom: 2rem;
+}
+
 
 /* 0.2 hidden */
 /*.em-hidden {
@@ -176,6 +198,8 @@ body {
 	/*border-bottom: solid 4rem #f2e7d5;*/
 	/*margin: -20px;	*/
 	margin-bottom: 4rem;
+
+	opacity: 1 !important;
 }
 
 /* 1.0.1 form cover */
@@ -221,7 +245,7 @@ body {
 	font-size: 1.6rem;
 	font-family: merriweather;
 
-	filter: blur(.2px);
+	/*filter: blur(.2px);*/
 }
 
 
@@ -679,6 +703,10 @@ body {
 	/*cursor: pointer;*/
 }
 
+.em-part-lower-container .em-lc::after {
+	bottom: 0;
+}
+
 select.em-i {
 	cursor: pointer;
 }
@@ -778,7 +806,6 @@ select.em-i {
 	color: white;
 
 	font-size: 1.4rem;
-	line-height: 1;
 	z-index: 199;
 
 	font-family: montserrat;
@@ -1192,15 +1219,22 @@ select.em-i {
 .em-element-monthly_cost {
 	grid-area: monthly;
 
-	justify-self: right;
-	align-self: center;
+	position: relative;
+	top: 3.6rem;
 
-	margin-top: 1rem;
+	justify-self: right;
+	align-self: flex-start;
+
+	padding: 0;
+	margin: 0;
+
+	/*margin-top: 1rem;*/
 	/*padding: 0 1rem;*/
 	background-color: transparent;
 	border: none;
 
 	text-align: center;
+
 	/*width: 100%;*/
 	/*overflow: visible;*/
 	/*text-align: center;*/
@@ -1323,90 +1357,29 @@ select.em-i {
 .em-popup {
 	display: none;
 	position: relative;
-	/*display: block;*/
-
-	/*background-color: red;*/
 	height: 323px;
-	width: 100%;
-/*
-	grid-template-areas:
-		"title x"
-		"content content";*/
+	width: 90rem;
+	max-width: 100%;
+	margin: auto;
 
-	/*grid-template-columns: 1fr auto;
-	grid-template-rows: auto 1fr auto;
-
-	grid-template-areas: 
-		"title x"
-		"content content"
-		"button button";
-
-	border: double 4px hsl(0, 0%, 50%);
-
-	background-color: hsl(120, 80%, 95%);*/
 	z-index: 999;
 }
 
-/* 5.2 popup show */
-.em-popup-show {
-	/*display: grid;
 
-
-	
-	animation-name: popup;
-	animation-duration: .5s;*/
-}
-
-/* 5.3 popup animation */
-/*@keyframes popup {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}*/
-
-/* 5.3 popup title */
-.em-popup-title {
-	/*grid-area: title;*/
-}
 
 /* 5.4 popup close button */
 .em-pop-email-x,
 .em-popup-x {
-	/*display: none;*/
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
-	/*grid-area: x;*/
 	padding: 0;
 	border: none;
 	outline: none;
 	background: none;
-	/*background-color: transparent;*/
-
-	/*align-self: flex-start;*/
-
-	/*margin: 1rem 1rem 0 0;*/
-
-	/*background-color: black;*/
-	/*color: white;*/
-
-	/*border-radius: 25px;*/
-	/*padding: .5rem 1.1rem;*/
-
-	/*font-size: 2rem;*/
-
-	/*border: none;*/
 	cursor: pointer;
 }
 
-/*.em-pop-email-x::after,*/
-/*.em-popup-x::after {*/
-	/*content: 'X';*/
-	/*font-size: 2.4rem;*/
-	/*font-weight: 700;*/
-/*}*/
-.em-popup-x:hover {
-	/*font-weight: 700;*/
-}
 
 /* 5.5 popup text */
 .em-popup-content {
@@ -1422,61 +1395,6 @@ select.em-i {
 	/*grid-area: content;*/
 }
 
-.em-popup-content span {
-	/*align-self: center;*/
-	/*height: 100%;*/
-	/*display: inline-block;*/
-	/*vertical-align: middle;*/
-}
-
-/* 5.6 popup button */
-.em-popup-button {
-	/*grid-area: button;*/
-	
-	/*align-self: center;*/
-
-	/*background-color: transparent;
-	border: none;
-	font-size: 3rem;
-	cursor: pointer;*/
-}
-
-
-/*input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}*/
-
-/* 10.0 sprites */
-
-/* 10.1 sprites container */
-.em-sprites {
-	overflow: hidden;
-}
-
-/* 10.2 sprites inner container */
-.em-sprite-container {
-	display: flex;
-	position: relative;
-
-	align-items: center;
-}
-
-/* 10.3 sprites animation */
-.em-sprite-container-animation {
-	animation-name: spriteslide;
-	animation-duration: 25s;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
-
-	cursor: pointer;
-}
-@keyframes spriteslide {
-	from { left: 0; }
-	to { left: -1630px; }
-}
-
 
 /* 9.0 email/phone popup */
 .email-popup {
@@ -1485,7 +1403,6 @@ input[type=number]::-webkit-outer-spin-button {
 	top: 0;
 	left: 0;
 	right: 0;
-	/*height: 100%;*/
 	background-color: white;
 	z-index: 101;
 	width: 90rem;
@@ -1563,6 +1480,42 @@ input[type=number]::-webkit-outer-spin-button {
 	z-index: 100;
 }
 
+
+/* 10.0 sprites */
+
+/* 10.1 sprites container */
+.em-sprites {
+	overflow: hidden;
+	width: 90rem;
+	max-width: 100%;
+	margin: auto;
+}
+
+/* 10.2 sprites inner container */
+.em-sprite-container {
+	display: flex;
+	position: relative;
+
+	align-items: center;
+}
+
+/* 10.3 sprites animation */
+.em-sprite-container-animation {
+	animation-name: spriteslide;
+	animation-duration: 25s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+
+	cursor: pointer;
+}
+@keyframes spriteslide {
+	from { left: 0; }
+	to { left: -1630px; }
+}
+
+
+
+
 /* 10.4 sprites paused */
 .em-sprite-container-animation-paused {
   animation-play-state: paused;
@@ -1575,6 +1528,10 @@ input[type=number]::-webkit-outer-spin-button {
     background-image: url('https://norskfinans.no/wp-content/uploads/2019/02/banklogoer.png');
     flex: 0 0 auto;
     margin-right: 3rem;
+    /*width: 30rem;*/
+    /*background-color: red;*/
+    /*max-width: 100%;*/
+    /*overflow: hidden;*/
 }
 
 /* 10.6 sprite parts */
@@ -1663,6 +1620,8 @@ input[type=number]::-webkit-outer-spin-button {
     width: 154px;
     height: 50px
 }
+
+
 
 /* 20.0 INTERNET EXPLORER GRIDS AND OTHERWISE */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

@@ -103,9 +103,9 @@ final class Axowl_shortcode {
 				 </div>';
 
 		$html = sprintf(
-			'<div class="em-form-container"%s>%s%s<form class="emowl-form">',
+			'<div class="em-form-container" style="opacity: 0;%s">%s%s<form class="emowl-form">',
 			
-			isset($atts['style']) ? ' style="'.$atts['style'].'"' : '',
+			isset($atts['style']) ? $atts['style'] : '',
 			$p->popup(),
 			$epop
 		);

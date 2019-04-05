@@ -42,6 +42,10 @@
 	display: none;
 }
 
+.em-form-container {
+	opacity: 1 !important;
+}
+
 .emowl-form {
 	padding: 2rem 4rem;
 	background-color: #fff;
@@ -414,8 +418,8 @@
 
 	background-color: #96f;
 	color: white;
-	font-family: Montserrat;
-	font-weight: 700;
+	font-family: Merriweather;
+	font-weight: 900;
 
 }
 
@@ -495,6 +499,7 @@
 	font-weight: 300;
 	font-size: 2rem;
 	text-align: center;
+
 }
 
 .em-if-monthly_cost {

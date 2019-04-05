@@ -470,8 +470,11 @@
 
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
 
+		if ($('.mobile-icon-container')[0]) $('.mobile-icon-container').hide();
+		else $('.navbar-menu').fadeTo(0, 0);
+
+			// $('.navbar-menu').fadeTo(0, 0);
 		if (desktop()) {
-			$('.navbar-menu').fadeTo(0, 0);
 			$('.em-part-1-grid').slideUp(800, function() {
 
 				$('.content, .main').css('margin-bottom', '0');
@@ -525,7 +528,7 @@
 
 
 		if (mobile()) {
-			$('.mobile-icon-container').hide();
+			// $('.mobile-icon-container').hide();
 			// $('.navbar-menu, .mobile-icon-container').hide();
 			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 			$('.em-element-email').detach().prependTo('.em-part-2');
@@ -593,11 +596,8 @@
 						$(this).fadeIn(2000);
 					});
 
-					if (mobile()) $('.mobile-icon-container').show();
-					// if (mobile()) $('.navbar-menu, .mobile-icon-container').show();
-
-					if (desktop())  $('.navbar-menu').fadeTo(0, 1);
-
+					if ($('.mobile-icon-container')[0]) $('.mobile-icon-container').show();
+					else $('.navbar-menu').fadeTo(0, 1);
 				});
 			});
 
@@ -635,10 +635,12 @@
 
 
 	$('.em-ht-mark').mouseenter(function() {
-		if (desktop()) {
+		if (desktop() && !$('.mobile-icon-container')[0]) {
+
 			$(this).parent().siblings('.em-ht').fadeIn(300);
 
 			$(this).one('mouseleave', function() {
+
 					var $this = $(this);
 					var timer = setTimeout(function() { $this.parent().siblings('.em-ht').fadeOut(300) }, 300);
 
@@ -650,10 +652,9 @@
 		}
 	});
 
+
 	$('.em-ht-q').click(function() {
-
 		$(this).siblings('.em-ht').slideToggle(300);
-
 	});
 
 	// CHECKBOXES
