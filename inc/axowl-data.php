@@ -60,9 +60,32 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_popup', [$this, 'popup']);
 		add_action( 'wp_ajax_popup', [$this, 'popup']);
+
+		// add_action( 'wp_ajax_nopriv_test', [$this, 'test']);
+		// add_action( 'wp_ajax_test', [$this, 'test']);
 	}
 
+	// public function test() {
 
+	// 	$data = isset($_POST['data']) ? $_POST['data'] : 'nothing';
+
+	// 	$posting_to_slack = wp_remote_post('https://hooks.slack.com/services/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', array(
+	// 		'method' => 'POST',
+	// 		'timeout' => 30,
+	// 		'redirection' => 5,
+	// 		'httpversion' => '1.0',
+	// 		'blocking' => false,
+	// 		'headers' => array(),
+	// 		'body' => ['payload' => json_encode(['text' => $data])],
+	// 		'cookies' => array()
+	// 		)
+	// 	);
+
+
+	// 	echo 'worked';
+
+	// 	exit;
+	// }
 
 
 	/**
@@ -94,6 +117,7 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 		echo print_r($send, true);
+
 		exit;
 		
 		// sending to axo
@@ -126,7 +150,7 @@ final class Axowl_data {
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('incomplete', 0, ['ga' => $ga]);
+		$this->ga('incomplete', 0, $ga);
 
 		exit;
 	}
@@ -136,15 +160,18 @@ final class Axowl_data {
 	 * [popup description]
 	 */
 	public function popup() {
-		echo print_r($_POST, true);
-		exit;
+		// echo print_r($_POST, true);
+		// exit;
 
 		$data = ['status' => 'popup'];
 
 		$email = false;
 		$phone = false;
 
-		$ga = isset($_POST['ga']) ? $_POST['ga'] : false;
+		$ga = isset($_POST['ga']) ? $_POST['ga'] : [];
+
+		echo print_r($ga, true);
+		exit;
 
 		if (isset($_POST['pop-email']) && $this->val_email($_POST['pop-email'])) $email = $_POST['pop-email'];
 		if (isset($_POST['pop-phone']) && $this->val_phone($_POST['pop-phone'])) $phone = $_POST['pop-phone'];
@@ -157,16 +184,18 @@ final class Axowl_data {
 		// echo 'Data to be sent from popup: '.http_build_query($data);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('popup', 0, ['ga' => $ga]);
+		$this->ga('popup', 0, $ga);
 
 		exit;
 	}
 
 	private function val_email($email) {
+		if (strpos($email, '@') === false) return false;
 		return true;
 	}
 
 	private function val_phone($phone) {
+		if (preg_match('/^\d{8}$/', $phone) === 0) return false;
 		return true;
 	}
 
@@ -199,20 +228,11 @@ final class Axowl_data {
 
 		$ga = [];
 		$temp_ga = ['ga', 'abid', 'abname'];
-		foreach ($temp_ga as $value) {
-			$ga[$value] = $data[$value];
-			unset($data[$value]);
-		}
-
-		// if (isset($data['ga'])) {
-		// 	$ga['ga'] = $data['ga'];
-		// 	unset($data['ga']);
-		// }
-
-		// if (isset($data['abid'])) {
-		// 	$ga['abid'] = $data['abid'];
-		// 	unset($data['abit']);
-		// }
+		foreach ($temp_ga as $value)
+			if (isset($data[$value])) {
+				$ga[$value] = $data[$value];
+				unset($data[$value]);
+			}
 
 
 		// testing - to be deleted
@@ -245,6 +265,9 @@ final class Axowl_data {
 			// case 'TechnicalError': $this->technical_error($data); break;
 		}
 	}
+
+
+
 
 
 
@@ -550,12 +573,14 @@ final class Axowl_data {
 			// 'dr' => $this->get_referer() // document referer
 		];
 
-		if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : false;
-		if ($data['ga']) $d['cid'] = $data['ga'];
+		if (!isset($data['id'])) $data['id'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : false;
+		if ($data['id']) $d['cid'] = $data['id'];
 
-		$ref = $this-get_referer();
+		$ref = $this->get_referer();
 		if  ($ref) $d['dr'] = $ref;
 
+		if (isset($data['viewport'])) $d['vp'] = $data['viewport'];
+		if (isset($data['screen'])) $d['sr'] = $data['screen'];
 
 		// getting site url without query string
 		global $wp;

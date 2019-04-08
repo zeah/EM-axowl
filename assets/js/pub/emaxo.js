@@ -17,6 +17,22 @@
  * 
  */
 
+var gaInfo = function() {
+
+	var data = {
+		viewport: jQuery(window).width()+'x'+jQuery(window).height(),
+		screen: screen.width+'x'+screen.height
+	}
+
+	if (/(?:^|;| )_ga=/.test(document.cookie)) {
+		var match = document.cookie.match(/(?:^|;| )(?:_ga=)(.*?)(?:;|$)/);
+		if (match[1]) data.id = match[1];
+	}
+
+
+	return data;
+};
+
 // VALIDATION AND EVENTS
 (function($) {
 	var validColor = 'green';
@@ -46,6 +62,23 @@
 								minimumFractionDigits: 0
 							});
 	}
+
+
+	// var gaInfo = function() {
+
+	// 	var data = {
+	// 		viewport: $(window).width()+'x'+$(window).height(),
+	// 		screen: screen.width+'x'+screen.height
+	// 	}
+
+	// 	if (/(?:^|;| )_ga=/.test(document.cookie)) {
+	// 		var match = document.cookie.match(/(?:^|;| )(?:_ga=)(.*?)(?:;|$)/);
+	// 		if (match[1]) data.ga = match[1];
+	// 	}
+
+
+	// 	return data;
+	// }
 
 	var cost = function(i) {
 		i = i / 12;
@@ -431,6 +464,9 @@
 	/**************
 		BUTTONS
 	***************/
+
+
+	// FIRST NESTE
 	var showNeste = function() {
 		$('.em-element-neste').remove();
 
@@ -442,6 +478,7 @@
 
 
 
+	// SECOND NESTE
 	$('.em-b-next').on('click', function() {
 
 		var valid = true;
@@ -449,7 +486,7 @@
 			if (!$(this).validation()) valid = false;
 		});
 
-		// if (!valid) return;
+		if (!valid) return;
 
 		location.hash = 'form';
 
@@ -458,7 +495,8 @@
 				action: 'wlinc',
 				'contact_accept': $('.em-check-contact_accept').val(),
 				'email': $('.em-i-email').val(),
-				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, '')
+				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
+				'ga': gaInfo()
 			}, function(data) {
 				console.log(data);
 			}); 
@@ -473,7 +511,6 @@
 		if ($('.mobile-icon-container')[0]) $('.mobile-icon-container').hide();
 		else $('.navbar-menu').fadeTo(0, 0);
 
-			// $('.navbar-menu').fadeTo(0, 0);
 		if (desktop()) {
 			$('.em-part-1-grid').slideUp(800, function() {
 
@@ -490,12 +527,6 @@
 				$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 
 				$('.em-part-1-grid').addClass('em-part-1-grid-2');
-				// $('.em-part-1-grid').css({
-				// 	'grid-template-columns': '2fr 1fr 1fr 1fr',
-				// 	'grid-template-areas': '"loan tenure refinancing monthly" "compare compare compare compare"',
-				// 	'grid-column-gap': '2rem',
-				// 	'padding': '4rem 6rem'
-				// });
 
 				$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
 					'align-self': 'center',
@@ -517,19 +548,15 @@
 			});
 		
 			$('.em-b-endre').click(function() {
-				// $('html').animate({'scrollTop': 0}, 1000, 'swing', function() {
 					$('.em-part-1-grid').slideToggle();
 					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
 					window.scrollTo(0, 0);
-				// });
 			});
 		}
 
 
 
 		if (mobile()) {
-			// $('.mobile-icon-container').hide();
-			// $('.navbar-menu, .mobile-icon-container').hide();
 			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 			$('.em-element-email').detach().prependTo('.em-part-2');
 			$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
@@ -543,7 +570,6 @@
 				$('html').animate({'scrollTop': 0}, 1000, 'swing', function() {
 					$('.em-part-1-grid').slideToggle();
 					$('.em-b-endre').text($('.em-b-endre').text() == 'Endre Lånebeløp' ? 'Skjul Lånebeløp' : 'Endre Lånebeløp');
-				// window.scrollTo(0, 0);
 				});
 			});
 		}
@@ -551,11 +577,14 @@
 
 	});
 
+
+
+	// SEND BUTTON
 	$('.em-b-send').on('click', function() {
 		var data = {};
 		var valid = true;
 
-		console.log($('.emowl-form .em-i:not(button), .emowl-form .em-c').length);
+		// console.log($('.emowl-form .em-i:not(button), .emowl-form .em-c').length);
 
 		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
 			if ($(this).parents('.em-hidden').length != 0) return;
@@ -578,9 +607,11 @@
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
-		// if (!valid) return;
+		data['ga'] = gaInfo();
 
-		console.log(data);
+		if (!valid) return;
+
+		// console.log(data);
 
 		$.post(emurl.ajax_url, {
 			action: 'axowl',
@@ -815,7 +846,6 @@
 
 (function($) {
 
-
 	var showPopup = function(e) {
 
 		// not all things on top of body is in body
@@ -836,17 +866,17 @@
 			if (!$('#pop-email').validation()) valid = false;
 			if (!valid) return;
 			
-			var decodedCookie = decodeURIComponent(document.cookie);
-			var cookies = decodedCookie.split(';');
-			var ga = null;
+			// var decodedCookie = decodeURIComponent(document.cookie);
+			// var cookies = decodedCookie.split(';');
+			// var ga = null;
 
-			for (var i in cookies){
-				var c = cookies[i].trim();
-				if (/^_ga=/.test(c)) {
-					ga = c.replace(/^_ga=/, '');
-					break;
-				}
-			}
+			// for (var i in cookies){
+			// 	var c = cookies[i].trim();
+			// 	if (/^_ga=/.test(c)) {
+			// 		ga = c.replace(/^_ga=/, '');
+			// 		break;
+			// 	}
+			// }
 
 			$('.pop-neste').off('click', click);
 			$('.email-popup, .em-glass').fadeOut(500);
@@ -854,7 +884,7 @@
 			$.post(emurl.ajax_url, 
 				{
 					action: 'popup',
-					'ga': ga,
+					'ga': gaInfo(),
 					'ab-name': $('#abtesting-name').val(),
 					'ab-sc': $('#abtesting-sc').val(),
 					'pop-email': $('#pop-email').val(),
@@ -875,7 +905,7 @@
 
 
 	// Check cookies first
-	if (!/(^| )em_popup=/.test(document.cookie))  
+	// if (!/(^| )em_popup=/.test(document.cookie))  
 		$('body').on('mouseleave', showPopup);
 
 })(jQuery);
@@ -897,19 +927,14 @@
 
 
 // (function($) {
-	// $('.slider').slider({
-	// 	value: $('.em-i-loan_amount').val().replace(/[^0-9]/g, ''),
-	// 	range: 'min',
-	// 	max: 500000,
-	// 	min: 10000,
-	// 	step: 10000,
-	// 	slide: function(event, ui) { $('.em-i-loan_amount').val(ui.value) }
-	// });
-
-	// $('.em-i-loan_amount').on('input', function() {
-	// 	$('.slider').slider('value', $(this).val());
-	// });
-
+// 	window.addEventListener('beforeunload', function() {
+// 		$.post(emurl.ajax_url, {
+// 			action: 'test',
+// 			data: ''
+// 		}, function(data) {
+// 			console.log('testing: '+data);
+// 		}); 	
+// 	});
 // })(jQuery);
 
 
