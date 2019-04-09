@@ -116,9 +116,9 @@ final class Axowl_data {
 			if (in_array($k, $input_keys))
 				$send[$k] = $data[$k];
 
-		echo print_r($send, true);
+		// echo print_r($send, true);
 
-		exit;
+		// exit;
 		
 		// sending to axo
 		$this->send_axo($send);
@@ -240,19 +240,19 @@ final class Axowl_data {
 		echo 'data to be sent: '.print_r($data, true)."\n\n";
 
 		// sending to axo
-		$response = wp_remote_get($url);
+		// $response = wp_remote_get($url);
 
-		if (is_wp_error($response)) {
-			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-			return;
-		}
+		// if (is_wp_error($response)) {
+		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+		// 	return;
+		// }
 
-		$res = json_decode(wp_remote_retrieve_body($response), true);
+		// $res = json_decode(wp_remote_retrieve_body($response), true);
 
-		if (!is_array($res) || !isset($res['status'])) return;
+		// if (!is_array($res) || !isset($res['status'])) return;
 
-		echo print_r($res, true);
-		// $res = ['status' => 'Rejected'];
+		// echo print_r($res, true);
+		$res = ['status' => 'Accepted'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -346,6 +346,9 @@ final class Axowl_data {
 
 		// for testing
 		// echo $name.': '.$url.$query."\n\n";
+		echo $name;
+		echo $query;
+		return;
 
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
@@ -374,6 +377,10 @@ final class Axowl_data {
 			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
 			// last parameter is timestamp which sql fills out all by itself.
 		];
+
+		echo 'conversion:';
+		echo print_r($d, true);
+		return;
 
 		$this->send(http_build_query($d), 'sql_conversions');
 	}
@@ -415,6 +422,10 @@ final class Axowl_data {
 			'Conversion Value' => $opt['payout'],
 			'Conversion Currency' => $opt['currency']
 		];
+
+		echo 'gdocs: ';
+		echo print_r($d, true);
+		return;
 
 		$this->send(http_build_query($d), 'gdocs_ads');
 	}
@@ -538,13 +549,14 @@ final class Axowl_data {
 	private function ga($status, $value, $data = []) {
 		// status: accepted, rejected, incomplete
 		// value: event value (2200)
-		if (is_user_logged_in()) return;
+		// if (is_user_logged_in()) return;
 
-		$tag = get_option('em_axowl');
+		// $tag = get_option('em_axowl');
 
-		if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
+		// if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
 
-		$tag = $tag['ga_code'];
+		// $tag = $tag['ga_code'];
+		$tag = 'test_tag';
 
 		global $post;
 
@@ -586,6 +598,10 @@ final class Axowl_data {
 		global $wp;
 		$dl = home_url($wp->request);
 		$dl = preg_replace('/\?.*$/', '', $dl);
+
+		echo 'GA:';
+		echo print_r($d, true);
+		return;
 
 		// sending to google analytics
 		wp_remote_post('https://www.google-analytics.com/collect', [

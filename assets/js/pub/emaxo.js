@@ -472,6 +472,13 @@ var gaInfo = function() {
 
 		$('.em-part-1-grid > .em-hidden, .em-b-container').each(function() {
 			$(this).slideDown(600).removeClass('em-hidden');
+		});
+
+		window.addEventListener('beforeunload', (event) => {
+			// Cancel the event as stated by the standard.
+	  		event.preventDefault();
+	  		// Chrome requires returnValue to be set.
+	  		event.returnValue = '';
 		});		
 	}
 	$('.em-b-neste').one('click', showNeste);
@@ -501,9 +508,10 @@ var gaInfo = function() {
 				console.log(data);
 			}); 
 
-		$('.content-post > div:not(.em-form-container)').each(function() {
+		$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
 			$(this).fadeOut();
 		});
+
 		$('.emtheme-footer-container').slideUp(100);
 
 		$('.em-b-next, .forside-overskrift, .forside-overtext').slideUp(800);
@@ -905,7 +913,7 @@ var gaInfo = function() {
 
 
 	// Check cookies first
-	// if (!/(^| )em_popup=/.test(document.cookie))  
+	if (!/(^| |;)em_popup=/.test(document.cookie))  
 		$('body').on('mouseleave', showPopup);
 
 })(jQuery);
@@ -926,16 +934,43 @@ var gaInfo = function() {
 })(jQuery);
 
 
-// (function($) {
-// 	window.addEventListener('beforeunload', function() {
-// 		$.post(emurl.ajax_url, {
-// 			action: 'test',
-// 			data: ''
-// 		}, function(data) {
-// 			console.log('testing: '+data);
-// 		}); 	
-// 	});
-// })(jQuery);
+(function($) {
+
+	 // window.onbeforeunload = function() {
+  //                  var Ans = confirm("Are you sure you want change page!");
+  //                  if(Ans==true)
+  //                      return true;
+  //                  else
+  //                      return false;
+  //              };
+	 // window.onbeforeunload = confirmExit;
+  // function confirmExit()
+  // {
+  //   return "Do you want to leave this page without saving?";
+  // }
+	// window.addEventListener('beforeunload', (event) => {
+ //  // Cancel the event as stated by the standard.
+ //  	event.preventDefault();
+ //  // Chrome requires returnValue to be set.
+ //  	event.returnValue = 'dfldkjflkdjflkdjlfjdljdlkjflskdjfldsjl';
+ //  	// return "test";
+ //  	// alert('hi');
+	// });
+	// $( window ).unload(function() {
+ //  // if(window.unsaved == true){
+ //    alert('You have unsaved work.');
+ //  // }
+	// });
+	// window.addEventListener('beforeunload', function(e) {
+	// 	e.preventDefault();
+	// 	// $.post(emurl.ajax_url, {
+	// 	// 	action: 'test',
+	// 	// 	data: ''
+	// 	// }, function(data) {
+	// 	// 	console.log('testing: '+data);
+	// 	// }); 	
+	// });
+})(jQuery);
 
 
 

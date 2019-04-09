@@ -1057,6 +1057,10 @@ select.em-i {
 	background-color: #fff;
 }
 
+.ui-corner-all {
+	border-radius: 0;
+}
+
 .em-r-loan_amount {
 	/*flex-grow: 1;*/
 	/*flex-basis: 0;*/
