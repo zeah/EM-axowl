@@ -468,6 +468,11 @@ var gaInfo = function() {
 	***************/
 
 
+	var unload = function(e) {
+		e.preventDefault();
+		e.returnValue = '';
+	}
+
 	// FIRST NESTE
 	var showNeste = function() {
 		$('.em-element-neste').remove();
@@ -476,12 +481,14 @@ var gaInfo = function() {
 			$(this).slideDown(600).removeClass('em-hidden');
 		});
 
-		window.addEventListener('beforeunload', (event) => {
-			// Cancel the event as stated by the standard.
-	  		event.preventDefault();
-	  		// Chrome requires returnValue to be set.
-	  		event.returnValue = '';
-		});		
+		window.addEventListener('beforeunload', unload);
+
+		// window.addEventListener('beforeunload', (event) => {
+		// 	// Cancel the event as stated by the standard.
+	 //  		event.preventDefault();
+	 //  		// Chrome requires returnValue to be set.
+	 //  		event.returnValue = '';
+		// });		
 	}
 	$('.em-b-neste').one('click', showNeste);
 
@@ -643,6 +650,7 @@ var gaInfo = function() {
 				});
 			});
 
+			window.removeEventListener('beforeunload', unload);
 
 			console.log(d);
 		});
@@ -843,7 +851,7 @@ var gaInfo = function() {
 
 
 	$('.em-i-total_unsecured_debt').on('input', function() {
-		if ($(this).val()) $('.em-element-total_unsecured_debt_balance').down();
+		if ($(this).val() && $(this).val() != '0') $('.em-element-total_unsecured_debt_balance').down();
 		else $('.em-element-total_unsecured_debt_balance').up();
 	});
 

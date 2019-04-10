@@ -120,8 +120,6 @@ final class Axowl_data {
 				$send[$k] = $data[$k];
 
 		// echo print_r($send, true);
-
-		// exit;
 		
 		// sending to axo
 		$this->send_axo($send);
@@ -228,6 +226,9 @@ final class Axowl_data {
 
 		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
+		unset($data['contact_accept']);
+		unset($data['axo_accept']);
+
 		$url .= http_build_query($data);
 
 
@@ -237,17 +238,24 @@ final class Axowl_data {
 		// sending to axo
 		$response = wp_remote_get($url);
 
-		// if (is_wp_error($response)) {
-		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-		// 	return;
-		// }
+		if (is_wp_error($response)) {
+			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+			return;
+		}
 
-		// $res = json_decode(wp_remote_retrieve_body($response), true);
+		$res = json_decode(wp_remote_retrieve_body($response), true);
 
-		// if (!is_array($res) || !isset($res['status'])) return;
+		if (!is_array($res) || !isset($res['status'])) return;
+
+
+		echo "\n\nResponse\n";
+		echo print_r($response);
+		echo "\n\n\n";
+
+		// exit;
 
 		// echo print_r($res, true);
-		$res = ['status' => 'Accepted'];
+		// $res = ['status' => 'Accepted'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -272,7 +280,7 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function accepted($data, $ga) {
+	private function accepted($data) {
 		$data['status'] = 'accepted';
 
 
@@ -309,7 +317,7 @@ final class Axowl_data {
 	 * @param  [type] $data [description]
 	 * @return [type]       [description]
 	 */
-	private function rejected($data, $ga) {
+	private function rejected($data) {
 		$data['status'] = 'rejected';
 		
 		// send data to sql
@@ -546,7 +554,6 @@ final class Axowl_data {
 	// }
 
 	private function ga($status, $value) {
-
 		// TODO add dl to $d
 		// TODO shortcode number to event action
 
