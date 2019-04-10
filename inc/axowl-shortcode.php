@@ -146,6 +146,7 @@ final class Axowl_shortcode {
 		// $html .= $p->popup().'</div>';
 
 		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
+		$html .= '<input type="hidden" id="abtesting-post" value="'.$post->post_name.'">';
 
 		if (!isset($data['abtesting']))
 			$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
@@ -1006,7 +1007,7 @@ final class Axowl_shortcode {
         wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', false, true);
         wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
 
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', '2.0.7', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', '2.0.8', true);
         // wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js', false, true);
         // wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
 		

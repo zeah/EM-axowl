@@ -52,6 +52,9 @@ final class Axowl_data {
 	}
 
 	private function wp_hooks() {
+
+		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
+
 		add_action( 'wp_ajax_nopriv_axowl', [$this, 'from_form']);
 		add_action( 'wp_ajax_axowl', [$this, 'from_form']);
 
@@ -150,7 +153,7 @@ final class Axowl_data {
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('incomplete', 0, $ga);
+		$this->ga('incomplete', 0);
 
 		// echo 'incomplete';
 		// echo print_r($data, true);
@@ -185,7 +188,7 @@ final class Axowl_data {
 		// echo 'Data to be sent from popup: '.http_build_query($data);
 
 		$this->send(http_build_query($data), 'sql_info');
-		$this->ga('popup', 0, $ga);
+		$this->ga('popup', 0);
 
 		// echo 'popup';
 		// echo print_r($ga, true);
@@ -211,10 +214,9 @@ final class Axowl_data {
 	 */
 	private function send_axo($data) {
 		$settings = get_option('em_axowl');
-		if (!isset($settings['form_url']) || !isset($settings['name'])) return;
+		if (!isset($settings['form_url']) || !isset($settings['name'])
+			|| !$settings['form_url'] || !$settings['name']) return;
 		
-		// echo 'hi';
-		// return;
 
 		// axo url
 		$url = $settings['form_url'].'?';
@@ -228,23 +230,12 @@ final class Axowl_data {
 
 		$url .= http_build_query($data);
 
-		// ga, abid, abname
-
-		$ga = [];
-		$temp_ga = ['ga', 'abid', 'abname'];
-		foreach ($temp_ga as $value)
-			if (isset($data[$value])) {
-				$ga[$value] = $data[$value];
-				unset($data[$value]);
-			}
-
 
 		// testing - to be deleted
-		// echo 'axo url: '.$url."\n\n";
-		echo 'axo: '.print_r($data, true)."\n\n";
+		echo "\n\nto axo:\n".print_r($data, true)."\n\n";
 
 		// sending to axo
-		// $response = wp_remote_get($url);
+		$response = wp_remote_get($url);
 
 		// if (is_wp_error($response)) {
 		// 	echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
@@ -263,8 +254,8 @@ final class Axowl_data {
 
 
 		switch ($res['status']) {
-			case 'Accepted': $this->accepted($data, $ga); break;
-			case 'Rejected': $this->rejected($data, $ga); break;
+			case 'Accepted': $this->accepted($data); break;
+			case 'Rejected': $this->rejected($data); break;
 			// case 'ValidationError': $this->validation_error($data); break;
 			// case 'TechnicalError': $this->technical_error($data); break;
 		}
@@ -298,7 +289,7 @@ final class Axowl_data {
 		// google analytics
 		$value = get_option('em_axowl');
 		$value = isset($value['payout']) ? $value['payout'] : 0;
-		$this->ga('accepted', $value, $ga);
+		$this->ga('accepted', $value);
 
 		// if (isset($data['email'])) {
 		// 	$unsub = Axowl_unsub::get_instance();
@@ -326,7 +317,7 @@ final class Axowl_data {
 		else $this->send(http_build_query($data), 'sql_info');
 
 		// google analytics
-		$this->ga('rejected', 0, $ga);
+		$this->ga('rejected', 0);
 
 	}
 
@@ -350,8 +341,12 @@ final class Axowl_data {
 
 		// for testing
 		// echo $name.': '.$url.$query."\n\n";
+		echo "\n\nSENDING\n";
 		echo $name;
+		echo "\n";
 		echo $query;
+		echo "\n\n\n";
+
 		// return;
 
 
@@ -382,11 +377,11 @@ final class Axowl_data {
 			// last parameter is timestamp which sql fills out all by itself.
 		];
 
-		echo 'conversion:';
-		echo print_r($d, true);
+		// echo 'conversion:';
+		// echo print_r($d, true);
 		// return;
 
-		// $this->send(http_build_query($d), 'sql_conversions');
+		$this->send(http_build_query($d), 'sql_conversions');
 	}
 
 
@@ -427,11 +422,11 @@ final class Axowl_data {
 			'Conversion Currency' => $opt['currency']
 		];
 
-		echo 'gdocs: ';
-		echo print_r($d, true);
+		// echo 'gdocs: ';
+		// echo print_r($d, true);
 		// return;
 
-		// $this->send(http_build_query($d), 'gdocs_ads');
+		$this->send(http_build_query($d), 'gdocs_ads');
 	}
 	// /**
 	//  * [query description]
@@ -550,10 +545,27 @@ final class Axowl_data {
 	// 	);
 	// }
 
-	private function ga($status, $value, $data = []) {
-		// status: accepted, rejected, incomplete
-		// value: event value (2200)
+	private function ga($status, $value) {
+
+		// TODO add dl to $d
+		// TODO shortcode number to event action
+
 		// if (is_user_logged_in()) return;
+
+		// echo "\npost in ga:\n\n".print_r($_POST, true)."\n\n\n";
+
+		$data = false;
+
+		if (isset($_POST['ga'])) $data = $_POST['ga'];
+		elseif (isset($_POST['data']['ga'])) $data = $_POST['data']['ga'];
+
+
+		if (!$data) return;
+
+
+		echo "\n\n\n GA data:\n";
+		echo print_r($data, true);
+		echo "\n\n\n";
 
 		// $tag = get_option('em_axowl');
 
@@ -562,16 +574,15 @@ final class Axowl_data {
 		// $tag = $tag['ga_code'];
 		$tag = 'test_tag';
 
-		global $post;
 
-		$post_name = $post->post_name ? $post->post_name : 'no postname';
+		// $abname = 'none';
+		// if (isset($data['abname'])) $abname = $data['abname'];
+		// $absc = isset($data['absc']) ? $data['absc'] : 'na';
 
-		$abname = isset($data['abname']) ? $data['abname'] : $post_name;
-		$absc = isset($data['absc']) ? $data['absc'] : 'na';
+		$action = isset($data['name']) ? $data['name'] : 'n/a';
 
-		$action = abname.' - '.$absc;
+		// $action .= ' - '.$absc;
 
-		// if (!isset($data['ga'])) $data['ga'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : rand(100000, 500000);
 
 		$d = [
 			'v' => '1', 
@@ -584,14 +595,15 @@ final class Axowl_data {
 			'ec' => 'axo form', 
 			'ea' => $action, // for ab-testing - abname or postname + shortcode #
 			'el' => $status, // accepted, rejected or incomplete or popup
-			'dl' => $dl, // url without query
 			'ev' => $value, // value of conversion
-			// 'dr' => $this->get_referer() // document referer
 		];
 
+		// cid
 		if (!isset($data['id'])) $data['id'] = $_COOKIE['_ga'] ? $_COOKIE['_ga'] : false;
 		if ($data['id']) $d['cid'] = $data['id'];
 
+
+		// dr
 		$ref = $this->get_referer();
 		if  ($ref) $d['dr'] = $ref;
 
@@ -601,10 +613,11 @@ final class Axowl_data {
 		// getting site url without query string
 		global $wp;
 		$dl = home_url($wp->request);
-		$dl = preg_replace('/\?.*$/', '', $dl);
+		$d['dl'] = preg_replace('/\?.*$/', '', $dl);
 
-		echo 'GA:';
+		echo "\nGA:\n";
 		echo print_r($d, true);
+		echo "\n\n\n";
 		return;
 
 		// sending to google analytics
@@ -643,6 +656,11 @@ final class Axowl_data {
 
 
 	private function get_referer() {
+
+		// echo "\n\n\n";
+		// echo print_r($_SERVER);
+		// echo "\n\n\n";
+
 		if (isset($_SERVER['REFERER']) && $_SERVER['REFERER']) {
 
 			$r = $_SERVER['HTTP_REFERER'];

@@ -29,6 +29,8 @@ var gaInfo = function() {
 		if (match[1]) data.id = match[1];
 	}
 
+	if (jQuery('#abtesting-name')) data.name = jQuery('#abtesting-name').val();
+
 
 	return data;
 };
@@ -507,6 +509,7 @@ var gaInfo = function() {
 			}, function(data) {
 				console.log(data);
 			}); 
+		
 
 		$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
 			$(this).fadeOut();
