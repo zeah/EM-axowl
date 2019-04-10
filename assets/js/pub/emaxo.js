@@ -641,8 +641,8 @@ var gaInfo = function() {
 				$('.em-form-container').css('margin-bottom', '4rem');
 				$('.em-popup').slideDown(800, function() {
 
-					$('.content-post > div:not(.em-form-container)').each(function() {
-						$(this).fadeIn(2000);
+					$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
+						$(this).fadeIn(500);
 					});
 
 					if ($('.mobile-icon-container')[0]) $('.mobile-icon-container').show();

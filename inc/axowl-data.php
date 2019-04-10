@@ -249,7 +249,7 @@ final class Axowl_data {
 
 
 		echo "\n\nResponse\n";
-		echo print_r($response);
+		echo print_r($res, true);
 		echo "\n\n\n";
 
 		// exit;
@@ -570,7 +570,7 @@ final class Axowl_data {
 		if (!$data) return;
 
 
-		echo "\n\n\n GA data:\n";
+		echo "\n\n\nGA data:\n";
 		echo print_r($data, true);
 		echo "\n\n\n";
 
