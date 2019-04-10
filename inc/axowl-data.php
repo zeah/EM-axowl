@@ -136,8 +136,8 @@ final class Axowl_data {
 	 */
 	public function incomplete() {
 
-		echo print_r($_POST, true);
-		exit;
+		// echo print_r($_POST, true);
+		// exit;
 
 		// checkbox
 		if (!isset($_POST['contact_accept'])) exit;
@@ -151,6 +151,9 @@ final class Axowl_data {
 
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('incomplete', 0, $ga);
+
+		// echo 'incomplete';
+		// echo print_r($data, true);
 
 		exit;
 	}
@@ -170,8 +173,6 @@ final class Axowl_data {
 
 		$ga = isset($_POST['ga']) ? $_POST['ga'] : [];
 
-		echo print_r($ga, true);
-		exit;
 
 		if (isset($_POST['pop-email']) && $this->val_email($_POST['pop-email'])) $email = $_POST['pop-email'];
 		if (isset($_POST['pop-phone']) && $this->val_phone($_POST['pop-phone'])) $phone = $_POST['pop-phone'];
@@ -185,6 +186,9 @@ final class Axowl_data {
 
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('popup', 0, $ga);
+
+		// echo 'popup';
+		// echo print_r($ga, true);
 
 		exit;
 	}
@@ -209,8 +213,8 @@ final class Axowl_data {
 		$settings = get_option('em_axowl');
 		if (!isset($settings['form_url']) || !isset($settings['name'])) return;
 		
-		echo 'hi';
-		return;
+		// echo 'hi';
+		// return;
 
 		// axo url
 		$url = $settings['form_url'].'?';
@@ -237,7 +241,7 @@ final class Axowl_data {
 
 		// testing - to be deleted
 		// echo 'axo url: '.$url."\n\n";
-		echo 'data to be sent: '.print_r($data, true)."\n\n";
+		echo 'axo: '.print_r($data, true)."\n\n";
 
 		// sending to axo
 		// $response = wp_remote_get($url);
@@ -348,7 +352,7 @@ final class Axowl_data {
 		// echo $name.': '.$url.$query."\n\n";
 		echo $name;
 		echo $query;
-		return;
+		// return;
 
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
@@ -380,9 +384,9 @@ final class Axowl_data {
 
 		echo 'conversion:';
 		echo print_r($d, true);
-		return;
+		// return;
 
-		$this->send(http_build_query($d), 'sql_conversions');
+		// $this->send(http_build_query($d), 'sql_conversions');
 	}
 
 
@@ -425,9 +429,9 @@ final class Axowl_data {
 
 		echo 'gdocs: ';
 		echo print_r($d, true);
-		return;
+		// return;
 
-		$this->send(http_build_query($d), 'gdocs_ads');
+		// $this->send(http_build_query($d), 'gdocs_ads');
 	}
 	// /**
 	//  * [query description]
