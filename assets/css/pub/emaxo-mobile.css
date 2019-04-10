@@ -42,6 +42,10 @@
 	display: none;
 }
 
+.email-popup {
+	/*display: block;*/
+}
+
 .em-form-container {
 	opacity: 1 !important;
 }

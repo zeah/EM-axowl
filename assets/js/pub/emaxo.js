@@ -311,7 +311,7 @@ var gaInfo = function() {
 		bankaccount: function() {
 			var d = this.value.replace(/[\D]/g, '');
 			var m = d.match(/^(\d{4})(\d{2})(\d{5})$/);
-			if (m) this.value = m[1]+'.'+m[2]+'.'+m[3];
+			if (m) this.value = m[1]+' '+m[2]+' '+m[3];
 		},
 		socialnumber: function() {
 			var d = this.value.replace(/[\D]/g, '');
@@ -642,6 +642,7 @@ var gaInfo = function() {
 		if (!valid) return;
 
 		// console.log(data);
+		// return;
 
 		$.post(emurl.ajax_url, {
 			action: 'axowl',
@@ -878,6 +879,8 @@ var gaInfo = function() {
 (function($) {
 
 	var showPopup = function(e) {
+
+		if ($(window).width() > 815) return;
 
 		// not all things on top of body is in body
 		// so do nothing if pointer has not left the window
