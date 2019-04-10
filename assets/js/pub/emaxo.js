@@ -47,22 +47,34 @@ var gaInfo = function() {
 
 	var numb = function(n) { 
 		if (!n) return null;
-		return parseInt(String(n).replace(/[^0-9]/g, '')); 
+		return parseInt(String(n).replace(/[^0-9,.]/g, '')); 
 	}
 
 	var kroner = function(n) {
 		n = numb(n);
 
+		if (n === 0) return 'kr 0';
+
 		if (n == '' || !n) return '';
-		return parseInt(n).toLocaleString(
-							// 'sv-SE', 
-							'nb-NO', 
-							{
-								style: 'currency', 
-								// currency: 'SEK',
-								currency: 'NOK',
-								minimumFractionDigits: 0
-							});
+
+		// var match = String(n).match(/^.*?(.{3})\..*$/);
+		// console.log(n);
+		// console.log(match);
+
+		return 'kr '+String(n).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
+
+		// return new Intl.NumberFormat('nb-NO', { style: 'currency', currency: 'NOK', minimumFractionDigits: 0}).format(n);
+
+		// return parseInt(n).toLocaleString(
+		// 					// 'sv-SE', 
+		// 					'nb-NO', 
+		// 					{
+		// 						style: 'currency', 
+		// 						// currency: 'SEK',
+		// 						currency: 'NOK',
+		// 						minimumFractionDigits: 0,
+		// 						maximumFractionDigits: 0
+		// 					});
 	}
 
 
@@ -88,7 +100,13 @@ var gaInfo = function() {
 		var p = numb($('.em-i-loan_amount').val());
 		var n = numb($('.em-i-tenure').val())*12;
 
-		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i))
+		// console.log('i: '+i);
+		// console.log('p: '+p);
+		// console.log('n: '+n);
+
+		// console.log(Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i)));
+
+		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i));
 	}
 
 	var payment = function() {
@@ -97,7 +115,7 @@ var gaInfo = function() {
 			var n = numb($('.em-i-tenure').val())*12;
 
 			$('.em-if-monthly_cost').val(kroner(cost(0.068)));
-			$('.em-compare-amount').html('kr '+p);
+			$('.em-compare-amount').html(kroner(p));
 
 			$('.em-compare-kk').html(cost(0.220));
 			$('.em-compare-monthly').html(cost(0.068));
@@ -106,12 +124,15 @@ var gaInfo = function() {
 
 			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
 
-			$('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
+			// $('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
+			$('.em-compare-save').html(kroner(save));
 
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
 
 	payment();
+	// $('.em-i-loan_amount').val(kroner(kroner($('.em-i-loan_amount').val())));
+	// console.log(kroner($('.em-i-loan_amount').val()));
 
 	$.fn.extend({
 		validate: function() { try { return this[0].val() } catch (e) { } },
@@ -280,18 +301,8 @@ var gaInfo = function() {
 		},
 		email: function() {},
 		currency: function() {
-			// $(this).attr('type', 'text');
 			if (this.value == '') return;
-			this.value = numb(this.value)
-							.toLocaleString(
-								// 'sv-SE', 
-								'nb-NO', 
-								{
-									style: 'currency', 
-									// currency: 'SEK',
-									currency: 'NOK',
-									minimumFractionDigits: 0
-							});
+			this.value = kroner(this.value);
 		},
 		text: function() {},
 		empty: function() {},
@@ -428,7 +439,8 @@ var gaInfo = function() {
 	 ***************************/
 
 	$('.em-slider-loan_amount').slider({
-		value: $('.em-i-loan_amount').val().replace(/[^0-9]/g, ''),
+		value: 250000,
+		// value: $('.em-i-loan_amount').val().replace(/[^0-9]/g, ''),
 		range: 'min',
 		max: parseInt($('.em-slider-loan_amount').attr('data-max')),
 		min: parseInt($('.em-slider-loan_amount').attr('data-min')),

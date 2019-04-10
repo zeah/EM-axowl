@@ -253,9 +253,9 @@ body {
 .em-if-monthly_cost,
 /*.em-element-monthly_cost,*/
 /*.em-r-loan_amount::-webkit-slider-thumb,*/
-.em-element-contact_accept span::before,
+/*.em-element-contact_accept span::before,
 .em-element-axo_accept span::before,
-.em-progress,
+*/.em-progress,
 /*.em-b-neste,*/
 /*.em-b-next,*/
 .em-b-submit,
@@ -268,6 +268,12 @@ body {
 	border: solid 2.6px hsl(0, 0%, 20%);
 	/*outline: solid 1px hsl(0, 0%, 35%);*/
 }
+
+.em-element-contact_accept span::before {
+	border: solid 2px hsl(0, 0%, 10%);
+
+}
+
 
 /*.em-part-lower-container .em-i {
 	border: solid 1.6px hsl(0, 0%, 70%);
