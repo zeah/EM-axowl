@@ -692,7 +692,8 @@ var gaInfo = function() {
 
 		if (!valid) return;
 
-
+		$(this).off('click');
+		$(this).html('Søknad Sendes ...');
 
 		// console.log(data);
 		// return;
@@ -933,7 +934,7 @@ var gaInfo = function() {
 
 	var showPopup = function(e) {
 
-		if ($(window).width() > 815) return;
+		if ($(window).width() < 815) return;
 
 		// not all things on top of body is in body
 		// so do nothing if pointer has not left the window
@@ -953,18 +954,6 @@ var gaInfo = function() {
 			if (!$('#pop-email').validation()) valid = false;
 			if (!valid) return;
 			
-			// var decodedCookie = decodeURIComponent(document.cookie);
-			// var cookies = decodedCookie.split(';');
-			// var ga = null;
-
-			// for (var i in cookies){
-			// 	var c = cookies[i].trim();
-			// 	if (/^_ga=/.test(c)) {
-			// 		ga = c.replace(/^_ga=/, '');
-			// 		break;
-			// 	}
-			// }
-
 			$('.pop-neste').off('click', click);
 			$('.email-popup, .em-glass').fadeOut(500);
 
@@ -981,19 +970,21 @@ var gaInfo = function() {
 					console.log(data);
 				}
 			);
+			// cookie
+			var date = new Date();
+			date.setTime(date.getTime() + (20*24*60*60*1000));
+			document.cookie = 'em_popup=done; expires='+date.toUTCString();
 		}
 		$('.pop-neste').on('click', click);
 
-		// cookie
-		var date = new Date();
-		date.setTime(date.getTime() + (20*24*60*60*1000));
-		document.cookie = 'em_popup=done; expires='+date.toUTCString();
 	}
 
 
 	// Check cookies first
-	if (!/(^| |;)em_popup=/.test(document.cookie))  
+	if (!/(^| |;)em_popup=/.test(document.cookie)) {  
 		$('body').on('mouseleave', showPopup);
+		$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
+	}
 
 })(jQuery);
 
