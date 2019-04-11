@@ -141,7 +141,7 @@ final class Axowl_shortcode {
 			</div>';
 		// $html .= $p->form_buttons(['hidden' => true, 'hide_prog' => true]);
 
-		$html .= '</form></div>';
+		$html .= '<div class="em-loan-example">Nominell rente fra 6,39% til 21,95%. Effektiv rente fra 6,81% til 24,4%. Eff. rente 13,2%, 150.000 o/10 år, kostnad: 112.573, Totalt: 262573.</div></form></div>';
 
 		// $html .= $p->popup().'</div>';
 
@@ -608,8 +608,8 @@ final class Axowl_shortcode {
 
 	public function sands() {
         wp_enqueue_style('jqslid', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css', false);
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.7', '(min-width: 816px)');
-        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.7', '(max-width: 815px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.8', '(min-width: 816px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.8', '(max-width: 815px)');
         
 
         // wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', ['jquery', 'jquery-ui-slider'], '2.0.5', true);
@@ -618,7 +618,7 @@ final class Axowl_shortcode {
         wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', false, true);
         wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
 
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', '2.0.14', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', '2.0.15', true);
         // wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js', false, true);
         // wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
 		
@@ -688,9 +688,7 @@ final class Axowl_shortcode {
 	}
 
 	public function fonts($data) {
-
-		return $data[] = ['Merriweather' => [400, 900], 'Montserrat' => [300, 700]];
-
+		return $data[] = ['Merriweather' => [400, 900], 'Montserrat' => [300, 400, 700]];
 	}
 
 }

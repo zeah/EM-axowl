@@ -556,6 +556,17 @@
 	text-align: center;
 }
 
+.em-loan-example {
+	margin-top: 2rem;
+	padding-bottom: .6rem;
+
+	text-align: center;
+	
+	font-family: Montserrat;
+	font-weight: 400;
+	font-size: 1.3rem;
+}
+
 .em-hidden {
 	display: none;
 }

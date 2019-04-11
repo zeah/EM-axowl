@@ -105,7 +105,7 @@ final class Axowl_inputs {
 			'monthly_cost' => ['text_field' => 'Månedskostnad fra', 'notInput' => true],
 			'loan_amount' => ['text' => true, 'range' => true, 'validation' => 'currency', 
 							  'format' => 'currency', 'max' => 500000, 'min' => 10000, 'default' => 250000, 'step' => 10000],
-			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 15, 'key_as_value' => true, 'hidden' => true],
+			'tenure' => ['list' => Axowl_list::tenure, 'validation' => 'list', 'empty' => false, 'start' => 5, 'key_as_value' => true, 'hidden' => true],
 			'collect_compare' => ['compare' => true],
 			'collect_debt' => ['checkbox' => true, 'no' => true, 'hidden' => true, 'show' => 'em-element-collect_compare'],
 			'mobile_number' => ['text' => true, 'type' => 'tel', 'validation' => 'phone', 'digits' => 8, 'hidden' => true],

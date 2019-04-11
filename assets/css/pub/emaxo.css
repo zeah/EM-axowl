@@ -1405,6 +1405,17 @@ select.em-i {
 	/*grid-area: content;*/
 }
 
+/* 8.0 loan example */
+.em-loan-example {
+	margin: 1rem 10rem;
+	padding-bottom: .6rem;
+
+	text-align: center;
+	
+	font-family: Montserrat;
+	font-weight: 400;
+	font-size: 1.3rem;
+}
 
 /* 9.0 email/phone popup */
 .email-popup {
