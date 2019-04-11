@@ -136,10 +136,6 @@ final class Axowl_data {
 	 * 
 	 */
 	public function incomplete() {
-
-		// echo print_r($_POST, true);
-		// exit;
-
 		// checkbox
 		if (!isset($_POST['contact_accept'])) exit;
 
@@ -379,11 +375,13 @@ final class Axowl_data {
 			'media' => $_SERVER['SERVER_NAME'],
 			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
 			'affiliate' => 'axo wl',
-			'tracking' => $this->get_clid(),
+			// 'tracking' => isset($_POST['clid']) ? $_POST,
 			'status' => 'approved',
 			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
 			// last parameter is timestamp which sql fills out all by itself.
 		];
+
+		if (isset($_POST['clid'])) $d['tracking'] = $_POST['clid'];
 
 		// echo 'conversion:';
 		// echo print_r($d, true);
@@ -570,16 +568,16 @@ final class Axowl_data {
 		if (!$data) return;
 
 
-		echo "\n\n\nGA data:\n";
-		echo print_r($data, true);
-		echo "\n\n\n";
+		// echo "\n\n\nGA data:\n";
+		// echo print_r($data, true);
+		// echo "\n\n\n";
 
-		// $tag = get_option('em_axowl');
+		$tag = get_option('em_axowl');
 
 		// if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
 
-		// $tag = $tag['ga_code'];
-		$tag = 'test_tag';
+		$tag = isset($tag['ga_code']) ? $tag['ga_code'] : 'test_tag';
+		// $tag = 'test_tag';
 
 
 		// $abname = 'none';
@@ -644,19 +642,21 @@ final class Axowl_data {
 
 	private function get_clid() {
 
-		if (isset($_COOKIE['clid'])) return $_COOKIE['clid'];
+		if (isset($_POST['clid'])) return $_POST['clid'];
 
-		$query = $_SERVER['QUERY_STRING'];
+		// if (isset($_COOKIE['clid'])) return $_COOKIE['clid'];
 
-		$check = ['gclid', 'msclkid'];
+		// $query = $_SERVER['QUERY_STRING'];
 
-		foreach ($check as $c) {
-			$pattern = '/^.*(?:'.$c.'=)(.*?)(?:&|$)/';
+		// $check = ['gclid', 'msclkid'];
 
-			preg_match($pattern, $query, $match);
+		// foreach ($check as $c) {
+		// 	$pattern = '/^.*(?:'.$c.'=)(.*?)(?:&|$)/';
 
-			if (isset($match[1])) return $match[1];
-		}
+		// 	preg_match($pattern, $query, $match);
+
+		// 	if (isset($match[1])) return $match[1];
+		// }
 
 		return false;
 	}

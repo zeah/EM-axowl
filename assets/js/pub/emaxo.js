@@ -35,6 +35,47 @@ var gaInfo = function() {
 	return data;
 };
 
+// var clid = function() {
+	// if (/gclid=|msclkid=/.test(location.search)) {
+		// var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
+		// console.log(match);
+		// console.log(/(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search));
+
+		// console.log(location.search.match(/(?:gclid=|msclkid=)(.*?)(?:&|$)/));
+
+		// return match;
+
+		// console.log(/^(\?g.*?)(ell.*$)/.exec(location.search));
+
+		// if (match[1]) return match[1];
+	// }
+	// if (/gclid=|msclkid=/.test(document.cookie))
+// 
+// };
+// var clid = function() {
+// 	// if (/gclid=|msclkid=/.test(location.search)) {
+// 		var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
+// 		// if (match) console.log(match);
+// 		if (match) return match[1];
+// 	// }
+
+// 	// if (/(?:^|;| )clid=/.test(document.cookie)) {
+// 		match = /(?:^|;| )(?:clid=)(.*?)(?:;|$)/.exec(document.cookie);
+// 		// if (match) console.log(match);
+// 		if (match) return match[1];
+// 	// }
+
+// 	return false;
+// };
+// clid();
+
+// var clid = function() {
+	// if (/ /.test(location.search))
+// }
+// console.log(clid());
+// 
+
+
 // VALIDATION AND EVENTS
 (function($) {
 	var validColor = 'green';
@@ -614,7 +655,15 @@ var gaInfo = function() {
 		var data = {};
 		var valid = true;
 
-		// console.log($('.emowl-form .em-i:not(button), .emowl-form .em-c').length);
+		var clid = function() {
+			var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
+			if (match) return match[1];
+
+			match = /(?:^|;| )(?:clid=)(.*?)(?:;|$)/.exec(document.cookie);
+			if (match) return match[1];
+
+			return false;
+		};
 
 		$('.emowl-form .em-i:not(button), .emowl-form .em-c').each(function() {
 			if ($(this).parents('.em-hidden').length != 0) return;
@@ -637,9 +686,13 @@ var gaInfo = function() {
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
+		if (clid()) data['clid'] = clid();
+
 		data['ga'] = gaInfo();
 
 		if (!valid) return;
+
+
 
 		// console.log(data);
 		// return;
@@ -960,7 +1013,30 @@ var gaInfo = function() {
 })(jQuery);
 
 
+/*************
+	COOKIES
+ *************/
 (function($) {
+
+	(function() { 
+		var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
+		if (!match || !match[1]) return;
+
+		var date = new Date();
+		date.setTime(date.getTime() + (120*24*60*60*1000));
+		document.cookie = 'clid='+match[1]+'; expires='+date.toUTCString();
+	// })();
+
+	// (function() {
+		match = /gclid|msclkid/.exec(location.search);
+		// console.log(match);
+		if (!match || !match[0]) return;
+
+		// var date = new Date();
+		// date.setTime(date.getTime() + (20*24*60*60*1000));
+		document.cookie = 'clid_source='+match[0]+'; expires='+date.toUTCString();
+
+	})();
 
 	 // window.onbeforeunload = function() {
   //                  var Ans = confirm("Are you sure you want change page!");
