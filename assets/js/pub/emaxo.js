@@ -496,14 +496,17 @@ var gaInfo = function() {
 				$('.em-part-1-grid').addClass('em-part-1-grid-2');
 
 				$('.em-element-tenure, .em-element-collect_debt, .em-element-monthly_cost').css({
-					'align-self': 'center',
-					'justify-self': 'center',
-					'margin': '0'
+					// 'align-self': 'center',
+					// 'justify-self': 'center',
+					'margin': '0',
+					'top': '.3rem'
 				});
 				
 				$('.em-i-tenure, .em-cc-collect_debt, .em-if-monthly_cost').css({
 					'width': '15rem'
 				});
+
+				$('.em-lc-tenure').addClass('em-lc-lower');
 
 
 				$('.em-compare-text').css('font-size', '2rem');

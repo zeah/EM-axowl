@@ -709,6 +709,10 @@ body {
 	/*cursor: pointer;*/
 }
 
+.em-lc-lower::after {
+	right: 6rem;
+}
+
 .em-part-lower-container .em-lc::after {
 	bottom: 0;
 }
