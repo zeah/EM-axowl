@@ -1372,6 +1372,8 @@ select.em-i {
 	max-width: 100%;
 	margin: auto;
 
+	line-height: 3;
+
 	z-index: 999;
 }
 

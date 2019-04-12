@@ -111,7 +111,7 @@ final class Axowl_data {
 
 		// match from inputs.php
 		$data_keys = array_keys($data);
-		$input_keys = array_keys(Axowl_inputs::$inputs);
+		$input_keys = array_keys(Axowl_inputs::$inputs2);
 
 		$send = [];
 
@@ -211,6 +211,9 @@ final class Axowl_data {
 		if (!isset($settings['form_url']) || !isset($settings['name'])
 			|| !$settings['form_url'] || !$settings['name']) return;
 		
+		// echo "\ndata\n";
+		// echo print_r($data, true);
+		// echo "\n\n\n";
 
 		// axo url
 		$url = $settings['form_url'].'?';
@@ -225,15 +228,22 @@ final class Axowl_data {
 		unset($data['contact_accept']);
 		unset($data['axo_accept']);
 
+
+		if (isset($data['unsecured_debt_balance'])) {
+			$data['unsecured_debt_lender'] = ['Til Refinansiering'];
+			$data['unsecured_debt_balance'] = [$data['unsecured_debt_balance']];
+		}
+
 		$url .= http_build_query($data);
 
 
 		// testing - to be deleted
 		echo "\n\nto axo:\n".print_r($data, true)."\n\n";
-
+		echo $url;
+		// exit;
+		
 		// sending to axo
 		$response = wp_remote_get($url);
-
 		if (is_wp_error($response)) {
 			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
 			return;

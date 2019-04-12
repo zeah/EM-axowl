@@ -92,7 +92,8 @@ final class Axowl_inputs {
 
 
 			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'total_unsecured_debt_balance'],
-			'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			// 'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			'unsecured_debt_balance[]' => ['text' => true, 'validation' => 'currency'],
 			'account_number' => ['text' => true, 'validation' => 'bankAccount', 'digits' => '11']
 			// '/div6' => ''
 		];
@@ -170,8 +171,10 @@ final class Axowl_inputs {
 			'co_applicant_income' => ['text' => true, 'validation' => 'currency', 'format' => 'currency'],
 			'/div2' => '',
 
-			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'total_unsecured_debt_balance'],
-			'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			'total_unsecured_debt' => ['text' => true, 'page' => '5', 'validation' => 'currency', 'format' => 'currency', 'show' => 'unsecured_debt_balance'],
+			'unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			// 'total_unsecured_debt_balance' => ['text' => true, 'hidden' => true, 'validation' => 'currency', 'format' => 'currency'],
+			// 'unsecured_debt_balance[]' => ['text' => true, 'validation' => 'currency'],
 			'account_number' => ['text' => true, 'validation' => 'bankaccount', 'digits' => '11'],
 			'/div98' => '',
 			// '/div98' => '',

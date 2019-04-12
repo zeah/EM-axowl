@@ -74,7 +74,7 @@ final class Axowl_shortcode_parts {
 		return '
 			<div class="em-popup">
 				<button type="button" class="em-popup-x"><img class="em-close" src="'.EM_AXOWL_PLUGIN_URL.'assets/img/close.png"></button>
-				<div class="em-popup-content"><span>DIN SØKNAD ER SENDT INN TIL NORSK FINANS AS.<br>DU VIL FÅR SVAR I LØPET AV 1 DAG.</span></div>
+				<div class="em-popup-content"><span>DIN SØKNAD ER SENDT INN TIL VÅR PARTNER AXO FINANS AS.<br>DU VIL FÅ SVAR PÅ SØKNADEN FRA AXO FINANS I LØPET AV 1 DAG.</span></div>
 			</div>
 		';
 	}

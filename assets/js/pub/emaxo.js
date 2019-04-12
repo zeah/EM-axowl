@@ -35,46 +35,6 @@ var gaInfo = function() {
 	return data;
 };
 
-// var clid = function() {
-	// if (/gclid=|msclkid=/.test(location.search)) {
-		// var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
-		// console.log(match);
-		// console.log(/(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search));
-
-		// console.log(location.search.match(/(?:gclid=|msclkid=)(.*?)(?:&|$)/));
-
-		// return match;
-
-		// console.log(/^(\?g.*?)(ell.*$)/.exec(location.search));
-
-		// if (match[1]) return match[1];
-	// }
-	// if (/gclid=|msclkid=/.test(document.cookie))
-// 
-// };
-// var clid = function() {
-// 	// if (/gclid=|msclkid=/.test(location.search)) {
-// 		var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
-// 		// if (match) console.log(match);
-// 		if (match) return match[1];
-// 	// }
-
-// 	// if (/(?:^|;| )clid=/.test(document.cookie)) {
-// 		match = /(?:^|;| )(?:clid=)(.*?)(?:;|$)/.exec(document.cookie);
-// 		// if (match) console.log(match);
-// 		if (match) return match[1];
-// 	// }
-
-// 	return false;
-// };
-// clid();
-
-// var clid = function() {
-	// if (/ /.test(location.search))
-// }
-// console.log(clid());
-// 
-
 
 // VALIDATION AND EVENTS
 (function($) {
@@ -95,57 +55,16 @@ var gaInfo = function() {
 		n = numb(n);
 
 		if (n === 0) return 'kr 0';
-
 		if (n == '' || !n) return '';
 
-		// var match = String(n).match(/^.*?(.{3})\..*$/);
-		// console.log(n);
-		// console.log(match);
-
 		return 'kr '+String(n).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
-
-		// return new Intl.NumberFormat('nb-NO', { style: 'currency', currency: 'NOK', minimumFractionDigits: 0}).format(n);
-
-		// return parseInt(n).toLocaleString(
-		// 					// 'sv-SE', 
-		// 					'nb-NO', 
-		// 					{
-		// 						style: 'currency', 
-		// 						// currency: 'SEK',
-		// 						currency: 'NOK',
-		// 						minimumFractionDigits: 0,
-		// 						maximumFractionDigits: 0
-		// 					});
 	}
-
-
-	// var gaInfo = function() {
-
-	// 	var data = {
-	// 		viewport: $(window).width()+'x'+$(window).height(),
-	// 		screen: screen.width+'x'+screen.height
-	// 	}
-
-	// 	if (/(?:^|;| )_ga=/.test(document.cookie)) {
-	// 		var match = document.cookie.match(/(?:^|;| )(?:_ga=)(.*?)(?:;|$)/);
-	// 		if (match[1]) data.ga = match[1];
-	// 	}
-
-
-	// 	return data;
-	// }
 
 	var cost = function(i) {
 		i = i / 12;
 
 		var p = numb($('.em-i-loan_amount').val());
 		var n = numb($('.em-i-tenure').val())*12;
-
-		// console.log('i: '+i);
-		// console.log('p: '+p);
-		// console.log('n: '+n);
-
-		// console.log(Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i)));
 
 		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i));
 	}
@@ -165,19 +84,16 @@ var gaInfo = function() {
 
 			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
 
-			// $('.em-compare-save').html('<span>kr </span><span>'+save+'</span>');
 			$('.em-compare-save').html(kroner(save));
 
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
 
 	payment();
-	// $('.em-i-loan_amount').val(kroner(kroner($('.em-i-loan_amount').val())));
-	// console.log(kroner($('.em-i-loan_amount').val()));
 
 	$.fn.extend({
 		validate: function() { try { return this[0].val() } catch (e) { } },
-		validation: function() { return validation.call(this[0]) }
+		validation: function() { try { return validation.call(this[0]) } catch (e) { } }
 	});
 
 	var val = {
@@ -207,7 +123,7 @@ var gaInfo = function() {
 		check: function() { return this.checked },
 		
 		bankaccount: function() { 
-			if (!this.value) return false;
+			if (!this.value || this.value == '00000000000') return false;
 
 			var n = this.value.replace(/[^0-9]/g, '');
 			if (!n) return false;
@@ -308,19 +224,9 @@ var gaInfo = function() {
 	}
 
 	var focus = {
-		list: function() {
-
-			// this.value = '';
-		},
+		list: function() {},
 		number: function() { this.value = this.value.replace(/[\D]/g, ''); },
-		// phone: function() { this.value = this.value.replace(/[\D]/g, ''); this.select() },
 		email: function() {},
-		// currency: function() { 
-		// 	this.value = parseInt(this.value.replace(/[\D]/g, ''));  
-		// 	// $(this).attr('type', 'number');
-		// 	// this.value = this.value;
-		// 	this.select();
-		// },
 		text: function() {},
 		empty: function() {},
 		check: function() {},
@@ -364,8 +270,6 @@ var gaInfo = function() {
 	// validation on focus out
 	var validation = function() {
 		try {
-			// if (this.val == undefined) return true;
-			// console.log(this);
 			if (this.val == undefined || this.val()) {
 				valid.call(this);
 				return true;
@@ -450,7 +354,6 @@ var gaInfo = function() {
 			
 			case 'list': 
 				$(this)[0].val = val.list; 
-				// $(this).click(function() { $(this).val('') });
 				$(this).on('change', input.list);
 				break;
 			
@@ -462,8 +365,6 @@ var gaInfo = function() {
 			case 'empty':
 				$(this)[0].val = val.empty;
 				break;
-
-			// default: $(this)[0].val = function() { return true; }
 		}
 	});
 
@@ -481,7 +382,6 @@ var gaInfo = function() {
 
 	$('.em-slider-loan_amount').slider({
 		value: 250000,
-		// value: $('.em-i-loan_amount').val().replace(/[^0-9]/g, ''),
 		range: 'min',
 		max: parseInt($('.em-slider-loan_amount').attr('data-max')),
 		min: parseInt($('.em-slider-loan_amount').attr('data-min')),
@@ -507,10 +407,8 @@ var gaInfo = function() {
 	$('.em-i-loan_amount').focusout(function() {
 		var val = numb($(this).val());
 		var min = numb($(this).attr('data-min'));
-		// var max = numb($(this).attr('data-max'));	
 
 		if (min > val) $(this).val(kroner(min));
-		// else if (max < val) $(this).val(kroner(min));
 	});
 
 
@@ -536,12 +434,6 @@ var gaInfo = function() {
 
 		window.addEventListener('beforeunload', unload);
 
-		// window.addEventListener('beforeunload', (event) => {
-		// 	// Cancel the event as stated by the standard.
-	 //  		event.preventDefault();
-	 //  		// Chrome requires returnValue to be set.
-	 //  		event.returnValue = '';
-		// });		
 	}
 	$('.em-b-neste').one('click', showNeste);
 
@@ -694,9 +586,6 @@ var gaInfo = function() {
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');
-
-		// console.log(data);
-		// return;
 
 		$.post(emurl.ajax_url, {
 			action: 'axowl',
@@ -918,8 +807,8 @@ var gaInfo = function() {
 
 
 	$('.em-i-total_unsecured_debt').on('input', function() {
-		if ($(this).val() && $(this).val() != '0') $('.em-element-total_unsecured_debt_balance').down();
-		else $('.em-element-total_unsecured_debt_balance').up();
+		if ($(this).val() && $(this).val() != '0') $('.em-element-unsecured_debt_balance').down();
+		else $('.em-element-unsecured_debt_balance').up();
 	});
 
 
@@ -1008,7 +897,6 @@ var gaInfo = function() {
 	COOKIES
  *************/
 (function($) {
-
 	(function() { 
 		var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
 		if (!match || !match[1]) return;
@@ -1016,60 +904,10 @@ var gaInfo = function() {
 		var date = new Date();
 		date.setTime(date.getTime() + (120*24*60*60*1000));
 		document.cookie = 'clid='+match[1]+'; expires='+date.toUTCString();
-	// })();
 
-	// (function() {
 		match = /gclid|msclkid/.exec(location.search);
-		// console.log(match);
 		if (!match || !match[0]) return;
 
-		// var date = new Date();
-		// date.setTime(date.getTime() + (20*24*60*60*1000));
 		document.cookie = 'clid_source='+match[0]+'; expires='+date.toUTCString();
-
 	})();
-
-	 // window.onbeforeunload = function() {
-  //                  var Ans = confirm("Are you sure you want change page!");
-  //                  if(Ans==true)
-  //                      return true;
-  //                  else
-  //                      return false;
-  //              };
-	 // window.onbeforeunload = confirmExit;
-  // function confirmExit()
-  // {
-  //   return "Do you want to leave this page without saving?";
-  // }
-	// window.addEventListener('beforeunload', (event) => {
- //  // Cancel the event as stated by the standard.
- //  	event.preventDefault();
- //  // Chrome requires returnValue to be set.
- //  	event.returnValue = 'dfldkjflkdjflkdjlfjdljdlkjflskdjfldsjl';
- //  	// return "test";
- //  	// alert('hi');
-	// });
-	// $( window ).unload(function() {
- //  // if(window.unsaved == true){
- //    alert('You have unsaved work.');
- //  // }
-	// });
-	// window.addEventListener('beforeunload', function(e) {
-	// 	e.preventDefault();
-	// 	// $.post(emurl.ajax_url, {
-	// 	// 	action: 'test',
-	// 	// 	data: ''
-	// 	// }, function(data) {
-	// 	// 	console.log('testing: '+data);
-	// 	// }); 	
-	// });
 })(jQuery);
-
-
-
-
-
-// back button
-// popup
-// mobile
-
