@@ -287,7 +287,7 @@ body {
 }
 
 @keyframes bcolor {
-	to { border-color: hsl(0, 50%, 40%); }
+	to { border-color: hsl(0, 50%, 60%); }
 }
 
 .em-valid-border {
@@ -299,7 +299,7 @@ body {
 
 @keyframes vbcolor {
 	/*from { border-color: hsl(0, 100%, 50%); }*/
-	to { border-color: hsl(120, 50%, 40%); }
+	to { border-color: hsl(120, 50%, 60%); }
 }
 
 

@@ -212,6 +212,10 @@ var gaInfo = function() {
 							.replace(/[^\d\.\s]/g, '')
 							.replace(/\.{2,}/g, '.')
 							.replace(/\s{2,}/g, ' ');
+
+			var c = this.value.replace(/[\s\. ]/g, '');
+			if (c.length == 11) validation.call(this);
+			else if (c.length > 11) this.value = this.value.substring(0, this.value.length-1); 
 		},
 		socialnumber: function() {
 			var v = this.value;
@@ -522,6 +526,7 @@ var gaInfo = function() {
 		if (mobile()) {
 			$('.em-element-mobile_number').detach().prependTo('.em-part-2');
 			$('.em-element-email').detach().prependTo('.em-part-2');
+			$('.em-part-2 .em-part-title').detach().prependTo('.em-part-2');
 			$('.em-b-container').detach().appendTo('.em-part-5').css('margin', '0');
 			$('.em-element-axo_accept, .em-element-contact_accept').hide(0);
 			$('.em-slidedown').slideDown(800).removeClass('em-hidden');

@@ -52,9 +52,6 @@ final class Axowl_data {
 	}
 
 	private function wp_hooks() {
-
-		// wp_die('<xmp>'.print_r($_SERVER, true).'</xmp>');
-
 		add_action( 'wp_ajax_nopriv_axowl', [$this, 'from_form']);
 		add_action( 'wp_ajax_axowl', [$this, 'from_form']);
 
@@ -63,32 +60,7 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_popup', [$this, 'popup']);
 		add_action( 'wp_ajax_popup', [$this, 'popup']);
-
-		// add_action( 'wp_ajax_nopriv_test', [$this, 'test']);
-		// add_action( 'wp_ajax_test', [$this, 'test']);
 	}
-
-	// public function test() {
-
-	// 	$data = isset($_POST['data']) ? $_POST['data'] : 'nothing';
-
-	// 	$posting_to_slack = wp_remote_post('https://hooks.slack.com/services/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', array(
-	// 		'method' => 'POST',
-	// 		'timeout' => 30,
-	// 		'redirection' => 5,
-	// 		'httpversion' => '1.0',
-	// 		'blocking' => false,
-	// 		'headers' => array(),
-	// 		'body' => ['payload' => json_encode(['text' => $data])],
-	// 		'cookies' => array()
-	// 		)
-	// 	);
-
-
-	// 	echo 'worked';
-
-	// 	exit;
-	// }
 
 
 	/**
@@ -102,13 +74,6 @@ final class Axowl_data {
 
 		if (isset($data['contact_accept'])) $this->contact_accept = $data['contact_accept'] ? true : false;
 
-		// echo 'stopped at from_form';
-		// return;
-
-		// testing
-		// echo 'Referrer: '.$this->get_referer();
-
-
 		// match from inputs.php
 		$data_keys = array_keys($data);
 		$input_keys = array_keys(Axowl_inputs::$inputs2);
@@ -119,13 +84,10 @@ final class Axowl_data {
 			if (in_array($k, $input_keys))
 				$send[$k] = $data[$k];
 
-		// echo print_r($send, true);
-		
 		// sending to axo
 		$this->send_axo($send);
 
 		exit;
-		// wp_die();
 	}
 
 
@@ -149,9 +111,6 @@ final class Axowl_data {
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('incomplete', 0);
 
-		// echo 'incomplete';
-		// echo print_r($data, true);
-
 		exit;
 	}
 
@@ -160,16 +119,12 @@ final class Axowl_data {
 	 * [popup description]
 	 */
 	public function popup() {
-		// echo print_r($_POST, true);
-		// exit;
-
 		$data = ['status' => 'popup'];
 
 		$email = false;
 		$phone = false;
 
 		$ga = isset($_POST['ga']) ? $_POST['ga'] : [];
-
 
 		if (isset($_POST['pop-email']) && $this->val_email($_POST['pop-email'])) $email = $_POST['pop-email'];
 		if (isset($_POST['pop-phone']) && $this->val_phone($_POST['pop-phone'])) $phone = $_POST['pop-phone'];
@@ -179,13 +134,8 @@ final class Axowl_data {
 		$data['email'] = $email;
 		$data['mobile_number'] = $phone;
 
-		// echo 'Data to be sent from popup: '.http_build_query($data);
-
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('popup', 0);
-
-		// echo 'popup';
-		// echo print_r($ga, true);
 
 		exit;
 	}
@@ -211,10 +161,6 @@ final class Axowl_data {
 		if (!isset($settings['form_url']) || !isset($settings['name'])
 			|| !$settings['form_url'] || !$settings['name']) return;
 		
-		// echo "\ndata\n";
-		// echo print_r($data, true);
-		// echo "\n\n\n";
-
 		// axo url
 		$url = $settings['form_url'].'?';
 		
@@ -241,7 +187,7 @@ final class Axowl_data {
 		echo "\n\nto axo:\n".print_r($data, true)."\n\n";
 		echo $url;
 		// exit;
-		
+
 		// sending to axo
 		$response = wp_remote_get($url);
 		if (is_wp_error($response)) {
@@ -258,9 +204,6 @@ final class Axowl_data {
 		echo print_r($res, true);
 		echo "\n\n\n";
 
-		// exit;
-
-		// echo print_r($res, true);
 		// $res = ['status' => 'Accepted'];
 
 		$data = $this->remove_confidential($data);
@@ -276,11 +219,6 @@ final class Axowl_data {
 	}
 
 
-
-
-
-
-
 	/**
 	 * [accepted description]
 	 * @param  [type] $data [description]
@@ -289,7 +227,6 @@ final class Axowl_data {
 	private function accepted($data) {
 		$data['status'] = 'accepted';
 
-
 		// send gfunc sql
 		$this->send(http_build_query($data), 'sql_info');
 
@@ -297,22 +234,12 @@ final class Axowl_data {
 		$this->sql_conversions($data);
 
 		// sending to gdocs for google ads
-		// $this->gdocs_ads(http_build_query($data));
 		$this->gdocs_ads($data);
 
 		// google analytics
 		$value = get_option('em_axowl');
 		$value = isset($value['payout']) ? $value['payout'] : 0;
 		$this->ga('accepted', $value);
-
-		// if (isset($data['email'])) {
-		// 	$unsub = Axowl_unsub::get_instance();
-
-		// 	$unsub->unsub($data['email']); // ends in exit;
-		// }
-
-		// send event or/and ecommerce data to GA
-		// google ads import from GA?
 	}
 
 
@@ -336,8 +263,6 @@ final class Axowl_data {
 	}
 
 
-
-
 	/**
 	 * [send description]
 	 * @param  [type] $query [description]
@@ -352,17 +277,12 @@ final class Axowl_data {
 
 		if (strpos($url, '?') === false) $url .= '?';
 
-
 		// for testing
-		// echo $name.': '.$url.$query."\n\n";
 		echo "\n\nSENDING\n";
 		echo $name;
 		echo "\n";
 		echo $query;
 		echo "\n\n\n";
-
-		// return;
-
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
 	}
@@ -377,15 +297,12 @@ final class Axowl_data {
 	 */
 	private function sql_conversions($data) {
 
-		// TODO -- if no clid then add referer from cookie
-
 		$opt = get_option('em_axowl');
 		$d = [
 			'campaign' => 'axo',
 			'media' => $_SERVER['SERVER_NAME'],
 			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
 			'affiliate' => 'axo wl',
-			// 'tracking' => isset($_POST['clid']) ? $_POST,
 			'status' => 'approved',
 			'currency' => isset($opt['currency']) ? $opt['currency'] : 'not set'
 			// last parameter is timestamp which sql fills out all by itself.
@@ -393,14 +310,9 @@ final class Axowl_data {
 
 		if (isset($_POST['clid'])) $d['tracking'] = $_POST['clid'];
 
-		// echo 'conversion:';
-		// echo print_r($d, true);
-		// return;
 
 		$this->send(http_build_query($d), 'sql_conversions');
 	}
-
-
 
 
 	/**
@@ -416,16 +328,6 @@ final class Axowl_data {
 		// if not set in settings
 		if (!isset($opt['gdocs_ads']) || !isset($opt['payout']) || !isset($opt['currency'])) return;
 
-		// $data = http_build_query($data);
-
-		// $clid = isset($_COOKIE['gclid']) ? $_COOKIE['gclid'] : false; 
-
-		// preg_match('/^.*(?:gclid=)(.*?)(?:&|$)/', $_SERVER['QUERY_STRING'], $match);
-
-		// if (isset($match[1])) $clid = $match[1];
-
-		// if (!$clid) return;
-
 		// if no click id (either google click id, or bing click id)
 		$clid = $this->get_clid();
 		if (!$clid) return;
@@ -438,50 +340,8 @@ final class Axowl_data {
 			'Conversion Currency' => $opt['currency']
 		];
 
-		// echo 'gdocs: ';
-		// echo print_r($d, true);
-		// return;
-
 		$this->send(http_build_query($d), 'gdocs_ads');
 	}
-	// /**
-	//  * [query description]
-	//  * @param  [type] $url  [description]
-	//  * @param  [type] $data [description]
-	//  * @return [type]       [description]
-	//  */
-	// private function query($url, $data) {
-
-	// 	$v = get_option('em_axowl');
-
-	// 	// gclid
-	// 	// _ga
-	// 	// 
-	// 	// $url = (strpos($url[$value], '?') === false) ? $url.'?' : $url;
-
-	// 	foreach ($data as $key => $value)
-	// 		$url = str_replace('{'.$key.'}', $value, $url);
-
-	// 	$url = preg_replace('/{.*?}/', '', $url);
-
-	// 	$url = str_replace('&amp;', '&', $url);
-
-	// 	$url .= '&gclid=';
-
-	// 	$url .= '&msclkid=';
-
-	// 	$url .= '&referer=';
-
-	// 	if (isset($v['currency'])) $url .= '&currency='.$v['currency'];
-
-	// 	if (isset($v['payout'])) $url .= '&payout='.$v['payout'];
-	// 	// echo print_r($data, true);
-
-	// 	// echo 'query: '.$url;
-
-	// 	return $url;
-
-	// }
 
 
 
@@ -527,42 +387,8 @@ final class Axowl_data {
 
 
 
-
-
-
-
-
-	// /**
-	//  * [slack description]
-	//  * @param  [type] $data [description]
-	//  * @param  [type] $name [description]
-	//  * @return [type]       [description]
-	//  */
-	// private function slack($data, $name) {
-
-	// 	$hook = get_option('em_axowl');
-
-	// 	if (!isset($hook['slack'])) return;
-
-	// 	$hook = $hook['slack'];
-
-	// 	$send = 'Axo | Norskfinans :flag-no: | '.$data['payout'];
-
-	// 	$posting_to_slack = wp_remote_post($hook, array(
-	// 		'method' => 'POST',
-	// 		'timeout' => 30,
-	// 		'redirection' => 5,
-	// 		'httpversion' => '1.0',
-	// 		'blocking' => false,
-	// 		'headers' => array(),
-	// 		'body' => ['payload' => json_encode(['text' => $this->message($send)])],
-	// 		'cookies' => array()
-	// 		)
-	// 	);
-	// }
-
+	/**/
 	private function ga($status, $value) {
-		// TODO add dl to $d
 		// TODO shortcode number to event action
 
 		// if (is_user_logged_in()) return;
@@ -577,16 +403,13 @@ final class Axowl_data {
 
 		if (!$data) return;
 
-
-		// echo "\n\n\nGA data:\n";
-		// echo print_r($data, true);
-		// echo "\n\n\n";
-
 		$tag = get_option('em_axowl');
 
 		// if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
 
-		$tag = isset($tag['ga_code']) ? $tag['ga_code'] : 'test_tag';
+		if (isset($tag['ga_code'])) $tag = $tag['ga_code'];
+		if (!$tag) $tag = 'test_tag';
+		// $tag = isset($tag['ga_code']) ? $tag['ga_code'] : 'test_tag';
 		// $tag = 'test_tag';
 
 
@@ -654,30 +477,11 @@ final class Axowl_data {
 
 		if (isset($_POST['clid'])) return $_POST['clid'];
 
-		// if (isset($_COOKIE['clid'])) return $_COOKIE['clid'];
-
-		// $query = $_SERVER['QUERY_STRING'];
-
-		// $check = ['gclid', 'msclkid'];
-
-		// foreach ($check as $c) {
-		// 	$pattern = '/^.*(?:'.$c.'=)(.*?)(?:&|$)/';
-
-		// 	preg_match($pattern, $query, $match);
-
-		// 	if (isset($match[1])) return $match[1];
-		// }
-
 		return false;
 	}
 
 
 	private function get_referer() {
-
-		// echo "\n\n\n";
-		// echo print_r($_SERVER);
-		// echo "\n\n\n";
-
 		if (isset($_SERVER['REFERER']) && $_SERVER['REFERER']) {
 
 			$r = $_SERVER['HTTP_REFERER'];

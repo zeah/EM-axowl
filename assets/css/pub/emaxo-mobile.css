@@ -4,6 +4,10 @@
 
 */
 
+.em-element-container {
+	max-width: 40rem;
+}
+
 .content {
 	background-color: #f2e7d5;
 	margin: 0;
@@ -137,7 +141,8 @@
 	height: 5rem;
 	width: 5rem;
 	border: solid 3px black;
-    background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');
+    /*background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/04/sliderarrow3.png');
     background-repeat: no-repeat;
     background-position: center; 
 	background-color: #fff;
@@ -190,7 +195,8 @@
     width: 34px;
     height: 58px;
     background: #fff;
-    background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');
+    /*background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/04/sliderarrow3.png');
     background-repeat: no-repeat;
     background-position: center; 
     box-shadow: -100vw 0 0 100vw #96f;
@@ -211,7 +217,8 @@
     height: 48px;
     width: 40px;
     box-sizing: border-box;
-    background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');
+    /*background-image: url('https://norskfinans.no/wp-content/uploads/2019/03/rangepil.png');*/
+    background-image: url('https://norskfinans.no/wp-content/uploads/2019/04/sliderarrow3.png');
     background-repeat: no-repeat;
     background-position: center; 
 }
@@ -386,8 +393,9 @@
 
 .em-b {
 	width: 100%;
+	max-width: 40rem;
 	margin: auto;
-	height: 4rem;
+	height: 5rem;
 	line-height: 1;
 
 	border: solid 2.4px black;
@@ -407,6 +415,11 @@
 
 .em-b-send {
 	margin: 2rem 0;
+}
+
+.em-b-endre {
+	background-color: #96f;
+	color: white;
 }
 
 .em-compare-text {
@@ -461,7 +474,7 @@
 }
 
 @keyframes bcolor {
-	to { border-color: hsl(0, 50%, 40%); }
+	to { border-color: hsl(0, 50%, 60%); }
 }
 
 .em-valid-border {
@@ -473,7 +486,11 @@
 
 @keyframes vbcolor {
 	/*from { border-color: hsl(0, 100%, 50%); }*/
-	to { border-color: hsl(120, 50%, 40%); }
+	to { border-color: hsl(120, 50%, 60%); }
+}
+
+.em-part-title {
+	text-align: center;
 }
 
 
@@ -519,6 +536,12 @@
 	text-align: center;
 	/*font-weight: 700;*/
 	/*font-family: Montserrat;*/
+}
+
+.em-co-applicant {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .em-popup {
