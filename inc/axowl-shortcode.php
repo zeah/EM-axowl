@@ -47,12 +47,12 @@ final class Axowl_shortcode {
 
 		switch ($atts[0]) {
 			case '1': return $this->shortcode_1($atts, $content); break;
-			case '2': return $this->shortcode_2($atts, $content); break;
-			case '3': return $this->shortcode_3($atts, $content); break;
-			case '4': return $this->shortcode_4($atts, $content); break;
-			case '5': return $this->shortcode_5($atts, $content); break;
-			case '7': return $this->shortcode_7($atts, $content); break;
-			case '10': return $this->shortcode_10($atts, $content); break;
+			// case '2': return $this->shortcode_2($atts, $content); break;
+			// case '3': return $this->shortcode_3($atts, $content); break;
+			// case '4': return $this->shortcode_4($atts, $content); break;
+			// case '5': return $this->shortcode_5($atts, $content); break;
+			// case '7': return $this->shortcode_7($atts, $content); break;
+			// case '10': return $this->shortcode_10($atts, $content); break;
 		}
 	}
 	/**
@@ -608,8 +608,8 @@ final class Axowl_shortcode {
 
 	public function sands() {
         wp_enqueue_style('jqslid', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css', false);
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.10', '(min-width: 816px)');
-        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.10', '(max-width: 815px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.10', '(min-width: 901px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.10', '(max-width: 900px)');
         
 
         // wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', ['jquery', 'jquery-ui-slider'], '2.0.5', true);

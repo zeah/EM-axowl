@@ -43,8 +43,8 @@ var gaInfo = function() {
 
 	var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
 
-	var mobile = function() { return $(window).width() < 816 }
-	var desktop = function() { return $(window).width() > 815 }
+	var mobile = function() { return $(window).width() < 901 }
+	var desktop = function() { return $(window).width() > 900 }
 
 	var numb = function(n) { 
 		if (!n) return null;
@@ -105,11 +105,94 @@ var gaInfo = function() {
 			if (!this.value) return false;
 
 			var n = this.value.replace(/\D/g, '');
-			if (/^\d+$/.test(n) && n.length == 8) return true; 
+			if (/^(4|9)\d+$/.test(n) && n.length == 8) return true; 
 			return false 
 		},
 		
-		email: function() { if (/.+\@.+\..{2,}/.test(this.value)) return true; return false },
+		email: function() { 
+			
+			var mails = {
+				'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+				'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+				'online.no': ['o', 'n', 'l', 'i', 'n', 'e', '.', 'n', 'o'],
+
+				'live.com': ['l', 'i', 'v', 'e', '.', 'c', 'o', 'm'],
+				'yahoo.no': ['y', 'a', 'h', 'o', 'o', '.', 'n', 'o'],
+				'yahoo.com': ['y', 'a', 'h', 'o', 'o', '.', 'c', 'o', 'm'],
+				'hotmail.no': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+				'c2i.net': ['c', '2', 'i', '.', 'n', 'e', 't'],
+				'broadpark.no': ['b', 'r', 'o', 'a', 'd', 'p', 'a', 'r', 'k', '.', 'n', 'o'],
+				'frisurf.no': ['f', 'r', 'i', 's', 'u', 'r', 'f', '.', 'n', 'o'],
+
+				'start.no': ['s', 't', 'a', 'r', 't', '.', 'n', 'o'],
+
+				'lyse.no': ['l', 'y', 's', 'e', '.', 'n', 'o'],
+
+				'live.no': ['l', 'i', 'v', 'e', '.', 'n', 'o'],
+				'msn.com': ['m', 's', 'n', '.', 'c', 'o', 'm'],
+				'outlook.com': ['o', 'u', 't', 'l', 'o', 'o', 'k', '.', 'c', 'o', 'm'],
+
+
+				'gmail.no': ['g', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+				'googlemail.com': ['g', 'o', 'o', 'g', 'l', 'e', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+
+				'adsl.no': ['a', 'd', 's', 'l', '.', 'n', 'o'],
+				'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
+				
+				'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
+				'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+				'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
+			}
+
+			var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
+			var c = 0;
+
+			var f = false;
+
+			// correctly spelled
+			for (var a in mails)
+				if (v == a) {
+					f = true;
+					break;
+				}
+
+
+			if (!f)
+			for (var a in mails) {
+				if (v.length > a.length+1) continue;
+
+				for (var b in mails[a]) {
+					if (v.indexOf(mails[a][b]) === -1)
+						c++;
+				}
+
+				console.log(a+' ## '+c);
+
+				if ((c > 0 && c < 3) || (c == 0 && v != a)) {
+					if (confirm('Mente du '+a+'?')) {
+						this.value = this.value.replace(/\@.+/, '@'+a);
+						break;
+					}
+					else {
+
+					}
+				}
+				c = 0;
+			}
+
+
+			// if (/\@gmai\./.test(this.value)) {
+			// 	if (confirm('Mente du gmail.com?')) {
+			// 		this.value = this.value.replace(/\@.+/, '@gmail.com');
+			// 	}
+			// 	else {
+
+			// 	}
+			// }
+
+
+			if (/.+\@.+\..{2,}/.test(this.value)) return true; return false 
+		},
 		
 		currency: function() { 
 			if (!this.value) return false;
@@ -433,8 +516,11 @@ var gaInfo = function() {
 		$('.em-element-neste').remove();
 
 		$('.em-part-1-grid > .em-hidden, .em-b-container').each(function() {
-			$(this).slideDown(600).removeClass('em-hidden');
+			$(this).slideDown(600, function() {
+				$('.em-i-tenure').focus();
+			}).removeClass('em-hidden');
 		});
+
 
 		window.addEventListener('beforeunload', unload);
 
@@ -512,7 +598,9 @@ var gaInfo = function() {
 				$('.em-compare-text').css('font-size', '2rem');
 
 				$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
-					$('.em-slidedown').slideDown(800).removeClass('em-hidden');
+					$('.em-slidedown').slideDown(800, function() {
+						$('.em-i-social_number').focus();
+					}).removeClass('em-hidden');
 				});
 
 			});
@@ -627,11 +715,11 @@ var gaInfo = function() {
 (function($) {
 
 	var desktop = function() {
-		return $(window).width() > 815;
+		return $(window).width() > 900;
 	}
 
 	var mobile = function() {
-		return $(window).width() < 816;
+		return $(window).width() < 901;
 	}
 
 	$.fn.extend({
@@ -694,7 +782,8 @@ var gaInfo = function() {
 				if (desktop()) {
 					$('.em-part-lower-container').css('grid-template-areas', '"title title title title" "two three four five"');
 					$('.em-part-lower-container').find('.em-part').animate({
-						width: '25rem'
+						width: '20rem'
+						// width: '25rem'
 					});
 					$('.em-part-4').show().removeClass('em-hidden');
 				}
@@ -723,7 +812,8 @@ var gaInfo = function() {
 
 				if (desktop()) {
 					$('.em-part-lower-container').find('.em-part:not(.em-part-4)').animate({
-						width: '30rem'
+						width: '25rem'
+						// width: '30rem'
 					});
 
 					$('.em-part-4').animate({
@@ -750,6 +840,15 @@ var gaInfo = function() {
 
 		});
 	});
+
+	$('.em-check-span').on('keypress', function(e) {
+		if (e.keyCode == 13 || e.keyCode == 32) {
+			e.preventDefault();
+			var $check = $(this).parent().prev();
+			$check.prop('checked', !$check.attr('checked'));
+		}
+	});
+
 
 
 	// LISTS 
@@ -819,6 +918,19 @@ var gaInfo = function() {
 		else $('.em-element-unsecured_debt_balance').up();
 	});
 
+	$('.em-i-co_applicant_employment_type').change(function() {
+		switch ($(this).val()) {
+			case 'Fast ansatt (privat)':
+			case 'Fast ansatt (offentlig)':
+			case 'Midlertidig ansatt/vikar':
+			case 'Selvst. næringsdrivende':
+			case 'Langtidssykemeldt': 
+				$('.em-element-co_applicant_employment_since, .em-element-co_applicant_employer').down(); break;
+
+			default: $('.em-element-co_applicant_employment_since, .em-element-co_applicant_employer').up();
+		}
+	});
+
 
 })(jQuery);
 
@@ -831,7 +943,7 @@ var gaInfo = function() {
 
 	var showPopup = function(e) {
 
-		if ($(window).width() < 815) return;
+		if ($(window).width() < 901) return;
 
 		// not all things on top of body is in body
 		// so do nothing if pointer has not left the window
@@ -918,4 +1030,5 @@ var gaInfo = function() {
 
 		document.cookie = 'clid_source='+match[0]+'; expires='+date.toUTCString();
 	})();
+
 })(jQuery);

@@ -319,8 +319,13 @@ body {
 .em-i:active,
 .em-i:focus {
 	/*box-shadow: 0 0 6px #96f;*/
-	border-color: hsl(240, 50%, 40%) !important;
+	/*border-color: hsl(240, 70%, 60%) !important;*/
+	border-color: #96f !important;
 	outline: none;
+}
+.em-check-span:focus,
+.ui-slider-handle:focus {
+	outline: solid 1px #96f;
 }
 
 /* 1.2 form title */
@@ -343,13 +348,18 @@ body {
 	padding: 1.3rem 0;
 	font-weight: 700;
 	font-size: 2rem !important;
-	border: solid 1px #333; 
+	border: solid 2px #333; 
 	/*border-color: hsl(0, 0%, 50%) hsl(0, 0%, 20%) hsl(0, 0%, 50%) hsl(0, 0%, 20%);*/
 	/*box-shadow: 0 0 0 transparent, inset 0 1px 1px #d4d4d4;*/
 	height: auto;
 	background-color: #fc6;
 	cursor: pointer;
 	font-family: merriweather;
+}
+
+.em-b:focus {
+	outline: solid .6px #96f;
+	/*outline: dashed 1px #ccc;*/
 }
 
 .em-b-container {
@@ -416,7 +426,8 @@ body {
 }
 
 .em-part-lower-container .em-part {
-	width: 30rem;
+	width: 25rem;
+	/*width: 30rem;*/
 }
 
 .em-part-lower-container .em-part-4 {
@@ -503,6 +514,7 @@ body {
 	". neste neste ."
 	"compare compare compare compare"
 	"tenure refinancing mobile mobile"
+	/*"tenure refinancing mobile mobile"*/
 	"axoaccept axoaccept email email"
 	"contactaccept contactaccept email email";
 /*	"monthly monthly"
@@ -670,6 +682,10 @@ body {
 	overflow: hidden;
 	font-family: Merriweather;
 	font-weight: 900;
+}
+
+.em-it:hover {
+	overflow: visible;
 }
 
 .em-part-lower-container .em-it {
@@ -1174,7 +1190,6 @@ select.em-i {
 .em-element-tenure {
 	grid-area: tenure;
 	margin-right: 1rem;
-
 	margin-bottom: 4rem;
 }
 

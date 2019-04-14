@@ -5,6 +5,7 @@
 */
 
 .em-element-container {
+	min-width: 30rem;
 	max-width: 40rem;
 }
 
@@ -68,6 +69,8 @@
 	flex-direction: column;
 
 	align-items: center;
+
+	margin: auto;
 }
 
 .em-element-container {
@@ -394,6 +397,7 @@
 
 .em-b {
 	width: 100%;
+	min-width: 30rem;
 	max-width: 40rem;
 	margin: auto;
 	height: 5rem;
