@@ -72,22 +72,54 @@ var gaInfo = function() {
 		return Math.round(p / ((1 - Math.pow(1 + i, -n)) / i)) + 30;
 	}
 
+	var creditcardinterest = 0.22;
+    var monthlyRate = creditcardinterest / 12;
+    var minPay = 250;
+    var cardPay = 0.03;
+    var cardFee = 30;
+
 	var payment = function() {
 		try { 
 			var p = numb($('.em-i-loan_amount').val());
 			var n = numb($('.em-i-tenure').val())*12;
 
+			var carddebt = p;
+		    var interest = Math.round(carddebt * monthlyRate);
+		    var saldo = Math.round(carddebt + interest);
+		    var payment = Math.round(Math.min(Math.max(minPay, saldo * cardPay), saldo) + cardFee);
+		    var minsaldo = Math.round(saldo - payment + cardFee);
+		    
+		    var add = interest;
+	        
+	        var i = 1;
+	        var paymentaverage = payment;
+	        while(saldo > 0){
+	            interest = Math.round(minsaldo * monthlyRate);
+	            saldo = Math.round(minsaldo + interest);
+	            payment = Math.round(Math.min(Math.max(minPay, saldo * cardPay), saldo) + cardFee);
+	            minsaldo = Math.round(saldo - payment + cardFee);
+	            add += interest;
+	            if(i < 12){
+	                paymentaverage += payment;
+	            }
+	            i++;
+	        }
+	        
+	        paymentaverage = Math.floor(paymentaverage / 12);
+
 			$('.em-if-monthly_cost').val(kroner(cost(0.079)));
 			$('.em-compare-amount').html(kroner(p));
 
-			$('.em-compare-kk').html(cost(0.220));
-			$('.em-compare-monthly').html(cost(0.079));
+			$('.em-compare-kk').html(paymentaverage);
+			$('.em-compare-monthly').html(kroner(cost(0.079)));
 			$('.em-compare-tenure').html(numb($('.em-i-tenure').val()));
 
 
-			var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
+			// var save = parseInt($('.em-compare-kk').html()) - parseInt(numb($('.em-if-monthly_cost').val()));
+			var save = paymentaverage - parseInt(numb($('.em-if-monthly_cost').val()));
 
 			$('.em-compare-save').html(kroner(save));
+
 
 		} catch (e) { console.error('Cost calculation: '+e) }
 	};
@@ -499,6 +531,10 @@ var gaInfo = function() {
 		var min = numb($(this).attr('data-min'));
 
 		if (min > val) $(this).val(kroner(min));
+	});
+
+	$('.em-i-tenure').change(function() {
+		payment();
 	});
 
 
@@ -1007,10 +1043,10 @@ var gaInfo = function() {
 
 
 	// Check cookies first
-	// if (!/(^| |;)em_popup=/.test(document.cookie)) {  
+	if (!/(^| |;)em_popup=/.test(document.cookie)) {  
 		$('body').on('mouseleave', showPopup);
 		$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
-	// }
+	}
 
 })(jQuery);
 

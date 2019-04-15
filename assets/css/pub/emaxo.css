@@ -1332,7 +1332,7 @@ select.em-i {
 	display: inline-block;
 	background-color: #96f;
 	font-size: 2rem;
-	padding: 1rem 0;
+	padding: .7rem 0 1rem;
 	margin: 0 2rem;
 	color: white;
 	width: 16.5rem;
@@ -1345,6 +1345,10 @@ select.em-i {
 	margin-top: 3rem;
 
 	font-size: 1rem;
+}
+
+.em-compare-monthly {
+	white-space: nowrap;
 }
 
 /* 4.10 neste button */
