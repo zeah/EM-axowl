@@ -385,6 +385,11 @@ body {
 	color: #fff;
 }
 
+.em-b-endre:focus {
+	border: solid 2px #000 !important;
+	box-shadow: 2px 2px #96f, -2px 2px #96f, 2px -2px #96f, -2px -2px #96f;
+}
+
 .em-b-send {
 	margin-top: 3.5rem;
 }

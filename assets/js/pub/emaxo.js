@@ -956,6 +956,8 @@ var gaInfo = function() {
 
 (function($) {
 
+	var numb = function(n) { return n.replace(/\D/g, '') }
+
 	var showPopup = function(e) {
 
 		if ($(window).width() < 901) return;
@@ -977,7 +979,7 @@ var gaInfo = function() {
 			if (!$('#pop-phone').validation()) valid = false;
 			if (!$('#pop-email').validation()) valid = false;
 			if (!valid) return;
-			
+
 			$('.pop-neste').off('click', click);
 			$('.email-popup, .em-glass').fadeOut(500);
 
@@ -988,7 +990,7 @@ var gaInfo = function() {
 					'ab-name': $('#abtesting-name').val(),
 					'ab-sc': $('#abtesting-sc').val(),
 					'pop-email': $('#pop-email').val(),
-					'pop-phone': $('#pop-phone').val()
+					'pop-phone': numb($('#pop-phone').val())
 				}, 
 				function(data) {
 					console.log(data);
@@ -1005,10 +1007,10 @@ var gaInfo = function() {
 
 
 	// Check cookies first
-	if (!/(^| |;)em_popup=/.test(document.cookie)) {  
+	// if (!/(^| |;)em_popup=/.test(document.cookie)) {  
 		$('body').on('mouseleave', showPopup);
 		$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
-	}
+	// }
 
 })(jQuery);
 
