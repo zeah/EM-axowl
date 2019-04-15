@@ -461,6 +461,7 @@ body {
 	/*border-radius: 3px;*/
 	height: 4rem;
 	font-size: 1.6rem;
+	font-family: Merriweather;
 }
 
 /* 2.1.2 part 1*/
@@ -909,7 +910,8 @@ select.em-i {
 
 .em-ht-q:focus .em-ht-mark {
 	/*box-shadow: 1px 1px hsl(120, 50%, 50%), -1px 1px hsl(120, 50%, 50%), 1px -1px hsl(120, 50%, 50%), -1px -1px hsl(120, 50%, 50%);*/
-	box-shadow: 1px 1px #96f, -1px 1px #96f, 1px -1px #96f, -1px -1px #96f;
+	/*box-shadow: 1px 1px #96f, -1px 1px #96f, 1px -1px #96f, -1px -1px #96f;*/
+	box-shadow: 2px 2px #96f, -2px 2px #96f, 2px -2px #96f, -2px -2px #96f;
 }
 
 /* 3.8 label */
@@ -1358,11 +1360,25 @@ select.em-i {
 	/*padding: .5rem 8rem;*/
 	font-weight: 700;
 	font-size: 2rem !important;
-	border: solid 1px hsl(0, 0%, 20%);
+	border: solid 2px hsl(0, 0%, 20%);
 	height: auto;
 	background-color: #fc6;
 	cursor: pointer;
 	font-family: merriweather;
+}
+
+.em-cc-yes:focus {
+	border: solid 2px #000 !important;
+	/*outline: solid 2px red;*/
+	/*box-shadow: 2px 2px #96f, 2px -2px #96f, -2px -2px #96f;*/
+	box-shadow: -2px 2px #96f, -2px -2px #96f;
+}
+
+.em-cc-no:focus {
+	border: solid 2px #000 !important;
+	/*outline: solid 2px red;*/
+	/*box-shadow: 2px 2px #96f, -2px 2px #96f, 2px -2px #96f;*/
+	box-shadow: 2px -2px #96f, 2px 2px #96f;
 }
 
 

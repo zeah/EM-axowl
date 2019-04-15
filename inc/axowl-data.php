@@ -184,8 +184,8 @@ final class Axowl_data {
 
 
 		// testing - to be deleted
-		echo "\n\nto axo:\n".print_r($data, true)."\n\n";
-		echo $url;
+		// echo "\n\nto axo:\n".print_r($data, true)."\n\n";
+		// echo $url;
 		// exit;
 
 		// sending to axo
@@ -199,12 +199,11 @@ final class Axowl_data {
 
 		if (!is_array($res) || !isset($res['status'])) return;
 
+		// echo "\n\nResponse\n";
+		// echo print_r($res, true);
+		// echo "\n\n\n";
 
-		echo "\n\nResponse\n";
-		echo print_r($res, true);
-		echo "\n\n\n";
-
-		// $res = ['status' => 'Accepted'];
+		// $res = ['status' => 'ValidationError'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -213,8 +212,8 @@ final class Axowl_data {
 		switch ($res['status']) {
 			case 'Accepted': $this->accepted($data); break;
 			case 'Rejected': $this->rejected($data); break;
-			// case 'ValidationError': $this->validation_error($data); break;
-			// case 'TechnicalError': $this->technical_error($data); break;
+			case 'ValidationError': $this->validation_error($data); break;
+			case 'TechnicalError': $this->technical_error($data); break;
 		}
 	}
 
@@ -234,7 +233,7 @@ final class Axowl_data {
 		$this->sql_conversions($data);
 
 		// sending to gdocs for google ads
-		$this->gdocs_ads($data);
+		// $this->gdocs_ads($data);
 
 		// google analytics
 		$value = get_option('em_axowl');
@@ -262,6 +261,14 @@ final class Axowl_data {
 
 	}
 
+	private function validation_error($data) {
+		echo 'Validation Error';
+	}
+
+	private function technical_error($data) {
+		echo 'Technical Error';
+	}
+
 
 	/**
 	 * [send description]
@@ -278,11 +285,11 @@ final class Axowl_data {
 		if (strpos($url, '?') === false) $url .= '?';
 
 		// for testing
-		echo "\n\nSENDING\n";
-		echo $name;
-		echo "\n";
-		echo $query;
-		echo "\n\n\n";
+		// echo "\n\nSENDING\n";
+		// echo $name;
+		// echo "\n";
+		// echo $query;
+		// echo "\n\n\n";
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
 	}
@@ -391,7 +398,7 @@ final class Axowl_data {
 	private function ga($status, $value) {
 		// TODO shortcode number to event action
 
-		// if (is_user_logged_in()) return;
+		if (is_user_logged_in()) return;
 
 		// echo "\npost in ga:\n\n".print_r($_POST, true)."\n\n\n";
 
@@ -407,8 +414,10 @@ final class Axowl_data {
 
 		// if (!isset($tag['ga_code']) && $tag['ga_code'] != '') return;
 
-		if (isset($tag['ga_code'])) $tag = $tag['ga_code'];
-		if (!$tag) $tag = 'test_tag';
+		if (isset($tag['ga_code']) && $tag['ga_code'] != '') $tag = $tag['ga_code'];
+		else return;
+
+		// if (!$tag) $tag = 'test_tag';
 		// $tag = isset($tag['ga_code']) ? $tag['ga_code'] : 'test_tag';
 		// $tag = 'test_tag';
 
@@ -453,10 +462,10 @@ final class Axowl_data {
 		$dl = home_url($wp->request);
 		$d['dl'] = preg_replace('/\?.*$/', '', $dl);
 
-		echo "\nGA:\n";
-		echo print_r($d, true);
-		echo "\n\n\n";
-		return;
+		// echo "\nGA:\n";
+		// echo print_r($d, true);
+		// echo "\n\n\n";
+		// return;
 
 		// sending to google analytics
 		wp_remote_post('https://www.google-analytics.com/collect', [

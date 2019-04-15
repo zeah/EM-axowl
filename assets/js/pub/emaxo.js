@@ -63,10 +63,13 @@ var gaInfo = function() {
 	var cost = function(i) {
 		i = i / 12;
 
-		var p = numb($('.em-i-loan_amount').val());
+		var p = numb($('.em-i-loan_amount').val()) + 950;
 		var n = numb($('.em-i-tenure').val())*12;
 
-		return Math.floor(p / ((1 - Math.pow(1 + i, -n)) / i));
+		if (i == 0.22)
+			n = 12;
+
+		return Math.round(p / ((1 - Math.pow(1 + i, -n)) / i)) + 30;
 	}
 
 	var payment = function() {
@@ -74,11 +77,11 @@ var gaInfo = function() {
 			var p = numb($('.em-i-loan_amount').val());
 			var n = numb($('.em-i-tenure').val())*12;
 
-			$('.em-if-monthly_cost').val(kroner(cost(0.068)));
+			$('.em-if-monthly_cost').val(kroner(cost(0.079)));
 			$('.em-compare-amount').html(kroner(p));
 
 			$('.em-compare-kk').html(cost(0.220));
-			$('.em-compare-monthly').html(cost(0.068));
+			$('.em-compare-monthly').html(cost(0.079));
 			$('.em-compare-tenure').html(numb($('.em-i-tenure').val()));
 
 
@@ -166,7 +169,7 @@ var gaInfo = function() {
 						c++;
 				}
 
-				console.log(a+' ## '+c);
+				// console.log(a+' ## '+c);
 
 				if ((c > 0 && c < 3) || (c == 0 && v != a)) {
 					if (confirm('Mente du '+a+'?')) {
@@ -678,7 +681,7 @@ var gaInfo = function() {
 
 		data['ga'] = gaInfo();
 
-		if (!valid) return;
+		// if (!valid) return;
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');
@@ -687,6 +690,16 @@ var gaInfo = function() {
 			action: 'axowl',
 			data: data
 		}, function(d) {
+
+			if (d === 'Validation Error') {
+				alert('Teknisk Feil - last inn siden på nytt og prøv igjen eller kontakt oss på epost.');
+				return;
+			}
+
+			if (d === 'Technical Error') {
+				alert('Teknisk Feil - Feil hos Axo Finans. Prøv igjen seinere eller kontakt oss på epost.');
+				return;				
+			}
 
 			$('.emowl-form').slideUp(800, function() {
 				$('.em-popup-x').one('click', function() { $('.em-popup').slideUp(); })
@@ -704,7 +717,7 @@ var gaInfo = function() {
 
 			window.removeEventListener('beforeunload', unload);
 
-			console.log(d);
+			// console.log(d);
 		});
 	});
 
@@ -736,13 +749,17 @@ var gaInfo = function() {
 	});
 
 
+	var htClick = function() {
+		$(this).siblings('.em-ht').slideToggle(300);
+	}
+
 	$('.em-ht-mark').mouseenter(function() {
 		if (desktop() && !$('.mobile-icon-container')[0]) {
-
+			$(this).parent().off('click', htClick);
 			$(this).parent().siblings('.em-ht').fadeIn(300);
 
 			$(this).one('mouseleave', function() {
-
+					$(this).parent().click(htClick);
 					var $this = $(this);
 					var timer = setTimeout(function() { $this.parent().siblings('.em-ht').fadeOut(300) }, 300);
 
@@ -755,9 +772,7 @@ var gaInfo = function() {
 	});
 
 
-	$('.em-ht-q').click(function() {
-		$(this).siblings('.em-ht').slideToggle(300);
-	});
+	$('.em-ht-q').click(htClick);
 
 	// CHECKBOXES
 	$('.emowl-form [data-show]').each(function() {
