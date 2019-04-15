@@ -681,7 +681,7 @@ var gaInfo = function() {
 
 		data['ga'] = gaInfo();
 
-		// if (!valid) return;
+		if (!valid) return;
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');
