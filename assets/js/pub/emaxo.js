@@ -1085,3 +1085,15 @@ var gaInfo = function() {
 	})();
 
 })(jQuery);
+
+
+/**************
+	QA BOXES
+ **************/
+(function($) {
+  $('.em-qa-title').each(function() {
+    $(this).click(function() {
+    	$(this).next('.em-qa-box').slideToggle();
+    });
+  });
+})(jQuery);
