@@ -175,7 +175,7 @@ var gaInfo = function() {
 				'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
 				
 				'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
-				'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+				// 'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
 				'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
 			}
 
@@ -1043,10 +1043,12 @@ var gaInfo = function() {
 
 
 	// Check cookies first
-	if (!/(^| |;)em_popup=/.test(document.cookie)) {  
-		$('body').on('mouseleave', showPopup);
-		$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
-	}
+	setTimeout(function() {
+		if (!/(^| |;)em_popup=/.test(document.cookie)) {  
+			$('body').on('mouseleave', showPopup);
+			$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
+		}
+	}, 6000);
 
 })(jQuery);
 
