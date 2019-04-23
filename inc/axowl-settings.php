@@ -54,8 +54,8 @@ final class Axowl_settings {
 		add_settings_field('em-axowl-content', 'Content', [$this, 'input_setting'], 'em-axowl-page-name', 'em-axowl-name', ['content', 'Can be used to distinguish between different publishers']);
 
 
-		add_settings_section('em-axowl-ab', '', [$this, 'ab_section'], 'em-axowl-page-ab');
-		add_settings_field('em-axowl-ab', 'Testing settings', [$this, 'ab_setting'], 'em-axowl-page-ab', 'em-axowl-ab', ['ab', 'ab testing']);
+		// add_settings_section('em-axowl-ab', '', [$this, 'ab_section'], 'em-axowl-page-ab');
+		// add_settings_field('em-axowl-ab', 'Testing settings', [$this, 'ab_setting'], 'em-axowl-page-ab', 'em-axowl-ab', ['ab', 'ab testing']);
 
 
 		$settings = [
@@ -143,6 +143,14 @@ final class Axowl_settings {
 				[$key, $value, true]
 			);
 
+			// add_settings_field(
+			// 	'em-axowl-personvern',
+			// 	'Personvern',
+			// 	[$this, 'fieldinput'],
+			// 	'em-axowl-page-input',
+			// 	'em-axowl-input'
+			// );
+
 	}
 
 
@@ -161,7 +169,7 @@ final class Axowl_settings {
 			<button type="button" class="em-settings-anchor em-settings-anchor-name em-settings-anchor-active">General</button>
 			<button type="button" class="em-settings-anchor em-settings-anchor-data">Callbacks</button>
 			<button type="button" class="em-settings-anchor em-settings-anchor-input">Input text</button>
-			<button type="button" class="em-settings-anchor em-settings-anchor-ab">A/B</button>
+			<!-- <button type="button" class="em-settings-anchor em-settings-anchor-ab">A/B</button> -->
 		</div>';
 
 		// form
@@ -187,10 +195,10 @@ final class Axowl_settings {
 		echo '</div>';
 
 		// fourth tab
-		echo '<div class="em-settings em-settings-ab em-hidden">';
-		settings_fields('em-axowl-settings-ab');
-		do_settings_sections('em-axowl-page-ab');
-		echo '</div>';
+		// echo '<div class="em-settings em-settings-ab em-hidden">';
+		// settings_fields('em-axowl-settings-ab');
+		// do_settings_sections('em-axowl-page-ab');
+		// echo '</div>';
 
 
 		submit_button('save');
@@ -225,6 +233,10 @@ final class Axowl_settings {
 				);	
 
 	}
+
+	// public function fieldinput() {
+
+	// }
 
 	/**
 	 * echoing input field

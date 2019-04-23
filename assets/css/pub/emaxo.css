@@ -1548,6 +1548,52 @@ select.em-i {
 }
 
 
+/* 10.0 personvern popup */
+.personvern-popup {
+	display: none;
+	position: fixed;
+	top: 2rem;
+	left: 0;
+	right: 0;
+	bottom: 2rem;
+	background-color: #fff;
+
+	margin: auto;
+
+	width: 40rem;
+	max-width: 100%;
+
+	font-size: 1.6rem;
+	z-index: 99999;
+	font-family: Montserrat;
+
+	overflow: auto;
+	/*height: 100%;*/
+}
+
+.personvern-popup .content-title {
+	display: block;
+	font-size: 1.8rem;
+}
+
+.personvern-close {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+
+	font-size: 2rem;
+	font-weight: 900;
+	font-family: Merriweather;
+
+	cursor: pointer;
+}
+
+.pvc2 {
+	position: static;
+	float: right;
+	margin: 0 1rem 1rem 0;
+}
+
 /* 10.0 sprites */
 
 /* 10.1 sprites container */

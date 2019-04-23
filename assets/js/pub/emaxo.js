@@ -1088,3 +1088,37 @@ var gaInfo = function() {
     });
   });
 })(jQuery);
+
+
+
+/*********************
+	PERSONVERN LINK
+ *********************/
+(function($) {
+
+	$('.personvern-link').on('click', function(e) {
+
+		e.preventDefault();
+
+		$.get('persornvern-og-brukervilkar/', function(data) {
+			var ien = data.indexOf('article')-1;
+			var ito = data.indexOf('/article')+9;
+
+			var m = data.substring(ien, ito)
+
+			$('body').append('<div class="personvern-popup"><button type="button" class="personvern-close">Lukk</button>'+m+'<button type="button" class="personvern-close pvc2">Lukk</button></div>');
+
+			$('.personvern-popup').fadeIn(500);
+
+			$('.personvern-close').one('click', function() {
+
+				$('.personvern-popup').fadeOut(500, function() {
+					$(this).remove();
+				});
+
+			});
+		});
+
+	});
+
+})(jQuery);

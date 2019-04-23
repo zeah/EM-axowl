@@ -397,7 +397,7 @@
 
 .em-b {
 	width: 100%;
-	min-width: 30rem;
+	min-width: 25rem;
 	max-width: 40rem;
 	margin: auto;
 	height: 5rem;
@@ -594,6 +594,63 @@
 	font-weight: 400;
 	font-size: 1.3rem;
 }
+
+/* 10.0 personvern popup */
+.personvern-popup {
+	display: none;
+	position: fixed;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+	bottom: 1rem;
+	background-color: #fff;
+
+	/*margin: auto;*/
+
+	/*width: 40rem;*/
+	/*max-width: 100%;*/
+
+	font-size: 1.6rem;
+	z-index: 99999;
+	font-family: Montserrat;
+
+	overflow: auto;
+	/*height: 100%;*/
+
+	border: solid 1px #000;
+}
+
+.personvern-popup .content-title {
+	display: block;
+	font-size: 1.8rem;
+	margin-top: 4rem;
+}
+
+.personvern-popup .content {
+	background-color: #fff;
+}
+
+.personvern-close {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+
+	
+	/*float: right;*/
+
+	font-size: 2rem;
+	font-weight: 900;
+	font-family: Merriweather;
+
+	cursor: pointer;
+}
+
+.pvc2 {
+	position: static;
+	float: right;
+	margin: 0 1rem 1rem 0;
+}
+
 
 .em-hidden {
 	display: none;
