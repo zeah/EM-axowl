@@ -932,7 +932,7 @@ var gaInfo = function() {
 				$('.em-element-rent_income, .em-element-mortgage').up();
 				break;
 
-			case 'Akjse/andel/borettslag':
+			case 'Aksje/andel/borettslag':
 			case 'Selveier': 
 				$('.em-element-rent, .em-element-rent_income, .em-element-mortgage').down();
 				break;
