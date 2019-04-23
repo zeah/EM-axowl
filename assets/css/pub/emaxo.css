@@ -1466,8 +1466,8 @@ select.em-i {
 /* 9.0 email/phone popup */
 .email-popup {
 	display: none;
-	position: absolute;
-	top: 0;
+	position: fixed;
+	top: 20%;
 	left: 0;
 	right: 0;
 	background-color: white;
