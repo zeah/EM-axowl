@@ -1048,7 +1048,7 @@ var gaInfo = function() {
 			$('body').on('mouseleave', showPopup);
 			$('.em-b-next').one('click', function() { $('body').off('mouseleave', showPopup) });
 		}
-	}, 6000);
+	}, 5000);
 
 })(jQuery);
 

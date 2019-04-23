@@ -108,6 +108,10 @@ final class Axowl_data {
 		if (isset($_POST['email'])) $data['email'] = $_POST['email'];
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 
+		// echo "\nincomplete\n";
+		// echo $data;
+		// exit;
+
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('incomplete', 0);
 
@@ -133,6 +137,10 @@ final class Axowl_data {
 
 		$data['email'] = $email;
 		$data['mobile_number'] = $phone;
+
+		// echo "\popup\n";
+		// echo $data;
+		// exit;
 
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('popup', 0);
