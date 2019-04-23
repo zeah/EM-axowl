@@ -423,7 +423,78 @@ var gaInfo = function() {
 
 		try {
 			$(this).focusout(validation);
+
 			$(this).focus(function() { $(this).removeClass('em-valid-border em-invalid-border') });
+
+			$(this).focus(function() {
+
+				var c = $(this)[0].className;
+
+				if (/tenure/.test(c)) return;
+
+				var m = /em-i-.*?(?: |$)/.exec($(this)[0].className);
+
+				if (!m || !m[0]) return;
+
+				c = m[0].replace(/em-i-/, '');
+
+				$.post(emurl.ajax_url, {
+					action: 'gdoc',
+					type: 'focus',
+					name: c
+				}, function(data) {
+					// console.log(data);
+				}); 
+			});
+
+			$(this).focusout(function() {
+
+				var c = $(this)[0].className;
+
+				if (/tenure/.test(c)) return;
+
+				var m = /em-i-.*?(?: |$)/.exec($(this)[0].className);
+
+				if (!m || !m[0]) return;
+
+				c = m[0].replace(/em-i-/, '');
+
+				$.post(emurl.ajax_url, {
+					action: 'gdoc',
+					type: 'unfocus',
+					name: c
+				}, function(data) {
+					// console.log(data);
+				}); 
+			});
+
+
+			var validlive = function() {
+				if ($(this).validate()) $(this).off('focusout', validlive);
+				else return;
+
+				var c = $(this)[0].className;
+
+				if (/tenure/.test(c)) return;
+
+				var m = /em-i-.*?(?: |$)/.exec($(this)[0].className);
+
+				if (!m || !m[0]) return;
+
+				c = m[0].replace(/em-i-/, '');
+
+				$.post(emurl.ajax_url, {
+					action: 'gdoc',
+					type: 'valid',
+					name: c
+				}, function(data) {
+					// console.log(data);
+				}); 
+			}
+
+			$(this).on('focusout', validlive);
+
+
 		} catch (e) { console.error(e) }
 
 
@@ -627,7 +698,7 @@ var gaInfo = function() {
 
 				$('.em-element-axo_accept, .em-element-contact_accept').hide(50, function() {
 					$('.em-slidedown').slideDown(800, function() {
-						$('.em-i-social_number').focus();
+						if (!$('.em-i-social_number').is(':focus')) $('.em-i-social_number').focus();
 					}).removeClass('em-hidden');
 				});
 

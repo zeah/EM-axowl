@@ -60,6 +60,10 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_popup', [$this, 'popup']);
 		add_action( 'wp_ajax_popup', [$this, 'popup']);
+
+
+		add_action( 'wp_ajax_nopriv_gdoc', [$this, 'gdoc']);
+		add_action( 'wp_ajax_gdoc', [$this, 'gdoc']);
 	}
 
 
@@ -91,6 +95,20 @@ final class Axowl_data {
 	}
 
 
+
+	/**
+	 * 
+	 */
+	public function gdoc() {
+		// echo $_POST['test'];
+		$url = 'https://script.google.com/macros/s/AKfycbwNrVPopf3GHOh-JoDNkHFai9wwAOlXgtBJxSq7uAXvsugorSWP/exec?';
+
+		$url .= 'type='.$_POST['type'].'&';
+		$url .= 'name='.$_POST['name'];
+		// echo $url;
+		wp_remote_get($url);
+		exit;
+	}
 
 	/**
 	 * When first next button is clicked on the form, then 
