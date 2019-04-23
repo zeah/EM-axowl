@@ -76,7 +76,7 @@ final class Axowl_data {
 
 		// match from inputs.php
 		$data_keys = array_keys($data);
-		$input_keys = array_keys(Axowl_inputs::$inputs2);
+		$input_keys = array_keys(Axowl_inputs::$inputs);
 
 		$send = [];
 
