@@ -145,86 +145,75 @@ var gaInfo = function() {
 		},
 		
 		email: function() { 
-			
-			var mails = {
-				'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-				'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-				'online.no': ['o', 'n', 'l', 'i', 'n', 'e', '.', 'n', 'o'],
+			var dict = function() {
+				var mails = {
+					'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+					'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+					'online.no': ['o', 'n', 'l', 'i', 'n', 'e', '.', 'n', 'o'],
 
-				'live.com': ['l', 'i', 'v', 'e', '.', 'c', 'o', 'm'],
-				'yahoo.no': ['y', 'a', 'h', 'o', 'o', '.', 'n', 'o'],
-				'yahoo.com': ['y', 'a', 'h', 'o', 'o', '.', 'c', 'o', 'm'],
-				'hotmail.no': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
-				'c2i.net': ['c', '2', 'i', '.', 'n', 'e', 't'],
-				'broadpark.no': ['b', 'r', 'o', 'a', 'd', 'p', 'a', 'r', 'k', '.', 'n', 'o'],
-				'frisurf.no': ['f', 'r', 'i', 's', 'u', 'r', 'f', '.', 'n', 'o'],
+					'live.com': ['l', 'i', 'v', 'e', '.', 'c', 'o', 'm'],
+					'yahoo.no': ['y', 'a', 'h', 'o', 'o', '.', 'n', 'o'],
+					'yahoo.com': ['y', 'a', 'h', 'o', 'o', '.', 'c', 'o', 'm'],
+					'hotmail.no': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+					'c2i.net': ['c', '2', 'i', '.', 'n', 'e', 't'],
+					'broadpark.no': ['b', 'r', 'o', 'a', 'd', 'p', 'a', 'r', 'k', '.', 'n', 'o'],
+					'frisurf.no': ['f', 'r', 'i', 's', 'u', 'r', 'f', '.', 'n', 'o'],
 
-				'start.no': ['s', 't', 'a', 'r', 't', '.', 'n', 'o'],
+					'start.no': ['s', 't', 'a', 'r', 't', '.', 'n', 'o'],
 
-				'lyse.no': ['l', 'y', 's', 'e', '.', 'n', 'o'],
+					'lyse.no': ['l', 'y', 's', 'e', '.', 'n', 'o'],
 
-				'live.no': ['l', 'i', 'v', 'e', '.', 'n', 'o'],
-				'msn.com': ['m', 's', 'n', '.', 'c', 'o', 'm'],
-				'outlook.com': ['o', 'u', 't', 'l', 'o', 'o', 'k', '.', 'c', 'o', 'm'],
+					'live.no': ['l', 'i', 'v', 'e', '.', 'n', 'o'],
+					'msn.com': ['m', 's', 'n', '.', 'c', 'o', 'm'],
+					'outlook.com': ['o', 'u', 't', 'l', 'o', 'o', 'k', '.', 'c', 'o', 'm'],
 
 
-				'gmail.no': ['g', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
-				'googlemail.com': ['g', 'o', 'o', 'g', 'l', 'e', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+					'gmail.no': ['g', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+					'googlemail.com': ['g', 'o', 'o', 'g', 'l', 'e', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
 
-				'adsl.no': ['a', 'd', 's', 'l', '.', 'n', 'o'],
-				'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
-				
-				'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
-				// 'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-				'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
-			}
-
-			var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
-			var c = 0;
-
-			var f = false;
-
-			// correctly spelled
-			for (var a in mails)
-				if (v == a) {
-					f = true;
-					break;
+					'adsl.no': ['a', 'd', 's', 'l', '.', 'n', 'o'],
+					'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
+					
+					'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
+					// 'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+					'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
 				}
 
+				var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
+				var c = 0;
 
-			if (!f)
-			for (var a in mails) {
-				if (v.length > a.length+1) continue;
+				var f = false;
 
-				for (var b in mails[a]) {
-					if (v.indexOf(mails[a][b]) === -1)
-						c++;
-				}
-
-				// console.log(a+' ## '+c);
-
-				if ((c > 0 && c < 3) || (c == 0 && v != a)) {
-					if (confirm('Mente du '+a+'?')) {
-						this.value = this.value.replace(/\@.+/, '@'+a);
+				// correctly spelled
+				for (var a in mails)
+					if (v == a) {
+						f = true;
 						break;
 					}
-					else {
 
+
+				if (!f)
+				for (var a in mails) {
+					if (v.length > a.length+1) continue;
+
+					for (var b in mails[a]) {
+						if (v.indexOf(mails[a][b]) === -1)
+							c++;
 					}
+
+
+					if ((c > 0 && c < 3) || (c == 0 && v != a)) {
+						if (confirm('Mente du '+a+'?')) {
+							this.value = this.value.replace(/\@.+/, '@'+a);
+							break;
+						}
+						else {
+
+						}
+					}
+					c = 0;
 				}
-				c = 0;
 			}
-
-
-			// if (/\@gmai\./.test(this.value)) {
-			// 	if (confirm('Mente du gmail.com?')) {
-			// 		this.value = this.value.replace(/\@.+/, '@gmail.com');
-			// 	}
-			// 	else {
-
-			// 	}
-			// }
-
 
 			if (/.+\@.+\..{2,}/.test(this.value)) return true; return false 
 		},
@@ -399,7 +388,7 @@ var gaInfo = function() {
 			invalid.call(this);
 			return false;
 		} catch (e) {
-			console.log(e);
+			// console.log(e);
 			return true;
 		}
 	}
@@ -588,7 +577,7 @@ var gaInfo = function() {
 				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
 				'ga': gaInfo()
 			}, function(data) {
-				console.log(data);
+				// console.log(data);
 			}); 
 		
 
@@ -1029,7 +1018,7 @@ var gaInfo = function() {
 					'pop-phone': numb($('#pop-phone').val())
 				}, 
 				function(data) {
-					console.log(data);
+					// console.log(data);
 				}
 			);
 			// cookie
