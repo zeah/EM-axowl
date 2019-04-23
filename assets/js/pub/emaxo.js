@@ -608,6 +608,9 @@ var gaInfo = function() {
 	var unload = function(e) {
 		e.preventDefault();
 		e.returnValue = '';
+
+		// for gdcos live view
+		$(':focus').blur();
 	}
 
 	// FIRST NESTE
