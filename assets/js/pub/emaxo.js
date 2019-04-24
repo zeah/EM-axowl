@@ -1174,7 +1174,9 @@ var gaInfo = function() {
 
 		e.preventDefault();
 
-		$.get('persornvern-og-brukervilkar/', function(data) {
+		if (!$(this).attr('href')) return;
+
+		$.get($(this).attr('href'), function(data) {
 			var ien = data.indexOf('article')-1;
 			var ito = data.indexOf('/article')+9;
 
