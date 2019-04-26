@@ -145,7 +145,7 @@ var gaInfo = function() {
 		},
 		
 		email: function() { 
-			// var dict = function() {
+			var dict = function() {
 				var mails = {
 					'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
 					'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
@@ -225,7 +225,7 @@ var gaInfo = function() {
 					// }
 					// c = 0;
 				}
-			// }
+			}
 
 			if (/.+\@.+\..{2,}/.test(this.value)) return true; return false 
 		},
