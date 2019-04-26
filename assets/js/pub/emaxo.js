@@ -1169,7 +1169,7 @@ var gaInfo = function() {
  **************/
 (function($) {
   $('.em-qa-title').each(function() {
-    $(this).click(function() {
+    $(this).on('click touch', function() {
     	$(this).next('.em-qa-box').slideToggle();
     });
   });
