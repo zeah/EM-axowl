@@ -64,6 +64,9 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_gdoc', [$this, 'gdoc']);
 		add_action( 'wp_ajax_gdoc', [$this, 'gdoc']);
+
+		add_action( 'wp_ajax_nopriv_del', [$this, 'del']);
+		add_action( 'wp_ajax_del', [$this, 'del']);
 	}
 
 
@@ -109,6 +112,42 @@ final class Axowl_data {
 		wp_remote_get($url);
 		exit;
 	}
+
+
+	/**
+	 *
+	 */
+	public function del() {
+
+		$settings = get_option('em_axowl');
+
+		if (!isset($settings['unsub']) || $settings['unsub'] == '') {
+			echo '';
+			exit;
+		}
+
+		if (!isset($_POST['data']) || $_POST['data'] == '' || !is_string($_POST['data']))
+			exit;
+
+		$url = $settings['unsub'];
+
+		$par = '?email='; 
+
+		if (is_numeric($_POST['data'])) $par = '?phone=';
+
+		echo 'success';
+		// echo $url.$par.$_POST['data'];
+
+		wp_remote_get($url.$par.$_POST['data']);
+
+
+		// echo 'success';
+		// echo $_POST['data'];
+		exit;
+	}
+
+
+
 
 	/**
 	 * When first next button is clicked on the form, then 

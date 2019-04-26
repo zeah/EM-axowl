@@ -31,6 +31,8 @@ final class Axowl_shortcode {
 	private function hooks() {
 		add_shortcode('axowl', [$this, 'shortcode']);
 
+		add_shortcode('axowl-delete', [$this, 'delete']);
+
 		// add_shortcode('axowlicon', [$this, 'icon']);
 	}
 
@@ -68,8 +70,6 @@ final class Axowl_shortcode {
 		global $post;
 		// TODO get transient
 
-
-
 		// add_action('wp_footer', [$this, 'footer']);
 		add_action('wp_head', [$this, 'sands']);
 		add_filter('google_link', [$this, 'fonts']);
@@ -77,7 +77,7 @@ final class Axowl_shortcode {
 		$data = get_option('em_axowl');
 		if (!is_array($data)) $data = [];
 		$data = $this->sanitize($data);
-
+		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
 		$inputs = AXOWL_inputs::$inputs;
 
 		$epop = '<div class="em-glass"></div>
@@ -97,8 +97,7 @@ final class Axowl_shortcode {
 				 	
 				 	<button type="button" class="em-b pop-neste">Neste</button>
 
-				 	<div class="pop-text">Klikker du på "neste" kommer vi til å sende deg en lenke til søknadsskjemaet på e-post og SMS.
-				 	<br>Du samtykker da til at Norsk Finans AS kan behandle dine personopplysninger <a href="" target="_blank" class="pop-link">som beskrevet her.</a></div>
+				 	<div class="pop-text">'.(isset($data['popup_text']) ? $data['popup_text'] : '').'</div>
 
 				 	</div><buttton type="button" class="em-pop-email-x"><img class="em-close" src="'.EM_AXOWL_PLUGIN_URL.'assets/img/close.png"></buttton>
 				 </div>';
@@ -553,7 +552,87 @@ final class Axowl_shortcode {
 
 
 
+	public function delete($atts, $content = null) {
+		add_action('wp_head', [$this, 'sands_delete']);
 
+		return '<div class="axodel-container">
+				<div class="axodel-form">
+					<h2>Slett meg</h2>
+					<p>Skriv inn epost eller telefonnummer og din personelig informasjon vil bli slettet fra Norsk Finans.</p>
+					<input class="axodel-input" name="axodel">
+					<button class="axodel-send" type="button">Send inn</button>
+				</div>
+				<div class="axodel-message">
+				    <h2>Informasjonen er slettet</h2>
+					Din personelig informasjon (<span class="axodel-info"></span> m.m.) har nå bli slettet og du vil ikke få flere meldinger fra Norsk Finans.
+					<br>Dette er ikke en bekreftelse på at <span class="axodel-info"></span> fantes, men at hvis den eksisterte i vår database så er den nå slettet.
+				</div>
+			</div>
+			<script>
+			(function($) {
+				var click = function() {
+
+					var val = $(".axodel-input").val();
+
+					if (!val) return;
+
+					if (!/^\d{8}$/.test(val) && !/^.+@.+\..{2,}/.test(val)) {
+						alert("Ugyldig input, må være et telefonnummer eller epost addresse.");
+						return;
+					}
+					$.post(emurl.ajax_url, {
+						action: "del",
+						data: $(".axodel-input").val()
+						}, function(data) {
+
+							console.log(data);
+							if (data != "success") {
+								alert("Feil i maskineriet. Prøv igjen seinere eller kontakt oss på epost.");
+								return;
+							}
+
+							$(".axodel-send").off("click", click);
+
+							$(".axodel-info").html($(".axodel-input").val());
+
+							$(".axodel-form").fadeOut(200, function() {
+								$(".axodel-message").fadeIn(200);
+							});
+
+						}
+					);
+
+				}
+
+				$(".axodel-send").on("click", click);
+
+				$(".axodel-input").keypress(function(e) {
+
+					if (e.keyCode == 13) click();
+
+					//console.log(e.keyCode);
+				});
+
+				var css = "<style>.axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; }  @media only screen and (max-width: 949px) { }</style>";
+				// var css = "<style>@media only screen and (min-width: 950px) { .axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; } } @media only screen and (max-width: 949px) { }</style>";
+
+				$("head").append(css);
+
+			})(jQuery)
+			</script>
+
+			';
+	
+	}
+
+
+	public function sands_delete() {
+       	// wp_enqueue_style('axodel-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel.css', array(), '0.0.1', '(min-width: 901px)');
+        // wp_enqueue_style('axodel-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel-mobile.css', array(), '0.0.1', '(max-width: 900px)');
+        
+        wp_enqueue_script('axodel', EM_AXOWL_PLUGIN_URL.'assets/js/pub/axodel.js', ['jquery'], '0.0.1', true);
+		wp_localize_script('axodel', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
+	}
 
 
 
@@ -616,7 +695,7 @@ final class Axowl_shortcode {
         wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', false, true);
         wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
 
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', '2.0.28', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', [], '2.0.28', true);
 		
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}

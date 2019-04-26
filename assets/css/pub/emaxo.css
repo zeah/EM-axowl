@@ -1548,8 +1548,8 @@ select.em-i {
 }
 
 
-/* 10.0 personvern popup */
-.personvern-popup {
+/* 10.0 modal popup */
+.modal-popup {
 	display: none;
 	position: fixed;
 	top: 2rem;
@@ -1571,12 +1571,12 @@ select.em-i {
 	/*height: 100%;*/
 }
 
-.personvern-popup .content-title {
+.modal-popup .content-title {
 	display: block;
 	font-size: 1.8rem;
 }
 
-.personvern-close {
+.modal-close {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;

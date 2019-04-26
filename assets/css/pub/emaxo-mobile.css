@@ -595,8 +595,8 @@
 	font-size: 1.3rem;
 }
 
-/* 10.0 personvern popup */
-.personvern-popup {
+/* 10.0 modal popup */
+.modal-popup {
 	display: none;
 	position: fixed;
 	top: 1rem;
@@ -620,17 +620,17 @@
 	border: solid 1px #000;
 }
 
-.personvern-popup .content-title {
+.modal-popup .content-title {
 	display: block;
 	font-size: 1.8rem;
 	margin-top: 4rem;
 }
 
-.personvern-popup .content {
+.modal-popup .content {
 	background-color: #fff;
 }
 
-.personvern-close {
+.modal-close {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;

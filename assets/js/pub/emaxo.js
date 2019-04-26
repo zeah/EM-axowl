@@ -145,7 +145,7 @@ var gaInfo = function() {
 		},
 		
 		email: function() { 
-			var dict = function() {
+			// var dict = function() {
 				var mails = {
 					'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
 					'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
@@ -180,7 +180,7 @@ var gaInfo = function() {
 				}
 
 				var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
-				var c = 0;
+				// var c = 0;
 
 				var f = false;
 
@@ -192,28 +192,40 @@ var gaInfo = function() {
 					}
 
 
-				if (!f)
-				for (var a in mails) {
-					if (v.length > a.length+1) continue;
+				if (!f) for (var a in mails) {
+					var c = 0;
 
-					for (var b in mails[a]) {
-						if (v.indexOf(mails[a][b]) === -1)
-							c++;
+					console.log('');
+					console.log(mails[a]+' '+v);
+					for (var i = 0; i < mails[a].length; i++) {
+						console.log(mails[a][i]+' # '+v.charAt(i));
+						if (v.charAt(i) != mails[a][i]) c++;
+						
 					}
+					console.log(c);
+					console.log();
+					// if (v.length > a.length+1) continue;
 
+					// for (var b in mails[a]) {
+					// 	if (v.indexOf(mails[a][b]) === -1)
+					// 		c++;
+					// }
+					// console.log(mails[a]);
+					// console.log(c);
+					// console.log();
 
-					if ((c > 0 && c < 3) || (c == 0 && v != a)) {
-						if (confirm('Mente du '+a+'?')) {
-							this.value = this.value.replace(/\@.+/, '@'+a);
-							break;
-						}
-						else {
+					// if ((c > 0 && c < 3) || (c == 0 && v != a)) {
+					// 	if (confirm('Mente du '+a+'?')) {
+					// 		this.value = this.value.replace(/\@.+/, '@'+a);
+					// 		break;
+					// 	}
+					// 	else {
 
-						}
-					}
-					c = 0;
+					// 	}
+					// }
+					// c = 0;
 				}
-			}
+			// }
 
 			if (/.+\@.+\..{2,}/.test(this.value)) return true; return false 
 		},
@@ -1170,7 +1182,7 @@ var gaInfo = function() {
  *********************/
 (function($) {
 
-	$('.personvern-link').on('click', function(e) {
+	$('.modal-link').on('click', function(e) {
 
 		e.preventDefault();
 
@@ -1182,13 +1194,15 @@ var gaInfo = function() {
 
 			var m = data.substring(ien, ito)
 
-			$('body').append('<div class="personvern-popup"><button type="button" class="personvern-close">Lukk</button>'+m+'<button type="button" class="personvern-close pvc2">Lukk</button></div>');
+			$('body').append('<div class="modal-popup"><button type="button" class="modal-close">Lukk</button>'+m+'<button type="button" class="modal-close pvc2">Lukk</button></div>');
 
-			$('.personvern-popup').fadeIn(500);
+			$('.modal-popup, .em-glass').fadeIn(500);
 
-			$('.personvern-close').one('click', function() {
+			$('.modal-close').one('click', function() {
 
-				$('.personvern-popup').fadeOut(500, function() {
+				if (!$('.email-popup').is(':visible')) $('.em-glass').fadeOut(500);
+
+				$('.modal-popup').fadeOut(500, function() {
 					$(this).remove();
 				});
 
