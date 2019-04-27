@@ -782,6 +782,8 @@ var gaInfo = function() {
 			data[$(this).attr('name')] = value;
 		});
 
+		if (!valid) return;
+		
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
@@ -789,7 +791,6 @@ var gaInfo = function() {
 
 		data['ga'] = gaInfo();
 
-		if (!valid) return;
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');
