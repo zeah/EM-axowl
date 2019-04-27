@@ -79,7 +79,7 @@ final class Axowl_data {
 		// TODO testes
 		// if (isset($data['fax'])) return;
 
-		if (isset($data['contact_accept'])) $this->contact_accept = $data['contact_accept'] ? true : false;
+		if (isset($data['contact_accept']) && $data['contact_accept'] == 'true') $this->contact_accept = true;
 
 		// match from inputs.php
 		$data_keys = array_keys($data);
@@ -156,7 +156,7 @@ final class Axowl_data {
 	 */
 	public function incomplete() {
 		// checkbox
-		if (!isset($_POST['contact_accept'])) exit;
+		if (!isset($_POST['contact_accept']) || $_POST['contact_accept'] == 'off') exit;
 
 		$data = ['status' => 'incomplete'];
 
@@ -248,11 +248,6 @@ final class Axowl_data {
 		$url .= http_build_query($data);
 
 
-		// testing - to be deleted
-		// echo "\n\nto axo:\n".print_r($data, true)."\n\n";
-		// echo $url;
-		// exit;
-
 		// sending to axo
 		$response = wp_remote_get($url);
 		if (is_wp_error($response)) {
@@ -264,11 +259,8 @@ final class Axowl_data {
 
 		if (!is_array($res) || !isset($res['status'])) return;
 
-		// echo "\n\nResponse\n";
-		// echo print_r($res, true);
-		// echo "\n\n\n";
 
-		// $res = ['status' => 'ValidationError'];
+		// $res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -318,12 +310,21 @@ final class Axowl_data {
 		$data['status'] = 'rejected';
 		
 		// send data to sql
-		if ($this->contact_accept) $this->send(http_build_query($data), 'sql_info');
-		else $this->send(http_build_query($data), 'sql_info');
+		if ($this->contact_accept) {
+			$this->send(http_build_query($data), 'sql_info');
+		}
+		else {
+			unset($data['email']);
+			unset($data['mobile_number']);
+			$this->send(http_build_query($data), 'sql_info');
+		}
+
+		// echo "\nrejected:\n";
+		// echo print_r($data, true);
+		// exit;
 
 		// google analytics
 		$this->ga('rejected', 0);
-
 	}
 
 	private function validation_error($data) {
@@ -355,6 +356,7 @@ final class Axowl_data {
 		// echo "\n";
 		// echo $query;
 		// echo "\n\n\n";
+		// exit;
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
 	}

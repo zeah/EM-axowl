@@ -427,12 +427,10 @@ var gaInfo = function() {
 	});
 
 
-
 	/******************************
 		ELEMENTS WITH VALIDATION
 	 ******************************/
 	$('.emowl-form *[data-val]').each(function() { 
-
 		try {
 			$(this).focusout(validation);
 
@@ -654,11 +652,10 @@ var gaInfo = function() {
 		if (!valid) return;
 
 		location.hash = 'form';
-
 		if ($('.em-check-contact_accept')[0].checked)
 			$.post(emurl.ajax_url, {
 				action: 'wlinc',
-				'contact_accept': $('.em-check-contact_accept').val(),
+				'contact_accept': $('.em-check-contact_accept')[0].checked ? 'on' : 'off',
 				'email': $('.em-i-email').val(),
 				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
 				'ga': gaInfo()
