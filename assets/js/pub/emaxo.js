@@ -35,6 +35,8 @@ var gaInfo = function() {
 	return data;
 };
 
+ 
+
 
 // VALIDATION AND EVENTS
 (function($) {
