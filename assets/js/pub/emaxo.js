@@ -24,8 +24,8 @@ var gaInfo = function() {
 		screen: screen.width+'x'+screen.height
 	}
 
-	if (/(?:^|;| )_ga=/.test(document.cookie)) {
-		var match = document.cookie.match(/(?:^|;| )(?:_ga=)(.*?)(?:;|$)/);
+	if (/(?:^|;| )_ga=GA1\.\d\./.test(document.cookie)) {
+		var match = document.cookie.match(/(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/);
 		if (match[1]) data.id = match[1];
 	}
 
