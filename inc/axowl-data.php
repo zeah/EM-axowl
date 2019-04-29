@@ -74,10 +74,9 @@ final class Axowl_data {
 	 * checking POST that only allowed keys are processed
 	 */
 	public function from_form() {
-		$data = $_POST['data'];
+		// $this->test();
 
-		// TODO testes
-		// if (isset($data['fax'])) return;
+		$data = $_POST['data'];
 
 		if (isset($data['contact_accept']) && $data['contact_accept'] == 'true') $this->contact_accept = true;
 
@@ -103,12 +102,14 @@ final class Axowl_data {
 	 * 
 	 */
 	public function gdoc() {
+		$this->test();
+
 		// echo $_POST['test'];
 		$url = 'https://script.google.com/macros/s/AKfycbwNrVPopf3GHOh-JoDNkHFai9wwAOlXgtBJxSq7uAXvsugorSWP/exec?';
 
 		$url .= 'type='.$_POST['type'].'&';
 		$url .= 'name='.$_POST['name'];
-		// echo $url;
+
 		wp_remote_get($url);
 		exit;
 	}
@@ -118,6 +119,7 @@ final class Axowl_data {
 	 *
 	 */
 	public function del() {
+		$this->test();
 
 		$settings = get_option('em_axowl');
 
@@ -136,13 +138,8 @@ final class Axowl_data {
 		if (is_numeric($_POST['data'])) $par = '?phone=';
 
 		echo 'success';
-		// echo $url.$par.$_POST['data'];
 
 		wp_remote_get($url.$par.$_POST['data']);
-
-
-		// echo 'success';
-		// echo $_POST['data'];
 		exit;
 	}
 
@@ -155,23 +152,23 @@ final class Axowl_data {
 	 * 
 	 */
 	public function incomplete() {
+
 		// checkbox
 		if (!isset($_POST['contact_accept']) || $_POST['contact_accept'] == 'off') exit;
 
 		$data = ['status' => 'incomplete'];
 
-		$ga = isset($_POST['ga']) ? $_POST['ga'] : false;
+		// $ga = isset($_POST['ga']) ? $_POST['ga'] : false;
 
 		if (isset($_POST['email'])) $data['email'] = $_POST['email'];
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
+		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
+		
 
-		// echo "\nincomplete\n";
-		// echo $data;
-		// exit;
+		$this->test('incomplete', $data);
 
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('incomplete', 0);
-
 		exit;
 	}
 
@@ -180,12 +177,13 @@ final class Axowl_data {
 	 * [popup description]
 	 */
 	public function popup() {
+
 		$data = ['status' => 'popup'];
 
 		$email = false;
 		$phone = false;
 
-		$ga = isset($_POST['ga']) ? $_POST['ga'] : [];
+		// $ga = isset($_POST['ga']) ? $_POST['ga'] : [];
 
 		if (isset($_POST['pop-email']) && $this->val_email($_POST['pop-email'])) $email = $_POST['pop-email'];
 		if (isset($_POST['pop-phone']) && $this->val_phone($_POST['pop-phone'])) $phone = $_POST['pop-phone'];
@@ -194,10 +192,9 @@ final class Axowl_data {
 
 		$data['email'] = $email;
 		$data['mobile_number'] = $phone;
+		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
-		// echo "\popup\n";
-		// echo $data;
-		// exit;
+		$this->test('popup', $data);
 
 		$this->send(http_build_query($data), 'sql_info');
 		$this->ga('popup', 0);
@@ -244,6 +241,8 @@ final class Axowl_data {
 			$data['unsecured_debt_lender'] = ['Til Refinansiering'];
 			$data['unsecured_debt_balance'] = [$data['unsecured_debt_balance']];
 		}
+
+		$this->test('sending to axo', $data);
 
 		$url .= http_build_query($data);
 
@@ -319,10 +318,6 @@ final class Axowl_data {
 			$this->send(http_build_query($data), 'sql_info');
 		}
 
-		// echo "\nrejected:\n";
-		// echo print_r($data, true);
-		// exit;
-
 		// google analytics
 		$this->ga('rejected', 0);
 	}
@@ -343,20 +338,13 @@ final class Axowl_data {
 	 * @return [type]        [description]
 	 */
 	private function send($query, $name) {
+		// $this->test();
 
 		$url = $this->get_url($name);
 
 		if (!$url) return;
 
 		if (strpos($url, '?') === false) $url .= '?';
-
-		// for testing
-		// echo "\n\nSENDING\n";
-		// echo $name;
-		// echo "\n";
-		// echo $query;
-		// echo "\n\n\n";
-		// exit;
 
 		wp_remote_get(trim($url).$query, ['blocking' => false]);
 	}
@@ -372,7 +360,7 @@ final class Axowl_data {
 	private function sql_conversions($data) {
 
 		$opt = get_option('em_axowl');
-		$d = [
+		$data = [
 			'campaign' => 'axo',
 			'media' => $_SERVER['SERVER_NAME'],
 			'payout' => isset($opt['payout']) ? $opt['payout'] : 'not set',
@@ -384,8 +372,9 @@ final class Axowl_data {
 
 		if (isset($_POST['clid'])) $d['tracking'] = $_POST['clid'];
 
+		$this->test('conversion', $data);
 
-		$this->send(http_build_query($d), 'sql_conversions');
+		$this->send(http_build_query($data), 'sql_conversions');
 	}
 
 
@@ -404,9 +393,10 @@ final class Axowl_data {
 
 		// if no click id (either google click id, or bing click id)
 		$clid = $this->get_clid();
-		if (!$clid) return;
+		// if (!$clid) return;
+		if (!$clid) $clid = '';
 
-		$d = [
+		$data = [
 			'Google Click ID' => $clid,
 			'Conversion Name' => 'AXO',
 			'Conversion Time' => date('M d, Y h:i:s A'),
@@ -414,7 +404,9 @@ final class Axowl_data {
 			'Conversion Currency' => $opt['currency']
 		];
 
-		$this->send(http_build_query($d), 'gdocs_ads');
+		$this->test('gdocs ads', $data);
+
+		$this->send(http_build_query($data), 'gdocs_ads');
 	}
 
 
@@ -465,7 +457,7 @@ final class Axowl_data {
 	private function ga($status, $value) {
 		// TODO shortcode number to event action
 
-		if (is_user_logged_in()) return;
+		// if (is_user_logged_in()) return;
 
 		// echo "\npost in ga:\n\n".print_r($_POST, true)."\n\n\n";
 
@@ -534,6 +526,8 @@ final class Axowl_data {
 		// echo "\n\n\n";
 		// return;
 
+		$this->test('ga', $d);
+
 		// sending to google analytics
 		wp_remote_post('https://www.google-analytics.com/collect', [
 			'method' => 'POST',
@@ -568,6 +562,21 @@ final class Axowl_data {
 		elseif (isset($_COOKIE['referer'])) return $_COOKIE['referer'];
 
 		return false;
+	}
+
+	private function test($name = null, $data = []) {
+		if (!is_user_logged_in()) return; 
+
+		if (!$name) $name = 'test';
+
+		echo "\n$name\n";
+
+		if (!$data) echo print_r($_POST, true);
+		else echo print_r($data, true);
+
+		echo "\n";
+		exit;
+
 	}
 
 

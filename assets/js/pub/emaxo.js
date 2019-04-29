@@ -662,7 +662,7 @@ var gaInfo = function() {
 				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
 				'ga': gaInfo()
 			}, function(data) {
-				// console.log(data);
+				console.log(data);
 			}); 
 		
 
