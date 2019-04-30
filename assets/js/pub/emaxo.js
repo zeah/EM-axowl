@@ -654,16 +654,16 @@ var gaInfo = function() {
 		if (!valid) return;
 
 		location.hash = 'form';
-		if ($('.em-check-contact_accept')[0].checked)
-			$.post(emurl.ajax_url, {
-				action: 'wlinc',
-				'contact_accept': $('.em-check-contact_accept')[0].checked ? 'on' : 'off',
-				'email': $('.em-i-email').val(),
-				'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
-				'ga': gaInfo()
-			}, function(data) {
-				console.log(data);
-			}); 
+		// if ($('.em-check-contact_accept')[0].checked)
+		$.post(emurl.ajax_url, {
+			action: 'wlinc',
+			'contact_accept': $('.em-check-contact_accept')[0].checked ? '1' : '0',
+			'email': $('.em-i-email').val(),
+			'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
+			'ga': gaInfo()
+		}, function(data) {
+			console.log(data);
+		}); 
 		
 
 		$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
@@ -786,13 +786,12 @@ var gaInfo = function() {
 
 		if (!valid) return;
 		
-		data['contact_accept'] = $('.em-check-contact_accept')[0].checked;
+		data['contact_accept'] = $('.em-check-contact_accept')[0].checked ? '1' : '0';
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
 		if (clid()) data['clid'] = clid();
 
 		data['ga'] = gaInfo();
-
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');

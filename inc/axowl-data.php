@@ -78,7 +78,7 @@ final class Axowl_data {
 
 		$data = $_POST['data'];
 
-		if (isset($data['contact_accept']) && $data['contact_accept'] == 'true') $this->contact_accept = true;
+		// if (isset($data['contact_accept']) && $data['contact_accept'] == 'true') $this->contact_accept = true;
 
 		// match from inputs.php
 		$data_keys = array_keys($data);
@@ -154,7 +154,7 @@ final class Axowl_data {
 	public function incomplete() {
 
 		// checkbox
-		if (!isset($_POST['contact_accept']) || $_POST['contact_accept'] == 'off') exit;
+		// if (!isset($_POST['contact_accept']) || $_POST['contact_accept'] == 'off') exit;
 
 		$data = ['status' => 'incomplete'];
 
@@ -164,6 +164,7 @@ final class Axowl_data {
 		if (isset($_POST['mobile_number'])) $data['mobile_number'] = preg_replace('/[^0-9]/', '', $_POST['mobile_number']);
 		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 		
+		if (isset($_POST['contact_accept'])) $data['nyhetsbrev'] = $_POST['contact_accept'];
 
 		$this->test('incomplete', $data);
 
@@ -233,7 +234,8 @@ final class Axowl_data {
 
 		$data['customer_ip'] = $_SERVER['REMOTE_ADDR'];
 
-		unset($data['contact_accept']);
+
+		// unset($data['contact_accept']);
 		unset($data['axo_accept']);
 
 
@@ -242,24 +244,30 @@ final class Axowl_data {
 			$data['unsecured_debt_balance'] = [$data['unsecured_debt_balance']];
 		}
 
-		$this->test('sending to axo', $data);
+		// testing purposes .. dont send info when user is logged in
+		if (is_user_logged_in()) {
+			echo "\nSending to Axo:\n";
+			echo print_r($data, true);
+			echo "\n";
+			$res = ['status' => 'Rejected'];
+		}
+		else { 
+			$url .= http_build_query($data);
 
-		$url .= http_build_query($data);
+			// sending to axo
+			$response = wp_remote_get($url);
+			if (is_wp_error($response)) {
+				echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
+				return;
+			}
 
+			$res = json_decode(wp_remote_retrieve_body($response), true);
 
-		// sending to axo
-		$response = wp_remote_get($url);
-		if (is_wp_error($response)) {
-			echo '{"status": "error", "code": "'.wp_remote_retrieve_response_code($response).'"}';
-			return;
+			if (!is_array($res) || !isset($res['status'])) return;
 		}
 
-		$res = json_decode(wp_remote_retrieve_body($response), true);
+		if (isset($_POST['contact_accept'])) $data['nyhetsbrev'] = $_POST['contact_accept'];
 
-		if (!is_array($res) || !isset($res['status'])) return;
-
-
-		// $res = ['status' => 'Rejected'];
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -281,6 +289,8 @@ final class Axowl_data {
 	 */
 	private function accepted($data) {
 		$data['status'] = 'accepted';
+
+		$this->test('accepted', $data);
 
 		// send gfunc sql
 		$this->send(http_build_query($data), 'sql_info');
@@ -307,16 +317,10 @@ final class Axowl_data {
 	 */
 	private function rejected($data) {
 		$data['status'] = 'rejected';
+
+		$this->test('rejected', $data);
 		
-		// send data to sql
-		if ($this->contact_accept) {
-			$this->send(http_build_query($data), 'sql_info');
-		}
-		else {
-			unset($data['email']);
-			unset($data['mobile_number']);
-			$this->send(http_build_query($data), 'sql_info');
-		}
+		$this->send(http_build_query($data), 'sql_info');
 
 		// google analytics
 		$this->ga('rejected', 0);
