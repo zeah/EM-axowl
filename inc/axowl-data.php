@@ -461,7 +461,7 @@ final class Axowl_data {
 	private function ga($status, $value) {
 		// TODO shortcode number to event action
 
-		// if (is_user_logged_in()) return;
+		if (is_user_logged_in()) return;
 
 		// echo "\npost in ga:\n\n".print_r($_POST, true)."\n\n\n";
 
@@ -514,8 +514,10 @@ final class Axowl_data {
 
 
 		// dr
-		$ref = $this->get_referer();
-		if  ($ref) $d['dr'] = $ref;
+		// $ref = $this->get_referer();
+		// if  ($ref) $d['dr'] = $ref;
+
+		if (isset($data['referrer'])) $d['dr'] = $data['referrer'];
 
 		if (isset($data['viewport'])) $d['vp'] = $data['viewport'];
 		if (isset($data['screen'])) $d['sr'] = $data['screen'];
@@ -555,19 +557,28 @@ final class Axowl_data {
 	}
 
 
-	private function get_referer() {
-		if (isset($_SERVER['REFERER']) && $_SERVER['REFERER']) {
+	// private function get_referer() {
+	// 	if (isset($_SERVER['REFERER']) && $_SERVER['REFERER']) {
 
-			$r = $_SERVER['HTTP_REFERER'];
+	// 		$r = $_SERVER['HTTP_REFERER'];
 
-			if (strpos($r, $_SERVER['SERVER_NAME']) === false) return $r;
-		}
+	// 		if (strpos($r, $_SERVER['SERVER_NAME']) === false) return $r;
+	// 	}
 
-		elseif (isset($_COOKIE['referer'])) return $_COOKIE['referer'];
+	// 	elseif (isset($_COOKIE['referer'])) return $_COOKIE['referer'];
 
-		return false;
-	}
+	// 	return false;
+	// }
+	// 
 
+
+	/**
+	 * when user is logged in, then echo data instead of sending it
+	 * 
+	 * @param  [type] $name [description]
+	 * @param  array  $data [description]
+	 * @return [type]       [description]
+	 */
 	private function test($name = null, $data = []) {
 		if (!is_user_logged_in()) return; 
 

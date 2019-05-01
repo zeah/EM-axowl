@@ -31,6 +31,11 @@ var gaInfo = function() {
 
 	if (jQuery('#abtesting-name')) data.name = jQuery('#abtesting-name').val();
 
+	if (/(?:^|; | )referrer=/.test(document.cookie)) {
+		match = document.cookie.match(/(?:^|;| )(?:referrer=)(.*?)(?:;|$)/);
+		if (match[1]) data.referrer = match[1];
+	}
+
 
 	return data;
 };
@@ -1146,19 +1151,41 @@ var gaInfo = function() {
 	COOKIES
  *************/
 (function($) {
+	var date = new Date();
+	date.setTime(date.getTime() + (120*24*60*60*1000));
+	date = date.toUTCString();
+
 	(function() { 
+
+		// CLICK ID
 		var match = /(?:gclid=|msclkid=)(.*?)(?:&|$)/.exec(location.search);
 		if (!match || !match[1]) return;
 
-		var date = new Date();
-		date.setTime(date.getTime() + (120*24*60*60*1000));
-		document.cookie = 'clid='+match[1]+'; expires='+date.toUTCString();
+		// id
+		document.cookie = 'clid='+match[1]+'; expires='+date;
 
 		match = /gclid|msclkid/.exec(location.search);
 		if (!match || !match[0]) return;
 
-		document.cookie = 'clid_source='+match[0]+'; expires='+date.toUTCString();
+		// clid source (gclid or msclkid)
+		document.cookie = 'clid_source='+match[0]+'; expires='+date;
+
 	})();
+
+	(function() {
+
+		console.log('document.referrer');
+		console.log(document.referrer);
+		console.log();
+
+		console.log(location.hostname);
+		console.log();
+
+		let reg = new RegExp(location.hostname);
+
+		if (!reg.test(document.referrer)) document.cookie = 'referrer='+document.referrer+'; expires='+date;
+
+	}());
 
 })(jQuery);
 
@@ -1177,7 +1204,7 @@ var gaInfo = function() {
 
 
 /*********************
-	PERSONVERN LINK
+	MODAL LINK
  *********************/
 (function($) {
 
