@@ -67,6 +67,9 @@ final class Axowl_data {
 
 		add_action( 'wp_ajax_nopriv_del', [$this, 'del']);
 		add_action( 'wp_ajax_del', [$this, 'del']);
+
+		add_action( 'wp_ajax_nopriv_gan', [$this, 'gan']);
+		add_action( 'wp_ajax_gan', [$this, 'gan']);
 	}
 
 
@@ -96,6 +99,18 @@ final class Axowl_data {
 		exit;
 	}
 
+
+	/**
+	 *
+	 */
+	public function gan() {
+		if (!isset($_POST['neste'])) exit;
+
+		$this->test('neste', $_POST);
+
+		$this->ga('neste', 0);
+		exit;
+	}
 
 
 	/**
@@ -267,7 +282,7 @@ final class Axowl_data {
 		}
 
 		if (isset($_POST['contact_accept'])) $data['nyhetsbrev'] = $_POST['contact_accept'];
-
+		else $data['nyhetsbrev'] = '0';
 
 		$data = $this->remove_confidential($data);
 		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
@@ -458,7 +473,7 @@ final class Axowl_data {
 
 
 	/**/
-	private function ga($status, $value) {
+	private function ga($status, $value, $cat = 'axo form') {
 		// TODO shortcode number to event action
 
 		if (is_user_logged_in()) return;
@@ -502,7 +517,7 @@ final class Axowl_data {
 			'ua' => $_SERVER['HTTP_USER_AGENT'],
 			't' => 'event', 
 			// TODO make ec into axo form # .. for ab testing
-			'ec' => 'axo form', 
+			'ec' => $cat, 
 			'ea' => $action, // for ab-testing - abname or postname + shortcode #
 			'el' => $status, // accepted, rejected or incomplete or popup
 			'ev' => $value, // value of conversion

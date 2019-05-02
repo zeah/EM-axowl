@@ -24,24 +24,16 @@ var gaInfo = function() {
 		screen: screen.width+'x'+screen.height
 	}
 
-	if (/(?:^|;| )_ga=GA1\.\d\./.test(document.cookie)) {
-		var match = document.cookie.match(/(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/);
-		if (match[1]) data.id = match[1];
-	}
+	var match = /(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/.exec(document.cookie);
+	if (match && match[1]) data.id = match[1];
 
 	if (jQuery('#abtesting-name')) data.name = jQuery('#abtesting-name').val();
 
-	if (/(?:^|; | )referrer=/.test(document.cookie)) {
-		match = document.cookie.match(/(?:^|;| )(?:referrer=)(.*?)(?:;|$)/);
-		if (match[1]) data.referrer = match[1];
-	}
-
+	match = /(?:^|;| )(?:referrer=)(.*?)(?:;|$)/.exec(document.cookie);
+	if (match && match[1]) data.referrer = match[1];
 
 	return data;
 };
-
- 
-
 
 // VALIDATION AND EVENTS
 (function($) {
@@ -643,6 +635,14 @@ var gaInfo = function() {
 
 		window.addEventListener('beforeunload', unload);
 
+		$.post(emurl.ajax_url, {
+			action: 'gan',
+			'ga': gaInfo(),
+			'neste': '1'
+		}, function(data) {
+			console.log(data);
+		}); 
+
 	}
 	$('.em-b-neste').one('click', showNeste);
 
@@ -1172,18 +1172,14 @@ var gaInfo = function() {
 
 	})();
 
+
+	// REFERRER COOKIE
 	(function() {
 
-		console.log('document.referrer');
-		console.log(document.referrer);
-		console.log();
+		if (!!location.referrer) return;
 
-		console.log(location.hostname);
-		console.log();
-
-		let reg = new RegExp(location.hostname);
-
-		if (!reg.test(document.referrer)) document.cookie = 'referrer='+document.referrer+'; expires='+date;
+		if (!new RegExp(location.hostname).test(document.referrer)) 
+			document.cookie = 'referrer='+document.referrer+'; expires='+date;
 
 	}());
 
