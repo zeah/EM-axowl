@@ -71,7 +71,8 @@ final class Axowl_shortcode {
 		// TODO get transient
 
 		// add_action('wp_footer', [$this, 'footer']);
-		add_action('wp_head', [$this, 'sands']);
+		add_action('wp_enqueue_scripts', [$this, 'sands']);
+		// add_action('wp_head', [$this, 'sands']);
 		add_filter('google_link', [$this, 'fonts']);
 
 		$data = get_option('em_axowl');
@@ -553,7 +554,8 @@ final class Axowl_shortcode {
 
 
 	public function delete($atts, $content = null) {
-		add_action('wp_head', [$this, 'sands_delete']);
+		add_action('wp_enqueue_scripts', [$this, 'sands_delete']);
+		// add_action('wp_head', [$this, 'sands_delete']);
 
 		return '<div class="axodel-container">
 				<div class="axodel-form">
@@ -569,69 +571,70 @@ final class Axowl_shortcode {
 				</div>
 			</div>
 			<script>
-			(function($) {
-				var click = function() {
+				(function($) {
+					var click = function() {
 
-					var val = $(".axodel-input").val();
+						var val = $(".axodel-input").val();
 
-					if (!val) return;
+						if (!val) return;
 
-					if (!/^\d{8}$/.test(val) && !/^.+@.+\..{2,}/.test(val)) {
-						alert("Ugyldig input, må være et telefonnummer eller epost addresse.");
-						return;
-					}
-					$.post(emurl.ajax_url, {
-						action: "del",
-						data: $(".axodel-input").val()
-						}, function(data) {
-
-							console.log(data);
-							if (data != "success") {
-								alert("Feil i maskineriet. Prøv igjen seinere eller kontakt oss på epost.");
-								return;
-							}
-
-							$(".axodel-send").off("click", click);
-
-							$(".axodel-info").html($(".axodel-input").val());
-
-							$(".axodel-form").fadeOut(200, function() {
-								$(".axodel-message").fadeIn(200);
-							});
-
+						if (!/^\d{8}$/.test(val) && !/^.+@.+\..{2,}/.test(val)) {
+							alert("Ugyldig input, må være et telefonnummer eller epost addresse.");
+							return;
 						}
-					);
+						$.post(emurl.ajax_url, {
+							action: "del",
+							data: $(".axodel-input").val()
+							}, function(data) {
 
-				}
+								console.log(data);
+								if (data != "success") {
+									alert("Feil i maskineriet. Prøv igjen seinere eller kontakt oss på epost.");
+									return;
+								}
 
-				$(".axodel-send").on("click", click);
+								$(".axodel-send").off("click", click);
 
-				$(".axodel-input").keypress(function(e) {
+								$(".axodel-info").html($(".axodel-input").val());
 
-					if (e.keyCode == 13) click();
+								$(".axodel-form").fadeOut(200, function() {
+									$(".axodel-message").fadeIn(200);
+								});
 
-					//console.log(e.keyCode);
-				});
+							}
+						);
 
-				var css = "<style>.axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; }  @media only screen and (max-width: 949px) { }</style>";
-				// var css = "<style>@media only screen and (min-width: 950px) { .axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; } } @media only screen and (max-width: 949px) { }</style>";
+					}
 
-				$("head").append(css);
+					$(".axodel-send").on("click", click);
 
-			})(jQuery)
+					$(".axodel-input").keypress(function(e) {
+
+						if (e.keyCode == 13) click();
+
+						//console.log(e.keyCode);
+					});
+
+					var css = "<style>.axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; }  @media only screen and (max-width: 949px) { }</style>";
+					// var css = "<style>@media only screen and (min-width: 950px) { .axodel-container { margin: 4rem 0; } .axodel-input { font-size: 1.6rem; padding: .5rem; min-width: 30rem; border: solid 2px #333; } .axodel-send { display: block; margin: 2rem 0; border: none; outline: none; background-color: #fc6; font-size: 1.6rem; padding: .6rem; border: solid 2px #333; } .axodel-message { display: none; } } @media only screen and (max-width: 949px) { }</style>";
+
+					$("head").append(css);
+
+				})(jQuery);
 			</script>
-
 			';
 	
 	}
 
 
 	public function sands_delete() {
+
        	// wp_enqueue_style('axodel-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel.css', array(), '0.0.1', '(min-width: 901px)');
         // wp_enqueue_style('axodel-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel-mobile.css', array(), '0.0.1', '(max-width: 900px)');
-        wp_enqueue_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', false, false);
+        wp_enqueue_script('cndjq', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, false);
         
-        wp_enqueue_script('axodel', EM_AXOWL_PLUGIN_URL.'assets/js/pub/axodel.js', [], '0.0.1', true);
+        wp_enqueue_script('axodel', EM_AXOWL_PLUGIN_URL.'assets/js/pub/axodel.js', [], '0.0.1');
+        // wp_add_inline_script('axodel', $script);
 		wp_localize_script('axodel', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
@@ -692,9 +695,9 @@ final class Axowl_shortcode {
         wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.20', '(min-width: 901px)');
         wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.20', '(max-width: 900px)');
         
-        wp_enqueue_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', false, false);
-        wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', false, true);
-        wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', false, true);
+        wp_enqueue_script('jquery-cdn', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, true);
+        wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', [], false, true);
+        wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', [], false, true);
 
         wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', [], '2.0.35', true);
 		
