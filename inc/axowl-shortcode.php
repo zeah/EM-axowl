@@ -629,8 +629,9 @@ final class Axowl_shortcode {
 	public function sands_delete() {
        	// wp_enqueue_style('axodel-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel.css', array(), '0.0.1', '(min-width: 901px)');
         // wp_enqueue_style('axodel-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/axodel-mobile.css', array(), '0.0.1', '(max-width: 900px)');
+        wp_enqueue_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', false, false);
         
-        wp_enqueue_script('axodel', EM_AXOWL_PLUGIN_URL.'assets/js/pub/axodel.js', ['jquery'], '0.0.1', false);
+        wp_enqueue_script('axodel', EM_AXOWL_PLUGIN_URL.'assets/js/pub/axodel.js', [], '0.0.1', true);
 		wp_localize_script('axodel', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}
 
