@@ -17,6 +17,7 @@
  * 
  */
 
+
 var gaInfo = function() {
 
 	var data = {
@@ -808,7 +809,7 @@ var gaInfo = function() {
 		data['contact_accept'] = $('.em-check-contact_accept')[0].checked ? '1' : '0';
 		data['axo_accept'] = $('.em-check-axo_accept')[0].checked;
 
-		if (clid()) data['clid'] = clid();
+		data['clid'] = clid();
 
 		data['ga'] = gaInfo();
 
@@ -1227,6 +1228,8 @@ var gaInfo = function() {
 		$.get($(this).attr('href'), function(data) {
 			var ien = data.indexOf('article')-1;
 			var ito = data.indexOf('/article')+9;
+
+			if (ien == -1 || ito == -1) return;
 
 			var m = data.substring(ien, ito)
 

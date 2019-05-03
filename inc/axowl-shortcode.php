@@ -81,6 +81,9 @@ final class Axowl_shortcode {
 		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
 		$inputs = AXOWL_inputs::$inputs;
 
+		$lock = '<div class="em-lock" title="Kryptert og sikker kommunikasjon"><svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24"><g fill="none"><path d="M0 0h24v24H0V0z"/><path opacity=".87" d="M0 0h24v24H0V0z"/></g><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg></div>';
+		$lock = '';
+
 		$epop = '<div class="em-glass"></div>
 				 <div class="email-popup"><div class="email-popup-grid">
 
@@ -104,11 +107,12 @@ final class Axowl_shortcode {
 				 </div>';
 
 		$html = sprintf(
-			'<div class="em-form-container" style="opacity: 0;%s">%s%s<form class="emowl-form">',
+			'<div class="em-form-container" style="opacity: 0;%s">%s%s<form class="emowl-form">%s',
 			
 			isset($atts['style']) ? $atts['style'] : '',
 			$p->popup(),
-			$epop
+			$epop,
+			$lock
 		);
 
 
@@ -692,14 +696,14 @@ final class Axowl_shortcode {
 
 	public function sands() {
         wp_enqueue_style('jqslid', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css', false);
-        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.20', '(min-width: 901px)');
-        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.20', '(max-width: 900px)');
+        wp_enqueue_style('emaxowl-style', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo.css', array(), '2.0.21', '(min-width: 901px)');
+        wp_enqueue_style('emaxowl-mobile', EM_AXOWL_PLUGIN_URL.'assets/css/pub/emaxo-mobile.css', array(), '2.0.21', '(max-width: 900px)');
         
         wp_enqueue_script('jquery-cdn', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, true);
         wp_enqueue_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', [], false, true);
         wp_enqueue_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', [], false, true);
 
-        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', [], '2.0.35', true);
+        wp_enqueue_script('emaxowl', EM_AXOWL_PLUGIN_URL.'assets/js/pub/emaxo.js', [], '2.0.36', true);
 		
 		wp_localize_script( 'emaxowl', 'emurl', ['ajax_url' => admin_url( 'admin-ajax.php')]);
 	}

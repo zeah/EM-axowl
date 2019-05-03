@@ -223,6 +223,8 @@ body {
 	display: block;
 	margin: auto;
 
+	position: relative;
+
 	width: 90rem;
 	max-width: 100%;
 
@@ -1645,6 +1647,13 @@ select.em-i {
 }
 
 
+.em-lock {
+	/*display: inline;*/
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	/*right: 14rem;*/
+}
 
 
 /* 10.4 sprites paused */

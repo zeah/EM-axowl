@@ -56,6 +56,9 @@
 }
 
 .emowl-form {
+
+	position: relative;
+
 	padding: 2rem 4rem;
 	background-color: #fff;
 }
@@ -667,6 +670,14 @@
 	font-weight: 900;
 	cursor: pointer;
 
+}
+
+.em-lock {
+	/*display: inline;*/
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	/*right: 14rem;*/
 }
 
 .em-hidden {
