@@ -305,6 +305,8 @@ final class Axowl_data {
 	private function accepted($data) {
 		$data['status'] = 'accepted';
 
+		echo '1';
+
 		$this->test('accepted', $data);
 
 		// send gfunc sql
@@ -332,6 +334,8 @@ final class Axowl_data {
 	 */
 	private function rejected($data) {
 		$data['status'] = 'rejected';
+
+		echo '0';
 
 		$this->test('rejected', $data);
 		
@@ -474,6 +478,9 @@ final class Axowl_data {
 
 	/**/
 	private function ga($status, $value, $cat = 'axo form') {
+		// DISABLED - sending to GA from js instead
+		return;
+
 		// TODO shortcode number to event action
 
 		if (is_user_logged_in()) return;

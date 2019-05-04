@@ -649,13 +649,18 @@ var gaInfo = function() {
 
 		window.addEventListener('beforeunload', unload);
 
-		$.post(emurl.ajax_url, {
-			action: 'gan',
-			'ga': gaInfo(),
-			'neste': '1'
-		}, function(data) {
-			console.log(data);
-		}); 
+		try {
+			ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'neste');
+		}
+		catch (e) { console.log(e) }
+
+		// $.post(emurl.ajax_url, {
+		// 	action: 'gan',
+		// 	'ga': gaInfo(),
+		// 	'neste': '1'
+		// }, function(data) {
+		// 	console.log(data);
+		// }); 
 
 	}
 	$('.em-b-neste').one('click', showNeste);
@@ -684,6 +689,12 @@ var gaInfo = function() {
 			console.log(data);
 		}); 
 		
+
+		try {
+			ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'incomplete');
+		}
+		catch (e) { console.log(e) }
+
 
 		$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
 			$(this).fadeOut();
@@ -828,6 +839,20 @@ var gaInfo = function() {
 			if (d === 'Technical Error') {
 				alert('Teknisk Feil - Feil hos Axo Finans. Prøv igjen seinere eller kontakt oss på epost.');
 				return;				
+			}
+
+			if (d === '1') {
+				try {
+					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'accepted');
+				}
+				catch (e) { console.log(e) }
+			}
+
+			if (d === '0') {
+				try {
+					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'rejected');
+				}
+				catch (e) { console.log(e) }
 			}
 
 			$('.emowl-form').slideUp(800, function() {
@@ -1125,6 +1150,12 @@ var gaInfo = function() {
 					// console.log(data);
 				}
 			);
+
+			try {
+					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'popup');
+				}
+			catch (e) { console.log(e) }
+
 			// cookie
 			var date = new Date();
 			date.setTime(date.getTime() + (20*24*60*60*1000));
