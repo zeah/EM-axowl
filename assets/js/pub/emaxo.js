@@ -40,7 +40,11 @@ var sendGa = function(label, value = 0) {
 
 	try {
 		var action = $('#abtesting-name').val() ? $('#abtesting-name').val() : 'na';
-		ga('send', 'event', 'axo form', action, label, value);
+		ga('send', 'event', 'axo form', action, label, value, {
+			hitCallback: function() {
+				console.log('worked');
+			}
+		});
 	}
 	catch (e) { console.log('ga not installed') }
 };
