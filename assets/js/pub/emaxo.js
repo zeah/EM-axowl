@@ -36,6 +36,15 @@ var gaInfo = function() {
 	return data;
 };
 
+var sendGa = function(label, value = 0) {
+
+	try {
+		var action = $('#abtesting-name').val() ? $('#abtesting-name').val() : 'na';
+		ga('send', 'event', 'axo form', action, label, value);
+	}
+	catch (e) { console.log('ga not installed') }
+};
+
 // VALIDATION AND EVENTS
 (function($) {
 	var validColor = 'green';
@@ -650,10 +659,12 @@ var gaInfo = function() {
 
 		window.addEventListener('beforeunload', unload);
 
-		try {
-			ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'neste');
-		}
-		catch (e) { console.log(e) }
+		sendGa('neste', 0);
+
+		// try {
+		// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'neste');
+		// }
+		// catch (e) { console.log(e) }
 
 		// $.post(emurl.ajax_url, {
 		// 	action: 'gan',
@@ -690,11 +701,11 @@ var gaInfo = function() {
 			console.log(data);
 		}); 
 		
-
-		try {
-			ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'incomplete');
-		}
-		catch (e) { console.log(e) }
+		sendGa('incomplete', 0);
+		// try {
+		// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'incomplete');
+		// }
+		// catch (e) { console.log(e) }
 
 
 		$('.content-post > div:not(.top-container), .em-icons-container').each(function() {
@@ -843,17 +854,21 @@ var gaInfo = function() {
 			}
 
 			if (d === '1') {
-				try {
-					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'accepted');
-				}
-				catch (e) { console.log(e) }
+				sendGa('accepted', 1200);
+
+				// try {
+				// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'accepted');
+				// }
+				// catch (e) { console.log(e) }
 			}
 
 			if (d === '0') {
-				try {
-					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'rejected');
-				}
-				catch (e) { console.log(e) }
+				sendGa('rejected', 0);
+
+				// try {
+				// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'rejected');
+				// }
+				// catch (e) { console.log(e) }
 			}
 
 			$('.emowl-form').slideUp(800, function() {
@@ -1152,10 +1167,12 @@ var gaInfo = function() {
 				}
 			);
 
-			try {
-					ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'popup');
-				}
-			catch (e) { console.log(e) }
+			sendGa('popup', 0);
+
+			// try {
+			// 		ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'popup');
+			// 	}
+			// catch (e) { console.log(e) }
 
 			// cookie
 			var date = new Date();
