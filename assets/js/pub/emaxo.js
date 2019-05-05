@@ -28,7 +28,7 @@ var gaInfo = function() {
 	var match = /(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/.exec(document.cookie);
 	if (match && match[1]) data.id = match[1];
 
-	if (jQuery('#abtesting-name')) data.name = jQuery('#abtesting-name').val();
+	if (jQuery('#abtesting-post')) data.name = jQuery('#abtesting-post').val();
 
 	match = /(?:^|;| )(?:referrer=)(.*?)(?:;|$)/.exec(document.cookie);
 	if (match && match[1]) data.referrer = match[1];
@@ -39,7 +39,7 @@ var gaInfo = function() {
 var sendGa = function(label, value = 0) {
 
 	try {
-		var action = $('#abtesting-name').val() ? $('#abtesting-name').val() : 'na';
+		var action = $('#abtesting-post').val() ? $('#abtesting-post').val() : 'na';
 		console.log('sending ga');
 		if ("ga" in window) {
 			console.log('ga found');
@@ -673,7 +673,7 @@ var sendGa = function(label, value = 0) {
 		sendGa('neste', 0);
 
 		// try {
-		// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'neste');
+		// 	ga('send', 'event', 'axo form', $('#abtesting-post').val(), 'neste');
 		// }
 		// catch (e) { console.log(e) }
 
@@ -714,7 +714,7 @@ var sendGa = function(label, value = 0) {
 		
 		sendGa('incomplete', 0);
 		// try {
-		// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'incomplete');
+		// 	ga('send', 'event', 'axo form', $('#abtesting-post').val(), 'incomplete');
 		// }
 		// catch (e) { console.log(e) }
 
@@ -868,7 +868,7 @@ var sendGa = function(label, value = 0) {
 				sendGa('accepted', 1200);
 
 				// try {
-				// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'accepted');
+				// 	ga('send', 'event', 'axo form', $('#abtesting-post').val(), 'accepted');
 				// }
 				// catch (e) { console.log(e) }
 			}
@@ -877,7 +877,7 @@ var sendGa = function(label, value = 0) {
 				sendGa('rejected', 0);
 
 				// try {
-				// 	ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'rejected');
+				// 	ga('send', 'event', 'axo form', $('#abtesting-post').val(), 'rejected');
 				// }
 				// catch (e) { console.log(e) }
 			}
@@ -1168,7 +1168,7 @@ var sendGa = function(label, value = 0) {
 				{
 					action: 'popup',
 					'ga': gaInfo(),
-					'ab-name': $('#abtesting-name').val(),
+					'ab-name': $('#abtesting-post').val(),
 					'ab-sc': $('#abtesting-sc').val(),
 					'pop-email': $('#pop-email').val(),
 					'pop-phone': numb($('#pop-phone').val())
@@ -1181,7 +1181,7 @@ var sendGa = function(label, value = 0) {
 			sendGa('popup', 0);
 
 			// try {
-			// 		ga('send', 'event', 'axo form', $('#abtesting-name').val(), 'popup');
+			// 		ga('send', 'event', 'axo form', $('#abtesting-post').val(), 'popup');
 			// 	}
 			// catch (e) { console.log(e) }
 

@@ -70,6 +70,9 @@ final class Axowl_shortcode {
 		global $post;
 		// TODO get transient
 
+		// wp_die('<xmp>'.print_r($post->post_name, true).'</xmp>');
+		
+
 		// add_action('wp_footer', [$this, 'footer']);
 		add_action('wp_enqueue_scripts', [$this, 'sands']);
 		// add_action('wp_head', [$this, 'sands']);
@@ -151,10 +154,10 @@ final class Axowl_shortcode {
 		// $html .= $p->popup().'</div>';
 
 		$html .= '<input type="hidden" id="abtesting-sc" value="1">';
-		$html .= '<input type="hidden" id="abtesting-post" value="'.$post->post_name.'">';
+		$html .= '<input type="hidden" id="abtesting-name" value="'.$post->post_name.'">';
 
-		if (!isset($data['abtesting']))
-			$html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
+		// if (!isset($data['abtesting']))
+			// $html .= sprintf('<input type="hidden" id="abtesting-name" value="%s">', $post->post_name);
 		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
 		
 		// TODO set transient
