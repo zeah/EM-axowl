@@ -1,57 +1,36 @@
 /**
  * INDEX
- * qs(s) helper function: document.querySelector
- * qsa(s) helper function: document.querySelectorAll
- *
- * var current: current part of form showing
- * var isIE: whether browser is internet explorer or not
- *
- * kroner(v) : converts value to currency
- * numb(v) : converts value to number
- * payment() : updates monthly cost field
- * val{v} : validator
- * v(v) : validator with visual feedback
- * progress() : updates progressbar when fields with validation is filled
- *
- * init() initializes all event listeners
  * 
  */
 
 
-var gaInfo = function() {
+// var gaInfo = function() {
 
-	var data = {
-		viewport: jQuery(window).width()+'x'+jQuery(window).height(),
-		screen: screen.width+'x'+screen.height
-	}
+// 	var data = {
+// 		viewport: jQuery(window).width()+'x'+jQuery(window).height(),
+// 		screen: screen.width+'x'+screen.height
+// 	}
 
-	var match = /(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/.exec(document.cookie);
-	if (match && match[1]) data.id = match[1];
+// 	var match = /(?:^|;| )(?:_ga=GA1\.\d\.)(.*?)(?:;|$)/.exec(document.cookie);
+// 	if (match && match[1]) data.id = match[1];
 
-	if (jQuery('#abtesting-post')) data.name = jQuery('#abtesting-post').val();
+// 	if (jQuery('#abtesting-post')) data.name = jQuery('#abtesting-post').val();
 
-	match = /(?:^|;| )(?:referrer=)(.*?)(?:;|$)/.exec(document.cookie);
-	if (match && match[1]) data.referrer = match[1];
+// 	match = /(?:^|;| )(?:referrer=)(.*?)(?:;|$)/.exec(document.cookie);
+// 	if (match && match[1]) data.referrer = match[1];
 
-	return data;
-};
+// 	return data;
+// };
 
 var sendGa = function(label, value = 0) {
 
+	// sending ga via gtm
 	try {
 		var action = $('#abtesting-post').val() ? $('#abtesting-post').val() : 'na';
-		console.log('sending ga');
 		if ("ga" in window) {
-			console.log('ga found');
 		    tracker = ga.getAll()[0];
-		    if (tracker)
-		        tracker.send('event', 'axo form', action, label, value);
+		    if (tracker) tracker.send('event', 'axo form', action, label, value);
 		}
-		// ga('send', 'event', 'axo form', action, label, value, {
-		// 	hitCallback: function() {
-		// 		console.log('worked');
-		// 	}
-		// });
 	}
 	catch (e) { console.log('ga failed') }
 };
@@ -103,6 +82,7 @@ var sendGa = function(label, value = 0) {
 			var p = numb($('.em-i-loan_amount').val());
 			var n = numb($('.em-i-tenure').val())*12;
 
+			// credit card payment simulation
 			var carddebt = p;
 		    var interest = Math.round(carddebt * monthlyRate);
 		    var saldo = Math.round(carddebt + interest);
@@ -165,87 +145,87 @@ var sendGa = function(label, value = 0) {
 		},
 		
 		email: function() { 
-			var dict = function() {
-				var mails = {
-					'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-					'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-					'online.no': ['o', 'n', 'l', 'i', 'n', 'e', '.', 'n', 'o'],
+			// var dict = function() {
+			// 	var mails = {
+			// 		'gmail.com': ['g', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+			// 		'hotmail.com': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+			// 		'online.no': ['o', 'n', 'l', 'i', 'n', 'e', '.', 'n', 'o'],
 
-					'live.com': ['l', 'i', 'v', 'e', '.', 'c', 'o', 'm'],
-					'yahoo.no': ['y', 'a', 'h', 'o', 'o', '.', 'n', 'o'],
-					'yahoo.com': ['y', 'a', 'h', 'o', 'o', '.', 'c', 'o', 'm'],
-					'hotmail.no': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
-					'c2i.net': ['c', '2', 'i', '.', 'n', 'e', 't'],
-					'broadpark.no': ['b', 'r', 'o', 'a', 'd', 'p', 'a', 'r', 'k', '.', 'n', 'o'],
-					'frisurf.no': ['f', 'r', 'i', 's', 'u', 'r', 'f', '.', 'n', 'o'],
+			// 		'live.com': ['l', 'i', 'v', 'e', '.', 'c', 'o', 'm'],
+			// 		'yahoo.no': ['y', 'a', 'h', 'o', 'o', '.', 'n', 'o'],
+			// 		'yahoo.com': ['y', 'a', 'h', 'o', 'o', '.', 'c', 'o', 'm'],
+			// 		'hotmail.no': ['h', 'o', 't', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+			// 		'c2i.net': ['c', '2', 'i', '.', 'n', 'e', 't'],
+			// 		'broadpark.no': ['b', 'r', 'o', 'a', 'd', 'p', 'a', 'r', 'k', '.', 'n', 'o'],
+			// 		'frisurf.no': ['f', 'r', 'i', 's', 'u', 'r', 'f', '.', 'n', 'o'],
 
-					'start.no': ['s', 't', 'a', 'r', 't', '.', 'n', 'o'],
+			// 		'start.no': ['s', 't', 'a', 'r', 't', '.', 'n', 'o'],
 
-					'lyse.no': ['l', 'y', 's', 'e', '.', 'n', 'o'],
+			// 		'lyse.no': ['l', 'y', 's', 'e', '.', 'n', 'o'],
 
-					'live.no': ['l', 'i', 'v', 'e', '.', 'n', 'o'],
-					'msn.com': ['m', 's', 'n', '.', 'c', 'o', 'm'],
-					'outlook.com': ['o', 'u', 't', 'l', 'o', 'o', 'k', '.', 'c', 'o', 'm'],
+			// 		'live.no': ['l', 'i', 'v', 'e', '.', 'n', 'o'],
+			// 		'msn.com': ['m', 's', 'n', '.', 'c', 'o', 'm'],
+			// 		'outlook.com': ['o', 'u', 't', 'l', 'o', 'o', 'k', '.', 'c', 'o', 'm'],
 
 
-					'gmail.no': ['g', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
-					'googlemail.com': ['g', 'o', 'o', 'g', 'l', 'e', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+			// 		'gmail.no': ['g', 'm', 'a', 'i', 'l', '.', 'n', 'o'],
+			// 		'googlemail.com': ['g', 'o', 'o', 'g', 'l', 'e', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
 
-					'adsl.no': ['a', 'd', 's', 'l', '.', 'n', 'o'],
-					'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
+			// 		'adsl.no': ['a', 'd', 's', 'l', '.', 'n', 'o'],
+			// 		'telenor.com': ['t', 'e', 'l', 'e', 'n', 'o', 'r', '.', 'c', 'o', 'm'],
 					
-					'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
-					// 'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
-					'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
-				}
+			// 		'inbox.com': ['i', 'n', 'b', 'o', 'x', '.', 'c', 'o', 'm'],
+			// 		// 'mail.com': ['m', 'a', 'i', 'l', '.', 'c', 'o', 'm'],
+			// 		'protonmail.com': ['p', 'r', 'o', 't', 'o', 'n', 'm', 'a', 'i', 'l', '.', 'c', 'o', 'm']
+			// 	}
 
-				var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
-				// var c = 0;
+			// 	var v = this.value.substring(this.value.indexOf('@')+1).toLowerCase();
+			// 	// var c = 0;
 
-				var f = false;
+			// 	var f = false;
 
-				// correctly spelled
-				for (var a in mails)
-					if (v == a) {
-						f = true;
-						break;
-					}
+			// 	// correctly spelled
+			// 	for (var a in mails)
+			// 		if (v == a) {
+			// 			f = true;
+			// 			break;
+			// 		}
 
 
-				if (!f) for (var a in mails) {
-					var c = 0;
+			// 	if (!f) for (var a in mails) {
+			// 		var c = 0;
 
-					console.log('');
-					console.log(mails[a]+' '+v);
-					for (var i = 0; i < mails[a].length; i++) {
-						console.log(mails[a][i]+' # '+v.charAt(i));
-						if (v.charAt(i) != mails[a][i]) c++;
+			// 		console.log('');
+			// 		console.log(mails[a]+' '+v);
+			// 		for (var i = 0; i < mails[a].length; i++) {
+			// 			console.log(mails[a][i]+' # '+v.charAt(i));
+			// 			if (v.charAt(i) != mails[a][i]) c++;
 						
-					}
-					console.log(c);
-					console.log();
-					// if (v.length > a.length+1) continue;
+			// 		}
+			// 		console.log(c);
+			// 		console.log();
+			// 		// if (v.length > a.length+1) continue;
 
-					// for (var b in mails[a]) {
-					// 	if (v.indexOf(mails[a][b]) === -1)
-					// 		c++;
-					// }
-					// console.log(mails[a]);
-					// console.log(c);
-					// console.log();
+			// 		// for (var b in mails[a]) {
+			// 		// 	if (v.indexOf(mails[a][b]) === -1)
+			// 		// 		c++;
+			// 		// }
+			// 		// console.log(mails[a]);
+			// 		// console.log(c);
+			// 		// console.log();
 
-					// if ((c > 0 && c < 3) || (c == 0 && v != a)) {
-					// 	if (confirm('Mente du '+a+'?')) {
-					// 		this.value = this.value.replace(/\@.+/, '@'+a);
-					// 		break;
-					// 	}
-					// 	else {
+			// 		// if ((c > 0 && c < 3) || (c == 0 && v != a)) {
+			// 		// 	if (confirm('Mente du '+a+'?')) {
+			// 		// 		this.value = this.value.replace(/\@.+/, '@'+a);
+			// 		// 		break;
+			// 		// 	}
+			// 		// 	else {
 
-					// 	}
-					// }
-					// c = 0;
-				}
-			}
+			// 		// 	}
+			// 		// }
+			// 		// c = 0;
+			// 	}
+			// }
 
 			if (/.+\@.+\..{2,}/.test(this.value)) return true; return false 
 		},
@@ -413,6 +393,7 @@ var sendGa = function(label, value = 0) {
 	// validation on focus out
 	var validation = function() {
 		try {
+			// validation not required or validation = true
 			if (this.val == undefined || this.val()) {
 				valid.call(this);
 				return true;
@@ -420,7 +401,6 @@ var sendGa = function(label, value = 0) {
 			invalid.call(this);
 			return false;
 		} catch (e) {
-			// console.log(e);
 			return true;
 		}
 	}
@@ -706,8 +686,8 @@ var sendGa = function(label, value = 0) {
 			action: 'wlinc',
 			'contact_accept': $('.em-check-contact_accept')[0].checked ? '1' : '0',
 			'email': $('.em-i-email').val(),
-			'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, ''),
-			'ga': gaInfo()
+			'mobile_number': $('.em-i-mobile_number').val().replace(/[\D]/g, '')
+			// 'ga': gaInfo()
 		}, function(data) {
 			console.log(data);
 		}); 
@@ -844,7 +824,7 @@ var sendGa = function(label, value = 0) {
 
 		data['clid'] = clid();
 
-		data['ga'] = gaInfo();
+		// data['ga'] = gaInfo();
 
 		$(this).off('click');
 		$(this).html('Søknad Sendes ...');
@@ -1167,7 +1147,7 @@ var sendGa = function(label, value = 0) {
 			$.post(emurl.ajax_url, 
 				{
 					action: 'popup',
-					'ga': gaInfo(),
+					// 'ga': gaInfo(),
 					'ab-name': $('#abtesting-post').val(),
 					'ab-sc': $('#abtesting-sc').val(),
 					'pop-email': $('#pop-email').val(),
