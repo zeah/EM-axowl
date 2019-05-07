@@ -27,7 +27,15 @@ final class Axowl_settings {
 		add_action('admin_init', [$this, 'register_settings']);
 		add_action('admin_enqueue_scripts', [$this, 'add_sands']);
 
+		add_action('settings_page_em-axowl-page', [$this, 'delete_transient']);
+		add_action('upgrader_process_complete', [$this, 'delete_transient']);
+
 		// TODO delete transient on save
+	}
+
+
+	public function delete_transient() {
+		delete_transient('axowl_sc1');
 	}
 
 	public function add_sands($hook) {
