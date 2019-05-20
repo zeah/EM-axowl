@@ -65,6 +65,12 @@ final class Axowl_shortcode {
 	 */
 	public function shortcode_1($atts, $content = null) {
 
+		add_action('wp_enqueue_scripts', [$this, 'sands']);
+		add_filter('google_link', [$this, 'fonts']);
+
+		if (!is_user_logged_in()) 
+			if (get_transient('axowl_sc1')) return get_transient('axowl_sc1');
+
 		// shortcode-parts.php
 		$p = self::$parts;
 		global $post;
@@ -74,9 +80,7 @@ final class Axowl_shortcode {
 		
 
 		// add_action('wp_footer', [$this, 'footer']);
-		add_action('wp_enqueue_scripts', [$this, 'sands']);
 		// add_action('wp_head', [$this, 'sands']);
-		add_filter('google_link', [$this, 'fonts']);
 
 		$data = get_option('em_axowl');
 		if (!is_array($data)) $data = [];
@@ -161,7 +165,8 @@ final class Axowl_shortcode {
 		// wp_die('<xmp>'.print_r($data, true).'</xmp>');
 		
 		// TODO set transient
-
+		if (!is_user_logged_in()) 
+			set_transient('axowl_sc1', $html);
 		return $html;
 	}
 

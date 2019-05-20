@@ -281,7 +281,7 @@ final class Axowl_data {
 			if (!is_array($res) || !isset($res['status'])) return;
 		}
 
-		if (isset($_POST['contact_accept'])) $data['nyhetsbrev'] = $_POST['contact_accept'];
+		if (isset($data['contact_accept'])) $data['nyhetsbrev'] = $data['contact_accept'];
 		else $data['nyhetsbrev'] = '0';
 
 		$data = $this->remove_confidential($data);
