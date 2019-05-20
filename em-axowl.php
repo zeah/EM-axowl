@@ -3,7 +3,7 @@
 /*
 Plugin Name: EM Axo WL
 Description: Axo White Label
-Version: 0.0.78
+Version: 0.0.79
 GitHub Plugin URI: zeah/EM-axowl
 */
 
@@ -38,7 +38,11 @@ final class EM_axowl {
 	}
 
 	private function __construct() {
-	
+		wp_deregister_script('jquery');
+        wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, true);
+        wp_register_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', ['jquery'], false, true);
+        wp_register_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', ['jquery-ui'], false, true);
+
 		// wp_die('<xmp>'.print_r(parse_url($_SERVER['HTTP_REFERER']), true).'</xmp>');
 		// $temp = '260410';
 
