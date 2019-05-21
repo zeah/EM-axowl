@@ -38,14 +38,10 @@ final class EM_axowl {
 	}
 
 	private function __construct() {
-		wp_deregister_script('jquery');
-        wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, true);
-        wp_register_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', ['jquery'], false, true);
-        wp_register_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', ['jquery-ui'], false, true);
 
 		// wp_die('<xmp>'.print_r(parse_url($_SERVER['HTTP_REFERER']), true).'</xmp>');
 		// $temp = '260410';
-
+        add_filter('wp_enqueue_scripts', [$this, 'add_sands']);
 		// wp_die('<xmp>'.print_r('hi'.sprintf('%s-%s-%s', 
 		// 	(intval(substr($temp, 4, 2)) < 20) ? '20'.substr($temp, 4, 2) : '19'.substr($temp, 4, 2), 
 		// 	substr($temp, 2, 2), 
@@ -59,6 +55,15 @@ final class EM_axowl {
 		Axowl_ads::get_instance();
 		// Axowl_cookie::get_instance();
 		Axowl_unsub::get_instance();
+	}
+
+
+	public function add_sands() {
+		wp_deregister_script('jquery');
+        wp_register_script('jquery', '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js', [], false, true);
+        wp_register_script('jquery-ui', '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js', ['jquery'], false, true);
+        wp_register_script('jquery-touch', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js', ['jquery-ui'], false, true);
+		
 	}
 
 }
