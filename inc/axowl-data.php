@@ -285,7 +285,7 @@ final class Axowl_data {
 		else $data['nyhetsbrev'] = '0';
 
 		$data = $this->remove_confidential($data);
-		$data['transactionId'] = isset($res['transactionId']) ? $res['transactionId'] : '';
+		$data['transactionid'] = isset($res['transactionID']) ? $res['transactionID'] : '';
 
 
 		switch ($res['status']) {
